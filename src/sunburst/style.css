@@ -1,0 +1,17 @@
+.sunburst .form:hover{
+    opacity:0.5 !important;
+}
+
+.sunburst-canvas {
+  position: relative; 
+}
+
+.sunburst-legend {
+  position: absolute;
+  top: 0;
+  left: 0; }
+  .sunburst-legend p {
+    margin: 0; }
+
+.node {
+  position: absolute; }

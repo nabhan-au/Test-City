@@ -1,0 +1,22 @@
+.stack-chart rect:hover{
+    opacity:0.5 !important;
+}
+
+.stack-chart text{
+    font-weight:lighter;
+    font-size:14px;
+}
+
+.stack-chart-canvas {
+  position: relative; 
+}
+
+.stack-chart-legend {
+  position: absolute;
+  top: 0;
+  left: 0; }
+  .stack-chart-legend p {
+    margin: 0; }
+
+.node {
+  position: absolute; }
