@@ -5,8 +5,8 @@ import json
 
 current_path = os.path.dirname(os.path.abspath(__file__))
 dataset_path = current_path + '/dataset/'
-prjectname = 'jedis'
-all_files = lizard.analyze([dataset_path + prjectname])
+projectname = 'jedis'
+all_files = lizard.analyze([dataset_path + projectname])
 all_files = list(all_files)
 num_line = {}
 num_func = {}
@@ -40,7 +40,7 @@ def main():
     metrics = {}
 
     for filename in filenames:
-        if filename == prjectname:
+        if filename == projectname:
             name = ''
         name = filename
         code_patterns.update({name:{"classes":{"total_number_of_functions":str(num_func[filename]),"total_number_of_lines":str(num_line[filename])},"functions":{"total_cyclomatic_complexity":str(num_comp[filename]),"total_number_of_lines":str(num_line[filename])}}})
@@ -50,7 +50,7 @@ def main():
 
     print(tree_json)
 
-    with open(current_path + '/../src/data/' + prjectname + '_complexity.json', 'w') as f:
+    with open(current_path + '/../src/data/' + projectname + '_complexity.json', 'w') as f:
         json.dump(tree_json, f, indent=4)
 
 
