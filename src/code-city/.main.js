@@ -11,10 +11,9 @@ define([
   dataLoaders,
   dataHelpers
 ) {
-    var data = dataLoaders.complexityExample('coveralls-ruby');
+    var data = dataLoaders.complexityExample('jedis');
     console.log(data);
     var metric = 'functions';
-    var classes = 'classes';
 
     var legendDiv = $('#code-city-legend')[0];
     var canvasDiv = $('#code-city-canvas')[0];
@@ -47,12 +46,12 @@ define([
                         <td>"+d.data.metrics.total_number_of_lines+"</td> \
                     </tr> \
                     <tr> \
-                        <td>average of trace</td> \
-                        <td>"+d.data.code_patterns[metric].average_of_trace+"</td> \
+                        <td>total complexity</td> \
+                        <td>"+d.data.code_patterns[metric].total_cyclomatic_complexity+"</td> \
                     </tr> \
                     <tr> \
-                        <td>coverage</td> \
-                        <td>"+d.data.code_patterns[classes].coverage+"</td> \
+                        <td>complexity / 100 lines of code</td> \
+                        <td>"+Math.ceil(d.data.code_patterns[metric].total_cyclomatic_complexity/d.data.metrics.total_number_of_lines*100)+"</td> \
                     </tr> \
                 </tbody> \
             </table> \
@@ -66,11 +65,11 @@ define([
         }
         if (d.children && d.children.length)
             return 0;
-        return snapToGrid(5, d.data.code_patterns[metric].average_of_trace);
+        return snapToGrid(5, d.data.code_patterns[metric].total_cyclomatic_complexity);
     }
 
     function nodeColor(d) {
-      return d.data.code_patterns[classes].coverage;
+      return d.data.code_patterns[metric].total_cyclomatic_complexity/d.data.metrics.total_number_of_lines;
     }
 
     function nodeArea(d) {

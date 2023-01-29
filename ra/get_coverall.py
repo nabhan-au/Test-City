@@ -4,6 +4,7 @@ from dictknife import deepmerge
 import json
 import requests
 import copy
+import numpy as np
 
 current_path = os.path.dirname(os.path.abspath(__file__))
 dataset_path = current_path + '/dataset/'
@@ -13,6 +14,7 @@ all_files = list(all_files)
 num_line = {}
 file_coverage = {}
 ave_trace = {}
+add_count = {}
 filenames = []
 
 
@@ -38,6 +40,7 @@ def main():
                     if coverage != 0:
                         not_zero += 1
             file_coverage[filename] = 100*float(not_zero)/line
+            add_count[filename] = 1
             ave_trace[filename] = float(sum)/line
             # 行数
             num_line[filename] = file.nloc # コメント，空白なし
@@ -56,15 +59,16 @@ def main():
         path_list = filename.split('/')
         tree = deepmerge(tree,make_tree(path_list, num_line, file_coverage, ave_trace))
 
+    # ファイルカバレッジを算出
+    for filename in file_coverage.keys():
+        file_coverage[filename] = file_coverage[filename]/add_count[filename]
     # jsonファイルに変換
     code_patterns = {}
     metrics = {}
 
-    for filename in filenames:
-        if filename == projectname:
-            name = ''
+    for filename in num_line.keys():
         name = filename
-        code_patterns.update({name:{"classes":{"file_coverage":str(file_coverage[filename]),"total_number_of_lines":str(num_line[filename])},"functions":{"average_of_trace":str(ave_trace[filename]),"total_number_of_lines":str(num_line[filename])}}})
+        code_patterns.update({name:{"classes":{"coverage":format(file_coverage[filename], '.2f'),"total_number_of_lines":str(num_line[filename])},"functions":{"average_of_trace":format(ave_trace[filename], '.2f'),"total_number_of_lines":str(num_line[filename])}}})
         metrics.update({name:{"total_number_of_characters":0,"total_number_of_lines":str(num_line[filename])}})
 
     tree_json = {"summary":{"python":{"code_patterns":code_patterns,"metrics":metrics}}}
@@ -79,7 +83,7 @@ def make_tree(path_list, num_line, file_coverage, ave_trace, parents = ''):
     # 枝の末尾までいったら
     if(len(path_list)==0):
         return {}
-    # ルートだったら
+    # ルートだったら現在のノードをプロジェクト名に
     if parents == '':
         current = path_list[0]
     else:
@@ -92,6 +96,11 @@ def make_tree(path_list, num_line, file_coverage, ave_trace, parents = ''):
         if path not in metrics.keys():
             metrics[path] = 0
         metrics[path] += metrics[current]
+        # ファイルカバレッジの場合，親ノードが末端ノード（ファイル）の平均を算出するための変数を準備
+        if metrics == file_coverage:
+            if path not in add_count.keys():
+                add_count[path] = 0
+            add_count[path] += 1
         # 親ノードが更に親ノードを持っていたらそのノードで再帰関数
         if '/' in path:
             path = path.split('/')[:-1]

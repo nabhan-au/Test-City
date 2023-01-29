@@ -39,9 +39,7 @@ def main():
     code_patterns = {}
     metrics = {}
 
-    for filename in filenames:
-        if filename == projectname:
-            name = ''
+    for filename in num_line.keys():
         name = filename
         code_patterns.update({name:{"classes":{"total_number_of_functions":str(num_func[filename]),"total_number_of_lines":str(num_line[filename])},"functions":{"total_cyclomatic_complexity":str(num_comp[filename]),"total_number_of_lines":str(num_line[filename])}}})
         metrics.update({name:{"total_number_of_characters":0,"total_number_of_lines":str(num_line[filename])}})
