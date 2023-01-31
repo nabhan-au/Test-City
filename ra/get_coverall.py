@@ -37,19 +37,19 @@ def main():
         print(file_url, filename)
         try:
             r = requests.get('https://coveralls.io/builds/' + commit_sha + '/source.json?filename=' + file_url)
-            coverage_list = json.loads(r.text)
-            sum = 0
+            trace_list = json.loads(r.text)
+            sum_trace = 0
             line = 0
             not_zero = 0
-            for coverage in coverage_list:
-                if coverage != None:
-                    sum += coverage
+            for trace in trace_list:
+                if trace is not None:
+                    sum_trace += trace
                     line += 1
-                    if coverage != 0:
+                    if trace != 0:
                         not_zero += 1
             file_coverage[filename] = 100 * float(not_zero) / line
             add_count[filename] = 1
-            ave_trace[filename] = float(sum) / line
+            ave_trace[filename] = float(sum_trace) / line
             # 行数
             num_line[filename] = file.nloc  # コメント，空白なし
             # カバレッジなどの情報を取得できたらファイル名のリストに追加
