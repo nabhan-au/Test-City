@@ -11,7 +11,7 @@ define([
   dataLoaders,
   dataHelpers
 ) {
-    var data = dataLoaders.complexityExample('coveralls-ruby');
+    var data = dataLoaders.complexityExample('openhtf');
     console.log(data);
     var metric = 'functions';
     var classes = 'classes';
@@ -31,7 +31,7 @@ define([
                           '#a6d96a',
                           '#66bd63',
                           '#1a9850',
-                          '#006837'].reverse()
+                          '#006837']
 
 
     function legendTitle(d,e){
@@ -66,7 +66,7 @@ define([
         }
         if (d.children && d.children.length)
             return 0;
-        return snapToGrid(5, d.data.code_patterns[metric].average_of_trace);
+        return snapToGrid(0.1, d.data.code_patterns[metric].average_of_trace);
     }
 
     function nodeColor(d) {
@@ -100,7 +100,7 @@ define([
         }
         var treeData = dataHelpers.convertToTree(mergedData,mapperParams);
         //we add color to the elements (using the min/max information)
-        dataHelpers.colorize(treeData,'colorValue',nodeColorScale,{min: 0,max : 0.4});
+        dataHelpers.colorize(treeData,'colorValue',nodeColorScale,{min: 0,max : 100});
 
         var codeCityChart;
         try{

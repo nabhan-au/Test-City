@@ -11,7 +11,7 @@ define([
   dataLoaders,
   dataHelpers
 ) {
-    var data = dataLoaders.complexityExample('jedis');
+    var data = dataLoaders.complexityExample('ansible');
     console.log(data);
     var metric = 'functions';
 

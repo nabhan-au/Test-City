@@ -8,6 +8,7 @@ dataset_path = current_path + '/dataset/'
 projectname = 'jedis'
 all_files = lizard.analyze([dataset_path + projectname])
 all_files = list(all_files)
+
 num_line = {}
 num_func = {}
 num_comp = {}
@@ -29,18 +30,23 @@ def main():
             file_complexity += function.cyclomatic_complexity
         num_comp[filename] = file_complexity
 
+    d = "\n".join(filenames)
+    with open('filenames.txt', 'w') as f:
+        f.write(d)
     # 木作成
     tree = {}
     for filename in filenames:
         path_list = filename.split('/')
-        tree = deepmerge(tree,make_tree(path_list, num_line, num_func, num_comp))
+        tree = deepmerge(tree,make_tree(path_list))
 
     # jsonファイルに変換
     code_patterns = {}
     metrics = {}
 
     for filename in num_line.keys():
-        name = filename
+        name = filename.replace(projectname + '/', '', 1)
+        if name == projectname:
+            name = ''
         code_patterns.update({name:{"classes":{"total_number_of_functions":str(num_func[filename]),"total_number_of_lines":str(num_line[filename])},"functions":{"total_cyclomatic_complexity":str(num_comp[filename]),"total_number_of_lines":str(num_line[filename])}}})
         metrics.update({name:{"total_number_of_characters":0,"total_number_of_lines":str(num_line[filename])}})
 
@@ -52,7 +58,7 @@ def main():
         json.dump(tree_json, f, indent=4)
 
 
-def make_tree(path_list, num_line, num_func, num_comp, parents = ''):
+def make_tree(path_list, parents = ''):
     # 枝の末尾までいったら
     if(len(path_list)==0):
         return {}
@@ -62,7 +68,7 @@ def make_tree(path_list, num_line, num_func, num_comp, parents = ''):
     else:
         current = parents + '/' + path_list[0]
     # 再帰関数で子ノードを作成
-    children = make_tree(path_list[1:], num_line, num_func, num_comp, current)
+    children = make_tree(path_list[1:], current)
     all_metrics = [num_line, num_func, num_comp]
     # 全ての親ノードにメトリクスを足す関数
     def add_all_parents(path):
