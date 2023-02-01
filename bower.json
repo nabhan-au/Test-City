@@ -11,12 +11,12 @@
     "globals"
   ],
   "license": "AGPL",
-  "main" : "src/config.js",
+  "main" : "visualizer/config.js",
   "private": false,
   "ignore": [
     "**/.*",
     "node_modules",
-    "src/bower_components",
+    "visualizer/bower_components",
     "test",
     "tests"
   ],

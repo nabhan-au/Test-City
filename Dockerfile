@@ -1,2 +1,20 @@
-FROM nginx
-COPY visualizer/* /usr/share/nginx/
+FROM node:19
+WORKDIR /usr/src/app
+COPY visualizer /usr/src/app/visualizer
+COPY bower.json /usr/src/app/
+COPY .bowerrc /usr/src/app/
+
+
+RUN npm install -g bower
+RUN npm install -g http-server
+RUN bower install
+
+WORKDIR /usr/src/app/visualizer
+
+ENTRYPOINT ["http-server"]
+
+
+
+
+
+
