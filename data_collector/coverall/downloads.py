@@ -16,7 +16,6 @@ class CoverallDownloader:
         # ファイルのカバレッジと，テスト通った回数の平均
         encoded_filename = relative_filename.replace('/', '%2F')
         url = 'https://coveralls.io/builds/' + self.commit_sha + '/source.json?filename=' + encoded_filename
-        print(url)
         r = requests.get(url)
         try:
             trace_list = json.loads(r.text)

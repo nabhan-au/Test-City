@@ -11,7 +11,7 @@ define([
   dataLoaders,
   dataHelpers
 ) {
-    var data = dataLoaders.complexityExample('openhtf');
+    var data = dataLoaders.complexityExample('apitools');
     console.log(data);
     var metric = 'functions';
     var classes = 'classes';
@@ -70,6 +70,8 @@ define([
     }
 
     function nodeColor(d) {
+                console.log("coverage: ");
+                console.log(d.data.code_patterns[classes].coverage);
       return d.data.code_patterns[classes].coverage;
     }
 
@@ -94,13 +96,12 @@ define([
 
     data.then(function(d){
         var mergedData = {};
-        console.log(d);
         for(var key in d.python.code_patterns){
             mergedData[key] = {metrics : d.python.metrics[key],code_patterns : d.python.code_patterns[key]};
         }
         var treeData = dataHelpers.convertToTree(mergedData,mapperParams);
         //we add color to the elements (using the min/max information)
-        dataHelpers.colorize(treeData,'colorValue',nodeColorScale,{min: 0,max : 100});
+        dataHelpers.colorize(treeData,'colorValue', nodeColorScale,{min: 80,max : 100});
 
         var codeCityChart;
         try{

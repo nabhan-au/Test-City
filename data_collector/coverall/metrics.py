@@ -24,3 +24,12 @@ class MetricsManager:
     def add_loc_data(self, file):
         # 行数
         self.num_line = file.nloc  # コメント，空白なし
+
+    @classmethod
+    def create_instance(cls, filename, dict):
+        metrics = MetricsManager(filename)
+        metrics.file_coverage = dict["file_coverage"]
+        metrics.add_count = dict["add_count"]
+        metrics.avg_trace = dict["avg_trace"]
+        metrics.num_line = dict["num_line"]
+        return metrics

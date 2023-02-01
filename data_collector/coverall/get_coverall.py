@@ -18,12 +18,62 @@ add_count = {}
 filenames = []
 
 
-def create_tree(metrics_manager_dict):
+def add_metrics_into_tree(tree, merged_path, metrics):
+    tree[merged_path]["file_coverage"] += metrics.file_coverage
+    tree[merged_path]["add_count"] += metrics.add_count
+    tree[merged_path]["num_line"] += metrics.num_line
+    tree[merged_path]["avg_trace"] += metrics.avg_trace
+    pass
+
+
+def aggregate_directory_metrics(metrics_manager_dict):
     tree = {}
+    tree[""] = {"file_coverage": 0.0, "add_count": 0, "num_line": 0, "avg_trace": 0.0}
+    print(metrics_manager_dict.keys())
     for filename in metrics_manager_dict.keys():
         path_list = filename.split('/')
-        tree = deepmerge(tree, make_tree(path_list, metrics_manager_dict))
+        merged_path = ""
+        metrics = metrics_manager_dict[filename]
+        for i in range(0, len(path_list) - 1):
+            if merged_path == "":
+                merged_path += path_list[i]
+            else:
+                merged_path += "/" + path_list[i]
+
+            if merged_path not in tree:
+                tree[merged_path] = {"file_coverage": 0.0, "add_count": 0, "num_line": 0, "avg_trace": 0.0}
+            else:
+                pass  # already exists
+
+            add_metrics_into_tree(tree, merged_path, metrics)
+        add_metrics_into_tree(tree, "", metrics)
+    for filename in tree:
+        print(filename, tree[filename]["add_count"])
+        tree[filename]["file_coverage"] = tree[filename]["file_coverage"] / tree[filename]["add_count"]
+
     return tree
+
+
+def create_json(output_file, metrics_manager_dict):
+    # jsonファイルに変換
+    code_patterns = {}
+    metrics_dict = {}
+
+    for filename in metrics_manager_dict.keys():
+        metrics = metrics_manager_dict[filename]
+        code_patterns.update({filename: {"classes": {"coverage": format(metrics.file_coverage, '.2f'),
+                                                     "total_number_of_lines": str(metrics.num_line)},
+                                         "functions": {"average_of_trace": format(metrics.avg_trace, '.2f'),
+                                                       "total_number_of_lines": str(metrics.num_line)}}})
+        metrics_dict.update(
+            {filename: {"total_number_of_characters": 0, "total_number_of_lines": str(metrics.num_line)}})
+
+    tree_json = {"summary": {"python": {"code_patterns": code_patterns, "metrics": metrics_dict}}}
+
+    with open(output_file, 'w') as f:
+        json.dump(tree_json, f, indent=4)
+        print("A file is made in " + output_file)
+    pass
 
 
 def main(repositoryname):
@@ -35,87 +85,30 @@ def main(repositoryname):
     print(downloader.commit_sha)
 
     analyzer = RepositoryAnalyzer(pb)
-    analyzer.clone_repo()# TODO: clone
+    analyzer.clone_repo()  # TODO: clone
     metrics_manager_dict = {}
+    i = 0
     for file in analyzer.get_all_filenames():
         relative_filename = pb.get_relative_filepath_from_repo(file.filename)
         trace_list = downloader.get_trace(relative_filename)
+        if trace_list == None:
+            continue
         metrics_manager = MetricsManager(relative_filename)
         metrics_manager.extract_trace_metrics(trace_list)
         metrics_manager.add_loc_data(file)
         metrics_manager_dict[relative_filename] = metrics_manager
         print('SUCESS')
-        break #This is for debug
+        # if (i>4):
+        #     break #This is for debug
+        # i+=1
 
-    # TODO: ここからミステリーが始まる
     # 木作成
-    # tree = create_tree(metrics_manager_dict)
-    # print(tree)
+    tree = aggregate_directory_metrics(metrics_manager_dict)
+    for filename in tree:
+        metrics_manager_dict[filename] = MetricsManager.create_instance(filename, tree[filename])
 
-
-
-    # jsonファイルに変換
-    code_patterns = {}
-    metrics_dict = {}
-
-    for filename in metrics_manager_dict.keys():
-        metrics = metrics_manager_dict[filename]
-        # ファイルカバレッジを算出
-        # file_coverage = metrics.file_coverage / metrics.add_count
-
-        code_patterns.update({filename: {"classes": {"coverage": format(metrics.file_coverage, '.2f'),
-                                                 "total_number_of_lines": str(metrics.num_line)},
-                                     "functions": {"average_of_trace": format(metrics.avg_trace, '.2f'),
-                                                   "total_number_of_lines": str(metrics.num_line)}}})
-        metrics_dict.update({filename: {"total_number_of_characters": 0, "total_number_of_lines": str(metrics.num_line)}})
-
-    tree_json = {"summary": {"python": {"code_patterns": code_patterns, "metrics": metrics_dict}}}
-
-    print(tree_json)
     output_file = pb.visualizer_module + '/data/' + pb.project_name + '_complexity.json'
-    with open(output_file, 'w') as f:
-        json.dump(tree_json, f, indent=4)
-        print("A file is made in " + output_file)
-
-
-# 全ての親ノードにメトリクスを足す関数
-def add_all_parents(path, metrics, current):
-    if path not in metrics.keys():
-        metrics[path] = 0
-    metrics[path] += metrics[current]
-    # ファイルカバレッジの場合，親ノードが末端ノード（ファイル）の平均を算出するための変数を準備
-    if metrics == file_coverage:
-        if path not in add_count.keys():
-            add_count[path] = 0
-        add_count[path] += 1
-    # 親ノードが更に親ノードを持っていたらそのノードで再帰関数
-    if '/' in path:
-        path = path.split('/')[:-1]
-        path = '/'.join(path)
-        add_all_parents(path, metrics, current)
-
-#TODO: ここから謎すぎる
-def make_tree(path_list, metrics_manager_dict, parents=''):
-    # 枝の末尾までいったら
-    if (len(path_list) == 0): #FIXME: これがバグの原因じゃない？
-        return {}
-    # ルートだったら現在のノードをプロジェクト名に
-    if parents == '':
-        current = path_list[0]
-    else:
-        current = parents + '/' + path_list[0]
-    # 再帰関数で子ノードを作成
-    children = make_tree(path_list[1:], metrics_manager_dict, current)
-    all_metrics = [num_line, file_coverage, ave_trace]
-
-    # 全種類のメトリクスで全ての親ノードにメトリクスを足す
-    for metrics in all_metrics:
-        # 現在のノードがエッジノードなら全ての親ノードにメトリクスを足す
-        if current in filenames:
-            add_all_parents(parents, metrics, current)
-
-    return {current: {"children": children, "total_number_of_lines": num_line[current],
-                      "file_coverage": file_coverage[current], "average_of_trace": ave_trace[current]}}
+    create_json(output_file, metrics_manager_dict)
 
 
 if __name__ == "__main__":
