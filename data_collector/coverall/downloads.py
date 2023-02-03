@@ -1,9 +1,11 @@
 import json
 from json import JSONDecodeError
-
 import requests
+
+
 class CoverallDownloader:
     coverall_url = 'https://coveralls.io/github/'
+
     def __init__(self, pb):
         self.path_builder = pb
         url = self.coverall_url + self.path_builder.repository_name + '.json?branch=master'
@@ -23,4 +25,3 @@ class CoverallDownloader:
         except JSONDecodeError:
             print("Does not found")
             return None
-

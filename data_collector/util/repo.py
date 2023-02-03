@@ -1,12 +1,19 @@
 import lizard
+import os
+import git
+
+
 class RepositoryAnalyzer:
     def __init__(self, pb):
         self.path_builder = pb
 
-        pass
-
     def clone_repo(self):
-        pass
+        if not os.path.isdir(self.path_builder.top_repo_path):
+            os.mkdir(self.path_builder.top_repo_path)
+        if not os.path.isdir(self.path_builder.repo_path):
+            git.Repo.clone_from('https://github.com/' + self.path_builder.repository_name,
+                                self.path_builder.repo_path,
+                                branch='master')
 
     def get_all_filenames(self):
         all_files = list(lizard.analyze([self.path_builder.repo_path]))

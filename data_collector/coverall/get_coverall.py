@@ -1,10 +1,4 @@
-import lizard
-import os
-from dictknife import deepmerge
 import json
-import requests
-import copy
-import numpy as np
 
 from data_collector.coverall.downloads import CoverallDownloader
 from data_collector.coverall.metrics import MetricsManager
@@ -27,8 +21,7 @@ def add_metrics_into_tree(tree, merged_path, metrics):
 
 
 def aggregate_directory_metrics(metrics_manager_dict):
-    tree = {}
-    tree[""] = {"file_coverage": 0.0, "add_count": 0, "num_line": 0, "avg_trace": 0.0}
+    tree = {"": {"file_coverage": 0.0, "add_count": 0, "num_line": 0, "avg_trace": 0.0}}
     print(metrics_manager_dict.keys())
     for filename in metrics_manager_dict.keys():
         path_list = filename.split('/')
@@ -91,16 +84,13 @@ def main(repositoryname):
     for file in analyzer.get_all_filenames():
         relative_filename = pb.get_relative_filepath_from_repo(file.filename)
         trace_list = downloader.get_trace(relative_filename)
-        if trace_list == None:
+        if trace_list is None:
             continue
         metrics_manager = MetricsManager(relative_filename)
         metrics_manager.extract_trace_metrics(trace_list)
         metrics_manager.add_loc_data(file)
         metrics_manager_dict[relative_filename] = metrics_manager
-        print('SUCESS')
-        # if (i>4):
-        #     break #This is for debug
-        # i+=1
+        print('SUCCESS')
 
     # 木作成
     tree = aggregate_directory_metrics(metrics_manager_dict)
