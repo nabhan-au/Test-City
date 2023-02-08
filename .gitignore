@@ -66,10 +66,7 @@ target/
 .sass-cache
 
 # bower components
-src/bower_components
+visualizer/bower_components
 
 # 菱川追加
-# dataset
-ra/dataset
-
 *.json

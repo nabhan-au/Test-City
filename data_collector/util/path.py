@@ -1,7 +1,9 @@
 import os
 
+
 class PathBuilder:
     top_dir_name = "code-is-beautiful"
+
     def __init__(self, repository_name):
         current_path = os.path.dirname(os.path.abspath(__file__))
         if f"/{self.top_dir_name}/" not in current_path:
@@ -19,6 +21,7 @@ class PathBuilder:
 
     def get_relative_filepath_from_repo(self, filename):
         return filename.replace(self.repo_path, '')[1:]
+
 
 def join(base, directory_name):
     if base.endswith("/"):
