@@ -20,7 +20,6 @@ class MetricsManager:
         self.add_count = 1
         self.avg_trace = float(sum_trace) / line
 
-
     def add_loc_data(self, file):
         # 行数
         self.num_line = file.nloc  # コメント，空白なし

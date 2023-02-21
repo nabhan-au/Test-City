@@ -1,15 +1,8 @@
 import json
-
 from data_collector.coverall.downloads import CoverallDownloader
 from data_collector.coverall.metrics import MetricsManager
 from data_collector.util.path import PathBuilder
 from data_collector.util.repo import RepositoryAnalyzer
-
-num_line = {}
-file_coverage = {}
-ave_trace = {}
-add_count = {}
-filenames = []
 
 
 def add_metrics_into_tree(tree, merged_path, metrics):
@@ -78,7 +71,7 @@ def main(repositoryname):
     print(downloader.commit_sha)
 
     analyzer = RepositoryAnalyzer(pb)
-    analyzer.clone_repo()  # TODO: clone
+    analyzer.clone_repo()
     metrics_manager_dict = {}
     i = 0
     for file in analyzer.get_all_filenames():

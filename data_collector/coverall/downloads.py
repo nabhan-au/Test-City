@@ -15,7 +15,6 @@ class CoverallDownloader:
         self.commit_sha = self.url['commit_sha']
 
     def get_trace(self, relative_filename):
-        # ファイルのカバレッジと，テスト通った回数の平均
         encoded_filename = relative_filename.replace('/', '%2F')
         url = 'https://coveralls.io/builds/' + self.commit_sha + '/source.json?filename=' + encoded_filename
         r = requests.get(url)
