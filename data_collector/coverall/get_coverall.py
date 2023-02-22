@@ -1,4 +1,5 @@
 import json
+import copy
 from data_collector.coverall.downloads import CoverallDownloader
 from data_collector.coverall.metrics import MetricsManager
 from data_collector.util.path import PathBuilder
@@ -15,7 +16,6 @@ def add_metrics_into_tree(tree, merged_path, metrics):
 
 def aggregate_directory_metrics(metrics_manager_dict):
     tree = {"": {"file_coverage": 0.0, "add_count": 0, "num_line": 0, "avg_trace": 0.0}}
-    print(metrics_manager_dict.keys())
     for filename in metrics_manager_dict.keys():
         path_list = filename.split('/')
         merged_path = ""
@@ -33,11 +33,24 @@ def aggregate_directory_metrics(metrics_manager_dict):
 
             add_metrics_into_tree(tree, merged_path, metrics)
         add_metrics_into_tree(tree, "", metrics)
+
     for filename in tree:
         print(filename, tree[filename]["add_count"])
         tree[filename]["file_coverage"] = tree[filename]["file_coverage"] / tree[filename]["add_count"]
 
     return tree
+
+
+def classify_trace_list(metrics_manager_dict):
+    filenames = list(metrics_manager_dict.keys()).copy()
+    for filename in filenames:
+        metrics = metrics_manager_dict[filename]
+        for trace in metrics.trace_list:
+            path = filename + "/" + str(trace)
+            if path in metrics_manager_dict.keys():
+                continue
+            metrics_manager_dict[path] = copy.deepcopy(metrics)
+            metrics_manager_dict[path].avg_trace = trace
 
 
 def create_json(output_file, metrics_manager_dict):
@@ -87,6 +100,7 @@ def main(repositoryname):
 
     # 木作成
     tree = aggregate_directory_metrics(metrics_manager_dict)
+    classify_trace_list(metrics_manager_dict)
     for filename in tree:
         metrics_manager_dict[filename] = MetricsManager.create_instance(filename, tree[filename])
 
@@ -95,5 +109,5 @@ def main(repositoryname):
 
 
 if __name__ == "__main__":
-    repository_name = 'google/apitools'
+    repository_name = 'google/go-jsonnet'
     main(repository_name)

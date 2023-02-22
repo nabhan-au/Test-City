@@ -5,6 +5,7 @@ class MetricsManager:
         self.add_count = None
         self.avg_trace = None
         self.num_line = None
+        self.trace_list = []
 
     def extract_trace_metrics(self, trace_list):
         sum_trace = 0
@@ -13,6 +14,7 @@ class MetricsManager:
         for trace in trace_list:
             if trace is not None:
                 sum_trace += trace
+                self.trace_list += [trace]
                 line += 1
                 if trace != 0:
                     not_zero += 1
