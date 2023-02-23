@@ -84,7 +84,7 @@ def main(repositoryname):
     print(downloader.commit_sha)
 
     analyzer = RepositoryAnalyzer(pb)
-    analyzer.clone_repo()
+    analyzer.clone_repo(downloader.commit_sha)
     metrics_manager_dict = {}
     i = 0
     for file in analyzer.get_all_filenames():

@@ -7,13 +7,13 @@ class RepositoryAnalyzer:
     def __init__(self, pb):
         self.path_builder = pb
 
-    def clone_repo(self):
+    def clone_repo(self, commit_sha):
         if not os.path.isdir(self.path_builder.top_repo_path):
             os.mkdir(self.path_builder.top_repo_path)
         if not os.path.isdir(self.path_builder.repo_path):
-            git.Repo.clone_from('https://github.com/' + self.path_builder.repository_name,
-                                self.path_builder.repo_path,
-                                branch='master')
+            repo = git.Repo.clone_from('https://github.com/' + self.path_builder.repository_name,
+                                       self.path_builder.repo_path)
+            repo.git.checkout(commit_sha)
 
     def get_all_filenames(self):
         all_files = list(lizard.analyze([self.path_builder.repo_path]))

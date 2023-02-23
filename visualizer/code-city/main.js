@@ -11,7 +11,7 @@ define([
   dataLoaders,
   dataHelpers
 ) {
-    var data = dataLoaders.complexityExample('apitools');
+    var data = dataLoaders.complexityExample('go-jsonnet');
     console.log(data);
     var metric = 'functions';
     var classes = 'classes';
