@@ -92,6 +92,9 @@ def main(repositoryname):
         trace_list = downloader.get_trace(relative_filename)
         if trace_list is None:
             continue
+        if trace_list.count(None) == len(trace_list):
+            print('All trace is None')
+            continue
         metrics_manager = MetricsManager(relative_filename)
         metrics_manager.extract_trace_metrics(trace_list)
         metrics_manager.add_loc_data(file)
@@ -109,5 +112,5 @@ def main(repositoryname):
 
 
 if __name__ == "__main__":
-    repository_name = 'google/go-jsonnet'
+    repository_name = 'google/openhtf'
     main(repository_name)

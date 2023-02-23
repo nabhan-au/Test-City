@@ -11,7 +11,7 @@ define([
   dataLoaders,
   dataHelpers
 ) {
-    var data = dataLoaders.complexityExample('go-jsonnet');
+    var data = dataLoaders.complexityExample('openhtf');
     console.log(data);
     var metric = 'functions';
     var classes = 'classes';
@@ -101,7 +101,7 @@ define([
         }
         var treeData = dataHelpers.convertToTree(mergedData,mapperParams);
         //we add color to the elements (using the min/max information)
-        dataHelpers.colorize(treeData,'colorValue', nodeColorScale,{min: 80,max : 100});
+        dataHelpers.colorize(treeData,'colorValue', nodeColorScale,{min: 20,max : 100});
 
         var codeCityChart;
         try{
