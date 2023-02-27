@@ -12,7 +12,6 @@ define([
   dataHelpers
 ) {
     var data = dataLoaders.complexityExample('go-jsonnet');
-    console.log(data);
     var metric = 'functions';
     var classes = 'classes';
 
@@ -33,6 +32,7 @@ define([
                           '#1a9850',
                           '#006837']
 
+    let gridValue;
 
     function legendTitle(d,e){
         return d.path;
@@ -67,6 +67,16 @@ define([
         </div>";
     }
 
+    function getGridValue() {
+        if (maxTrace > 100000)
+            return 1000
+        else if (maxTrace > 10000)
+            return 100
+        else if (maxTrace > 1000)
+            return 10
+        else
+            return 1
+    }
 
     function nodeHeight(d) {
         function snapToGrid(grid, value) {
@@ -79,13 +89,11 @@ define([
         } else {
             trace_size = d.data.code_patterns[metric].number_of_trace;
         }
-        return snapToGrid(1, trace_size);
+        return snapToGrid(gridValue, trace_size);
     }
 
     function nodeColor(d) {
-                console.log("coverage: ");
-                console.log(d.data.code_patterns[classes].coverage);
-      return d.data.code_patterns[classes].coverage;
+        return d.data.code_patterns[classes].coverage;
     }
 
     function nodeArea(d) {
@@ -107,7 +115,25 @@ define([
         split: function(key){return key.split('/')
     }};
 
+    function setGridValue(d) {
+        let maxTrace = 0;
+        for(var key in d.python.code_patterns){
+            if(d.python.code_patterns[key][metric].number_of_trace) {
+                maxTrace = Math.max(d.python.code_patterns[key][metric].number_of_trace, maxTrace)
+            }
+        }
+        if (maxTrace > 100000)
+            gridValue = 1000
+        else if (maxTrace > 10000)
+            gridValue = 100
+        else if (maxTrace > 1000)
+            gridValue = 10
+        else
+            gridValue = 1
+    }
+
     data.then(function(d){
+        setGridValue(d)
         var mergedData = {};
         for(var key in d.python.code_patterns){
             mergedData[key] = {metrics : d.python.metrics[key],code_patterns : d.python.code_patterns[key]};

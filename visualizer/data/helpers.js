@@ -60,7 +60,6 @@ define([],function(){
             reject(new Error(error));
           }
           else {
-            console.log(root);
             resolve(root.summary);
           }
         });
