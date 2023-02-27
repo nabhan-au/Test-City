@@ -6,6 +6,7 @@ class MetricsManager:
         self.avg_trace = None
         self.num_line = None
         self.trace_list = []
+        self.is_trace = False
 
     def extract_trace_metrics(self, trace_list):
         sum_trace = 0

@@ -51,6 +51,7 @@ def classify_trace_list(metrics_manager_dict):
                 continue
             metrics_manager_dict[path] = copy.deepcopy(metrics)
             metrics_manager_dict[path].avg_trace = trace
+            metrics_manager_dict[path].is_trace = True
 
 
 def create_json(output_file, metrics_manager_dict):
@@ -60,9 +61,13 @@ def create_json(output_file, metrics_manager_dict):
 
     for filename in metrics_manager_dict.keys():
         metrics = metrics_manager_dict[filename]
+        if not metrics.is_trace:
+            trace_name = "average"
+        else:
+            trace_name = "number"
         code_patterns.update({filename: {"classes": {"coverage": format(metrics.file_coverage, '.2f'),
                                                      "total_number_of_lines": str(metrics.num_line)},
-                                         "functions": {"average_of_trace": format(metrics.avg_trace, '.2f'),
+                                         "functions": {trace_name + "_of_trace": format(metrics.avg_trace, '.2f'),
                                                        "total_number_of_lines": str(metrics.num_line)}}})
         metrics_dict.update(
             {filename: {"total_number_of_characters": 0, "total_number_of_lines": str(metrics.num_line)}})
@@ -112,5 +117,5 @@ def main(repositoryname):
 
 
 if __name__ == "__main__":
-    repository_name = 'google/openhtf'
+    repository_name = 'google/go-jsonnet'
     main(repository_name)

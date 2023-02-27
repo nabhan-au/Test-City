@@ -11,7 +11,7 @@ define([
   dataLoaders,
   dataHelpers
 ) {
-    var data = dataLoaders.complexityExample('openhtf');
+    var data = dataLoaders.complexityExample('go-jsonnet');
     console.log(data);
     var metric = 'functions';
     var classes = 'classes';
@@ -39,6 +39,14 @@ define([
     }
 
     function legendContent(d,e){
+        if (d.data.code_patterns[metric].average_of_trace) {
+            trace_name = "average of trace"
+            trace_size = d.data.code_patterns[metric].average_of_trace
+        }
+        else {
+            trace_name = "number of trace"
+            trace_size = d.data.code_patterns[metric].number_of_trace
+        }
         return "<div> \
             <table class=\"table table-striped\"> \
                 <tbody> \
@@ -47,8 +55,8 @@ define([
                         <td>"+d.data.metrics.total_number_of_lines+"</td> \
                     </tr> \
                     <tr> \
-                        <td>average of trace</td> \
-                        <td>"+d.data.code_patterns[metric].average_of_trace+"</td> \
+                        <td>"+trace_name+"</td> \
+                        <td>"+trace_size+"</td> \
                     </tr> \
                     <tr> \
                         <td>coverage</td> \
@@ -66,7 +74,12 @@ define([
         }
         if (d.children && d.children.length)
             return 0;
-        return snapToGrid(0.1, d.data.code_patterns[metric].average_of_trace);
+        if (d.data.code_patterns[metric].average_of_trace) {
+            trace_size = d.data.code_patterns[metric].average_of_trace;
+        } else {
+            trace_size = d.data.code_patterns[metric].number_of_trace;
+        }
+        return snapToGrid(1, trace_size);
     }
 
     function nodeColor(d) {
