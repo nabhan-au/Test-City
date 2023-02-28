@@ -67,17 +67,6 @@ define([
         </div>";
     }
 
-    function getGridValue() {
-        if (maxTrace > 100000)
-            return 1000
-        else if (maxTrace > 10000)
-            return 100
-        else if (maxTrace > 1000)
-            return 10
-        else
-            return 1
-    }
-
     function nodeHeight(d) {
         function snapToGrid(grid, value) {
           return grid * Math.ceil(value / grid);
@@ -88,6 +77,10 @@ define([
             trace_size = d.data.code_patterns[metric].average_of_trace;
         } else {
             trace_size = d.data.code_patterns[metric].number_of_trace;
+            // if (trace_size === 0) {
+            //     trace_size = 0.1;
+            //     console.log(snapToGrid(gridValue, trace_size))
+            // }
         }
         return snapToGrid(gridValue, trace_size);
     }
@@ -128,8 +121,10 @@ define([
             gridValue = 100
         else if (maxTrace > 1000)
             gridValue = 10
-        else
+        else if (maxTrace > 100)
             gridValue = 1
+        else
+            gridValue = 0.1
     }
 
     data.then(function(d){
