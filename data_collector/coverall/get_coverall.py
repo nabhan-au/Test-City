@@ -54,6 +54,17 @@ def classify_trace_list(metrics_manager_dict):
             metrics_manager_dict[path].is_trace = True
 
 
+def classify_trace_list_by_line(metrics_manager_dict):
+    filenames = list(metrics_manager_dict.keys()).copy()
+    for filename in filenames:
+        metrics = metrics_manager_dict[filename]
+        for line, trace in enumerate(metrics.trace_list):
+            path = filename + "/" + str(line+1)
+            metrics_manager_dict[path] = copy.deepcopy(metrics)
+            metrics_manager_dict[path].avg_trace = trace
+            metrics_manager_dict[path].is_trace = True
+
+
 def create_json(output_file, metrics_manager_dict):
     # jsonファイルに変換
     code_patterns = {}
@@ -108,7 +119,7 @@ def main(repositoryname):
 
     # 木作成
     tree = aggregate_directory_metrics(metrics_manager_dict)
-    classify_trace_list(metrics_manager_dict)
+    classify_trace_list_by_line(metrics_manager_dict)
     for filename in tree:
         metrics_manager_dict[filename] = MetricsManager.create_instance(filename, tree[filename])
 
