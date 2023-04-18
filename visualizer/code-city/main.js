@@ -11,7 +11,10 @@ define([
   dataLoaders,
   dataHelpers
 ) {
-    var data = dataLoaders.complexityExample('go-jsonnet');
+    var params = (new URL(document.location)).searchParams;
+    // 'go-jsonnet'
+    console.log('project :', params.get('project'));
+    var data = dataLoaders.complexityExample(params.get('project'));
     var metric = 'functions';
     var classes = 'classes';
 
