@@ -2,7 +2,6 @@ import lizard
 import os
 import git
 
-
 class RepositoryAnalyzer:
     def __init__(self, pb):
         self.path_builder = pb

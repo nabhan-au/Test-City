@@ -1,9 +1,12 @@
+import argparse
 import json
 import copy
-from data_collector.coverall.downloads import CoverallDownloader
-from data_collector.coverall.metrics import MetricsManager
-from data_collector.util.path import PathBuilder
-from data_collector.util.repo import RepositoryAnalyzer
+import os
+
+from coverall.downloads import CoverallDownloader
+from coverall.metrics import MetricsManager
+from util.path import PathBuilder
+from util.repo import RepositoryAnalyzer
 
 
 def add_metrics_into_tree(tree, merged_path, metrics):
@@ -128,5 +131,12 @@ def main(repositoryname):
 
 
 if __name__ == "__main__":
-    repository_name = 'google/go-jsonnet'
-    main(repository_name)
+    parser = argparse.ArgumentParser()  # 2. パーサを作る
+
+    # 3. parser.add_argumentで受け取る引数を追加していく
+    parser.add_argument('--project', help='Project')
+    args = parser.parse_args()
+    if not args.project:
+        args.project = 'google/go-jsonnet'
+
+    main(args.project)
