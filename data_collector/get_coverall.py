@@ -105,7 +105,6 @@ def main(repositoryname):
     analyzer = RepositoryAnalyzer(pb)
     analyzer.clone_repo(downloader.commit_sha)
     metrics_manager_dict = {}
-    i = 0
     for file in analyzer.get_all_filenames():
         relative_filename = pb.get_relative_filepath_from_repo(file.filename)
         trace_list = downloader.get_trace(relative_filename)
