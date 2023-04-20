@@ -2,7 +2,7 @@ from project_analyzer.src.antlr_ast.PythonParser import PythonParser
 from project_analyzer.src.antlr_ast.PythonParserListener import PythonParserListener
 
 
-class LineListGenerator(PythonParserListener):
+class LineCalculator(PythonParserListener):
     def __init__(self):
         self.line_list = []
 

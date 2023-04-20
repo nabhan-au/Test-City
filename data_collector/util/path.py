@@ -22,9 +22,6 @@ class PathBuilder:
     def get_relative_filepath_from_repo(self, filename):
         return filename.replace(self.repo_path, '')[1:]
 
-    def get_filename(self, filename):
-        return filename.split('/')[-1]
-
 
 def join(base, directory_name):
     if base.endswith("/"):

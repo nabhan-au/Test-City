@@ -1,10 +1,10 @@
 import argparse
 import json
 import copy
-import os
 
 from coverall.downloads import CoverallDownloader
 from coverall.metrics import MetricsManager
+from project_analyzer.src.ast_analyzer import AstAnalyzer
 from util.path import PathBuilder
 from util.repo import RepositoryAnalyzer
 
@@ -57,15 +57,21 @@ def classify_trace_list(metrics_manager_dict):
             metrics_manager_dict[path].is_trace = True
 
 
-def classify_trace_list_by_line(metrics_manager_dict):
+def classify_trace_list_by_branch_line(metrics_manager_dict, repository_name):
     filenames = list(metrics_manager_dict.keys()).copy()
+    ast_analyzer = AstAnalyzer(repository_name)
+    filename_and_line_list = ast_analyzer.analyze()
     for filename in filenames:
+        if filename not in filename_and_line_list.keys():
+            continue
         metrics = metrics_manager_dict[filename]
-        for line, trace in enumerate(metrics.trace_list):
-            path = filename + "/" + str(line+1)
-            metrics_manager_dict[path] = copy.deepcopy(metrics)
-            metrics_manager_dict[path].avg_trace = trace
-            metrics_manager_dict[path].is_trace = True
+        for line in filename_and_line_list[filename]:
+            trace = metrics_manager_dict[filename].trace_list[line - 1]
+            if trace is not None:
+                path = filename + "/" + str(line)
+                metrics_manager_dict[path] = copy.deepcopy(metrics)
+                metrics_manager_dict[path].avg_trace = metrics_manager_dict[filename].trace_list[line-1]
+                metrics_manager_dict[path].is_trace = True
 
 
 def create_json(output_file, metrics_manager_dict):
@@ -121,7 +127,7 @@ def main(repositoryname):
 
     # 木作成
     tree = aggregate_directory_metrics(metrics_manager_dict)
-    classify_trace_list_by_line(metrics_manager_dict)
+    classify_trace_list_by_branch_line(metrics_manager_dict, repositoryname)
     for filename in tree:
         metrics_manager_dict[filename] = MetricsManager.create_instance(filename, tree[filename])
 
@@ -136,6 +142,6 @@ if __name__ == "__main__":
     parser.add_argument('--project', help='Project')
     args = parser.parse_args()
     if not args.project:
-        args.project = 'google/go-jsonnet'
+        args.project = 'google/openhtf'
 
     main(args.project)

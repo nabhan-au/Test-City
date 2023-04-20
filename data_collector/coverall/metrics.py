@@ -12,10 +12,10 @@ class MetricsManager:
         sum_trace = 0
         line = 0
         not_zero = 0
+        self.trace_list = trace_list
         for trace in trace_list:
             if trace is not None:
                 sum_trace += trace
-                self.trace_list += [trace]
                 line += 1
                 if trace != 0:
                     not_zero += 1

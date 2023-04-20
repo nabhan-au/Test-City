@@ -1,49 +1,45 @@
 from antlr4 import *
-import os
-import pathlib
 
 from data_collector.util.path import PathBuilder
 from data_collector.util.repo import RepositoryAnalyzer
 from project_analyzer.src.antlr_ast.PythonLexer import PythonLexer
 from project_analyzer.src.antlr_ast.PythonParser import PythonParser
-from project_analyzer.src.antlr_ast.line_list_generator import LineListGenerator
+from project_analyzer.src.antlr_ast.line_calculator import LineCalculator
 
 
-def main():
-    current_path = os.path.dirname(os.path.abspath(__file__))
-    listener = LineListGenerator()
-    # listener = PythonParserListener()
+class AstAnalyzer:
+    def __init__(self, repository_name):
+        self.project_name = repository_name
 
-    pb = PathBuilder("openhtf")
-    analyzer = RepositoryAnalyzer(pb)
-    filename_and_line_list = {}
-    for file in analyzer.get_all_filenames():
-        if not pb.get_filename(file.filename).endswith('.py'):
-            print('This is not a python file.')
-            continue
-        try:
-            input_stream = FileStream(file.filename)
-        except Exception as e:
-            print(f'An error occurred: {e}')
-            continue
-        lexer = PythonLexer(input_stream)
-        stream = CommonTokenStream(lexer)
-        parser = PythonParser(stream)
-        walker = ParseTreeWalker()
-        walker.walk(listener, parser.root())
-        filename_and_line_list[file.filename] = listener.line_list
-        listener.line_list = []
-        print(file.filename, filename_and_line_list[file.filename])
-    print(filename_and_line_list)
-
-    # input_file = FileStream(f'{current_path}/../../../repo/openhtf/openhtf/core/monitors.py')
-    # lexer = PythonLexer(input_file)
-    # stream = CommonTokenStream(lexer)
-    # parser = PythonParser(stream)
-    # walker = ParseTreeWalker()
-    # walker.walk(listener, parser.root())
-    # print(listener.line_list)
+    def analyze(self):
+        listener = LineCalculator()
+        pb = PathBuilder(self.project_name)
+        repo_analyzer = RepositoryAnalyzer(pb)
+        filename_and_line_list = {}
+        for file in repo_analyzer.get_all_filenames():
+            if not file.filename.endswith('.py'):
+                print('This is not a python file.')
+                continue
+            try:
+                input_stream = FileStream(file.filename)
+            except Exception as e:
+                print(f'An error occurred: {e}')
+                continue
+            lexer = PythonLexer(input_stream)
+            stream = CommonTokenStream(lexer)
+            parser = PythonParser(stream)
+            walker = ParseTreeWalker()
+            walker.walk(listener, parser.root())
+            relative_filename = pb.get_relative_filepath_from_repo(file.filename)
+            filename_and_line_list[relative_filename] = listener.line_list
+            listener.line_list = []
+            if not filename_and_line_list[relative_filename]:
+                filename_and_line_list.pop(relative_filename)
+                continue
+            print(relative_filename, filename_and_line_list[relative_filename])
+        return filename_and_line_list
 
 
 if __name__ == "__main__":
-    main()
+    ast_analyzer = AstAnalyzer("openhtf")
+    ast_analyzer.analyze()
