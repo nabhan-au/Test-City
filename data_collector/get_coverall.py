@@ -4,7 +4,11 @@ import copy
 
 from coverall.downloads import CoverallDownloader
 from coverall.metrics import MetricsManager
-from project_analyzer.src.ast_analyzer import AstAnalyzer
+if __name__ is not None and "." in __name__:
+    from .ast_analyzer import AstAnalyzer
+else:
+    from ast_analyzer import AstAnalyzer
+
 from util.path import PathBuilder
 from util.repo import RepositoryAnalyzer
 

@@ -70,6 +70,6 @@ visualizer/bower_components
 
 # 菱川追加
 *.json
-project_analyzer/grammar/*
-project_analyzer/logs/*
+data_collector/project_analyzer/grammar/*
+data_collector/project_analyzer/logs/*
 *.jar

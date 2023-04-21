@@ -1,5 +1,9 @@
-from project_analyzer.src.antlr_ast.PythonParser import PythonParser
-from project_analyzer.src.antlr_ast.PythonParserListener import PythonParserListener
+if __name__ is not None and "." in __name__:
+    from .PythonParserListener import PythonParserListener
+    from .PythonParser import PythonParser
+else:
+    from PythonParserListener import PythonParserListener
+    from PythonParser import PythonParser
 
 
 class LineCalculator(PythonParserListener):

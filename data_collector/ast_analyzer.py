@@ -1,10 +1,10 @@
 from antlr4 import *
 
-from data_collector.util.path import PathBuilder
-from data_collector.util.repo import RepositoryAnalyzer
-from project_analyzer.src.antlr_ast.PythonLexer import PythonLexer
-from project_analyzer.src.antlr_ast.PythonParser import PythonParser
-from project_analyzer.src.antlr_ast.line_calculator import LineCalculator
+from util.path import PathBuilder
+from util.repo import RepositoryAnalyzer
+from project_analyzer.antlr_ast.PythonLexer import PythonLexer
+from project_analyzer.antlr_ast.PythonParser import PythonParser
+from project_analyzer.antlr_ast.line_calculator import LineCalculator
 
 
 class AstAnalyzer:
