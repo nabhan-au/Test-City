@@ -69,13 +69,17 @@ def classify_trace_list_by_branch_line(metrics_manager_dict, repository_name):
         if filename not in filename_and_line_list.keys():
             continue
         metrics = metrics_manager_dict[filename]
-        for line in filename_and_line_list[filename]:
+        for count, line in enumerate(filename_and_line_list[filename]):
             trace = metrics_manager_dict[filename].trace_list[line - 1]
             if trace is not None:
                 path = filename + "/" + str(line)
                 metrics_manager_dict[path] = copy.deepcopy(metrics)
-                metrics_manager_dict[path].avg_trace = metrics_manager_dict[filename].trace_list[line-1]
+                metrics_manager_dict[path].avg_trace = trace
                 metrics_manager_dict[path].is_trace = True
+                if count != len(filename_and_line_list[filename])-1:
+                    metrics_manager_dict[path].num_line = filename_and_line_list[filename][count+1] - filename_and_line_list[filename][count]
+                else:
+                    metrics_manager_dict[path].num_line = metrics.num_line - filename_and_line_list[filename][count] + 1
 
 
 def create_json(output_file, metrics_manager_dict):

@@ -13,7 +13,7 @@ define([
 ) {
     var params = (new URL(document.location)).searchParams;
     // 'go-jsonnet'
-    console.log('project :', params.get('project'));
+    console.log('project :', paraBms.get('project'));
     var data = dataLoaders.complexityExample(params.get('project'));
     var metric = 'functions';
     var classes = 'classes';
