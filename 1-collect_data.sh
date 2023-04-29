@@ -1,1 +1,1 @@
-python3 data_collector/get_coverall.py --project="google/go-jsonnet"
+python3 data_collector/get_coverall.py --project="google/gousb"
