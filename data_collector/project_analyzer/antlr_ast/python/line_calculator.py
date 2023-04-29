@@ -6,7 +6,7 @@ else:
     from PythonParser import PythonParser
 
 
-class LineCalculator(PythonParserListener):
+class PythonLineCalculator(PythonParserListener):
     def __init__(self):
         self.line_list = []
 

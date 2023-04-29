@@ -64,7 +64,7 @@ def classify_trace_list(metrics_manager_dict):
 def classify_trace_list_by_branch_line(metrics_manager_dict, repository_name):
     filenames = list(metrics_manager_dict.keys()).copy()
     ast_analyzer = AstAnalyzer(repository_name)
-    filename_and_line_list = ast_analyzer.analyze()
+    filename_and_line_list = ast_analyzer.analyze_go()
     for filename in filenames:
         if filename not in filename_and_line_list.keys():
             continue
