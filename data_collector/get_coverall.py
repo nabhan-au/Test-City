@@ -61,10 +61,10 @@ def classify_trace_list(metrics_manager_dict):
             metrics_manager_dict[path].is_trace = True
 
 
-def classify_trace_list_by_branch_line(metrics_manager_dict, repository_name):
+def classify_trace_list_by_branch_line(metrics_manager_dict, repository_name, extension):
     filenames = list(metrics_manager_dict.keys()).copy()
     ast_analyzer = AstAnalyzer(repository_name)
-    filename_and_line_list = ast_analyzer.analyze_go()
+    filename_and_line_list = ast_analyzer.analyze(extension)
     for filename in filenames:
         if filename not in filename_and_line_list.keys():
             continue
@@ -119,7 +119,14 @@ def main(repositoryname):
     analyzer = RepositoryAnalyzer(pb)
     analyzer.clone_repo(downloader.commit_sha)
     metrics_manager_dict = {}
+    extension_list = ['.py', '.go', '.java']
+    extension_count_dict = {}
+    for extension in extension_list:
+        extension_count_dict[extension] = 0
     for file in analyzer.get_all_filenames():
+        for extension in extension_list:
+            if file.filename.endswith(extension):
+                extension_count_dict[extension] += 1
         relative_filename = pb.get_relative_filepath_from_repo(file.filename)
         trace_list = downloader.get_trace(relative_filename)
         if trace_list is None:
@@ -133,9 +140,10 @@ def main(repositoryname):
         metrics_manager_dict[relative_filename] = metrics_manager
         print('SUCCESS')
 
+    extension = max(extension_count_dict, key=extension_count_dict.get)
     # 木作成
     tree = aggregate_directory_metrics(metrics_manager_dict)
-    classify_trace_list_by_branch_line(metrics_manager_dict, repositoryname)
+    classify_trace_list_by_branch_line(metrics_manager_dict, repositoryname, extension)
     for filename in tree:
         metrics_manager_dict[filename] = MetricsManager.create_instance(filename, tree[filename])
 

@@ -8,6 +8,9 @@ from project_analyzer.antlr_ast.python.line_calculator import PythonLineCalculat
 from project_analyzer.antlr_ast.go.GoLexer import GoLexer
 from project_analyzer.antlr_ast.go.GoParser import GoParser
 from project_analyzer.antlr_ast.go.line_calculator import GoLineCalculator
+from project_analyzer.antlr_ast.java.JavaLexer import JavaLexer
+from project_analyzer.antlr_ast.java.JavaParser import JavaParser
+from project_analyzer.antlr_ast.java.line_calculator import JavaLineCalculator
 
 
 class AstAnalyzer:
@@ -15,6 +18,14 @@ class AstAnalyzer:
         self.project_name = repository_name
         self.pb = PathBuilder(self.project_name)
         self.repo_analyzer = RepositoryAnalyzer(self.pb)
+
+    def analyze(self, extension):
+        if extension == '.py':
+            return self.analyze_python()
+        elif extension == '.go':
+            return self.analyze_go()
+        elif extension == '.java':
+            return self.analyze_java()
 
     def analyze_python(self):
         listener = PythonLineCalculator()
@@ -59,6 +70,32 @@ class AstAnalyzer:
             parser = GoParser(stream)
             walker = ParseTreeWalker()
             walker.walk(listener, parser.sourceFile())
+            relative_filename = self.pb.get_relative_filepath_from_repo(file.filename)
+            filename_and_line_list[relative_filename] = listener.line_list
+            listener.line_list = []
+            if not filename_and_line_list[relative_filename]:
+                filename_and_line_list.pop(relative_filename)
+                continue
+            print(relative_filename, filename_and_line_list[relative_filename])
+        return filename_and_line_list
+
+    def analyze_java(self):
+        listener = JavaLineCalculator()
+        filename_and_line_list = {}
+        for file in self.repo_analyzer.get_all_filenames():
+            if not file.filename.endswith('.java'):
+                print('This is not a java file.')
+                continue
+            try:
+                input_stream = FileStream(file.filename)
+            except Exception as e:
+                print(f'An error occurred: {e}')
+                continue
+            lexer = JavaLexer(input_stream)
+            stream = CommonTokenStream(lexer)
+            parser = JavaParser(stream)
+            walker = ParseTreeWalker()
+            walker.walk(listener, parser.compilationUnit())
             relative_filename = self.pb.get_relative_filepath_from_repo(file.filename)
             filename_and_line_list[relative_filename] = listener.line_list
             listener.line_list = []
