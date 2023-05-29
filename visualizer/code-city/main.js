@@ -80,10 +80,6 @@ define([
             trace_size = d.data.code_patterns[metric].average_of_trace;
         } else {
             trace_size = d.data.code_patterns[metric].number_of_trace;
-            // if (trace_size === 0) {
-            //     trace_size = 0.1;
-            //     console.log(snapToGrid(gridValue, trace_size))
-            // }
         }
         return snapToGrid(gridValue, trace_size);
     }
@@ -118,7 +114,10 @@ define([
                 maxTrace = Math.max(d.python.code_patterns[key][metric].number_of_trace, maxTrace)
             }
         }
-        if (maxTrace > 100000)
+        console.log(maxTrace)
+        if (maxTrace > 1000000)
+            gridValue = 10000
+        else if (maxTrace > 100000)
             gridValue = 1000
         else if (maxTrace > 10000)
             gridValue = 100
@@ -128,6 +127,7 @@ define([
             gridValue = 1
         else
             gridValue = 0.1
+        console.log(gridValue)
     }
 
     data.then(function(d){

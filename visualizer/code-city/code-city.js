@@ -100,7 +100,7 @@ void main() { \
 
             var gx = ((d.x + d.dx/2)*w ) / 500 - 1;
             var gy = 1 - ((d.y + d.dy/2)*h ) / 500;
-            var gz =d.depth * unitHeight + gd / 2;
+            var gz = d.depth * unitHeight + gd / 2;
 
             var shaderMaterial = new THREE.ShaderMaterial({
                 fragmentShader: fragmentShader,
@@ -231,7 +231,6 @@ void main() { \
                 maximumHeight = d.height;
             if (d.height < minimumHeight || minimumHeight === undefined)
                 minimumHeight = d.height;
-
           }
 
           data.forEach(findExtremes);

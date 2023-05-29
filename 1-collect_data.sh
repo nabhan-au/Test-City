@@ -1,1 +1,1 @@
-python3 data_collector/get_coverall.py --project="apache/commons-crypto"
+python3 data_collector/get_coverall.py --project="apache/commons-codec"
