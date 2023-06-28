@@ -147,7 +147,7 @@ def main(repositoryname):
     for filename in tree:
         metrics_manager_dict[filename] = MetricsManager.create_instance(filename, tree[filename])
 
-    output_file = pb.visualizer_module + '/data/' + pb.project_name + '_complexity.json'
+    output_file = pb.visualizer_module + '/data/complexity/' + pb.project_name + '_complexity.json'
     create_json(output_file, metrics_manager_dict)
 
 
