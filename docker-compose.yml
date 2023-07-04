@@ -1,0 +1,9 @@
+version: '3'
+services:
+  test-city:
+    build: .
+    image: test-city:latest
+    ports:
+      - "80:8080"
+    volumes:
+      - ./visualizer/data/complexity:/usr/src/app/visualizer/data/complexity:rw
