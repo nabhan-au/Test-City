@@ -5,6 +5,8 @@ import copy
 from services.coverall.downloads import CoverallDownloader
 from services.coverall.metrics import MetricsManager
 from services.ast_analyzer import AstAnalyzer
+from models.cover_all_download_error import CoverallDownloadError
+from models.github_clone_repo_error import GithubCloneRepoError
 
 from util.path import PathBuilder
 from util.repo import RepositoryAnalyzer
@@ -109,12 +111,18 @@ def generate_repository_data(repositoryname):
     pb = PathBuilder(repositoryname)
 
     # プロジェクトの最新コミットを取得
-    downloader = CoverallDownloader(pb)
+    try:
+        downloader = CoverallDownloader(pb)
+    except Exception as e:
+        raise CoverallDownloadError("fail to init coverall downloader with message: ", e)
     print(downloader.url)
     print(downloader.commit_sha)
 
     analyzer = RepositoryAnalyzer(pb)
-    analyzer.clone_repo(downloader.commit_sha)
+    try:
+        analyzer.clone_repo(downloader.commit_sha)
+    except Exception as e:
+        raise GithubCloneRepoError("fail to clone repo with repo name: ", repositoryname, " with message: ", e)
     metrics_manager_dict = {}
     extension_list = ['.py', '.go', '.java']
     extension_count_dict = {}
