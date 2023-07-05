@@ -2,7 +2,7 @@ import os
 
 
 class PathBuilder:
-    top_dir_name = "code-is-beautiful"
+    top_dir_name = "code-is-beautiful/data_collector"
 
     def __init__(self, repository_name):
         current_path = os.path.dirname(os.path.abspath(__file__))
@@ -16,7 +16,7 @@ class PathBuilder:
         print(self.top_dir)
         self.visualizer_module = join(self.top_dir, "visualizer")
         self.data_collector_module = join(self.top_dir, "data_collector")
-        self.top_repo_path = join(self.top_dir, "repo")
+        self.top_repo_path = join(self.top_dir, "clone_github_repo")
         self.repo_path = join(self.top_repo_path, self.project_name)
 
     def get_relative_filepath_from_repo(self, filename):
