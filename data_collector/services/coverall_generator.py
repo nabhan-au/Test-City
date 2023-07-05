@@ -2,12 +2,9 @@ import argparse
 import json
 import copy
 
-from coverall.downloads import CoverallDownloader
-from coverall.metrics import MetricsManager
-if __name__ is not None and "." in __name__:
-    from .ast_analyzer import AstAnalyzer
-else:
-    from ast_analyzer import AstAnalyzer
+from services.coverall.downloads import CoverallDownloader
+from services.coverall.metrics import MetricsManager
+from services.ast_analyzer import AstAnalyzer
 
 from util.path import PathBuilder
 from util.repo import RepositoryAnalyzer
@@ -108,7 +105,7 @@ def create_json(output_file, metrics_manager_dict):
     pass
 
 
-def main(repositoryname):
+def generate_repository_data(repositoryname):
     pb = PathBuilder(repositoryname)
 
     # プロジェクトの最新コミットを取得
@@ -149,15 +146,3 @@ def main(repositoryname):
 
     output_file = pb.visualizer_module + '/data/complexity/' + pb.project_name + '_complexity.json'
     create_json(output_file, metrics_manager_dict)
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()  # 2. パーサを作る
-
-    # 3. parser.add_argumentで受け取る引数を追加していく
-    parser.add_argument('--project', help='Project')
-    args = parser.parse_args()
-    if not args.project:
-        args.project = 'google/openhtf'
-
-    main(args.project)

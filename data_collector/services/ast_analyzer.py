@@ -2,15 +2,15 @@ from antlr4 import *
 
 from util.path import PathBuilder
 from util.repo import RepositoryAnalyzer
-from project_analyzer.antlr_ast.python.PythonLexer import PythonLexer
-from project_analyzer.antlr_ast.python.PythonParser import PythonParser
-from project_analyzer.antlr_ast.python.line_calculator import PythonLineCalculator
-from project_analyzer.antlr_ast.go.GoLexer import GoLexer
-from project_analyzer.antlr_ast.go.GoParser import GoParser
-from project_analyzer.antlr_ast.go.line_calculator import GoLineCalculator
-from project_analyzer.antlr_ast.java.JavaLexer import JavaLexer
-from project_analyzer.antlr_ast.java.JavaParser import JavaParser
-from project_analyzer.antlr_ast.java.line_calculator import JavaLineCalculator
+from services.project_analyzer.antlr_ast.python.PythonLexer import PythonLexer
+from services.project_analyzer.antlr_ast.python.PythonParser import PythonParser
+from services.project_analyzer.antlr_ast.python.line_calculator import PythonLineCalculator
+from services.project_analyzer.antlr_ast.go.GoLexer import GoLexer
+from services.project_analyzer.antlr_ast.go.GoParser import GoParser
+from services.project_analyzer.antlr_ast.go.line_calculator import GoLineCalculator
+from services.project_analyzer.antlr_ast.java.JavaLexer import JavaLexer
+from services.project_analyzer.antlr_ast.java.JavaParser import JavaParser
+from services.project_analyzer.antlr_ast.java.line_calculator import JavaLineCalculator
 
 
 class AstAnalyzer:
