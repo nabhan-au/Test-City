@@ -14,8 +14,6 @@ class PathBuilder:
 
         self.top_dir = join(current_path.split(self.top_dir_name)[0], self.top_dir_name)
         print(self.top_dir)
-        self.visualizer_module = join(self.top_dir, "visualizer")
-        self.data_collector_module = join(self.top_dir, "data_collector")
         self.top_repo_path = join(self.top_dir, "clone_github_repo")
         self.repo_path = join(self.top_repo_path, self.project_name)
 

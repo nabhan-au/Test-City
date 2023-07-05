@@ -21,9 +21,9 @@ async def create_project_coverall(project_owner, project_name):
     repository_name = project_owner + "/" + project_name
     try:
         generate_repository_data(repository_name)
-    except GithubCloneRepoError:
-        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Can't clone repository with repository name: ", repository_name)
-    except CoverallDownloadError:
-        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Can't find coverall with repository name: ", repository_name)
-    except:
-        raise HTTPException(status.HTTP_500_INTERNAL_SERVER_ERROR, "Something went wrong in the server")
+    except GithubCloneRepoError as e:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Can't clone repository with repository name: ", repository_name, " with message: ", e)
+    except CoverallDownloadError as e:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Can't find coverall with repository name: ", repository_name, " with message: ", e)
+    except Exception as e:
+        raise HTTPException(status.HTTP_500_INTERNAL_SERVER_ERROR, "Something went wrong in the server with message", e)
