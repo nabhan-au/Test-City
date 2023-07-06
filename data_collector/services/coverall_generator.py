@@ -5,7 +5,7 @@ import copy
 from services.coverall.downloads import CoverallDownloader
 from services.coverall.metrics import MetricsManager
 from services.ast_analyzer import AstAnalyzer
-from services.file_reader.file_reader_service_abstract import FileReaderServiceAbstract
+from services.file_manager.file_manager_service_abstract import FileManagerServiceAbstract
 from models.coverall_download_error import CoverallDownloadError
 from models.github_clone_repo_error import GithubCloneRepoError
 
@@ -14,7 +14,7 @@ from util.repo import RepositoryAnalyzer
 
 class CoverallGenerator:
 
-    def __init__(self, file_manager_service: FileReaderServiceAbstract) -> None:
+    def __init__(self, file_manager_service: FileManagerServiceAbstract) -> None:
         self.__file_manager_service = file_manager_service
 
     def __add_metrics_into_tree(self, tree, merged_path, metrics):

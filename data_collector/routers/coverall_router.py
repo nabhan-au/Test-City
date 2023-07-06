@@ -7,6 +7,7 @@ from repositories.file_manager_local_repository import FileManagerLocalRepositor
 
 coverall_router = APIRouter(prefix='/coverall')
 
+# Use dependency injection to inject the service into the router later
 fileManagerLocalRepository = FileManagerLocalRepository()
 fileManagerServiceLocal = FileManagerLocalService(fileManagerLocalRepository)
 
@@ -25,9 +26,9 @@ async def create_project_coverall(project_owner, project_name):
     repository_name = project_owner + "/" + project_name
     try:
         CoverallGenerator(file_manager_service=fileManagerServiceLocal).generate_repository_data(repository_name)
-    except GithubCloneRepoError as e:
-        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Can't clone repository with repository name: ", repository_name, " with message: ", e)
-    except CoverallDownloadNotFound as e:
-        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Can't download coverall with repository name: ", repository_name, " with message: ", e)
+    except GithubCloneRepoError:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Can't clone repository with repository name: " + repository_name)
+    except CoverallDownloadNotFound:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Can't download coverall with repository name: " + repository_name)
     except Exception as e:
         raise HTTPException(status.HTTP_500_INTERNAL_SERVER_ERROR, "Something went wrong in the server with message", e)

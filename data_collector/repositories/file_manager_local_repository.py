@@ -33,9 +33,12 @@ class FileManagerLocalRepository():
             print("A file is made in " + output_file)
         
     def get_json_file(self, repository_path) -> Dict:
-        with open(repository_path, 'r') as f:
-            complexity_dict = json.load(f)
-        return complexity_dict
+        try:
+            with open(repository_path, 'r') as f:
+                complexity_dict = json.load(f)
+            return complexity_dict
+        except Exception:
+            return None
     
     def get_file_list(self) -> List[str]:
         top_dir = PathBuilder.get_top_dir()
