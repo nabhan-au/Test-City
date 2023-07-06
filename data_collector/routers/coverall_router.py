@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, status
-from services.coverall_generator import generate_repository_data
+from services.coverall_generator import CoverallGenerator
 from models.github_clone_repo_error import GithubCloneRepoError
-from models.cover_all_download_error import CoverallDownloadError
+from models.coverall_download_not_found import CoverallDownloadNotFound
 
 coverall_router = APIRouter(prefix='/coverall')
 
@@ -20,10 +20,10 @@ async def get_coverall(project_owner, project_name):
 async def create_project_coverall(project_owner, project_name):
     repository_name = project_owner + "/" + project_name
     try:
-        generate_repository_data(repository_name)
+        CoverallGenerator().generate_repository_data(repository_name)
     except GithubCloneRepoError as e:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "Can't clone repository with repository name: ", repository_name, " with message: ", e)
-    except CoverallDownloadError as e:
-        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Can't find coverall with repository name: ", repository_name, " with message: ", e)
+    except CoverallDownloadNotFound as e:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Can't download coverall with repository name: ", repository_name, " with message: ", e)
     except Exception as e:
         raise HTTPException(status.HTTP_500_INTERNAL_SERVER_ERROR, "Something went wrong in the server with message", e)

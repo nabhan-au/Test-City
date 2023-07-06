@@ -5,7 +5,7 @@ import copy
 from services.coverall.downloads import CoverallDownloader
 from services.coverall.metrics import MetricsManager
 from services.ast_analyzer import AstAnalyzer
-from models.cover_all_download_error import CoverallDownloadError
+from models.coverall_download_error import CoverallDownloadError
 from models.github_clone_repo_error import GithubCloneRepoError
 
 from util.path import PathBuilder
@@ -120,16 +120,13 @@ class CoverallGenerator:
         pb = PathBuilder(repository_name)
 
         # プロジェクトの最新コミットを取得
-        try:
-            downloader = CoverallDownloader(pb)
-        except Exception as e:
-            raise CoverallDownloadError("fail to init coverall downloader with message: ", e)
-        print(downloader.url)
-        print(downloader.commit_sha)
+        downloader_model = CoverallDownloader().get_coverall_download_model(pb)
+        print(downloader_model.url)
+        print(downloader_model.commit_sha)
 
         analyzer = RepositoryAnalyzer(pb)
         try:
-            analyzer.clone_repo(downloader.commit_sha)
+            analyzer.clone_repo(downloader_model.commit_sha)
         except Exception as e:
             raise GithubCloneRepoError("fail to clone repo with repo name: ", repository_name, " with message: ", e)
         metrics_manager_dict = {}
@@ -142,7 +139,7 @@ class CoverallGenerator:
                 if file.filename.endswith(extension):
                     extension_count_dict[extension] += 1
             relative_filename = pb.get_relative_filepath_from_repo(file.filename)
-            trace_list = downloader.get_trace(relative_filename)
+            trace_list = CoverallDownloader().get_trace(downloader_model, relative_filename)
             if trace_list is None:
                 continue
             if trace_list.count(None) == len(trace_list):

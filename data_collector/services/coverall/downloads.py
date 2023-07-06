@@ -1,22 +1,31 @@
 import json
 from json import JSONDecodeError
+from models.coverall_download_error import CoverallDownloadError
+from models.coverall_download_not_found import CoverallDownloadNotFound
+from models.coverall_download import CoverallDownloadModel
+from util.path import PathBuilder
+from typing import List
 import requests
 
 
 class CoverallDownloader:
     coverall_url = 'https://coveralls.io/github/'
-
-    def __init__(self, pb):
-        self.path_builder = pb
-        url = self.coverall_url + self.path_builder.repository_name + '.json?branch=master'
+        
+    def get_coverall_download_model(self, pb: PathBuilder) -> CoverallDownloadModel:
+        url = self.coverall_url + pb.repository_name + '.json?branch=master'
         print(url)
         r = requests.get(url)
-        self.url = json.loads(r.text)
-        self.commit_sha = self.url['commit_sha']
-
-    def get_trace(self, relative_filename):
+        try:
+            new_url = json.loads(r.text)
+            return CoverallDownloadModel(new_url)
+        except JSONDecodeError as e:
+            raise CoverallDownloadNotFound("fail to request coverall data with message: ", e)
+        except Exception as e:
+            raise CoverallDownloadError("fail to request coverall data with message: ", e)
+        
+    def get_trace(self, coverall_download_model: CoverallDownloadModel, relative_filename: str) -> List:
         encoded_filename = relative_filename.replace('/', '%2F')
-        url = 'https://coveralls.io/builds/' + self.commit_sha + '/source.json?filename=' + encoded_filename
+        url = 'https://coveralls.io/builds/' + coverall_download_model.commit_sha + '/source.json?filename=' + encoded_filename
         r = requests.get(url)
         try:
             trace_list = json.loads(r.text)
