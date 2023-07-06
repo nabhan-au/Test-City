@@ -5,6 +5,7 @@ import copy
 from services.coverall.downloads import CoverallDownloader
 from services.coverall.metrics import MetricsManager
 from services.ast_analyzer import AstAnalyzer
+from services.file_reader.file_reader_service_abstract import FileReaderServiceAbstract
 from models.coverall_download_error import CoverallDownloadError
 from models.github_clone_repo_error import GithubCloneRepoError
 
@@ -13,13 +14,8 @@ from util.repo import RepositoryAnalyzer
 
 class CoverallGenerator:
 
-    def __init__(self, coverall_downloader: CoverallDownloader = None, metric_manager: MetricsManager = None, ast_analyzer: AstAnalyzer = None, repository_name: str = None) -> None:
-        self.__coverall_downloader = coverall_downloader
-        self.__metric_manager = metric_manager
-        self.__ast_analyzer = ast_analyzer
-        self.repository_name = repository_name
-
-
+    def __init__(self, file_manager_service: FileReaderServiceAbstract) -> None:
+        self.__file_manager_service = file_manager_service
 
     def __add_metrics_into_tree(self, tree, merged_path, metrics):
         tree[merged_path]["file_coverage"] += metrics.file_coverage
@@ -90,32 +86,6 @@ class CoverallGenerator:
                         metrics_manager_dict[path].num_line = metrics.num_line - filename_and_line_list[filename][count] + 1
 
 
-    def create_json(self, output_file, metrics_manager_dict):
-        # jsonファイルに変換
-        code_patterns = {}
-        metrics_dict = {}
-
-        for filename in metrics_manager_dict.keys():
-            metrics = metrics_manager_dict[filename]
-            if not metrics.is_trace:
-                trace_name = "average"
-            else:
-                trace_name = "number"
-            code_patterns.update({filename: {"classes": {"coverage": format(metrics.file_coverage, '.2f'),
-                                                        "total_number_of_lines": str(metrics.num_line)},
-                                            "functions": {trace_name + "_of_trace": format(metrics.avg_trace, '.2f'),
-                                                        "total_number_of_lines": str(metrics.num_line)}}})
-            metrics_dict.update(
-                {filename: {"total_number_of_characters": 0, "total_number_of_lines": str(metrics.num_line)}})
-
-        tree_json = {"summary": {"python": {"code_patterns": code_patterns, "metrics": metrics_dict}}}
-
-        with open(output_file, 'w') as f:
-            json.dump(tree_json, f, indent=4)
-            print("A file is made in " + output_file)
-        pass
-
-
     def generate_repository_data(self, repository_name):
         pb = PathBuilder(repository_name)
 
@@ -158,8 +128,7 @@ class CoverallGenerator:
         for filename in tree:
             metrics_manager_dict[filename] = MetricsManager.create_instance(filename, tree[filename])
 
-        output_file = pb.top_dir + '/data/' + pb.project_name + '_complexity.json'
-        self.create_json(output_file, metrics_manager_dict)
+        self.__file_manager_service.save_complexity(pb.project_name, metrics_manager_dict)
 
         # Remove cloned repository after finish generate json
         analyzer.remove_repo()

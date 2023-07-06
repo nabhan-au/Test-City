@@ -1,11 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List, Dict
 
-class Complexity(ABC):
-    
-    @abstractmethod
-    def __init__(self) -> None:
-        pass
+class FileManagerServiceAbstract(ABC):
     
     @abstractmethod
     def save_complexity(pb, metrics_manager_dict) -> None:
