@@ -7,7 +7,7 @@ from repositories.file_manager_local_repository import FileManagerLocalRepositor
 
 coverall_router = APIRouter(prefix='/coverall')
 
-# Use dependency injection to inject the service into the router later
+# Use dependency injection to inject the service into the router laters
 fileManagerLocalRepository = FileManagerLocalRepository()
 fileManagerServiceLocal = FileManagerLocalService(fileManagerLocalRepository)
 
