@@ -8,6 +8,7 @@ class PathBuilder:
         self.top_dir = self.get_top_dir()
         self.repository_name = repository_name
         self.project_name = repository_name.split('/')[-1]
+        self.organization_name = repository_name.split('/')[0]
         print(self.top_dir)
         self.top_repo_path = join(self.top_dir, "clone_github_repo")
         self.repo_path = join(self.top_repo_path, self.project_name)

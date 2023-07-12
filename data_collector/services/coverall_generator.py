@@ -128,7 +128,7 @@ class CoverallGenerator:
         for filename in tree:
             metrics_manager_dict[filename] = MetricsManager.create_instance(filename, tree[filename])
 
-        self.__file_manager_service.save_complexity(pb.project_name, metrics_manager_dict)
+        self.__file_manager_service.save_complexity(f"{pb.organization_name}_{pb.project_name}", metrics_manager_dict)
 
         # Remove cloned repository after finish generate json
         analyzer.remove_repo()

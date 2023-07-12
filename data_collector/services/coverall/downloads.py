@@ -20,7 +20,7 @@ class CoverallDownloader:
             return CoverallDownloadModel(new_url)
         except JSONDecodeError as e:
             raise CoverallDownloadNotFound("fail to request coverall data with message: ", e)
-        except Exception as e:
+        except Exception as e: 
             raise CoverallDownloadError("fail to request coverall data with message: ", e)
         
     def get_trace(self, coverall_download_model: CoverallDownloadModel, relative_filename: str) -> List:
