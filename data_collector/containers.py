@@ -9,6 +9,8 @@ from services.file_manager.file_manager_s3_service import FileManagerS3Service
 
 class Container(containers.DeclarativeContainer):
     
+    wiring_config = containers.WiringConfiguration(modules=["routers.coverall_router"])
+    
     s3_config = S3Config()
     
     minio_client = providers.Singleton(
@@ -19,12 +21,13 @@ class Container(containers.DeclarativeContainer):
         secure=False
     )
     
-    file_manager_s3_repository = providers.Singleton(
+    file_manager_s3_repository = providers.Factory(
         FileManagerS3Repository,
-        minio_client
+        minio_client,
     )
     
-    file_manager_s3_service = providers.Singleton(
+    file_manager_s3_service = providers.Factory(
         FileManagerS3Service,
-        file_manager_s3_repository
+        file_manager_s3_repository,
+        s3_config.get_bucket_name
     )

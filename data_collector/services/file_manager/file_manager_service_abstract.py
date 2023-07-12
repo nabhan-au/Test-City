@@ -5,12 +5,12 @@ class FileManagerServiceAbstract(ABC):
     
     @abstractmethod
     def save_complexity(pb, metrics_manager_dict) -> None:
-        pass
+        raise NotImplementedError
     
     @abstractmethod
     def get_complexity(project_name) -> Dict:
-        pass
+        raise NotImplementedError
     
     @abstractmethod
     def get_project_list() -> List[str]:
-        pass
+        raise NotImplementedError
