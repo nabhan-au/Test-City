@@ -14,8 +14,9 @@ from util.repo import RepositoryAnalyzer
 
 class CoverallGenerator:
 
-    def __init__(self, file_manager_service: FileManagerServiceAbstract) -> None:
+    def __init__(self, file_manager_service: FileManagerServiceAbstract, coverall_downloader: CoverallDownloader) -> None:
         self.__file_manager_service = file_manager_service
+        self.__coverall_downloader = coverall_downloader
 
     def __add_metrics_into_tree(self, tree, merged_path, metrics):
         tree[merged_path]["file_coverage"] += metrics.file_coverage
@@ -86,11 +87,11 @@ class CoverallGenerator:
                         metrics_manager_dict[path].num_line = metrics.num_line - filename_and_line_list[filename][count] + 1
 
 
-    def generate_repository_data(self, repository_name):
+    async def generate_repository_data(self, repository_name):
         pb = PathBuilder(repository_name)
 
         # プロジェクトの最新コミットを取得
-        downloader_model = CoverallDownloader().get_coverall_download_model(pb)
+        downloader_model = await self.__coverall_downloader.get_coverall_download_model(pb)
         print(downloader_model.url)
         print(downloader_model.commit_sha)
 
@@ -109,7 +110,7 @@ class CoverallGenerator:
                 if file.filename.endswith(extension):
                     extension_count_dict[extension] += 1
             relative_filename = pb.get_relative_filepath_from_repo(file.filename)
-            trace_list = CoverallDownloader().get_trace(downloader_model, relative_filename)
+            trace_list = await self.__coverall_downloader.get_trace(downloader_model, relative_filename)
             if trace_list is None:
                 continue
             if trace_list.count(None) == len(trace_list):
