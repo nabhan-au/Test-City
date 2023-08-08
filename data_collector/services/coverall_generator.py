@@ -11,6 +11,7 @@ from models.github_clone_repo_error import GithubCloneRepoError
 
 from util.path import PathBuilder
 from util.repo import RepositoryAnalyzer
+import time
 
 class CoverallGenerator:
 
@@ -26,7 +27,7 @@ class CoverallGenerator:
         pass
 
 
-    def __aggregate_directory_metrics(self, metrics_manager_dict):
+    async def __aggregate_directory_metrics(self, metrics_manager_dict):
         tree = {"": {"file_coverage": 0.0, "add_count": 0, "num_line": 0, "avg_trace": 0.0}}
         for filename in metrics_manager_dict.keys():
             path_list = filename.split('/')
@@ -47,7 +48,7 @@ class CoverallGenerator:
             self.__add_metrics_into_tree(tree, "", metrics)
 
         for filename in tree:
-            print(filename, tree[filename]["add_count"])
+            # print(filename, tree[filename]["add_count"])
             tree[filename]["file_coverage"] = tree[filename]["file_coverage"] / tree[filename]["add_count"]
 
         return tree
@@ -66,10 +67,10 @@ class CoverallGenerator:
                 metrics_manager_dict[path].is_trace = True
 
 
-    def __classify_trace_list_by_branch_line(self, metrics_manager_dict, repository_name, extension):
+    async def __classify_trace_list_by_branch_line(self, metrics_manager_dict, repository_name, extension):
         filenames = list(metrics_manager_dict.keys()).copy()
         ast_analyzer = AstAnalyzer(repository_name)
-        filename_and_line_list = ast_analyzer.analyze(extension)
+        filename_and_line_list = await ast_analyzer.analyze(extension)
         for filename in filenames:
             if filename not in filename_and_line_list.keys():
                 continue
@@ -91,6 +92,7 @@ class CoverallGenerator:
         pb = PathBuilder(repository_name)
 
         # プロジェクトの最新コミットを取得
+        print("start download coverall data")
         downloader_model = await self.__coverall_downloader.get_coverall_download_model(pb)
         print(downloader_model.url)
         print(downloader_model.commit_sha)
@@ -124,8 +126,8 @@ class CoverallGenerator:
 
         extension = max(extension_count_dict, key=extension_count_dict.get)
         # 木作成
-        tree = self.__aggregate_directory_metrics(metrics_manager_dict)
-        self.__classify_trace_list_by_branch_line(metrics_manager_dict, repository_name, extension)
+        tree = await self.__aggregate_directory_metrics(metrics_manager_dict)
+        await self.__classify_trace_list_by_branch_line(metrics_manager_dict, repository_name, extension)
         for filename in tree:
             metrics_manager_dict[filename] = MetricsManager.create_instance(filename, tree[filename])
 

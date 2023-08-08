@@ -35,8 +35,7 @@ async def get_coverall(project_owner, project_name, file_manager_s3_service: Fil
 async def create_project_coverall(project_owner, project_name, coverall_gernerator_service: CoverallGenerator = Depends(Provide[Container.coverall_gernerator_service])):
     repository_name = project_owner + "/" + project_name
     try:
-        await coverall_gernerator_service.generate_repository_data(
-            repository_name)
+        await coverall_gernerator_service.generate_repository_data(repository_name)
     except GithubCloneRepoError:
         raise HTTPException(status.HTTP_400_BAD_REQUEST,
                             "Can't clone repository with repository name: " + repository_name)

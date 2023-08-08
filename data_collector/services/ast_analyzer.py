@@ -1,3 +1,5 @@
+import asyncio
+
 from antlr4 import *
 
 from util.path import PathBuilder
@@ -19,18 +21,19 @@ class AstAnalyzer:
         self.pb = PathBuilder(self.project_name)
         self.repo_analyzer = RepositoryAnalyzer(self.pb)
 
-    def analyze(self, extension):
+    async def analyze(self, extension):
         if extension == '.py':
-            return self.analyze_python()
+            return await self.analyze_python()
         elif extension == '.go':
-            return self.analyze_go()
+            return await self.analyze_go()
         elif extension == '.java':
-            return self.analyze_java()
+            return await self.analyze_java()
 
-    def analyze_python(self):
+    async def analyze_python(self):
         listener = PythonLineCalculator()
         filename_and_line_list = {}
         for file in self.repo_analyzer.get_all_filenames():
+            await asyncio.sleep(0.01)
             if not file.filename.endswith('.py'):
                 print('This is not a python file.')
                 continue
@@ -53,10 +56,11 @@ class AstAnalyzer:
             print(relative_filename, filename_and_line_list[relative_filename])
         return filename_and_line_list
 
-    def analyze_go(self):
+    async def analyze_go(self):
         listener = GoLineCalculator()
         filename_and_line_list = {}
         for file in self.repo_analyzer.get_all_filenames():
+            await asyncio.sleep(0.01)
             if not file.filename.endswith('.go'):
                 print('This is not a go file.')
                 continue
@@ -79,10 +83,11 @@ class AstAnalyzer:
             print(relative_filename, filename_and_line_list[relative_filename])
         return filename_and_line_list
 
-    def analyze_java(self):
+    async def analyze_java(self):
         listener = JavaLineCalculator()
         filename_and_line_list = {}
         for file in self.repo_analyzer.get_all_filenames():
+            await asyncio.sleep(0.01)
             if not file.filename.endswith('.java'):
                 print('This is not a java file.')
                 continue
