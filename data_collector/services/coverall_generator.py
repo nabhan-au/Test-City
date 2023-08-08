@@ -11,7 +11,6 @@ from models.github_clone_repo_error import GithubCloneRepoError
 
 from util.path import PathBuilder
 from util.repo import RepositoryAnalyzer
-import time
 
 class CoverallGenerator:
 
@@ -27,7 +26,7 @@ class CoverallGenerator:
         pass
 
 
-    async def __aggregate_directory_metrics(self, metrics_manager_dict):
+    def __aggregate_directory_metrics(self, metrics_manager_dict):
         tree = {"": {"file_coverage": 0.0, "add_count": 0, "num_line": 0, "avg_trace": 0.0}}
         for filename in metrics_manager_dict.keys():
             path_list = filename.split('/')
@@ -126,7 +125,7 @@ class CoverallGenerator:
 
         extension = max(extension_count_dict, key=extension_count_dict.get)
         # 木作成
-        tree = await self.__aggregate_directory_metrics(metrics_manager_dict)
+        tree = self.__aggregate_directory_metrics(metrics_manager_dict)
         await self.__classify_trace_list_by_branch_line(metrics_manager_dict, repository_name, extension)
         for filename in tree:
             metrics_manager_dict[filename] = MetricsManager.create_instance(filename, tree[filename])
