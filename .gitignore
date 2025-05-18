@@ -75,3 +75,6 @@ visualizer/bower_components
 data_collector/services/project_analyzer/grammar/*
 data_collector/services/project_analyzer/logs/*
 *.jar
+
+# pdm
+.pdm-python
