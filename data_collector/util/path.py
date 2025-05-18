@@ -2,22 +2,25 @@ import os
 
 
 class PathBuilder:
-    top_dir_name = "code-is-beautiful"
+    top_dir_name = "code-is-beautiful/data_collector"
 
     def __init__(self, repository_name):
-        current_path = os.path.dirname(os.path.abspath(__file__))
-        if f"/{self.top_dir_name}/" not in current_path:
-            print("Directory setting is wrongly modified")
-            raise
+        self.top_dir = self.get_top_dir()
         self.repository_name = repository_name
         self.project_name = repository_name.split('/')[-1]
-
-        self.top_dir = join(current_path.split(self.top_dir_name)[0], self.top_dir_name)
+        self.organization_name = repository_name.split('/')[0]
         print(self.top_dir)
-        self.visualizer_module = join(self.top_dir, "visualizer")
-        self.data_collector_module = join(self.top_dir, "data_collector")
-        self.top_repo_path = join(self.top_dir, "repo")
+        self.top_repo_path = join(self.top_dir, "clone_github_repo")
         self.repo_path = join(self.top_repo_path, self.project_name)
+
+    @staticmethod
+    def get_top_dir():
+        current_path = os.path.dirname(os.path.abspath(__file__))
+        if f"/{PathBuilder.top_dir_name}/" not in current_path:
+            print("Directory setting is wrongly modified")
+            raise
+        top_dir = join(current_path.split(PathBuilder.top_dir_name)[0], PathBuilder.top_dir_name)
+        return top_dir
 
     def get_relative_filepath_from_repo(self, filename):
         return filename.replace(self.repo_path, '')[1:]

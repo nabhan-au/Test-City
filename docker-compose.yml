@@ -1,9 +1,27 @@
 version: '3'
 services:
-  test-city:
-    build: .
-    image: test-city:latest
+  test-city-backend:
+    build: ./data_collector
+    image: test-city-backend:latest
     ports:
-      - "80:8080"
+      - "8000:8000"
     volumes:
-      - ./visualizer/data/complexity:/usr/src/app/visualizer/data/complexity:rw
+      - ./data_collector/data:/usr/src/code-is-beautiful/data_collector/data:rw
+    env_file:
+      - ./data_collector/.env
+    restart: unless-stopped
+    depends_on:
+      - minio
+  minio:
+    container_name: Minio
+    command: server /data --console-address ":9001"
+    environment:
+      - MINIO_ROOT_USER=admin
+      - MINIO_ROOT_PASSWORD=supersecret
+    image: quay.io/minio/minio:latest
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    volumes:
+      - /tmp/minio:/data
+    restart: unless-stopped
