@@ -1,17 +1,5 @@
 version: '3'
 services:
-  test-city-backend:
-    build: ./data_collector
-    image: test-city-backend:latest
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./data_collector/data:/usr/src/code-is-beautiful/data_collector/data:rw
-    env_file:
-      - ./data_collector/.env
-    restart: unless-stopped
-    depends_on:
-      - minio
   minio:
     container_name: Minio
     command: server /data --console-address ":9001"
