@@ -1,0 +1,25 @@
+{
+  "name": "code-is-beautiful",
+  "version": "1.0.0",
+  "description": "Code-is-beautiful is a cross-language project, aimed to collect and develop better ways to visualize source code.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jun318/code-is-beautiful.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/jun318/code-is-beautiful/issues"
+  },
+  "homepage": "https://github.com/jun318/code-is-beautiful#readme",
+  "devDependencies": {
+    "vite": "^6.3.5"
+  }
+}

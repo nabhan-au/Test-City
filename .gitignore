@@ -78,3 +78,8 @@ data_collector/services/project_analyzer/logs/*
 
 # pdm
 .pdm-python
+
+# node_modules
+node_modules
+!package.json
+!package-lock.json
