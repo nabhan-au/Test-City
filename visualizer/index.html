@@ -14,7 +14,9 @@
               <a class="navbar-brand" href="#">Test is beautiful!</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
-
+              <ul class="nav navbar-nav navbar-right">
+                <li><a href="#" class="btn-project">+ Project</a></li>
+              </ul>
             </div><!--/.navbar-collapse -->
           </div>
         </nav>
@@ -27,7 +29,7 @@
                 <h1>Test is beautiful!</h1>
                   <p>At <a href="https://www.quantifiedcode.com">QuantifiedCode</a>, we help development teams write better code—through data. On our <a href="https://www.quantifiedcode.com"> free code analysis platform</a>, we use visualizations, to make code better understandable for developers and business people. Creating great visualizations can be challenging though. With this project, we want to change that by providing an <strong>open-source collection</strong> of useful and engaging source code visualizations. They are all realized with either <strong>D3</strong> or <strong>Three.js</strong> and are provided under an <strong>Affero GPL</strong> license. You can freely reuse them in your own projects. If you like to see a visualization of your own project, check out our <a href="https://www.quantifiedcode.com">free service</a>.
                 <p>
-                  <H2>Demo projects:</H2>
+                  <H2>List projects:</H2>
                   <div id="demo"></div>
                 </p>
               </div>
@@ -40,28 +42,33 @@
             </div>
           </div>
         </div>
-    </body>
-    <script>
-        function addElement(project){
-            var demo_element = document.getElementById("demo");
-            console.log(demo_element);
-            var new_element = document.createElement('a');
-            new_element.href = "./code-city/index.html?project="+project;
-            new_element.className = "btn btn-primary btn-lg";
-            new_element.role = "button";
-            new_element.textContent = 'Live Demo For '+project;
-            console.log(new_element);
-            demo_element.appendChild(new_element);
-        }
-        addElement("go-jsonnet");
-        addElement("apitools");
-        addElement("openhtf");
-        addElement("httpie");
-        addElement("kne");
-        addElement("gousb");
-        addElement("commons-crypto");
-        addElement("commons-io");
-        addElement("commons-codec");
 
+        <script>
+            function addElement(project){
+                var demo_element = document.getElementById("demo");
+                var new_element = document.createElement('a');
+                new_element.href = "./code-city/index.html?project="+project;
+                new_element.className = "btn btn-primary btn-lg";
+                new_element.role = "button";
+                new_element.textContent = project;
+                demo_element.appendChild(new_element);
+            }
+
+            fetch('http://localhost:8000/coverall/project/list')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        data.forEach(project => addElement(project));
+                    } else {
+                        var demo_element = document.getElementById("demo");
+                        demo_element.innerHTML = "<p>Not Found</p>";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    var demo_element = document.getElementById("demo");
+                    demo_element.innerHTML = "<p>Not Found</p>";
+                });
         </script>
+    </body>
 </html>

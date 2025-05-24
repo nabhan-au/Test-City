@@ -86,4 +86,21 @@ img.thumb{
   margin-left: 10px;
 }
 
+.btn-project {
+  font-size: 2em;
+  padding: 10px 20px;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  display: inline-block;
+  text-align: center;
+}
+
+.btn-project:hover {
+  background-color: #1976d2;
+}
+
+
 /*# sourceMappingURL=style.css.map */
