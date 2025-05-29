@@ -39,6 +39,9 @@ dependencies = [
     "typing-extensions==4.7.1",
     "uvicorn==0.22.0",
     "yarl==1.9.2",
+    "pandas>=2.2.3",
+    "xmltodict>=0.14.2",
+    "lxml>=5.4.0",
 ]
 requires-python = "==3.9.*"
 readme = "README.md"

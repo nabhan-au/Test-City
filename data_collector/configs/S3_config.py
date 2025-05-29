@@ -12,6 +12,14 @@ class S3Config(Config):
     @property
     def get_access_key(self):
         return self.get_property('S3_ACCESS_KEY')
+
+    @property
+    def get_user_name(self):
+        return self.get_property('S3_USER_NAME')
+
+    @property
+    def get_password(self):
+        return self.get_property('S3_PASSWORD')
     
     @property
     def get_secret_key(self):
