@@ -1,8 +1,11 @@
 import pprint
+from typing import List
+
 import xmltodict
 import os
 import re
 import pandas as pd
+from fastapi import UploadFile
 
 from services.file_manager.file_manager_service_abstract import FileManagerServiceAbstract
 from util.datastructure import flat_map
@@ -19,26 +22,21 @@ class CoverageProcessor:
             xml_dict = xmltodict.parse(f.read())
         return xml_dict
 
-    async def list_html(self, folder_path):
-        index_file_list = []
-        for root, dirs, files in os.walk(folder_path):
-            if len(dirs) > 0:
-                continue
-            index_file = list(filter(lambda x: x == self.INDEX_FILE_NAME, files))
-            if len(index_file) > 0:
-                index_file_list.append(os.path.join(root, self.INDEX_FILE_NAME))
-        return index_file_list
+    async def list_index_file(self, files: List[UploadFile]):
+        return list(filter(lambda x: x.filename.endswith(self.INDEX_FILE_NAME), files))
 
-    def process_html_file(self, file_path):
+    async def process_html_file(self, file: UploadFile):
         required_columns = {'Name', 'Line Coverage', 'Mutation Coverage'}
-        data = pd.read_html(file_path)
+        data = pd.read_html(str(await file.read()))
         filtered_table = [table for table in data if required_columns.issubset(table.columns)]
-        file_path = f"/{file_path.removesuffix(f'/{self.INDEX_FILE_NAME}').split('/')[-1]}"
+        file_path = f"/{file.filename.removesuffix(f'/{self.INDEX_FILE_NAME}').split('/')[-1]}"
         return {"file_path": file_path,"table": filtered_table}
 
     def get_tree_from_table(self, file_path: str, table):
         result = []
         for _, row in table.iterrows():
+            if not row["Name"].endswith(".java"):
+                continue
             full_path = os.path.join(file_path.replace(".", "/"), row["Name"])
             line_coverage = self.extract_line_coverage(row["Line Coverage"])
             mutation_coverage = self.extract_mutation_coverage(row["Mutation Coverage"])
@@ -71,11 +69,11 @@ class CoverageProcessor:
             "total_mutation": int(match.group(3)),
         }
 
-    async def process_coverage(self, folder_path, repo_name):
+    async def process_coverage(self, files, repo_name):
         coverage_result = []
-        index_file_list = await self.list_html(folder_path)
+        index_file_list = await self.list_index_file(files)
         for index_file in index_file_list:
-            process_data = self.process_html_file(index_file)
+            process_data = await self.process_html_file(index_file)
             result = flat_map(lambda x: self.get_tree_from_table(process_data['file_path'], x), process_data['table'])
             coverage_result.extend(result)
         self.file_manager_service.save_complexity(repo_name, {"summary": coverage_result})
