@@ -25,8 +25,6 @@ class Container(containers.DeclarativeContainer):
         secret_key=s3_config.get_password,
         secure=False
     )
-
-    print("Minio client:", minio_client())
     
     file_manager_s3_repository = providers.Factory(
         FileManagerS3Repository,

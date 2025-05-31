@@ -31,7 +31,7 @@ async def get_coverall(project_owner, project_name, file_manager_s3_service: Fil
 @inject
 async def create_project_coverall(files: List[UploadFile], coverage_processor: CoverageProcessor = Depends(Provide[Container.coverage_processor_service])):
     try:
-        await coverage_processor.process_coverage(files, "test_repo_2")
+        await coverage_processor.process_coverage(files, "test_repo_3")
         return CommonResponse(True, "Created coverage report").to_json()
     except Exception as e:
         raise HTTPException(status.HTTP_500_INTERNAL_SERVER_ERROR,
