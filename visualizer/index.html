@@ -19,7 +19,7 @@
               </ul>
                 <form id="uploadForm" method="POST" action="/upload-folder/" enctype="multipart/form-data">
                     <input id="folderInput" type="file" name="files" webkitdirectory directory multiple />
-                    <input type="text" name="project_name" value="my_project" />
+                    <input id="project_name" type="text" name="project_name" value="my_project" />
                     <button type="submit">Upload Folder</button>
                 </form>
             </div><!--/.navbar-collapse -->
@@ -84,11 +84,10 @@
                 }
                 const formData = new FormData();
                 for (const file of files) {
-                    console.log("📄", file.webkitRelativePath);
                     formData.append("files", file, file.webkitRelativePath);
                 }
                 try {
-                    const response = await fetch("http://localhost:8000/coverall/project", {
+                    const response = await fetch("http://localhost:8000/coverall/project/" + document.getElementById("project_name").value, {
                         method: "POST",
                         body: formData,
                     });
