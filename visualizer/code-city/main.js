@@ -13,14 +13,12 @@ define([
 ) {
     var params = (new URL(document.location)).searchParams;
     // 'go-jsonnet'
-    console.log('project :', params.get('project'));
 
     async function fetchData() {
         try {
             var data = await dataLoaders.fetchProjectData(params.get('project'));
             return data;
         } catch (error) {
-            console.error("Error fetching project data:", error);
             return null;
         }
     }
@@ -52,6 +50,8 @@ define([
     }
 
     function legendContent(d, e) {
+        let trace_name, trace_size;
+    
         if (d.data.code_patterns[metric].average_of_trace) {
             trace_name = "average of trace";
             trace_size = d.data.code_patterns[metric].average_of_trace;
@@ -59,25 +59,55 @@ define([
             trace_name = "number of trace";
             trace_size = d.data.code_patterns[metric].number_of_trace;
         }
-        return "<div> \
-              <table class=\"table table-striped\"> \
-                  <tbody> \
-                      <tr> \
-                          <td>lines of code</td> \
-                          <td>"+ d.data.metrics.total_number_of_lines + "</td> \
-                      </tr> \
-                      <tr> \
-                          <td>"+ trace_name + "</td> \
-                          <td>"+ trace_size + "</td> \
-                      </tr> \
-                      <tr> \
-                          <td>coverage</td> \
-                          <td>"+ d.data.code_patterns[classes].coverage + "</td> \
-                      </tr> \
-                  </tbody> \
-              </table> \
-          </div>";
-    }
+    
+        // Check for mutant data
+        let mutant_info = "";
+        if (d.data?.code_patterns?.mutation) {
+            const is_mutant = d.data.code_patterns.mutation.mutant === true;
+            const mutation_lines = d.data.code_patterns.mutation.total_number_of_lines;
+    
+            if (is_mutant) {
+                mutant_info = `
+                    <tr style="background-color: rgba(255, 0, 0, 0.1); font-weight: bold;">
+                        <td style="color: red;">🚨 Mutant</td>
+                        <td style="color: red;">YES</td>
+                    </tr>
+                    <tr style="background-color: rgba(255, 0, 0, 0.05);">
+                        <td style="color: red;">Mutant lines</td>
+                        <td style="color: red;">${mutation_lines}</td>
+                    </tr>
+                `;
+            } else {
+                mutant_info = `
+                    <tr>
+                        <td>Mutant</td>
+                        <td>NO</td>
+                    </tr>
+                `;
+            }
+        }
+    
+        return `
+        <div>
+            <table class="table table-striped">
+                <tbody>
+                    <tr>
+                        <td>lines of code</td>
+                        <td>${d.data.metrics.total_number_of_lines}</td>
+                    </tr>
+                    <tr>
+                        <td>${trace_name}</td>
+                        <td>${trace_size}</td>
+                    </tr>
+                    <tr>
+                        <td>coverage</td>
+                        <td>${d.data.code_patterns[classes].coverage}</td>
+                    </tr>
+                    ${mutant_info} <!-- Styled mutant block -->
+                </tbody>
+            </table>
+        </div>`;
+    }    
 
     function nodeHeight(d) {
         function snapToGrid(grid, value) {
@@ -123,7 +153,6 @@ define([
                 maxTrace = Math.max(d.python.code_patterns[key][metric].number_of_trace, maxTrace);
             }
         }
-        console.log(maxTrace);
         if (maxTrace > 1000000)
             gridValue = 10000;
         else if (maxTrace > 100000)
@@ -136,13 +165,11 @@ define([
             gridValue = 1;
         else
             gridValue = 0.1;
-        console.log(gridValue);
     }
 
     // Call fetchData asynchronously
     fetchData().then(function (d) {
         if (d === null) {
-            console.error('Failed to load data');
             return;
         }
 
