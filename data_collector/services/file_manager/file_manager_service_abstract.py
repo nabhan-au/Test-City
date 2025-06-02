@@ -4,13 +4,13 @@ from typing import List, Dict
 class FileManagerServiceAbstract(ABC):
     
     @abstractmethod
-    def save_complexity(pb, metrics_manager_dict) -> None:
+    def save_complexity(self, pb, tree_json) -> None:
         raise NotImplementedError
     
     @abstractmethod
-    def get_complexity(project_name) -> Dict:
+    def get_complexity(self, project_name) -> Dict:
         raise NotImplementedError
     
     @abstractmethod
-    def get_project_list() -> List[str]:
+    def get_project_list(self) -> List[str]:
         raise NotImplementedError

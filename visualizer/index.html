@@ -17,6 +17,11 @@
               <ul class="nav navbar-nav navbar-right">
                 <li><a href="#" class="btn-project">+ Project</a></li>
               </ul>
+                <form id="uploadForm" method="POST" action="/upload-folder/" enctype="multipart/form-data">
+                    <input id="folderInput" type="file" name="files" webkitdirectory directory multiple />
+                    <input id="project_name" type="text" name="project_name" value="my_project" />
+                    <button type="submit">Upload Folder</button>
+                </form>
             </div><!--/.navbar-collapse -->
           </div>
         </nav>
@@ -69,6 +74,30 @@
                     var demo_element = document.getElementById("demo");
                     demo_element.innerHTML = "<p>Not Found</p>";
                 });
+
+            document.getElementById("uploadForm").addEventListener("submit", async function (event) {
+                event.preventDefault();
+                const files = document.getElementById("folderInput").files;
+                if (files.length === 0) {
+                    alert("Please select a folder to upload.");
+                    return;
+                }
+                const formData = new FormData();
+                for (const file of files) {
+                    formData.append("files", file, file.webkitRelativePath);
+                }
+                try {
+                    const response = await fetch("http://localhost:8000/coverall/project/" + document.getElementById("project_name").value, {
+                        method: "POST",
+                        body: formData,
+                    });
+                    const result = await response.json();
+                    alert("Upload complete: " + JSON.stringify(result));
+                } catch (error) {
+                    console.error("Upload failed:", error);
+                    alert("Upload failed");
+                }
+            });
         </script>
     </body>
 </html>
