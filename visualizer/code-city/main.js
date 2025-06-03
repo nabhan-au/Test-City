@@ -192,7 +192,6 @@ define([
             }
         }
         var treeData = dataHelpers.convertToTree(mergedData, mapperParams);
-        console.log("treeData:", treeData)
         dataHelpers.colorize(treeData, 'colorValue', nodeColorScale, { min: 20, max: 100 });
 
         var codeCityChart;

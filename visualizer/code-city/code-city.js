@@ -27,6 +27,7 @@
 
           var width = canvas.node().offsetWidth;
           var height = width;
+          var maxSphereHeight = 0;
 
           var raycaster = new THREE.Raycaster();
           var scene = new THREE.Scene();
@@ -37,7 +38,7 @@
           var renderer = window.renderer;
 
           camera.position.y = -3;
-          camera.position.z = 2;
+          camera.position.z = 2 + maxSphereHeight;
           camera.lookAt(new THREE.Vector3(0, -0.25, 0));
 
           var renderer;
@@ -90,7 +91,8 @@ void main() { \
           var minimumHeight;
 
           function addHouse(d) {
-              let is_mutant = d.data?.code_patterns?.mutation?.mutant === true;
+              let is_mutant = d.data?.mutations?.coverage > 0 && d.data?.mutations?.total_mutation > 0;
+              let is_leaf_mutant = is_mutant && (d.children?.length ?? 0) < 1;
           
               var unitHeight = 5 / 1000;
               var w = 1000;
@@ -133,8 +135,9 @@ void main() { \
               objToAdd.add(cube);
           
               // add mutant sphere
-              if (is_mutant) {
-                var sphereRadius = Math.min(gw, gh) * 0.4;
+              if (is_leaf_mutant) {
+                  var sphereRadius = Math.min(gw, gh) * 0.2;
+                  // var sphereRadius = 0.05;
 
                   var sphereGeometry = new THREE.SphereGeometry(sphereRadius, 16, 16);
                   var sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
@@ -147,6 +150,11 @@ void main() { \
                   sphere.d = d;  // share same d
           
                   cube.add(sphere);  // child of cube
+
+                  var topZ = sphere.position.z + sphereRadius;
+                  if (topZ > maxSphereHeight) {
+                      maxSphereHeight = topZ;
+                  }
               }
           
               if (!rootHouse) {
@@ -263,6 +271,10 @@ void main() { \
 
           data.forEach(addHouse);
 
+          camera.position.y = -3;
+          camera.position.z = Math.max(2, maxSphereHeight + 1);
+          camera.lookAt(new THREE.Vector3(0, -0.25, 0));
+
           render();
           animate();
 
@@ -290,11 +302,18 @@ void main() { \
 
           var setCameraRotation = function(angle){
               cameraAngle = angle;
-              camera.position.set(-cameraDistance*Math.cos(cameraAngle),-cameraDistance*Math.sin(cameraAngle),cameraHeight);
-              camera.up = new THREE.Vector3(0,0,1);
-              camera.lookAt(new THREE.Vector3(Math.cos(cameraAngle),Math.sin(cameraAngle),cameraZ));
+          
+              var dynamicCameraHeight = Math.max(2, maxSphereHeight + 1);
+          
+              camera.position.set(
+                  -cameraDistance * Math.cos(cameraAngle),
+                  -cameraDistance * Math.sin(cameraAngle),
+                  dynamicCameraHeight
+              );
+              camera.up = new THREE.Vector3(0, 0, 1);
+              camera.lookAt(new THREE.Vector3(Math.cos(cameraAngle), Math.sin(cameraAngle), cameraZ));
               render();
-          }
+          };
 
           var getCameraRotation = function(){
             return cameraAngle;
