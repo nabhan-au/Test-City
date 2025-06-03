@@ -193,13 +193,13 @@ define([
                     };
                 }
         
-                mergedData[currentPath].lines.coverage += data.lines.coverage;
                 mergedData[currentPath].lines.covered_line += data.lines.covered_line;
                 mergedData[currentPath].lines.total_line += data.lines.total_line;
-        
-                mergedData[currentPath].mutations.coverage += data.mutations.coverage;
+                mergedData[currentPath].lines.coverage = (mergedData[currentPath].lines.covered_line / mergedData[currentPath].lines.total_line) * 100;
+
                 mergedData[currentPath].mutations.killed += data.mutations.killed;
                 mergedData[currentPath].mutations.total_mutation += data.mutations.total_mutation;
+                mergedData[currentPath].mutations.coverage = (mergedData[currentPath].mutations.killed / mergedData[currentPath].mutations.total_mutation) * 100;
             }
         }
         var treeData = dataHelpers.convertToTree(mergedData, mapperParams);
