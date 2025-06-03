@@ -16,14 +16,15 @@ define([
 
     async function fetchData() {
         try {
-            var data = await dataLoaders.fetchProjectData(params.get('project'));
+            // TODO: change back later
+            var data = await dataLoaders.complexityExample(params.get('project'));
             return data;
         } catch (error) {
             return null;
         }
     }
 
-    var metric = 'functions';
+    var metric = 'lines';
     var classes = 'classes';
 
     var legendDiv = $('#code-city-legend')[0];
@@ -52,12 +53,12 @@ define([
     function legendContent(d, e) {
         let trace_name, trace_size;
     
-        if (d.data.code_patterns[metric].average_of_trace) {
+        if (d[metric].average_of_trace) {
             trace_name = "average of trace";
-            trace_size = d.data.code_patterns[metric].average_of_trace;
+            trace_size = d[metric].average_of_trace;
         } else {
             trace_name = "number of trace";
-            trace_size = d.data.code_patterns[metric].number_of_trace;
+            trace_size = d[metric].number_of_trace;
         }
     
         // Check for mutant data
@@ -115,20 +116,24 @@ define([
         }
         if (d.children && d.children.length)
             return 0;
-        if (d.data.code_patterns[metric].average_of_trace) {
-            trace_size = d.data.code_patterns[metric].average_of_trace;
-        } else {
-            trace_size = d.data.code_patterns[metric].number_of_trace;
+        if (d.data[metric].covered_line) {
+            trace_size = d.data[metric].covered_line;
         }
         return snapToGrid(gridValue, trace_size);
     }
 
     function nodeColor(d) {
-        return d.data.code_patterns[classes].coverage;
+        var coverage = d?.data?.[metric]?.coverage;
+
+        if (typeof coverage === 'undefined' || isNaN(coverage)) {
+            coverage = 0;
+        }
+
+        return d.data[metric].coverage;
     }
 
     function nodeArea(d) {
-        return d.data.metrics.total_number_of_lines;
+        return d.data[metric].total_line;
     }
 
     var graphParams = {
@@ -143,14 +148,22 @@ define([
             title: function (d) { return d.key.split('/').slice(-1)[0]; },
             path: function (d) { return d.key || '(all files)'; }
         },
-        split: function (key) { return key.split('/'); }
+        split: function (key) {
+            var components = key.split('/');
+            if (components.length > 1) {
+                components = components.filter(function(c) { return c !== ""; });
+            }
+            return components;
+        }
     };
 
     function setGridValue(d) {
         let maxTrace = 0;
-        for (var key in d.python.code_patterns) {
-            if (d.python.code_patterns[key][metric].number_of_trace) {
-                maxTrace = Math.max(d.python.code_patterns[key][metric].number_of_trace, maxTrace);
+        for (const [key, value] of Object.entries(d)) {
+            const [filePath, data] = Object.entries(value)[0];
+
+            if (data[metric].total_line) {
+                maxTrace = Math.max(data[metric].total_line, maxTrace);
             }
         }
         if (maxTrace > 1000000)
@@ -175,11 +188,42 @@ define([
 
         setGridValue(d);
         var mergedData = {};
-        for (var key in d.python.code_patterns) {
-            mergedData[key] = { metrics: d.python.metrics[key], code_patterns: d.python.code_patterns[key] };
+
+        for (const [key, value] of Object.entries(d)) {
+            const [filePath, data] = Object.entries(value)[0];
+            const filePaths = filePath.split('/');
+        
+            // root ""
+            let currentPath = "";
+        
+            for (let i = 0; i < filePaths.length; i++) {
+                if (i === 0 && filePaths[i] === "") {
+                    // root
+                    currentPath = "";
+                } else {
+                    // build the path
+                    currentPath += "/" + filePaths[i];
+                }
+        
+                // if not found, init
+                if (!mergedData[currentPath]) {
+                    mergedData[currentPath] = {
+                        lines: { coverage: 0, covered_line: 0, total_line: 0 },
+                        mutations: { coverage: 0, killed: 0, total_mutation: 0 }
+                    };
+                }
+        
+                mergedData[currentPath].lines.coverage += data.lines.coverage;
+                mergedData[currentPath].lines.covered_line += data.lines.covered_line;
+                mergedData[currentPath].lines.total_line += data.lines.total_line;
+        
+                mergedData[currentPath].mutations.coverage += data.mutations.coverage;
+                mergedData[currentPath].mutations.killed += data.mutations.killed;
+                mergedData[currentPath].mutations.total_mutation += data.mutations.total_mutation;
+            }
         }
         var treeData = dataHelpers.convertToTree(mergedData, mapperParams);
-        // Add color to the elements using min/max information
+        console.log("treeData:", treeData)
         dataHelpers.colorize(treeData, 'colorValue', nodeColorScale, { min: 20, max: 100 });
 
         var codeCityChart;
