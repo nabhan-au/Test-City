@@ -33,16 +33,27 @@ define([
     var rotateLeftSpan = $('#rotate-left');
     var rotateRightSpan = $('#rotate-right');
 
-    var nodeColorScale = ['#a50026',
+    var nodeColorScale = [
+        // '#a50026',
+        '#c31727',
         '#d73027',
+        '#e56a35',
         '#f46d43',
+        '#fab86d',
         '#fdae61',
+        '#fee497',
         '#fee08b',
+        '#ecf497',
         '#d9ef8b',
+        '#bde487',
         '#a6d96a',
+        '#86d168',
         '#66bd63',
+        '#409f5a',
         '#1a9850',
-        '#006837']
+        // '#0f7a42',
+        // '#006837'
+    ]
 
     let gridValue;
 
