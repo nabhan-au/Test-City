@@ -16,8 +16,7 @@ define([
 
     async function fetchData() {
         try {
-            // TODO: change back later
-            var data = await dataLoaders.complexityExample(params.get('project'));
+            var data = await dataLoaders.fetchProjectData(params.get('project'));
             return data;
         } catch (error) {
             return null;
