@@ -51,64 +51,33 @@ define([
     }
 
     function legendContent(d, e) {
-        let trace_name, trace_size;
-    
-        if (d[metric].average_of_trace) {
-            trace_name = "average of trace";
-            trace_size = d[metric].average_of_trace;
-        } else {
-            trace_name = "number of trace";
-            trace_size = d[metric].number_of_trace;
-        }
-    
-        // Check for mutant data
-        let mutant_info = "";
-        if (d.data?.code_patterns?.mutation) {
-            const is_mutant = d.data.code_patterns.mutation.mutant === true;
-            const mutation_lines = d.data.code_patterns.mutation.total_number_of_lines;
-    
-            if (is_mutant) {
-                mutant_info = `
-                    <tr style="background-color: rgba(255, 0, 0, 0.1); font-weight: bold;">
-                        <td style="color: red;">🚨 Mutant</td>
-                        <td style="color: red;">YES</td>
-                    </tr>
-                    <tr style="background-color: rgba(255, 0, 0, 0.05);">
-                        <td style="color: red;">Mutant lines</td>
-                        <td style="color: red;">${mutation_lines}</td>
-                    </tr>
-                `;
-            } else {
-                mutant_info = `
-                    <tr>
-                        <td>Mutant</td>
-                        <td>NO</td>
-                    </tr>
-                `;
-            }
-        }
+        const lines = d.data?.lines || { coverage: 0, covered_line: 0, total_line: 0 };
+        const mutations = d.data?.mutations || { coverage: 0, killed: 0, total_mutation: 0 };
     
         return `
         <div>
             <table class="table table-striped">
                 <tbody>
                     <tr>
-                        <td>lines of code</td>
-                        <td>${d.data.metrics.total_number_of_lines}</td>
+                        <td>Lines coverage (%)</td>
+                        <td>${lines.coverage}</td>
                     </tr>
                     <tr>
-                        <td>${trace_name}</td>
-                        <td>${trace_size}</td>
+                        <td>Lines covered</td>
+                        <td>${lines.covered_line} / ${lines.total_line}</td>
                     </tr>
                     <tr>
-                        <td>coverage</td>
-                        <td>${d.data.code_patterns[classes].coverage}</td>
+                        <td>Mutations coverage (%)</td>
+                        <td>${mutations.coverage}</td>
                     </tr>
-                    ${mutant_info} <!-- Styled mutant block -->
+                    <tr>
+                        <td>Mutations killed</td>
+                        <td>${mutations.killed} / ${mutations.total_mutation}</td>
+                    </tr>
                 </tbody>
             </table>
         </div>`;
-    }    
+    }
 
     function nodeHeight(d) {
         function snapToGrid(grid, value) {
