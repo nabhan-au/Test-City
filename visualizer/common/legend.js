@@ -1,16 +1,14 @@
-define([],function(){
-    "use strict";
-    return function(legendDiv,legendTitle,legendContent) {
-        return {
-          onClick : function(d,e){
+export function legend(legendDiv,legendTitle,legendContent) {
+    return {
+        onClick : function(d,e){
             //nothing...
-          }.bind(this),
+        }.bind(this),
 
-          onMouseout: function(d,e){
+        onMouseout: function(d,e){
             legendDiv.innerHTML = '';
-          }.bind(this),
+        }.bind(this),
 
-          onMouseover: function(d,e) {
+        onMouseover: function(d,e) {
 
             var et = e.target;
             if (d && e){
@@ -22,9 +20,9 @@ define([],function(){
                 desiredTop -= 10;
 
                 var style = {
-                             left:desiredLeft+"px",
-                             top:desiredTop+"px"
-                            };
+                    left:desiredLeft+"px",
+                    top:desiredTop+"px"
+                };
 
                 var info = legendContent(d,e);
 
@@ -49,7 +47,6 @@ define([],function(){
             }
 
 
-          }.bind(this)
-        };
-    }
-});
+        }.bind(this)
+    };
+}
