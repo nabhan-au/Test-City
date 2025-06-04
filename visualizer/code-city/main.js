@@ -13,19 +13,17 @@ define([
 ) {
     var params = (new URL(document.location)).searchParams;
     // 'go-jsonnet'
-    console.log('project :', params.get('project'));
 
     async function fetchData() {
         try {
             var data = await dataLoaders.fetchProjectData(params.get('project'));
             return data;
         } catch (error) {
-            console.error("Error fetching project data:", error);
             return null;
         }
     }
 
-    var metric = 'functions';
+    var metric = 'lines';
     var classes = 'classes';
 
     var legendDiv = $('#code-city-legend')[0];
@@ -34,16 +32,27 @@ define([
     var rotateLeftSpan = $('#rotate-left');
     var rotateRightSpan = $('#rotate-right');
 
-    var nodeColorScale = ['#a50026',
+    var nodeColorScale = [
+        // '#a50026',
+        '#c31727',
         '#d73027',
+        '#e56a35',
         '#f46d43',
+        '#fab86d',
         '#fdae61',
+        '#fee497',
         '#fee08b',
+        '#ecf497',
         '#d9ef8b',
+        '#bde487',
         '#a6d96a',
+        '#86d168',
         '#66bd63',
+        '#409f5a',
         '#1a9850',
-        '#006837']
+        // '#0f7a42',
+        // '#006837'
+    ]
 
     let gridValue;
 
@@ -52,31 +61,32 @@ define([
     }
 
     function legendContent(d, e) {
-        if (d.data.code_patterns[metric].average_of_trace) {
-            trace_name = "average of trace";
-            trace_size = d.data.code_patterns[metric].average_of_trace;
-        } else {
-            trace_name = "number of trace";
-            trace_size = d.data.code_patterns[metric].number_of_trace;
-        }
-        return "<div> \
-              <table class=\"table table-striped\"> \
-                  <tbody> \
-                      <tr> \
-                          <td>lines of code</td> \
-                          <td>"+ d.data.metrics.total_number_of_lines + "</td> \
-                      </tr> \
-                      <tr> \
-                          <td>"+ trace_name + "</td> \
-                          <td>"+ trace_size + "</td> \
-                      </tr> \
-                      <tr> \
-                          <td>coverage</td> \
-                          <td>"+ d.data.code_patterns[classes].coverage + "</td> \
-                      </tr> \
-                  </tbody> \
-              </table> \
-          </div>";
+        const lines = d.data?.lines || { coverage: 0, covered_line: 0, total_line: 0 };
+        const mutations = d.data?.mutations || { coverage: 0, killed: 0, total_mutation: 0 };
+    
+        return `
+        <div>
+            <table class="table table-striped">
+                <tbody>
+                    <tr>
+                        <td>Lines coverage (%)</td>
+                        <td>${lines.coverage}</td>
+                    </tr>
+                    <tr>
+                        <td>Lines covered</td>
+                        <td>${lines.covered_line} / ${lines.total_line}</td>
+                    </tr>
+                    <tr>
+                        <td>Mutations coverage (%)</td>
+                        <td>${mutations.coverage}</td>
+                    </tr>
+                    <tr>
+                        <td>Mutations killed</td>
+                        <td>${mutations.killed} / ${mutations.total_mutation}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>`;
     }
 
     function nodeHeight(d) {
@@ -85,20 +95,24 @@ define([
         }
         if (d.children && d.children.length)
             return 0;
-        if (d.data.code_patterns[metric].average_of_trace) {
-            trace_size = d.data.code_patterns[metric].average_of_trace;
-        } else {
-            trace_size = d.data.code_patterns[metric].number_of_trace;
+        if (d.data[metric].covered_line) {
+            trace_size = d.data[metric].covered_line;
         }
         return snapToGrid(gridValue, trace_size);
     }
 
     function nodeColor(d) {
-        return d.data.code_patterns[classes].coverage;
+        var coverage = d?.data?.[metric]?.coverage;
+
+        if (typeof coverage === 'undefined' || isNaN(coverage)) {
+            coverage = 0;
+        }
+
+        return d.data[metric].coverage;
     }
 
     function nodeArea(d) {
-        return d.data.metrics.total_number_of_lines;
+        return d.data[metric].total_line;
     }
 
     var graphParams = {
@@ -113,17 +127,24 @@ define([
             title: function (d) { return d.key.split('/').slice(-1)[0]; },
             path: function (d) { return d.key || '(all files)'; }
         },
-        split: function (key) { return key.split('/'); }
+        split: function (key) {
+            var components = key.split('/');
+            if (components.length > 1) {
+                components = components.filter(function(c) { return c !== ""; });
+            }
+            return components;
+        }
     };
 
     function setGridValue(d) {
         let maxTrace = 0;
-        for (var key in d.python.code_patterns) {
-            if (d.python.code_patterns[key][metric].number_of_trace) {
-                maxTrace = Math.max(d.python.code_patterns[key][metric].number_of_trace, maxTrace);
+        for (const [key, value] of Object.entries(d)) {
+            const [filePath, data] = Object.entries(value)[0];
+
+            if (data[metric].total_line) {
+                maxTrace = Math.max(data[metric].total_line, maxTrace);
             }
         }
-        console.log(maxTrace);
         if (maxTrace > 1000000)
             gridValue = 10000;
         else if (maxTrace > 100000)
@@ -136,23 +157,51 @@ define([
             gridValue = 1;
         else
             gridValue = 0.1;
-        console.log(gridValue);
     }
 
     // Call fetchData asynchronously
     fetchData().then(function (d) {
         if (d === null) {
-            console.error('Failed to load data');
             return;
         }
 
         setGridValue(d);
         var mergedData = {};
-        for (var key in d.python.code_patterns) {
-            mergedData[key] = { metrics: d.python.metrics[key], code_patterns: d.python.code_patterns[key] };
+
+        for (const [key, value] of Object.entries(d)) {
+            const [filePath, data] = Object.entries(value)[0];
+            const filePaths = filePath.split('/');
+        
+            // root ""
+            let currentPath = "";
+        
+            for (let i = 0; i < filePaths.length; i++) {
+                if (i === 0 && filePaths[i] === "") {
+                    // root
+                    currentPath = "";
+                } else {
+                    // build the path
+                    currentPath += "/" + filePaths[i];
+                }
+        
+                // if not found, init
+                if (!mergedData[currentPath]) {
+                    mergedData[currentPath] = {
+                        lines: { coverage: 0, covered_line: 0, total_line: 0 },
+                        mutations: { coverage: 0, killed: 0, total_mutation: 0 }
+                    };
+                }
+        
+                mergedData[currentPath].lines.covered_line += data.lines.covered_line;
+                mergedData[currentPath].lines.total_line += data.lines.total_line;
+                mergedData[currentPath].lines.coverage = (mergedData[currentPath].lines.covered_line / mergedData[currentPath].lines.total_line) * 100;
+
+                mergedData[currentPath].mutations.killed += data.mutations.killed;
+                mergedData[currentPath].mutations.total_mutation += data.mutations.total_mutation;
+                mergedData[currentPath].mutations.coverage = (mergedData[currentPath].mutations.killed / mergedData[currentPath].mutations.total_mutation) * 100;
+            }
         }
         var treeData = dataHelpers.convertToTree(mergedData, mapperParams);
-        // Add color to the elements using min/max information
         dataHelpers.colorize(treeData, 'colorValue', nodeColorScale, { min: 20, max: 100 });
 
         var codeCityChart;

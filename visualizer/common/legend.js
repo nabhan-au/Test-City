@@ -28,13 +28,15 @@ define([],function(){
 
                 var info = legendContent(d,e);
 
-                legendDiv.innerHTML = "<div style=\"pointer-events:none; position:absolute;\" class=\"popover top show\"> \
-                  <div class=\"arrow\"></div> \
-                  <h3 class=\"popover-title\">"+legendTitle(d,e)+"</h3> \
-                  <div class=\"popover-content\"> \
-                    "+info+"\
-                  </div> \
-                </div>";
+                legendDiv.innerHTML = `
+                  <div style="pointer-events:none; position:absolute; max-width:none; width:auto; height:auto; white-space:normal; padding:10px;" class="popover top show">
+                    <div class="arrow"></div>
+                    <h3 class="popover-title" style="white-space:normal; margin-bottom:8px;">${legendTitle(d,e)}</h3>
+                    <div class="popover-content" style="width:auto; height:auto; white-space:normal;">
+                      ${info}
+                    </div>
+                  </div>
+                `;
 
                 var legend = legendDiv.children[0];
 
