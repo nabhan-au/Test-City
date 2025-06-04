@@ -201,6 +201,7 @@ define([
                 mergedData[currentPath].mutations.coverage = (mergedData[currentPath].mutations.killed / mergedData[currentPath].mutations.total_mutation) * 100;
             }
         }
+        console.log("mergedData:", mergedData)
         var treeData = dataHelpers.convertToTree(mergedData, mapperParams);
         dataHelpers.colorize(treeData, 'colorValue', nodeColorScale, { min: 20, max: 100 });
 

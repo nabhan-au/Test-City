@@ -6,15 +6,9 @@ COPY .bowerrc /usr/src/app/
 
 
 RUN npm install -g bower
-RUN npm install -g http-server
 RUN bower install
+RUN npm install
 
 WORKDIR /usr/src/app/visualizer
 
-ENTRYPOINT ["http-server"]
-
-
-
-
-
-
+ENTRYPOINT ["npm run dev"]
