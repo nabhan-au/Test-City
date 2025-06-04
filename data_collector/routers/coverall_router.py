@@ -19,11 +19,11 @@ async def get_project_list(file_manager_s3_service: FileManagerS3Service = Depen
     return file_manager_s3_service.get_project_list()
 
 
-@coverall_router.get('/project/{project_owner}/{project_name}')
+@coverall_router.get('/project/{project_name}')
 @inject
-async def get_coverall(project_owner, project_name, file_manager_s3_service: FileManagerS3Service = Depends(Provide[Container.file_manager_s3_service])):
+async def get_coverall(project_name, file_manager_s3_service: FileManagerS3Service = Depends(Provide[Container.file_manager_s3_service])):
     json_data = file_manager_s3_service.get_complexity(
-        f"{project_owner}_{project_name}")
+        f"{project_name}")
     return JSONResponse(json_data)
 
 

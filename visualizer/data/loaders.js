@@ -4,9 +4,8 @@ define(["data/helpers"], function (dataHelpers) {
             var data = dataHelpers.loadJson('../data/complexity/' + example + '_complexity.json');
             return data;
         },
-        fetchProjectData: function (project) {
-            var [projectOwner, projectName] = project.split('_');
-            var apiUrl = `http://0.0.0.0:8000/coverall/project/${projectOwner}/${projectName}`;
+        fetchProjectData: function (projectName) {
+            var apiUrl = `http://0.0.0.0:8000/coverall/project/${projectName}`;
 
             return fetch(apiUrl)
                 .then(response => {
