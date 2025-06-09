@@ -27,7 +27,6 @@
 
           var width = canvas.node().offsetWidth;
           var height = width;
-          var maxSphereHeight = 0;
 
           var raycaster = new THREE.Raycaster();
           var scene = new THREE.Scene();
@@ -36,10 +35,6 @@
           if (!window.renderer)
             window.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
           var renderer = window.renderer;
-
-          camera.position.y = -3;
-          camera.position.z = 2 + maxSphereHeight;
-          camera.lookAt(new THREE.Vector3(0, -0.25, 0));
 
           var renderer;
           var intersected;
@@ -86,6 +81,7 @@ void main() { \
           var cameraDistance = 3.0;
           var cameraHeight = 1.95;
           var cameraZ = -1.4;
+          var cameraPitch = 0.0;
           var cameraAngle = 0.0;
           var maximumHeight;
           var minimumHeight;
@@ -150,11 +146,6 @@ void main() { \
                   sphere.d = d;  // share same d
           
                   cube.add(sphere);  // child of cube
-
-                  var topZ = sphere.position.z + sphereRadius;
-                  if (topZ > maxSphereHeight) {
-                      maxSphereHeight = topZ;
-                  }
               }
           
               if (!rootHouse) {
@@ -258,6 +249,14 @@ void main() { \
           renderer.domElement.addEventListener('mousemove', onCanvasMouseMove, false);
           renderer.domElement.addEventListener('click', onCanvasMouseClick, false);
 
+          var canvasDiv = $('#code-city-canvas');
+          canvasDiv.on('mouseleave', function() {
+              if (params.legend && selectedD) {
+                  params.legend.onMouseout(selectedD);
+                  selectedD = undefined;
+              }
+          });
+
           var findExtremes = function(d){
             if (d.children)
                 return;
@@ -270,10 +269,6 @@ void main() { \
           data.forEach(findExtremes);
 
           data.forEach(addHouse);
-
-          camera.position.y = -3;
-          camera.position.z = Math.max(2, maxSphereHeight + 1);
-          camera.lookAt(new THREE.Vector3(0, -0.25, 0));
 
           render();
           animate();
@@ -303,15 +298,15 @@ void main() { \
           var setCameraRotation = function(angle){
               cameraAngle = angle;
           
-              var dynamicCameraHeight = Math.max(2, maxSphereHeight + 1);
+              var dynamicCameraHeight = 2;
           
               camera.position.set(
                   -cameraDistance * Math.cos(cameraAngle),
                   -cameraDistance * Math.sin(cameraAngle),
-                  dynamicCameraHeight
+                  dynamicCameraHeight + Math.sin(cameraPitch) * cameraDistance
               );
               camera.up = new THREE.Vector3(0, 0, 1);
-              camera.lookAt(new THREE.Vector3(Math.cos(cameraAngle), Math.sin(cameraAngle), cameraZ));
+              camera.lookAt(new THREE.Vector3(0, 0, 0));
               render();
           };
 
@@ -319,9 +314,41 @@ void main() { \
             return cameraAngle;
           }
 
+          var setCameraBirdEyeView = function() {
+              var angleRad = Math.PI / 4;
+
+              camera.position.set(0, 0, 5);
+
+              // camera.up = new THREE.Vector3(0, 1, 0);
+              camera.up.set(Math.sin(angleRad), Math.cos(angleRad), 0);
+
+              camera.lookAt(new THREE.Vector3(0, 0, 0));
+              render();
+          };
+          
+          var setCameraNormalView = function() {
+              setCameraRotation(cameraAngle);
+          };
+
+          var getCameraPitch = function() {
+              return cameraPitch;
+          };
+          
+          var setCameraPitch = function(pitch) {
+            var maxPitch = Math.PI / 2 - 0.1;
+            var minPitch = -Math.PI / 2 + 0.1;
+        
+            cameraPitch = Math.max(minPitch, Math.min(maxPitch, pitch));
+            setCameraRotation(cameraAngle);
+        };
+        
           return {
             getCameraRotation : getCameraRotation,
-            setCameraRotation : setCameraRotation
+            setCameraRotation : setCameraRotation,
+            setCameraBirdEyeView : setCameraBirdEyeView,
+            setCameraNormalView : setCameraNormalView,
+            getCameraPitch: getCameraPitch,
+            setCameraPitch: setCameraPitch
           };
         }
 

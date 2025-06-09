@@ -31,6 +31,9 @@ define([
 
     var rotateLeftSpan = $('#rotate-left');
     var rotateRightSpan = $('#rotate-right');
+    var rotateUpSpan = $('#rotate-up');
+    var rotateDownSpan = $('#rotate-down');
+    var birdEyeToggle = $('#toggle-bird-eye');
 
     var nodeColorScale = [
         // '#a50026',
@@ -201,7 +204,6 @@ define([
                 mergedData[currentPath].mutations.coverage = (mergedData[currentPath].mutations.killed / mergedData[currentPath].mutations.total_mutation) * 100;
             }
         }
-        console.log("mergedData:", mergedData)
         var treeData = dataHelpers.convertToTree(mergedData, mapperParams);
         dataHelpers.colorize(treeData, 'colorValue', nodeColorScale, { min: 20, max: 100 });
 
@@ -225,27 +227,98 @@ define([
         var startRotate = function (left) {
             if (isRotating)
                 return;
-            isRotating = false;
+
+            isRotating = true;
+
             var rotate = function () {
                 if (!isRotating)
                     return;
-                codeCityChart.setCameraRotation(codeCityChart.getCameraRotation() + (left ? 0.01 : -0.01));
+
+                codeCityChart.setCameraRotation(
+                    codeCityChart.getCameraRotation() + (left ? 0.01 : -0.01)
+                );
+
                 setTimeout(rotate, 10);
             };
-            var startRotation = function () {
-                isRotating = true;
-                rotate();
-            };
-            setTimeout(startRotation, 40);
+
+            rotate();
         };
 
         var stopRotate = function () {
             isRotating = false;
         };
 
-        rotateLeftSpan.mouseover(startRotate.bind(null, false));
-        rotateRightSpan.mouseover(startRotate.bind(null, true));
-        rotateLeftSpan.mouseout(stopRotate);
-        rotateRightSpan.mouseout(stopRotate);
+        var isRotatingPitch = false;
+
+        var startRotatePitch = function (up) {
+            if (isRotatingPitch)
+                return;
+        
+            isRotatingPitch = true;
+        
+            var rotate = function () {
+                if (!isRotatingPitch)
+                    return;
+        
+                const pitch = codeCityChart.getCameraPitch();
+                codeCityChart.setCameraPitch(pitch + (up ? 0.01 : -0.01));
+        
+                setTimeout(rotate, 10);
+            };
+        
+            rotate();
+        };
+
+        var stopRotatePitch = function () {
+            isRotatingPitch = false;
+        };
+
+        rotateLeftSpan.on('mousedown', function () {
+            if (birdEyeToggle.is(':checked')) {
+                birdEyeToggle.prop('checked', false).trigger('change');
+            }
+
+            startRotate(false);
+        });
+        rotateLeftSpan.on('mouseup mouseleave', function () {
+            stopRotate();
+        });
+
+        rotateRightSpan.on('mousedown', function () {
+            if (birdEyeToggle.is(':checked')) {
+                birdEyeToggle.prop('checked', false).trigger('change');
+            }
+
+            startRotate(true);
+        });
+        rotateRightSpan.on('mouseup mouseleave', function () {
+            stopRotate();
+        });
+        rotateUpSpan.on('mousedown', function () {
+            if (birdEyeToggle.is(':checked')) {
+                birdEyeToggle.prop('checked', false).trigger('change');
+            }
+            startRotatePitch(true);
+        });
+        rotateUpSpan.on('mouseup mouseleave', function () {
+            stopRotatePitch();
+        });
+        
+        rotateDownSpan.on('mousedown', function () {
+            if (birdEyeToggle.is(':checked')) {
+                birdEyeToggle.prop('checked', false).trigger('change');
+            }
+            startRotatePitch(false);
+        });
+        rotateDownSpan.on('mouseup mouseleave', function () {
+            stopRotatePitch();
+        });        
+        birdEyeToggle.on('change', function () {
+            if (birdEyeToggle.is(':checked')) {
+                codeCityChart.setCameraBirdEyeView();
+            } else {
+                codeCityChart.setCameraNormalView();
+            }
+        });
     });
 });
