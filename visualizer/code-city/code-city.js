@@ -1,47 +1,46 @@
 import * as three from 'three';
+import $ from 'jquery';
 
 var houseMargin = 0.005; //min margin in percent
-var houseFloorHeight = 3;
 
-function generateTreemap(d3, data,params){
-    var layout = d3.layout.treemap()
-        .size([1.0, 1.0])
-        .sticky(true)
-        .round(false)
-        .padding(4 * houseMargin)
-        .value(function(d){return d.area;});
+function generateTreemap(d3, data, params) {
+  var layout = d3.layout.treemap()
+    .size([1.0, 1.0])
+    .sticky(true)
+    .round(false)
+    .padding(4 * houseMargin)
+    .value(function (d) { return d.area; });
 
-    return layout.nodes(data).filter(function(d){
-        return Math.min(d.dx, d.dy) > 0.001 * houseMargin;
-    });
+  return layout.nodes(data).filter(function (d) {
+    return Math.min(d.dx, d.dy) > 0.001 * houseMargin;
+  });
 }
 
-function codeCity(d3, element, rawData, params){
-    var canvas = d3.select(element);
+function codeCity(d3, element, rawData, params) {
+  var canvas = d3.select(element);
 
-    var data = generateTreemap(d3, rawData,params);
+  var data = generateTreemap(d3, rawData, params);
 
-    var width = canvas.node().offsetWidth;
-    var height = width;
-    var maxSphereHeight = 0;
+  var width = canvas.node().offsetWidth;
+  var height = width;
 
-    var raycaster = new three.Raycaster();
-    var scene = new three.Scene();
-    var camera = new three.PerspectiveCamera(45.0, width/height, 1.0, 1000 );
+  var raycaster = new three.Raycaster();
+  var scene = new three.Scene();
+  var camera = new three.PerspectiveCamera(45.0, width/height, 1.0, 1000 );
 
-    if (!window.renderer)
-        window.renderer = new three.WebGLRenderer({ alpha: true, antialias: true });
-    var renderer = window.renderer;
+  if (!window.renderer)
+    window.renderer = new three.WebGLRenderer({ alpha: true, antialias: true });
+  var renderer = window.renderer;
 
-    camera.position.y = -3;
-    camera.position.z = 2 + maxSphereHeight;
-    camera.lookAt(new three.Vector3(0, -0.25, 0));
+  camera.position.y = -3;
+  camera.position.z = 2;
+  camera.lookAt(new three.Vector3(0, -0.25, 0));
 
-    var renderer;
-    var intersected;
-    var rootHouse;
+  var renderer;
+  var intersected;
+  var rootHouse;
 
-    var fragmentShader = " \
+  var fragmentShader = " \
 varying vec2 vUv; \
 varying vec3 vColor; \
 varying vec3 pos; \
@@ -64,7 +63,7 @@ void main() { \
     m = (1.0+dPersp*0.2)*m; \
     gl_FragColor = vec4(vColor.x*m, vColor.y*m,vColor.z*m ,1.0); \
 }";
-    var vertexShader = " \
+  var vertexShader = " \
 uniform float glow; \
 uniform vec3 color; \
 varying vec3 vColor; \
@@ -79,250 +78,277 @@ void main() { \
 } \
 ";
 
-    var cameraDistance = 3.0;
-    var cameraHeight = 1.95;
-    var cameraZ = -1.4;
-    var cameraAngle = 0.0;
-    var maximumHeight;
-    var minimumHeight;
+  var cameraDistance = 3.0;
+  var cameraHeight = 1.95;
+  var cameraZ = -1.4;
+  var cameraPitch = 0.0;
+  var cameraAngle = 0.0;
+  var maximumHeight;
+  var minimumHeight;
 
-    function addHouse(d) {
-        let is_mutant = d.data?.mutations?.coverage > 0 && d.data?.mutations?.total_mutation > 0;
-        console.log(d.data);
-        let is_leaf_mutant = is_mutant && (d.children?.length ?? 0) < 1;
+  function addHouse(d) {
+    let is_mutant = d.data?.mutations?.coverage > 0 && d.data?.mutations?.total_mutation > 0;
+    let is_leaf_mutant = is_mutant && (d.children?.length ?? 0) < 1;
 
-        var unitHeight = 5 / 1000;
-        var w = 1000;
-        var h = 1000;
-        var gw = Math.max(0, (d.dx - 2 * houseMargin) * w) / 500;
-        var gh = Math.max(0, (d.dy - 2 * houseMargin) * h) / 500;
-        var baseHeight = Math.sqrt((d.height - minimumHeight) / (maximumHeight - minimumHeight));
-        var gd = unitHeight * (d.children ? 0.05 : baseHeight) * 130.0;
+    var unitHeight = 5 / 1000;
+    var w = 1000;
+    var h = 1000;
+    var gw = Math.max(0, (d.dx - 2 * houseMargin) * w) / 500;
+    var gh = Math.max(0, (d.dy - 2 * houseMargin) * h) / 500;
+    var baseHeight = Math.sqrt((d.height - minimumHeight) / (maximumHeight - minimumHeight));
+    var gd = unitHeight * (d.children ? 0.05 : baseHeight) * 130.0;
 
-        var gx = ((d.x + d.dx / 2) * w) / 500 - 1;
-        var gy = 1 - ((d.y + d.dy / 2) * h) / 500;
-        var gz = d.depth * unitHeight + gd / 2;
+    var gx = ((d.x + d.dx / 2) * w) / 500 - 1;
+    var gy = 1 - ((d.y + d.dy / 2) * h) / 500;
+    var gz = d.depth * unitHeight + gd / 2;
 
-        var shaderMaterial = new three.ShaderMaterial({
-            fragmentShader: fragmentShader,
-            vertexShader: vertexShader,
-            uniforms: {
-                color: { type: 'c', value: new three.Color(d.color) },
-                glow: { type: 'f', value: 1.0 },
-            }
-        });
+    var shaderMaterial = new three.ShaderMaterial({
+      fragmentShader: fragmentShader,
+      vertexShader: vertexShader,
+      uniforms: {
+        color: { type: 'c', value: new three.Color(d.color) },
+        glow: { type: 'f', value: 1.0 },
+      }
+    });
 
-        var geometry = new three.BoxGeometry(gw, gh, gd);
-        var geometry = new three.BoxGeometry(gw, gh, gd);
-        var material = new three.MeshLambertMaterial({ color: d.color });
-        var geometry = new three.BoxGeometry(gw, gh, gd);
-        var material = new three.MeshLambertMaterial({ color: d.color });
-        var cube = new three.Mesh(geometry, shaderMaterial);
+    var geometry = new three.BoxGeometry(gw, gh, gd);
+    var cube = new three.Mesh(geometry, shaderMaterial);
 
-        cube.position.x = gx;
-        cube.position.y = gy;
-        cube.position.z = gz;
+    cube.position.x = gx;
+    cube.position.y = gy;
+    cube.position.z = gz;
 
-        cube.castShadow = true;
-        cube.receiveShadow = true;
+    cube.castShadow = true;
+    cube.receiveShadow = true;
 
-        cube.d = d;
+    cube.d = d;
 
-        var objToAdd = rootHouse || scene;
-        objToAdd.add(cube);
+    var objToAdd = rootHouse || scene;
+    objToAdd.add(cube);
 
-        // add mutant sphere
-        if (is_leaf_mutant) {
-            var sphereRadius = Math.min(gw, gh) * 0.2;
-            // var sphereRadius = 0.05;
+    // add mutant sphere
+    if (is_leaf_mutant) {
+      var sphereRadius = Math.min(gw, gh) * 0.2;
+      // var sphereRadius = 0.05;
 
-            var sphereGeometry = new three.SphereGeometry(sphereRadius, 16, 16);
-            var sphereMaterial = new three.MeshBasicMaterial({ color: 0xff0000 });
-            var sphere = new three.Mesh(sphereGeometry, sphereMaterial);
+      var sphereGeometry = new three.SphereGeometry(sphereRadius, 16, 16);
+      var sphereMaterial = new three.MeshBasicMaterial({ color: 0xff0000 });
+      var sphere = new three.Mesh(sphereGeometry, sphereMaterial);
 
-            sphere.position.x = 0;
-            sphere.position.y = 0;
-            sphere.position.z = gd / 2 + sphereRadius;
+      sphere.position.x = 0;
+      sphere.position.y = 0;
+      sphere.position.z = gd / 2 + sphereRadius;
 
-            sphere.d = d;  // share same d
+      sphere.d = d;  // share same d
 
-            cube.add(sphere);  // child of cube
+      cube.add(sphere);  // child of cube
+    }
 
-            var topZ = sphere.position.z + sphereRadius;
-            if (topZ > maxSphereHeight) {
-                maxSphereHeight = topZ;
-            }
+    if (!rootHouse) {
+      rootHouse = cube;
+      rootHouse.rotation.z = Math.PI / 4;
+    }
+  }
+
+  function render() {
+    renderer.render(scene, camera);
+  }
+
+  function animate() {
+    requestAnimationFrame(animate);
+  }
+
+  var selectedD;
+
+  function onCanvasMouseMove(event) {
+    var e = event;
+    var et = e.target;
+
+    e.preventDefault();
+
+    var mouse = new three.Vector2();
+
+    mouse.x = (((e.offsetX !== undefined ? e.offsetX : e.layerX) - et.offsetLeft) / et.clientWidth) * 2 - 1;
+    mouse.y = -(((e.offsetY !== undefined ? e.offsetY : e.layerY) - et.offsetTop) / et.clientHeight) * 2 + 1;
+    mouse.z = -1;
+
+    raycaster.setFromCamera(mouse, camera);
+
+    var intersects = raycaster.intersectObjects(rootHouse ? [rootHouse].concat(rootHouse.children) : [], true);
+
+    if (intersects.length > 0) {
+      if (intersected != intersects[0].object || true) {
+        if (intersected) {
+          var prevTarget = (intersected.parent && intersected.parent.d) ? intersected.parent : intersected;
+
+          prevTarget.material.uniforms.glow = { type: 'f', value: 1.0 };
+          prevTarget.material.needsUpdate = true;
         }
 
-        if (!rootHouse) {
-            rootHouse = cube;
-            rootHouse.rotation.z = Math.PI / 4;
+        intersected = intersects[0].object;
+
+        var hoverTarget = (intersected.parent && intersected.parent.d) ? intersected.parent : intersected;
+
+        hoverTarget.material.uniforms.glow = { type: 'f', value: 1.4 };
+        hoverTarget.material.needsUpdate = true;
+
+        selectedD = intersected.d;
+        if (params.legend) {
+          params.legend.onMouseover(intersected.d, e);
         }
+        render();
+      }
+    } else if (intersected) {
+      if (intersected.material.uniforms && intersected.material.uniforms.glow) {
+        intersected.material.uniforms.glow = { type: 'f', value: 1.0 };
+        intersected.material.needsUpdate = true;
+      }
+      intersected = null;
+
+      if (params.legend && selectedD)
+        params.legend.onMouseout(selectedD, e);
+
+      selectedD = undefined;
+      render();
     }
+  }
 
-    function render() {
-        renderer.render(scene, camera);
+  function onCanvasMouseClick(e) {
+    e.preventDefault();
+    if (params.legend)
+      params.legend.onClick(selectedD, e);
+  }
+
+  renderer.setSize(width, height);
+  renderer.setClearColor(0xffffff, 1);
+  renderer.shadowMapEnabled = true;
+
+  canvas.node().appendChild(renderer.domElement);
+
+  var directionalLight = new three.DirectionalLight(0xFFFFFF, 1.0);
+  directionalLight.position.set(-5, -10, 15);
+  directionalLight.castShadow = true;
+  directionalLight.shadowCameraNear = 0.01;
+  directionalLight.shadowCameraFar = 20;
+  directionalLight.shadowCameraRight = 1.5;
+  directionalLight.shadowCameraLeft = -1.5;
+  directionalLight.shadowCameraTop = 1.5;
+  directionalLight.shadowCameraBottom = -1.5;
+  directionalLight.shadowDarkness = 0.5;
+
+  scene.add(directionalLight);
+
+  // add subtle ambient lighting
+  var ambientLight = new three.AmbientLight(0x313131);
+  scene.add(ambientLight);
+
+  renderer.domElement.addEventListener('mousemove', onCanvasMouseMove, false);
+  renderer.domElement.addEventListener('click', onCanvasMouseClick, false);
+
+  var canvasDiv = $('#code-city-canvas');
+  canvasDiv.on('mouseleave', function () {
+    if (params.legend && selectedD) {
+      params.legend.onMouseout(selectedD);
+      selectedD = undefined;
     }
+  });
 
-    function animate() {
-        requestAnimationFrame(animate);
-    }
+  var findExtremes = function (d) {
+    if (d.children)
+      return;
+    if (d.height > maximumHeight || maximumHeight === undefined)
+      maximumHeight = d.height;
+    if (d.height < minimumHeight || minimumHeight === undefined)
+      minimumHeight = d.height;
+  }
 
-    var selectedD;
+  data.forEach(findExtremes);
 
-    function onCanvasMouseMove(event) {
-        var e = event;
-        var et = e.target;
+  data.forEach(addHouse);
 
-        e.preventDefault();
+  render();
+  animate();
 
-        var mouse = new three.Vector2();
+  var distance = 500.0;
+  var maxHeight = -20.0;
+  var maxDistance = distance;
+  var distanceAngle = 10.0;
 
-        mouse.x = (((e.offsetX !== undefined ? e.offsetX : e.layerX) - et.offsetLeft) / et.clientWidth) * 2 - 1;
-        mouse.y = -((( e.offsetY !== undefined ? e.offsetY : e.layerY) - et.offsetTop) / et.clientHeight) * 2 + 1;
-        mouse.z = -1;
+  var flyBy = function () {
+    var acceleration = Math.pow((maxDistance - distance) / maxDistance, 2.0);
+    distance -= 0.01 + 32.0 * (1.0 - acceleration);
+    var height = distance / maxDistance * maxHeight;
+    distanceAngle = distance * 0.1;
 
-        raycaster.setFromCamera(mouse, camera);
-
-        var intersects = raycaster.intersectObjects(rootHouse ? [rootHouse].concat(rootHouse.children) : [], true);
-
-        if (intersects.length > 0) {
-            if (intersected != intersects[0].object || true) {
-                if (intersected) {
-                    var prevTarget = (intersected.parent && intersected.parent.d) ? intersected.parent : intersected;
-
-                    prevTarget.material.uniforms.glow = { type: 'f', value: 1.0 };
-                    prevTarget.material.needsUpdate = true;
-                }
-
-                intersected = intersects[0].object;
-
-                var hoverTarget = (intersected.parent && intersected.parent.d) ? intersected.parent : intersected;
-
-                hoverTarget.material.uniforms.glow = {type : 'f',value : 1.4};
-                hoverTarget.material.needsUpdate = true;
-
-                selectedD = intersected.d;
-                if (params.legend){
-                    params.legend.onMouseover(intersected.d,e);
-                }
-                render();
-            }
-        } else if (intersected) {
-            if (intersected.material.uniforms && intersected.material.uniforms.glow) {
-                intersected.material.uniforms.glow = {type : 'f',value : 1.0};
-                intersected.material.needsUpdate = true;
-            }
-            intersected = null;
-
-            if (params.legend && selectedD)
-                params.legend.onMouseout(selectedD,e);
-
-            selectedD = undefined;
-            render();
-        }
-    }
-
-    function onCanvasMouseClick(e){
-        e.preventDefault();
-        if (params.legend)
-            params.legend.onClick(selectedD,e);
-    }
-
-    renderer.setSize(width, height);
-    renderer.setClearColor( 0xffffff, 1);
-    renderer.shadowMapEnabled = true;
-
-    canvas.node().appendChild(renderer.domElement);
-
-    var directionalLight = new three.DirectionalLight(0xFFFFFF, 1.0);
-    directionalLight.position.set(-5, -10, 15);
-    directionalLight.castShadow = true;
-    directionalLight.shadowCameraNear = 0.01;
-    directionalLight.shadowCameraFar = 20;
-    directionalLight.shadowCameraRight = 1.5;
-    directionalLight.shadowCameraLeft = -1.5;
-    directionalLight.shadowCameraTop  = 1.5;
-    directionalLight.shadowCameraBottom = -1.5;
-    directionalLight.shadowDarkness = 0.5;
-
-    scene.add(directionalLight);
-
-    // add subtle ambient lighting
-    var ambientLight = new three.AmbientLight(0x313131);
-    scene.add(ambientLight);
-
-    renderer.domElement.addEventListener('mousemove', onCanvasMouseMove, false);
-    renderer.domElement.addEventListener('click', onCanvasMouseClick, false);
-
-    var findExtremes = function(d){
-        if (d.children)
-            return;
-        if (d.height > maximumHeight || maximumHeight === undefined)
-            maximumHeight = d.height;
-        if (d.height < minimumHeight || minimumHeight === undefined)
-            minimumHeight = d.height;
-    }
-
-    data.forEach(findExtremes);
-
-    data.forEach(addHouse);
-
-    camera.position.y = -3;
-    camera.position.z = Math.max(2, maxSphereHeight + 1);
-    camera.lookAt(new three.Vector3(0, -0.25, 0));
+    camera.position.set(-(distance + cameraDistance) * Math.cos(distanceAngle + cameraAngle), -(distance + cameraDistance) * Math.sin(distanceAngle + cameraAngle), height + cameraHeight);
+    camera.up = new three.Vector3(0, 0, 1);
+    camera.lookAt(new three.Vector3(Math.cos(cameraAngle + distanceAngle), Math.sin(cameraAngle + distanceAngle), cameraZ));
 
     render();
-    animate();
+    if (distance > 0)
+      setTimeout(flyBy, 10);
+  };
 
-    var distance = 500.0;
-    var maxHeight = -20.0;
-    var maxDistance = distance;
-    var distanceAngle = 10.0;
+  flyBy();
 
-    var flyBy = function(){
-        var acceleration = Math.pow((maxDistance-distance)/maxDistance,2.0);
-        distance -= 0.01+32.0*(1.0-acceleration);
-        var height = distance/maxDistance*maxHeight;
-        distanceAngle=distance*0.1;
+  var setCameraRotation = function (angle) {
+    cameraAngle = angle;
 
-        camera.position.set(-(distance+cameraDistance)*Math.cos(distanceAngle+cameraAngle),-(distance+cameraDistance)*Math.sin(distanceAngle+cameraAngle),height+cameraHeight);
-        camera.up = new three.Vector3(0,0,1);
-        camera.lookAt(new three.Vector3(Math.cos(cameraAngle+distanceAngle),Math.sin(cameraAngle+distanceAngle),cameraZ));
+    var dynamicCameraHeight = 2;
 
-        render();
-        if (distance > 0)
-            setTimeout(flyBy,10);
-    };
+    camera.position.set(
+      -cameraDistance * Math.cos(cameraAngle),
+      -cameraDistance * Math.sin(cameraAngle),
+      dynamicCameraHeight + Math.sin(cameraPitch) * cameraDistance
+    );
+    camera.up = new three.Vector3(0, 0, 1);
+    camera.lookAt(new three.Vector3(0, 0, 0));
+    render();
+  };
 
-    flyBy();
+  var getCameraRotation = function () {
+    return cameraAngle;
+  }
 
-    var setCameraRotation = function(angle){
-        cameraAngle = angle;
+  var setCameraBirdEyeView = function () {
+    var angleRad = Math.PI / 4;
 
-        var dynamicCameraHeight = Math.max(2, maxSphereHeight + 1);
+    camera.position.set(0, 0, 5);
 
-        camera.position.set(
-            -cameraDistance * Math.cos(cameraAngle),
-            -cameraDistance * Math.sin(cameraAngle),
-            dynamicCameraHeight
-        );
-        camera.up = new three.Vector3(0, 0, 1);
-        camera.lookAt(new three.Vector3(Math.cos(cameraAngle), Math.sin(cameraAngle), cameraZ));
-        render();
-    };
+    // camera.up = new three.Vector3(0, 1, 0);
+    camera.up.set(Math.sin(angleRad), Math.cos(angleRad), 0);
 
-    var getCameraRotation = function(){
-        return cameraAngle;
-    }
+    camera.lookAt(new three.Vector3(0, 0, 0));
+    render();
+  };
 
-    return {
-        getCameraRotation : getCameraRotation,
-        setCameraRotation : setCameraRotation
-    };
+  var setCameraNormalView = function () {
+    setCameraRotation(cameraAngle);
+  };
+
+  var getCameraPitch = function () {
+    return cameraPitch;
+  };
+
+  var setCameraPitch = function (pitch) {
+    var maxPitch = Math.PI / 2 - 0.1;
+    var minPitch = -Math.PI / 2 + 0.1;
+
+    cameraPitch = Math.max(minPitch, Math.min(maxPitch, pitch));
+    setCameraRotation(cameraAngle);
+  };
+
+  return {
+    getCameraRotation: getCameraRotation,
+    setCameraRotation: setCameraRotation,
+    setCameraBirdEyeView: setCameraBirdEyeView,
+    setCameraNormalView: setCameraNormalView,
+    getCameraPitch: getCameraPitch,
+    setCameraPitch: setCameraPitch
+  };
 }
 
 export {
-    codeCity,
-    generateTreemap
+  codeCity,
+  generateTreemap
 };

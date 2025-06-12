@@ -1,11 +1,10 @@
 import * as codeCity from './code-city';
 import $ from 'jquery';
-import {legend} from '../common/legend.js';
+import { legend } from '../common/legend.js';
 import * as dataLoaders from '../data/loaders.js';
 import * as dataHelpers from '../data/helpers.js';
 
 const d3 = window.d3;
-console.log(d3)
 
 var params = (new URL(document.location)).searchParams;
 // 'go-jsonnet'
@@ -27,6 +26,9 @@ var canvasDiv = $('#code-city-canvas')[0];
 
 var rotateLeftSpan = $('#rotate-left');
 var rotateRightSpan = $('#rotate-right');
+var rotateUpSpan = $('#rotate-up');
+var rotateDownSpan = $('#rotate-down');
+var birdEyeToggle = $('#toggle-bird-eye');
 
 var nodeColorScale = [
     // '#a50026',
@@ -127,7 +129,7 @@ var mapperParams = {
     split: function (key) {
         var components = key.split('/');
         if (components.length > 1) {
-            components = components.filter(function(c) { return c !== ""; });
+            components = components.filter(function (c) { return c !== ""; });
         }
         return components;
     }
@@ -198,7 +200,6 @@ fetchData().then(function (d) {
             mergedData[currentPath].mutations.coverage = (mergedData[currentPath].mutations.killed / mergedData[currentPath].mutations.total_mutation) * 100;
         }
     }
-    console.log("mergedData:", mergedData)
     var treeData = dataHelpers.convertToTree(mergedData, mapperParams);
     dataHelpers.colorize(d3, treeData, 'colorValue', nodeColorScale, { min: 20, max: 100 });
 
@@ -206,43 +207,118 @@ fetchData().then(function (d) {
     try {
         codeCityChart = codeCity.codeCity(d3, $('#code-city-chart')[0], treeData, graphParams);
     } catch (e) {
-        console.error(e);
         if (e instanceof TypeError)
             $('#code-city-chart').html("\
-                  <div> \
-                  <img src=\"../assets/images/code_city_large.png\" width=\"100%\"> \
-                  <p style=\"background:rgba(255,0,0,0.7); top:300px; position:absolute; font-size:18px;\" class=\"alert alert-danger\"> \
-                      It seems that your browser does not support (or has deactivated) WebGL, which is required for this graph. Please upgrade your browser or make sure that WebGL is activated. Below is a teaser of what the visualization of your project might look like. \
-                  </p> \
-                  </div> \
-                  ");
+                <div> \
+                <img src=\"../assets/images/code_city_large.png\" width=\"100%\"> \
+                <p style=\"background:rgba(255,0,0,0.7); top:300px; position:absolute; font-size:18px;\" class=\"alert alert-danger\"> \
+                    It seems that your browser does not support (or has deactivated) WebGL, which is required for this graph. Please upgrade your browser or make sure that WebGL is activated. Below is a teaser of what the visualization of your project might look like. \
+                </p> \
+                </div> \
+                ");
     }
+    console.log("mergedData:", mergedData)
+    var treeData = dataHelpers.convertToTree(mergedData, mapperParams);
+    dataHelpers.colorize(d3, treeData, 'colorValue', nodeColorScale, { min: 20, max: 100 });
 
     var isRotating = false;
 
     var startRotate = function (left) {
         if (isRotating)
             return;
-        isRotating = false;
+
+        isRotating = true;
+
         var rotate = function () {
             if (!isRotating)
                 return;
-            codeCityChart.setCameraRotation(codeCityChart.getCameraRotation() + (left ? 0.01 : -0.01));
+
+            codeCityChart.setCameraRotation(
+                codeCityChart.getCameraRotation() + (left ? 0.01 : -0.01)
+            );
+
             setTimeout(rotate, 10);
         };
-        var startRotation = function () {
-            isRotating = true;
-            rotate();
-        };
-        setTimeout(startRotation, 40);
+
+        rotate();
     };
 
     var stopRotate = function () {
         isRotating = false;
     };
 
-    rotateLeftSpan.mouseover(startRotate.bind(null, false));
-    rotateRightSpan.mouseover(startRotate.bind(null, true));
-    rotateLeftSpan.mouseout(stopRotate);
-    rotateRightSpan.mouseout(stopRotate);
+    var isRotatingPitch = false;
+
+    var startRotatePitch = function (up) {
+        if (isRotatingPitch)
+            return;
+
+        isRotatingPitch = true;
+
+        var rotate = function () {
+            if (!isRotatingPitch)
+                return;
+
+            const pitch = codeCityChart.getCameraPitch();
+            codeCityChart.setCameraPitch(pitch + (up ? 0.01 : -0.01));
+
+            setTimeout(rotate, 10);
+        };
+        setTimeout(startRotation, 40);
+    };
+
+        rotate();
+    };
+
+    var stopRotatePitch = function () {
+        isRotatingPitch = false;
+    };
+
+    rotateLeftSpan.on('mousedown', function () {
+        if (birdEyeToggle.is(':checked')) {
+            birdEyeToggle.prop('checked', false).trigger('change');
+        }
+
+        startRotate(false);
+    });
+    rotateLeftSpan.on('mouseup mouseleave', function () {
+        stopRotate();
+    });
+
+    rotateRightSpan.on('mousedown', function () {
+        if (birdEyeToggle.is(':checked')) {
+            birdEyeToggle.prop('checked', false).trigger('change');
+        }
+
+        startRotate(true);
+    });
+    rotateRightSpan.on('mouseup mouseleave', function () {
+        stopRotate();
+    });
+    rotateUpSpan.on('mousedown', function () {
+        if (birdEyeToggle.is(':checked')) {
+            birdEyeToggle.prop('checked', false).trigger('change');
+        }
+        startRotatePitch(true);
+    });
+    rotateUpSpan.on('mouseup mouseleave', function () {
+        stopRotatePitch();
+    });
+
+    rotateDownSpan.on('mousedown', function () {
+        if (birdEyeToggle.is(':checked')) {
+            birdEyeToggle.prop('checked', false).trigger('change');
+        }
+        startRotatePitch(false);
+    });
+    rotateDownSpan.on('mouseup mouseleave', function () {
+        stopRotatePitch();
+    });
+    birdEyeToggle.on('change', function () {
+        if (birdEyeToggle.is(':checked')) {
+            codeCityChart.setCameraBirdEyeView();
+        } else {
+            codeCityChart.setCameraNormalView();
+        }
+    });
 });
