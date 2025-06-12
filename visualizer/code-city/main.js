@@ -217,9 +217,6 @@ fetchData().then(function (d) {
                 </div> \
                 ");
     }
-    console.log("mergedData:", mergedData)
-    var treeData = dataHelpers.convertToTree(mergedData, mapperParams);
-    dataHelpers.colorize(d3, treeData, 'colorValue', nodeColorScale, { min: 20, max: 100 });
 
     var isRotating = false;
 
@@ -264,8 +261,6 @@ fetchData().then(function (d) {
 
             setTimeout(rotate, 10);
         };
-        setTimeout(startRotation, 40);
-    };
 
         rotate();
     };
