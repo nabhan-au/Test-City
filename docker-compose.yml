@@ -47,5 +47,7 @@ services:
       - '5173:5173'
     depends_on:
       - server
+    volumes:
+      - ./visualizer:/usr/src/app/visualizer
 
 

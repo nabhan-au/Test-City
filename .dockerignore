@@ -1,0 +1,7 @@
+.idea
+.env
+.env.example
+.DS_Store
+/visualizer/bower_components
+/__pycache__
+/venv
