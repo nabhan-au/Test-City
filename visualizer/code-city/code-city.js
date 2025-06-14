@@ -32,10 +32,6 @@ function codeCity(d3, element, rawData, params) {
     window.renderer = new three.WebGLRenderer({ alpha: true, antialias: true });
   var renderer = window.renderer;
 
-  camera.position.y = -3;
-  camera.position.z = 2;
-  camera.lookAt(new three.Vector3(0, -0.25, 0));
-
   var renderer;
   var intersected;
   var rootHouse;
@@ -282,7 +278,7 @@ void main() { \
 
     camera.position.set(-(distance + cameraDistance) * Math.cos(distanceAngle + cameraAngle), -(distance + cameraDistance) * Math.sin(distanceAngle + cameraAngle), height + cameraHeight);
     camera.up = new three.Vector3(0, 0, 1);
-    camera.lookAt(new three.Vector3(Math.cos(cameraAngle + distanceAngle), Math.sin(cameraAngle + distanceAngle), cameraZ));
+    camera.lookAt(new three.Vector3(0, 0, 0));
 
     render();
     if (distance > 0)
