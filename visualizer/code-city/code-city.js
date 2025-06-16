@@ -26,7 +26,7 @@ function codeCity(d3, element, rawData, params) {
 
   var raycaster = new three.Raycaster();
   var scene = new three.Scene();
-  var camera = new three.PerspectiveCamera(45.0, width/height, 1.0, 1000 );
+  var camera = new three.PerspectiveCamera(45.0, width / height, 1.0, 1000);
 
   if (!window.renderer)
     window.renderer = new three.WebGLRenderer({ alpha: true, antialias: true });
@@ -333,6 +333,18 @@ void main() { \
     cameraPitch = Math.max(minPitch, Math.min(maxPitch, pitch));
     setCameraRotation(cameraAngle);
   };
+
+  function resizeCanvas() {
+    const container = document.getElementById('code-city-canvas');
+    const size = container.clientWidth;
+    camera.aspect = size / size;
+    camera.updateProjectionMatrix();
+    renderer.setSize(size, size);
+    render();
+  }
+
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
 
   return {
     getCameraRotation: getCameraRotation,
