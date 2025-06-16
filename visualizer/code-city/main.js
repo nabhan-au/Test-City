@@ -63,28 +63,29 @@ function legendContent(d, e) {
     const mutations = d.data?.mutations || { coverage: 0, killed: 0, total_mutation: 0 };
 
     return `
-        <div>
-            <table class="table table-striped">
-                <tbody>
-                    <tr>
-                        <td>Lines coverage (%)</td>
-                        <td>${lines.coverage}</td>
-                    </tr>
-                    <tr>
-                        <td>Lines covered</td>
-                        <td>${lines.covered_line} / ${lines.total_line}</td>
-                    </tr>
-                    <tr>
-                        <td>Mutations coverage (%)</td>
-                        <td>${mutations.coverage}</td>
-                    </tr>
-                    <tr>
-                        <td>Mutations killed</td>
-                        <td>${mutations.killed} / ${mutations.total_mutation}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>`;
+      <div class="bg-white text-gray-800 p-4 rounded-lg shadow-md">
+        <table class="w-full text-sm">
+          <tbody>
+            <tr class="bg-gray-50">
+              <td class="py-1">Lines coverage (%)</td>
+              <td class="py-1 text-right">${lines.coverage}</td>
+            </tr>
+            <tr>
+              <td class="py-1">Lines covered</td>
+              <td class="py-1 text-right">${lines.covered_line} / ${lines.total_line}</td>
+            </tr>
+            <tr class="bg-gray-50">
+              <td class="py-1">Mutations coverage (%)</td>
+              <td class="py-1 text-right">${mutations.coverage}</td>
+            </tr>
+            <tr>
+              <td class="py-1">Mutations killed</td>
+              <td class="py-1 text-right">${mutations.killed} / ${mutations.total_mutation}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    `;
 }
 
 function nodeHeight(d) {
