@@ -157,53 +157,49 @@ void main() { \
   var selectedD;
 
   function onCanvasMouseMove(event) {
-    var e = event;
-    var et = e.target;
-
-    e.preventDefault();
-
-    var mouse = new three.Vector2();
-
-    mouse.x = (((e.offsetX !== undefined ? e.offsetX : e.layerX) - et.offsetLeft) / et.clientWidth) * 2 - 1;
-    mouse.y = -(((e.offsetY !== undefined ? e.offsetY : e.layerY) - et.offsetTop) / et.clientHeight) * 2 + 1;
-    mouse.z = -1;
-
+    event.preventDefault();
+  
+    const rect = renderer.domElement.getBoundingClientRect();
+    const mouse = new three.Vector2(
+      ((event.clientX - rect.left) / rect.width) * 2 - 1,
+      -((event.clientY - rect.top) / rect.height) * 2 + 1
+    );
+  
     raycaster.setFromCamera(mouse, camera);
-
-    var intersects = raycaster.intersectObjects(rootHouse ? [rootHouse].concat(rootHouse.children) : [], true);
-
+    const intersects = raycaster.intersectObjects(scene.children, true);
+  
     if (intersects.length > 0) {
-      if (intersected != intersects[0].object || true) {
-        if (intersected) {
-          var prevTarget = (intersected.parent && intersected.parent.d) ? intersected.parent : intersected;
-
-          prevTarget.material.uniforms.glow = { type: 'f', value: 1.0 };
-          prevTarget.material.needsUpdate = true;
+      const rawHit = intersects[0].object;
+  
+      let hitMesh = null;
+      if (rawHit.material.uniforms?.glow !== undefined) {
+        hitMesh = rawHit;
+      } else if (
+        rawHit.parent?.material?.uniforms?.glow !== undefined
+      ) {
+        hitMesh = rawHit.parent;
+      }
+  
+      if (hitMesh) {
+        if (intersected && intersected !== hitMesh) {
+          intersected.material.uniforms.glow.value = 1.0;
+          intersected.material.needsUpdate = true;
         }
-
-        intersected = intersects[0].object;
-
-        var hoverTarget = (intersected.parent && intersected.parent.d) ? intersected.parent : intersected;
-
-        hoverTarget.material.uniforms.glow = { type: 'f', value: 1.4 };
-        hoverTarget.material.needsUpdate = true;
-
-        selectedD = intersected.d;
-        if (params.legend) {
-          params.legend.onMouseover(intersected.d, e);
-        }
+  
+        intersected = hitMesh;
+        intersected.material.uniforms.glow.value = 1.4;
+        intersected.material.needsUpdate = true;
+  
+        selectedD = hitMesh.d;
+        params.legend?.onMouseover(selectedD, event);
         render();
       }
-    } else if (intersected) {
-      if (intersected.material.uniforms && intersected.material.uniforms.glow) {
-        intersected.material.uniforms.glow = { type: 'f', value: 1.0 };
-        intersected.material.needsUpdate = true;
-      }
+    }
+    else if (intersected) {
+      intersected.material.uniforms.glow.value = 1.0;
+      intersected.material.needsUpdate = true;
+      params.legend?.onMouseout(selectedD, event);
       intersected = null;
-
-      if (params.legend && selectedD)
-        params.legend.onMouseout(selectedD, e);
-
       selectedD = undefined;
       render();
     }
