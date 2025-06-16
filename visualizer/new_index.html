@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Model Viewer Studio</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@latest/dist/tailwind.min.css">
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #0f172a, #1e3a8a, #6b21a8);
+            color: white;
+            min-height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="text-center py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-blue-600 opacity-20 to-purple-600"></div>
+        <div class="relative container mx-auto px-6">
+            <h1 class="text-5xl font-bold">Test City <span
+                    class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">(code-is-beautiful)</span>
+            </h1>
+            <p class="mt-4 text-xl">Upload, manage, and visualize your 3D models. Experience your designs like never
+                before.</p>
+            <p class="mt-12">At <a href="https://www.quantifiedcode.com"
+                    class="text-blue-500 hover:text-blue-700">QuantifiedCode</a>,
+                we help development teams write better
+                code—through data. On our <a href="https://www.quantifiedcode.com"> free code analysis platform</a>, we
+                use visualizations, to make code better understandable for developers and business people. Creating
+                great visualizations can be challenging though. With this project, we want to change that by providing
+                an <strong>open-source collection</strong> of useful and engaging source code visualizations. They are
+                all realized with either <strong>D3</strong> or <strong>Three.js</strong> and are provided under an
+                <strong>Affero GPL</strong> license. You can freely reuse them in your own projects. If you like to see
+                a visualization of your own project, check out our <a href="https://www.quantifiedcode.com">free
+                    service</a>.
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+                <div class="p-6 bg-white bg-opacity-5 rounded-lg">
+                    <h3 class="text-lg font-semibold">High-Quality Rendering</h3>
+                    <p>Crystal clear visualization with advanced lighting.</p>
+                </div>
+                <div class="p-6 bg-white bg-opacity-5 rounded-lg">
+                    <h3 class="text-lg font-semibold">Lightning Fast</h3>
+                    <p>Instant loading and smooth interactions.</p>
+                </div>
+                <div class="p-6 bg-white bg-opacity-5 rounded-lg">
+                    <h3 class="text-lg font-semibold">Multiple Formats</h3>
+                    <p>Support for OBJ, FBX, GLTF, and more.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Upload Section -->
+    <section class="container mx-auto px-6 py-20">
+        <h2 class="text-4xl text-center mb-10">Upload Your Model</h2>
+        <div class="bg-white bg-opacity-10 rounded-lg p-8 text-center">
+            <form id="uploadForm" enctype="multipart/form-data">
+                <input type="file" id="folderInput" name="files" webkitdirectory directory multiple
+                    class="py-4 px-6 bg-white bg-opacity-5 rounded mr-4">
+                <input type="text" id="project_name" name="project_name" placeholder="Project Name"
+                    class="mt-4 mb-4 py-2 px-4 rounded bg-opacity-5 bg-white text-white">
+                <button type="submit" class="mt-4 bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded">Upload</button>
+            </form>
+        </div>
+    </section>
+    <hr class="border-t border-gray-600 my-12">
+
+    <!-- Projects Section -->
+    <section class="container mx-auto px-6 mb-40">
+        <h2 class="text-4xl text-center mb-10">Your Projects</h2>
+        <div id="projectList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <p id="defaultMessage" class="col-span-full text-center">No projects available. Upload your first model to
+                get started.</p>
+        </div>
+    </section>
+
+    <footer class="bg-black bg-opacity-20 py-8">
+        <div class="container mx-auto px-6 text-center text-white">
+            <p class="text-sm">&copy; 2025 Your Company. All rights reserved.</p>
+            <div class="mt-4 space-x-4">
+                <a href="#" class="hover:text-blue-400">About</a>
+                <a href="#" class="hover:text-blue-400">Privacy</a>
+                <a href="#" class="hover:text-blue-400">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function addProject(projectName) {
+            const defaultMessage = document.getElementById("defaultMessage");
+            if (defaultMessage) defaultMessage.remove();
+
+            const projectList = document.getElementById("projectList");
+            const projectElement = document.createElement("button");
+            projectElement.textContent = projectName;
+            projectElement.className = "bg-white bg-opacity-5 rounded-lg p-4 hover:bg-opacity-10";
+            projectElement.onclick = () => window.location.href = "./code-city/index.html?project=" + projectName;
+            projectList.appendChild(projectElement);
+        }
+
+        fetch('http://localhost:8000/coverall/project/list')
+            .then(response => response.json())
+            .then(data => {
+                if (data.length > 0) {
+                    data.forEach(project => addProject(project));
+                }
+            })
+            .catch(() => {
+                document.getElementById("projectList").innerHTML = "<p>Error loading projects.</p>";
+            });
+
+        document.getElementById("uploadForm").addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const files = document.getElementById("folderInput").files;
+            const projectName = document.getElementById("project_name").value;
+
+            if (files.length === 0 || !projectName) {
+                alert("Please select a folder and enter a project name.");
+                return;
+            }
+
+            const formData = new FormData();
+            for (const file of files) {
+                formData.append("files", file, file.webkitRelativePath);
+            }
+
+            try {
+                const response = await fetch("http://localhost:8000/coverall/project/" + projectName, {
+                    method: "POST",
+                    body: formData,
+                });
+                const result = await response.json();
+                alert("Upload complete: " + JSON.stringify(result));
+                addProject(projectName);
+            } catch (error) {
+                alert("Upload failed");
+            }
+        });
+    </script>
+</body>
+
+</html>
