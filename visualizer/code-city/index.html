@@ -1,45 +1,82 @@
 <!DOCTYPE html>
-<html>
-    <head>
-      <meta charset="utf-8">
-      <link href="../assets/css/bootstrap.min.css" rel="stylesheet" />
-      <link rel="stylesheet" type="text/css" href="../assets/css/styles.css" />
+<html lang="en">
 
-<!--      <script src="../config.js"></script>-->
-        <script src="https://d3js.org/d3.v3.min.js"></script>
-        <script type="module" src="main.js"></script>
-      <title>Test Is Beautiful - Code City</title>
-    </head>
-    <body>
-        <nav class="navbar navbar-inverse navbar-fixed-top">
-          <div class="container">
-            <div class="navbar-header">
-              <a class="navbar-brand" href="../">Test is Beautiful!</a>
-            </div>
-          </div>
-        </nav>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Viewer</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@latest/dist/tailwind.min.css">
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #0f172a, #1e3a8a, #6b21a8);
+            color: white;
+            min-height: 100vh;
+        }
+    </style>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script type="module" src="main.js"></script>
+</head>
 
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                        <h2>Test City</h2>
-                        <p style="text-align:right">
-                            <span id="rotate-left" class="btn btn-primary">Rotate Left</span>
-                            <span id="rotate-right" class="btn btn-primary">Rotate Right</span>
-                            <span id="rotate-up" class="btn btn-primary">Rotate Up</span>
-                            <span id="rotate-down" class="btn btn-primary">Rotate Down</span>
-                            <label class="switch">
-                                <input type="checkbox" id="toggle-bird-eye">
-                                <span class="slider round"></span>
-                            </label>
-                            <!-- <span style="margin-left: 8px;">Bird-eye view</span>                    -->
-                        </p>
-                        <div class="code-city-canvas" id="code-city-canvas">
-                            <div id="code-city-chart" class="code-city-chart"></div>
-                            <div id="code-city-legend" class="code-city-legend"></div>
-                        </div>
-                </div>
+<body>
+    <header class="bg-black bg-opacity-20 backdrop-blur-sm border-b border-white border-opacity-10">
+        <div class="container mx-auto px-6 py-4 flex items-center">
+            <a href="../index.html">
+                <button class="text-white hover:bg-opacity-10 px-3 py-1 rounded-md">
+                    &larr; Back to Projects
+                </button>
+            </a>
+            <div class="mx-auto text-center">
+                <h1 class="text-xl font-semibold">Test City (code-is-beautiful)</h1>
+                <p class="text-sm text-gray-300">code-city</p>
             </div>
         </div>
-    </body>
+    </header>
+
+    <main class="container mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <aside class="lg:col-span-1">
+            <section class="bg-white bg-opacity-10 backdrop-blur-sm p-4 rounded-lg mb-4">
+                <h2 class="text-lg font-semibold mb-2">Controls</h2>
+                <div class="grid grid-cols-2 gap-2">
+                    <button id="rotate-left"
+                        class="text-white bg-transparent hover:bg-white hover:bg-opacity-10 px-3 py-1 rounded transition-colors duration-200">
+                        Rotate Left
+                    </button>
+                    <button id="rotate-right"
+                        class="text-white bg-transparent hover:bg-white hover:bg-opacity-10 px-3 py-1 rounded transition-colors duration-200">
+                        Rotate Right
+                    </button>
+                    <button id="rotate-up"
+                        class="text-white bg-transparent hover:bg-white hover:bg-opacity-10 px-3 py-1 rounded transition-colors duration-200">
+                        Rotate Up
+                    </button>
+                    <button id="rotate-down"
+                        class="text-white bg-transparent hover:bg-white hover:bg-opacity-10 px-3 py-1 rounded transition-colors duration-200">
+                        Rotate Down
+                    </button>
+                </div>
+                <div class="mt-4">
+                    <label class="inline-flex items-center space-x-2">
+                        <input type="checkbox" id="toggle-bird-eye"
+                            class="h-6 w-6 accent-green-500 bg-gray-700 border-gray-500 rounded" />
+                        <span class="text-lg text-white select-none">Bird's Eye View</span>
+                    </label>
+                </div>
+            </section>
+            <section class="bg-white bg-opacity-10 backdrop-blur-sm p-4 rounded-lg">
+                <h2 class="text-lg font-semibold mb-2">Project Details</h2>
+                <p>Description: Description Placeholder</p>
+                <p>Created: Created Placeholder</p>
+            </section>
+        </aside>
+
+        <section class="lg:col-span-3 bg-white bg-opacity-5 backdrop-blur-sm p-6 rounded-lg">
+            <p>3D Model Viewer</p>
+            <div class="code-city-canvas mt-4" id="code-city-canvas">
+                <div id="code-city-chart" class="code-city-chart"></div>
+                <div id="code-city-legend" class="code-city-legend"></div>
+            </div>
+        </section>
+    </main>
+</body>
+
 </html>

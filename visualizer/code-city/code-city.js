@@ -216,7 +216,7 @@ void main() { \
   }
 
   renderer.setSize(width, height);
-  renderer.setClearColor(0xffffff, 1);
+  renderer.setClearColor(0x222222, 1);
   renderer.shadowMapEnabled = true;
 
   canvas.node().appendChild(renderer.domElement);
