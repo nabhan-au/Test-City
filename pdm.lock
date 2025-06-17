@@ -5,7 +5,7 @@
 groups = ["default"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:39ed372e552bed28e7d4371267679bb928fb2ebadfc37699cb468b41a2c7f5b7"
+content_hash = "sha256:f27c35665a21a8aaafdc97bdf18d32092e2671ddbe91f6b4541955805ce92eed"
 
 [[metadata.targets]]
 requires_python = "==3.9.*"
@@ -322,6 +322,19 @@ groups = ["default"]
 files = [
     {file = "idna-3.4-py3-none-any.whl", hash = "sha256:90b77e79eaa3eba6de819a0c442c0b4ceefc341a7a2ab77d7562bf49f425c5c2"},
     {file = "idna-3.4.tar.gz", hash = "sha256:814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4"},
+]
+
+[[package]]
+name = "javalang"
+version = "0.13.0"
+summary = "Pure Python Java parser and tools"
+groups = ["default"]
+dependencies = [
+    "six",
+]
+files = [
+    {file = "javalang-0.13.0-py3-none-any.whl", hash = "sha256:b203c258919b085b44b43b89effcba7291bb2d90c02906b915b39e86aa9fd8e6"},
+    {file = "javalang-0.13.0.tar.gz", hash = "sha256:1681a5a480a58116d42a7eedfd132abe25e6c0ffe552868d581ad84e6aa3424c"},
 ]
 
 [[package]]

@@ -1,4 +1,3 @@
-import pprint
 from typing import List
 
 import xmltodict

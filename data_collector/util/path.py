@@ -30,3 +30,6 @@ def join(base, directory_name):
     if base.endswith("/"):
         return base + directory_name
     return base + "/" + directory_name
+
+def is_path_valid(project_path: str, required_folder = ("/classes/", "/pit-reports/")):
+     return any(folder in project_path for folder in required_folder)

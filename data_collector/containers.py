@@ -1,15 +1,13 @@
 from dependency_injector import containers, providers
-from repositories.file_manager_s3_repository import FileManagerS3Repository
+from configs.trace_config import TraceConfig
 from configs.S3_config import S3Config
 from minio import Minio
 
 from services.coverage_processor import CoverageProcessor
-from services.file_manager.file_manager_local_service import FileManagerLocalService
-from repositories.file_manager_local_repository import FileManagerLocalRepository
 from repositories.file_manager_s3_repository import FileManagerS3Repository
 from services.file_manager.file_manager_s3_service import FileManagerS3Service
+from services.trace_extractor import TraceExtractor
 from util.request import Request
-import urllib3
 
 class Container(containers.DeclarativeContainer):
     
@@ -24,6 +22,15 @@ class Container(containers.DeclarativeContainer):
         access_key=s3_config.get_user_name,
         secret_key=s3_config.get_password,
         secure=False
+    )
+
+    trace_config = providers.Singleton(
+        TraceConfig
+    )
+
+    trace_extractor = providers.Factory(
+        TraceExtractor,
+        trace_config
     )
     
     file_manager_s3_repository = providers.Factory(

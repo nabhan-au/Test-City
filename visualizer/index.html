@@ -87,7 +87,7 @@
                 const projectName = document.getElementById("project_name").value;
                 
                 try {
-                    const response = await fetch("http://localhost:8000/coverall/project/" + document.getElementById("project_name").value, {
+                    const response = await fetch("http://localhost:8000/coverall/project-new/" + document.getElementById("project_name").value, {
                         method: "POST",
                         body: formData,
                     });
