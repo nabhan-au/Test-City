@@ -20,6 +20,7 @@ async function fetchData() {
 
 var metric = 'lines';
 var classes = 'classes';
+var trace = 'traces'
 
 var legendDiv = $('#code-city-legend')[0];
 var canvasDiv = $('#code-city-canvas')[0];
@@ -61,6 +62,7 @@ function legendTitle(d, e) {
 function legendContent(d, e) {
     const lines = d.data?.lines || { coverage: 0, covered_line: 0, total_line: 0 };
     const mutations = d.data?.mutations || { coverage: 0, killed: 0, total_mutation: 0 };
+    const traces = d.data?.traces || { average: 0 };
 
     return `
       <div class="bg-white text-gray-800 p-4 rounded-lg shadow-md">
@@ -82,6 +84,10 @@ function legendContent(d, e) {
               <td class="py-1">Mutations killed</td>
               <td class="py-1 text-right">${mutations.killed} / ${mutations.total_mutation}</td>
             </tr>
+            <tr>
+              <td class="py-1">Average trace</td>
+              <td class="py-1 text-right">${traces.average}</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -95,8 +101,8 @@ function nodeHeight(d) {
     }
     if (d.children && d.children.length)
         return 0;
-    if (d.data[metric].covered_line) {
-        trace_size = d.data[metric].covered_line;
+    if (d.data[trace].average) {
+        trace_size = d.data[trace].average;
     }
     return snapToGrid(gridValue, trace_size);
 }
@@ -188,7 +194,8 @@ fetchData().then(function (d) {
             if (!mergedData[currentPath]) {
                 mergedData[currentPath] = {
                     lines: { coverage: 0, covered_line: 0, total_line: 0 },
-                    mutations: { coverage: 0, killed: 0, total_mutation: 0 }
+                    mutations: { coverage: 0, killed: 0, total_mutation: 0 },
+                    traces: { total_trace: 0, total_block: 0, average: 0 }
                 };
             }
 
@@ -199,6 +206,10 @@ fetchData().then(function (d) {
             mergedData[currentPath].mutations.killed += data.mutations.killed;
             mergedData[currentPath].mutations.total_mutation += data.mutations.total_mutation;
             mergedData[currentPath].mutations.coverage = (mergedData[currentPath].mutations.killed / mergedData[currentPath].mutations.total_mutation) * 100;
+
+            mergedData[currentPath].traces.total_trace += data.traces.total_trace;
+            mergedData[currentPath].traces.total_block += data.traces.total_block;
+            mergedData[currentPath].traces.average = mergedData[currentPath].traces.total_trace / mergedData[currentPath].traces.total_block;
         }
     }
     var treeData = dataHelpers.convertToTree(mergedData, mapperParams);
