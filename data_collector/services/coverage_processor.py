@@ -103,17 +103,7 @@ class CoverageProcessor:
             coverage_result.extend(result)
 
         coverage_result = await self.combine_trace_data(coverage_result, files, repo_name)
-        print(coverage_result)
+        self.file_manager_service.save_complexity(repo_name, {"summary": coverage_result})
         return {
             "success": True,
         }
-
-    def process_block_coverage(self, block_data, block_coverage_data):
-        for block in block_coverage_data:
-            # print(block)
-            break
-        return {}
-
-# if __name__ == '__main__':
-#     coverage_processor = CoverageProcessor()
-#     pprint.pprint(coverage_processor.process_coverage("/Users/nabhansuwanachote/Desktop/pit-reports"))
