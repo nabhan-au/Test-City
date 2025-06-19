@@ -6,5 +6,5 @@ class TraceConfig(Config):
         super().__init__()
 
     @property
-    def get_jar_file_path(self):
-        return self.get_property('jar_file_path')
+    def get_url(self):
+        return self.get_property('TRACE_SERVICE_URL')

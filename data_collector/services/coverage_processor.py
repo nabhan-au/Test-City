@@ -7,14 +7,18 @@ import pandas as pd
 from fastapi import UploadFile
 
 from services.file_manager.file_manager_service_abstract import FileManagerServiceAbstract
+from services.trace_extractor import TraceExtractor
 from util.datastructure import flat_map
+from util.path import path_to_class
+
 
 class CoverageProcessor:
 
     INDEX_FILE_NAME = "index.html"
 
-    def __init__(self, file_manager_service: FileManagerServiceAbstract):
+    def __init__(self, file_manager_service: FileManagerServiceAbstract, trace_extractor_service: TraceExtractor):
         self.file_manager_service = file_manager_service
+        self.trace_extractor_service = trace_extractor_service
 
     async def read_line_coverage_report(self, file_path):
         with open(file_path, 'r', encoding='utf-8') as f:
@@ -40,10 +44,9 @@ class CoverageProcessor:
             line_coverage = self.extract_line_coverage(row["Line Coverage"])
             mutation_coverage = self.extract_mutation_coverage(row["Mutation Coverage"])
             data = {
-                full_path: {
+                    "path": full_path,
                     "lines": line_coverage,
                     "mutations": mutation_coverage
-                },
             }
             result.append(data)
         return result
@@ -68,17 +71,48 @@ class CoverageProcessor:
             "total_mutation": int(match.group(3)),
         }
 
-    async def process_coverage(self, files, repo_name):
+    async def combine_trace_data(self, coverage_result, files, repo_name):
+        block_data = self.trace_extractor_service.get_project_block_data(repo_name, files)
+        block_coverage_data = await self.trace_extractor_service.get_block_coverage(files)
+        coverage_trace_result = []
+        for row in coverage_result:
+            path = row["path"]
+            class_path = path_to_class(path)
+            total_block = block_data[class_path]
+            total_trace = block_coverage_data[class_path] if class_path in block_coverage_data else 0
+            data = {
+                path: {
+                    "lines": row["lines"],
+                    "mutations": row["mutations"],
+                    "traces": {
+                        "total_trace": total_trace,
+                        "total_block": total_block,
+                        "average": total_trace / total_block
+                    }
+                },
+            }
+            coverage_trace_result.append(data)
+        return coverage_trace_result
+
+    async def process_coverage(self, files: List[UploadFile], repo_name):
         coverage_result = []
         index_file_list = await self.list_index_file(files)
         for index_file in index_file_list:
             process_data = await self.process_html_file(index_file)
             result = flat_map(lambda x: self.get_tree_from_table(process_data['file_path'], x), process_data['table'])
             coverage_result.extend(result)
-        self.file_manager_service.save_complexity(repo_name, {"summary": coverage_result})
+
+        coverage_result = await self.combine_trace_data(coverage_result, files, repo_name)
+        print(coverage_result)
         return {
             "success": True,
         }
+
+    def process_block_coverage(self, block_data, block_coverage_data):
+        for block in block_coverage_data:
+            # print(block)
+            break
+        return {}
 
 # if __name__ == '__main__':
 #     coverage_processor = CoverageProcessor()

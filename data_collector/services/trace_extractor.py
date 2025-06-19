@@ -1,64 +1,56 @@
 from collections import defaultdict
+from typing import List
 
 import xmltodict
-import subprocess
-import re
-import ast
+import json
+
+
+from fastapi import UploadFile
 
 from configs.trace_config import TraceConfig
+from repositories.trace_extractor_repository import TraceExtractorRepository
 
 
 class TraceExtractor:
 
-    def __init__(self, trace_config: TraceConfig):
-        self.jar_path = trace_config.get_jar_file_path
-        self.jar_path = "/Users/nabhansuwanachote/Desktop/code/code-is-beautiful/block-extractor/out/artifacts/block_extractor_jar/block-extractor.jar"
+    def __init__(self, trace_extractor_repository: TraceExtractorRepository, trace_config: TraceConfig):
+        self.trace_extractor_repository = trace_extractor_repository
 
-    def run_block_count(self, target_dir):
-        target_dir = "/Users/nabhansuwanachote/Desktop/code/commons-codec/target"
-        result = subprocess.run(
-            ["java", "-jar", self.jar_path, target_dir],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True  # Return output as string (not bytes)
-        )
-        return self.parse_java_output(result.stdout)
+    async def get_block_coverage(self, files: List[UploadFile]):
+        line_coverage_file = list(filter(lambda file: file.filename.endswith("linecoverage.xml"), files))
 
-    def parse_java_output(self, java_output):
-        # Pattern to match each BlockLocation entry
-        pattern = re.compile(
-            r"BlockLocation\s+\[location=Location\s+\[clazz=(?P<class>[^,]+),\s+method=(?P<method>[^,]+),\s+methodDesc=(?P<desc>[^\]]+)\],\s+block=(?P<block>\d+)\]=(?P<lines>\[[^\]]*\])"
-        )
+        if not line_coverage_file:
+            raise ValueError("linecoverage.xml not found among uploaded files.")
+        if len(line_coverage_file) > 1:
+            raise ValueError("multiple linecoverage.xml files found. Only one file may be uploaded.")
 
-        results = []
-        for match in pattern.finditer(java_output):
-            clazz = match.group("class")
-            method = match.group("method")
-            desc = match.group("desc")
-            block = int(match.group("block"))
-            lines = ast.literal_eval(match.group("lines"))  # safely parse list
+        # Read content as string
+        content = await line_coverage_file[0].read()
 
-            results.append({
-                "class": clazz,
-                "method": method,
-                "desc": desc,
-                "block": block,
-                "lines": lines
-            })
+        # Parse XML to dict
+        coverage_data = xmltodict.parse(content)["coverage"]["block"]
 
-        return results
+        coverage_count = {}
+        for row in coverage_data:
+            classname = row["@classname"]
+            tests = row["tests"]['test']
+            if classname not in coverage_count:
+                coverage_count[classname] = len(tests)
+            else:
+                coverage_count[classname] += len(tests)
+        return coverage_count
 
-    def count_blocks_by_class(self, parsed_entries):
-        block_counts = defaultdict(list)
-
-        for entry in parsed_entries:
-            block_counts[entry["class"]].append(entry["block"])  # avoid duplicate blocks
-
-        # Convert sets to counts
-        return {cls: len(blocks) for cls, blocks in block_counts.items()}
-
-
-
+    def get_project_block_data(self, project_name: str, files: List[UploadFile]):
+        files = list(filter(lambda file: file.filename.endswith(".class"), files))
+        response = self.trace_extractor_repository.extract_block_data(project_name, files)
+        result = {}
+        for row in response["data"]:
+            clazz = row["clazz"]
+            if clazz not in result:
+                result[clazz] = 0
+            else:
+                result[clazz] += 1
+        return result
 
 
 if "__main__" == __name__:

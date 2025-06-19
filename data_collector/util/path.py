@@ -33,3 +33,6 @@ def join(base, directory_name):
 
 def is_path_valid(project_path: str, required_folder = ("/classes/", "/pit-reports/")):
      return any(folder in project_path for folder in required_folder)
+
+def path_to_class(path: str) -> str:
+    return path.split(".java")[0].replace("/", ".").lstrip(".")

@@ -3,6 +3,7 @@ from configs.trace_config import TraceConfig
 from configs.S3_config import S3Config
 from minio import Minio
 
+from repositories.trace_extractor_repository import TraceExtractorRepository
 from services.coverage_processor import CoverageProcessor
 from repositories.file_manager_s3_repository import FileManagerS3Repository
 from services.file_manager.file_manager_s3_service import FileManagerS3Service
@@ -14,8 +15,9 @@ class Container(containers.DeclarativeContainer):
     wiring_config = containers.WiringConfiguration(modules=["routers.coverall_router"])
     
     s3_config = S3Config()
+    trace_config = TraceConfig()
     request = Request()
-    
+
     minio_client = providers.Singleton(
         Minio,
         endpoint=s3_config.get_endpoint_url,
@@ -24,12 +26,14 @@ class Container(containers.DeclarativeContainer):
         secure=False
     )
 
-    trace_config = providers.Singleton(
-        TraceConfig
+    trace_extractor_repository = providers.Singleton(
+        TraceExtractorRepository,
+        trace_config
     )
 
-    trace_extractor = providers.Factory(
+    trace_extractor_service = providers.Factory(
         TraceExtractor,
+        trace_extractor_repository,
         trace_config
     )
     
@@ -47,4 +51,5 @@ class Container(containers.DeclarativeContainer):
     coverage_processor_service = providers.Factory(
         CoverageProcessor,
         file_manager_s3_service,
+        trace_extractor_service
     )
