@@ -1,8 +1,14 @@
 import json
+
+from fastapi import UploadFile
+
+from models.common_response import CommonResponse
 from services.file_manager.file_manager_service_abstract import FileManagerServiceAbstract
 from repositories.file_manager_s3_repository import FileManagerS3Repository
 from services.file_manager.file_manager_local_service import FileManagerLocalService
 from typing import Dict, List, Any
+
+from util.path import is_path_valid
 
 
 class FileManagerS3Service(FileManagerServiceAbstract):
@@ -28,3 +34,13 @@ class FileManagerS3Service(FileManagerServiceAbstract):
         for s3_object in object_list:
             project_list.append(s3_object.object_name.replace('_complexity.json', ''))
         return project_list
+
+    async def upload_project_target(self, files: List[UploadFile], project_name: str) -> CommonResponse:
+        for file in files:
+            relative_path = file.filename
+            if not is_path_valid(relative_path, ['/classes/']):
+                continue
+            relative_path = relative_path.split('/classes/')[-1]
+            s3_key = f"{project_name}/{relative_path}"
+            await self.__s3_file_manager_repository.upload_raw_file(file, s3_key, "temp")
+        return CommonResponse(True, "Uploaded successfully")

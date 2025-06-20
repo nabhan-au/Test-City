@@ -1,16 +1,14 @@
-define([],function(){
-    "use strict";
-    return function(legendDiv,legendTitle,legendContent) {
-        return {
-          onClick : function(d,e){
+export function legend(legendDiv,legendTitle,legendContent) {
+    return {
+        onClick : function(d,e){
             //nothing...
-          }.bind(this),
+        }.bind(this),
 
-          onMouseout: function(d,e){
+        onMouseout: function(d,e){
             legendDiv.innerHTML = '';
-          }.bind(this),
+        }.bind(this),
 
-          onMouseover: function(d,e) {
+        onMouseover: function(d,e) {
 
             var et = e.target;
             if (d && e){
@@ -22,19 +20,21 @@ define([],function(){
                 desiredTop -= 10;
 
                 var style = {
-                             left:desiredLeft+"px",
-                             top:desiredTop+"px"
-                            };
+                    left:desiredLeft+"px",
+                    top:desiredTop+"px"
+                };
 
                 var info = legendContent(d,e);
 
-                legendDiv.innerHTML = "<div style=\"pointer-events:none; position:absolute;\" class=\"popover top show\"> \
-                  <div class=\"arrow\"></div> \
-                  <h3 class=\"popover-title\">"+legendTitle(d,e)+"</h3> \
-                  <div class=\"popover-content\"> \
-                    "+info+"\
-                  </div> \
-                </div>";
+                legendDiv.innerHTML = `
+                  <div style="pointer-events:none; position:absolute; max-width:none; width:auto; height:auto; white-space:normal; padding:10px;" class="popover top show">
+                    <div class="arrow"></div>
+                    <h3 class="popover-title" style="white-space:normal; margin-bottom:8px;">${legendTitle(d,e)}</h3>
+                    <div class="popover-content" style="width:auto; height:auto; white-space:normal;">
+                      ${info}
+                    </div>
+                  </div>
+                `;
 
                 var legend = legendDiv.children[0];
 
@@ -47,7 +47,6 @@ define([],function(){
             }
 
 
-          }.bind(this)
-        };
-    }
-});
+        }.bind(this)
+    };
+}

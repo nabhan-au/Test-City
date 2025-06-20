@@ -1,201 +1,331 @@
-define([
-    'code-city/code-city',
-    'jquery',
-    'common/legend',
-    'data/loaders',
-    'data/helpers'
-], function (
-    codeCity,
-    $,
-    legend,
-    dataLoaders,
-    dataHelpers
-) {
-    var params = (new URL(document.location)).searchParams;
-    // 'go-jsonnet'
-    console.log('project :', params.get('project'));
+import * as codeCity from './code-city';
+import $ from 'jquery';
+import { legend } from '../common/legend.js';
+import * as dataLoaders from '../data/loaders.js';
+import * as dataHelpers from '../data/helpers.js';
 
-    async function fetchData() {
-        try {
-            var data = await dataLoaders.fetchProjectData(params.get('project'));
-            return data;
-        } catch (error) {
-            console.error("Error fetching project data:", error);
-            return null;
+const d3 = window.d3;
+
+var params = (new URL(document.location)).searchParams;
+// 'go-jsonnet'
+
+async function fetchData() {
+    try {
+        var data = await dataLoaders.fetchProjectData(params.get('project'));
+        return data;
+    } catch (error) {
+        return null;
+    }
+}
+
+var metric = 'lines';
+var classes = 'classes';
+var trace = 'traces'
+
+var legendDiv = $('#code-city-legend')[0];
+var canvasDiv = $('#code-city-canvas')[0];
+
+var rotateLeftSpan = $('#rotate-left');
+var rotateRightSpan = $('#rotate-right');
+var rotateUpSpan = $('#rotate-up');
+var rotateDownSpan = $('#rotate-down');
+var birdEyeToggle = $('#toggle-bird-eye');
+
+var nodeColorScale = [
+    // '#a50026',
+    '#c31727',
+    '#d73027',
+    '#e56a35',
+    '#f46d43',
+    '#fab86d',
+    '#fdae61',
+    '#fee497',
+    '#fee08b',
+    '#ecf497',
+    '#d9ef8b',
+    '#bde487',
+    '#a6d96a',
+    '#86d168',
+    '#66bd63',
+    '#409f5a',
+    '#1a9850',
+    // '#0f7a42',
+    // '#006837'
+]
+
+let gridValue;
+
+function legendTitle(d, e) {
+    return d.path;
+}
+
+function legendContent(d, e) {
+    const lines = d.data?.lines || { coverage: 0, covered_line: 0, total_line: 0 };
+    const mutations = d.data?.mutations || { coverage: 0, killed: 0, total_mutation: 0 };
+    const traces = d.data?.traces || { average: 0 };
+
+    return `
+      <div class="bg-white text-gray-800 p-4 rounded-lg shadow-md">
+        <table class="w-full text-sm">
+          <tbody>
+            <tr class="bg-gray-50">
+              <td class="py-1">Lines coverage (%)</td>
+              <td class="py-1 text-right">${lines.coverage}</td>
+            </tr>
+            <tr>
+              <td class="py-1">Lines covered</td>
+              <td class="py-1 text-right">${lines.covered_line} / ${lines.total_line}</td>
+            </tr>
+            <tr class="bg-gray-50">
+              <td class="py-1">Mutations coverage (%)</td>
+              <td class="py-1 text-right">${mutations.coverage}</td>
+            </tr>
+            <tr>
+              <td class="py-1">Mutations killed</td>
+              <td class="py-1 text-right">${mutations.killed} / ${mutations.total_mutation}</td>
+            </tr>
+            <tr>
+              <td class="py-1">Average trace</td>
+              <td class="py-1 text-right">${traces.average}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    `;
+}
+
+function nodeHeight(d) {
+    let trace_size = 0
+    function snapToGrid(grid, value) {
+        return grid * Math.ceil(value / grid);
+    }
+    if (d.children && d.children.length)
+        return 0;
+    if (d.data[trace].average) {
+        trace_size = d.data[trace].average;
+    }
+    return snapToGrid(gridValue, trace_size);
+}
+
+function nodeColor(d) {
+    var coverage = d?.data?.[metric]?.coverage;
+
+    if (typeof coverage === 'undefined' || isNaN(coverage)) {
+        coverage = 0;
+    }
+
+    return d.data[metric].coverage;
+}
+
+function nodeArea(d) {
+    return d.data[metric].total_line;
+}
+
+var graphParams = {
+    legend: legend(legendDiv, legendTitle, legendContent)
+};
+
+var mapperParams = {
+    mappers: {
+        height: nodeHeight,
+        area: nodeArea,
+        colorValue: nodeColor,
+        title: function (d) { return d.key.split('/').slice(-1)[0]; },
+        path: function (d) { return d.key || '(all files)'; }
+    },
+    split: function (key) {
+        var components = key.split('/');
+        if (components.length > 1) {
+            components = components.filter(function (c) { return c !== ""; });
+        }
+        return components;
+    }
+};
+
+function setGridValue(d) {
+    let maxTrace = 0;
+    for (const [key, value] of Object.entries(d)) {
+        const [filePath, data] = Object.entries(value)[0];
+
+        if (data[metric].total_line) {
+            maxTrace = Math.max(data[metric].total_line, maxTrace);
         }
     }
+    if (maxTrace > 1000000)
+        gridValue = 10000;
+    else if (maxTrace > 100000)
+        gridValue = 1000;
+    else if (maxTrace > 10000)
+        gridValue = 100;
+    else if (maxTrace > 1000)
+        gridValue = 10;
+    else if (maxTrace > 100)
+        gridValue = 1;
+    else
+        gridValue = 0.1;
+}
 
-    var metric = 'functions';
-    var classes = 'classes';
-
-    var legendDiv = $('#code-city-legend')[0];
-    var canvasDiv = $('#code-city-canvas')[0];
-
-    var rotateLeftSpan = $('#rotate-left');
-    var rotateRightSpan = $('#rotate-right');
-
-    var nodeColorScale = ['#a50026',
-        '#d73027',
-        '#f46d43',
-        '#fdae61',
-        '#fee08b',
-        '#d9ef8b',
-        '#a6d96a',
-        '#66bd63',
-        '#1a9850',
-        '#006837']
-
-    let gridValue;
-
-    function legendTitle(d, e) {
-        return d.path;
+// Call fetchData asynchronously
+fetchData().then(function (d) {
+    if (d === null) {
+        return;
     }
 
-    function legendContent(d, e) {
-        if (d.data.code_patterns[metric].average_of_trace) {
-            trace_name = "average of trace";
-            trace_size = d.data.code_patterns[metric].average_of_trace;
-        } else {
-            trace_name = "number of trace";
-            trace_size = d.data.code_patterns[metric].number_of_trace;
-        }
-        return "<div> \
-              <table class=\"table table-striped\"> \
-                  <tbody> \
-                      <tr> \
-                          <td>lines of code</td> \
-                          <td>"+ d.data.metrics.total_number_of_lines + "</td> \
-                      </tr> \
-                      <tr> \
-                          <td>"+ trace_name + "</td> \
-                          <td>"+ trace_size + "</td> \
-                      </tr> \
-                      <tr> \
-                          <td>coverage</td> \
-                          <td>"+ d.data.code_patterns[classes].coverage + "</td> \
-                      </tr> \
-                  </tbody> \
-              </table> \
-          </div>";
-    }
+    setGridValue(d);
+    var mergedData = {};
 
-    function nodeHeight(d) {
-        function snapToGrid(grid, value) {
-            return grid * Math.ceil(value / grid);
-        }
-        if (d.children && d.children.length)
-            return 0;
-        if (d.data.code_patterns[metric].average_of_trace) {
-            trace_size = d.data.code_patterns[metric].average_of_trace;
-        } else {
-            trace_size = d.data.code_patterns[metric].number_of_trace;
-        }
-        return snapToGrid(gridValue, trace_size);
-    }
+    for (const [key, value] of Object.entries(d)) {
+        const [filePath, data] = Object.entries(value)[0];
+        const filePaths = filePath.split('/');
 
-    function nodeColor(d) {
-        return d.data.code_patterns[classes].coverage;
-    }
+        // root ""
+        let currentPath = "";
 
-    function nodeArea(d) {
-        return d.data.metrics.total_number_of_lines;
-    }
-
-    var graphParams = {
-        legend: legend(legendDiv, legendTitle, legendContent)
-    };
-
-    var mapperParams = {
-        mappers: {
-            height: nodeHeight,
-            area: nodeArea,
-            colorValue: nodeColor,
-            title: function (d) { return d.key.split('/').slice(-1)[0]; },
-            path: function (d) { return d.key || '(all files)'; }
-        },
-        split: function (key) { return key.split('/'); }
-    };
-
-    function setGridValue(d) {
-        let maxTrace = 0;
-        for (var key in d.python.code_patterns) {
-            if (d.python.code_patterns[key][metric].number_of_trace) {
-                maxTrace = Math.max(d.python.code_patterns[key][metric].number_of_trace, maxTrace);
+        for (let i = 0; i < filePaths.length; i++) {
+            if (i === 0 && filePaths[i] === "") {
+                // root
+                currentPath = "";
+            } else {
+                // build the path
+                currentPath += "/" + filePaths[i];
             }
+
+            // if not found, init
+            if (!mergedData[currentPath]) {
+                mergedData[currentPath] = {
+                    lines: { coverage: 0, covered_line: 0, total_line: 0 },
+                    mutations: { coverage: 0, killed: 0, total_mutation: 0 },
+                    traces: { total_trace: 0, total_block: 0, average: 0 }
+                };
+            }
+
+            mergedData[currentPath].lines.covered_line += data.lines.covered_line;
+            mergedData[currentPath].lines.total_line += data.lines.total_line;
+            mergedData[currentPath].lines.coverage = (mergedData[currentPath].lines.covered_line / mergedData[currentPath].lines.total_line) * 100;
+
+            mergedData[currentPath].mutations.killed += data.mutations.killed;
+            mergedData[currentPath].mutations.total_mutation += data.mutations.total_mutation;
+            mergedData[currentPath].mutations.coverage = (mergedData[currentPath].mutations.killed / mergedData[currentPath].mutations.total_mutation) * 100;
+
+            mergedData[currentPath].traces.total_trace += data.traces.total_trace;
+            mergedData[currentPath].traces.total_block += data.traces.total_block;
+            mergedData[currentPath].traces.average = mergedData[currentPath].traces.total_trace / mergedData[currentPath].traces.total_block;
         }
-        console.log(maxTrace);
-        if (maxTrace > 1000000)
-            gridValue = 10000;
-        else if (maxTrace > 100000)
-            gridValue = 1000;
-        else if (maxTrace > 10000)
-            gridValue = 100;
-        else if (maxTrace > 1000)
-            gridValue = 10;
-        else if (maxTrace > 100)
-            gridValue = 1;
-        else
-            gridValue = 0.1;
-        console.log(gridValue);
+    }
+    var treeData = dataHelpers.convertToTree(mergedData, mapperParams);
+    dataHelpers.colorize(d3, treeData, 'colorValue', nodeColorScale, { min: 20, max: 100 });
+
+    var codeCityChart;
+    try {
+        codeCityChart = codeCity.codeCity(d3, $('#code-city-chart')[0], treeData, graphParams);
+    } catch (e) {
+        if (e instanceof TypeError)
+            $('#code-city-chart').html("\
+                <div> \
+                <img src=\"../assets/images/code_city_large.png\" width=\"100%\"> \
+                <p style=\"background:rgba(255,0,0,0.7); top:300px; position:absolute; font-size:18px;\" class=\"alert alert-danger\"> \
+                    It seems that your browser does not support (or has deactivated) WebGL, which is required for this graph. Please upgrade your browser or make sure that WebGL is activated. Below is a teaser of what the visualization of your project might look like. \
+                </p> \
+                </div> \
+                ");
     }
 
-    // Call fetchData asynchronously
-    fetchData().then(function (d) {
-        if (d === null) {
-            console.error('Failed to load data');
+    var isRotating = false;
+
+    var startRotate = function (left) {
+        if (isRotating)
             return;
-        }
 
-        setGridValue(d);
-        var mergedData = {};
-        for (var key in d.python.code_patterns) {
-            mergedData[key] = { metrics: d.python.metrics[key], code_patterns: d.python.code_patterns[key] };
-        }
-        var treeData = dataHelpers.convertToTree(mergedData, mapperParams);
-        // Add color to the elements using min/max information
-        dataHelpers.colorize(treeData, 'colorValue', nodeColorScale, { min: 20, max: 100 });
+        isRotating = true;
 
-        var codeCityChart;
-        try {
-            codeCityChart = codeCity.codeCity($('#code-city-chart')[0], treeData, graphParams);
-        } catch (e) {
-            if (e instanceof TypeError)
-                $('#code-city-chart').html("\
-                  <div> \
-                  <img src=\"../assets/images/code_city_large.png\" width=\"100%\"> \
-                  <p style=\"background:rgba(255,0,0,0.7); top:300px; position:absolute; font-size:18px;\" class=\"alert alert-danger\"> \
-                      It seems that your browser does not support (or has deactivated) WebGL, which is required for this graph. Please upgrade your browser or make sure that WebGL is activated. Below is a teaser of what the visualization of your project might look like. \
-                  </p> \
-                  </div> \
-                  ");
-        }
-
-        var isRotating = false;
-
-        var startRotate = function (left) {
-            if (isRotating)
+        var rotate = function () {
+            if (!isRotating)
                 return;
-            isRotating = false;
-            var rotate = function () {
-                if (!isRotating)
-                    return;
-                codeCityChart.setCameraRotation(codeCityChart.getCameraRotation() + (left ? 0.01 : -0.01));
-                setTimeout(rotate, 10);
-            };
-            var startRotation = function () {
-                isRotating = true;
-                rotate();
-            };
-            setTimeout(startRotation, 40);
+
+            codeCityChart.setCameraRotation(
+                codeCityChart.getCameraRotation() + (left ? 0.01 : -0.01)
+            );
+
+            setTimeout(rotate, 10);
         };
 
-        var stopRotate = function () {
-            isRotating = false;
+        rotate();
+    };
+
+    var stopRotate = function () {
+        isRotating = false;
+    };
+
+    var isRotatingPitch = false;
+
+    var startRotatePitch = function (up) {
+        if (isRotatingPitch)
+            return;
+
+        isRotatingPitch = true;
+
+        var rotate = function () {
+            if (!isRotatingPitch)
+                return;
+
+            const pitch = codeCityChart.getCameraPitch();
+            codeCityChart.setCameraPitch(pitch + (up ? 0.01 : -0.01));
+
+            setTimeout(rotate, 10);
         };
 
-        rotateLeftSpan.mouseover(startRotate.bind(null, false));
-        rotateRightSpan.mouseover(startRotate.bind(null, true));
-        rotateLeftSpan.mouseout(stopRotate);
-        rotateRightSpan.mouseout(stopRotate);
+        rotate();
+    };
+
+    var stopRotatePitch = function () {
+        isRotatingPitch = false;
+    };
+
+    rotateLeftSpan.on('mousedown', function () {
+        if (birdEyeToggle.is(':checked')) {
+            birdEyeToggle.prop('checked', false).trigger('change');
+        }
+
+        startRotate(false);
+    });
+    rotateLeftSpan.on('mouseup mouseleave', function () {
+        stopRotate();
+    });
+
+    rotateRightSpan.on('mousedown', function () {
+        if (birdEyeToggle.is(':checked')) {
+            birdEyeToggle.prop('checked', false).trigger('change');
+        }
+
+        startRotate(true);
+    });
+    rotateRightSpan.on('mouseup mouseleave', function () {
+        stopRotate();
+    });
+    rotateUpSpan.on('mousedown', function () {
+        if (birdEyeToggle.is(':checked')) {
+            birdEyeToggle.prop('checked', false).trigger('change');
+        }
+        startRotatePitch(true);
+    });
+    rotateUpSpan.on('mouseup mouseleave', function () {
+        stopRotatePitch();
+    });
+
+    rotateDownSpan.on('mousedown', function () {
+        if (birdEyeToggle.is(':checked')) {
+            birdEyeToggle.prop('checked', false).trigger('change');
+        }
+        startRotatePitch(false);
+    });
+    rotateDownSpan.on('mouseup mouseleave', function () {
+        stopRotatePitch();
+    });
+    birdEyeToggle.on('change', function () {
+        if (birdEyeToggle.is(':checked')) {
+            codeCityChart.setCameraBirdEyeView();
+        } else {
+            codeCityChart.setCameraNormalView();
+        }
     });
 });

@@ -19,11 +19,11 @@ async def get_project_list(file_manager_s3_service: FileManagerS3Service = Depen
     return file_manager_s3_service.get_project_list()
 
 
-@coverall_router.get('/project/{project_owner}/{project_name}')
+@coverall_router.get('/project/{project_name}')
 @inject
-async def get_coverall(project_owner, project_name, file_manager_s3_service: FileManagerS3Service = Depends(Provide[Container.file_manager_s3_service])):
+async def get_coverall(project_name, file_manager_s3_service: FileManagerS3Service = Depends(Provide[Container.file_manager_s3_service])):
     json_data = file_manager_s3_service.get_complexity(
-        f"{project_owner}_{project_name}")
+        f"{project_name}")
     return JSONResponse(json_data)
 
 
@@ -31,6 +31,17 @@ async def get_coverall(project_owner, project_name, file_manager_s3_service: Fil
 @inject
 async def create_project_coverall(project_name: str, files: List[UploadFile], coverage_processor: CoverageProcessor = Depends(Provide[Container.coverage_processor_service])):
     try:
+        await coverage_processor.process_coverage(files, project_name)
+        return CommonResponse(True, "Created coverage report").to_json()
+    except Exception as e:
+        raise HTTPException(status.HTTP_500_INTERNAL_SERVER_ERROR,
+                            "Something went wrong in the server with message", e)
+
+@coverall_router.post('/project-new/{project_name}', status_code=status.HTTP_201_CREATED)
+@inject
+async def process_coverage(project_name: str, files: List[UploadFile], coverage_processor: CoverageProcessor = Depends(Provide[Container.coverage_processor_service]), file_manager_s3_service: FileManagerS3Service = Depends(Provide[Container.file_manager_s3_service])):
+    try:
+        await file_manager_s3_service.upload_project_target(files, project_name)
         await coverage_processor.process_coverage(files, project_name)
         return CommonResponse(True, "Created coverage report").to_json()
     except Exception as e:

@@ -21,5 +21,13 @@
   "homepage": "https://github.com/jun318/code-is-beautiful#readme",
   "devDependencies": {
     "vite": "^6.3.5"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.6",
+    "d3": "^3.5.12",
+    "jquery": "^3.7.1",
+    "requirejs": "^2.3.7",
+    "rollup-plugin-node-polyfills": "^0.2.1",
+    "three": "^0.154.0"
   }
 }
