@@ -87,7 +87,9 @@
         </div>
     </footer>
 
-    <script>
+    <script type="module">
+        import { fetchProjectList, uploadProject } from "./data/loaders";
+
         function addProject(projectName) {
             const defaultMessage = document.getElementById("defaultMessage");
             if (defaultMessage) defaultMessage.remove();
@@ -100,42 +102,31 @@
             projectList.appendChild(projectElement);
         }
 
-        fetch('http://localhost:8000/coverall/project/list')
-            .then(response => response.json())
-            .then(data => {
-                if (data.length > 0) {
-                    data.forEach(project => addProject(project));
-                }
+        fetchProjectList()
+            .then(list => {
+                if (list.length > 0) list.forEach(addProject);
             })
             .catch(() => {
-                document.getElementById("projectList").innerHTML = "<p>Error loading projects.</p>";
+                document.getElementById("projectList")
+                    .innerHTML = "<p>Error loading projects.</p>";
             });
 
-        document.getElementById("uploadForm").addEventListener("submit", async function (event) {
-            event.preventDefault();
-
+        document.getElementById("uploadForm").addEventListener("submit", async e => {
+            e.preventDefault();
             const files = document.getElementById("folderInput").files;
-            const projectName = document.getElementById("project_name").value;
+            const projectName = document.getElementById("project_name").value.trim();
 
             if (files.length === 0 || !projectName) {
                 alert("Please select a folder and enter a project name.");
                 return;
             }
 
-            const formData = new FormData();
-            for (const file of files) {
-                formData.append("files", file, file.webkitRelativePath);
-            }
-
             try {
-                const response = await fetch("http://localhost:8000/coverall/project/" + projectName, {
-                    method: "POST",
-                    body: formData,
-                });
-                const result = await response.json();
+                const result = await uploadProject(projectName, files);
                 alert("Upload complete: " + JSON.stringify(result));
                 addProject(projectName);
-            } catch (error) {
+            } catch (err) {
+                console.error(err);
                 alert("Upload failed");
             }
         });
