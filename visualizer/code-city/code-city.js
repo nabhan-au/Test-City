@@ -137,6 +137,8 @@ void main() { \
 
       sphere.d = d;  // share same d
 
+      sphere.userData.isMutantSphere = true;
+
       cube.add(sphere);  // child of cube
     }
 
@@ -158,19 +160,19 @@ void main() { \
 
   function onCanvasMouseMove(event) {
     event.preventDefault();
-  
+
     const rect = renderer.domElement.getBoundingClientRect();
     const mouse = new three.Vector2(
       ((event.clientX - rect.left) / rect.width) * 2 - 1,
       -((event.clientY - rect.top) / rect.height) * 2 + 1
     );
-  
+
     raycaster.setFromCamera(mouse, camera);
     const intersects = raycaster.intersectObjects(scene.children, true);
-  
+
     if (intersects.length > 0) {
       const rawHit = intersects[0].object;
-  
+
       let hitMesh = null;
       if (rawHit.material.uniforms?.glow !== undefined) {
         hitMesh = rawHit;
@@ -179,17 +181,17 @@ void main() { \
       ) {
         hitMesh = rawHit.parent;
       }
-  
+
       if (hitMesh) {
         if (intersected && intersected !== hitMesh) {
           intersected.material.uniforms.glow.value = 1.0;
           intersected.material.needsUpdate = true;
         }
-  
+
         intersected = hitMesh;
         intersected.material.uniforms.glow.value = 1.4;
         intersected.material.needsUpdate = true;
-  
+
         selectedD = hitMesh.d;
         params.legend?.onMouseover(selectedD, event);
         render();
@@ -339,6 +341,15 @@ void main() { \
     render();
   }
 
+  function toggleSpheres(show) {
+    scene.traverse(obj => {
+      if (obj.userData?.isMutantSphere) {
+        obj.visible = show;
+      }
+    });
+    render();
+  }
+
   window.addEventListener('resize', resizeCanvas);
   resizeCanvas();
 
@@ -348,7 +359,8 @@ void main() { \
     setCameraBirdEyeView: setCameraBirdEyeView,
     setCameraNormalView: setCameraNormalView,
     getCameraPitch: getCameraPitch,
-    setCameraPitch: setCameraPitch
+    setCameraPitch: setCameraPitch,
+    toggleSpheres: toggleSpheres,
   };
 }
 
