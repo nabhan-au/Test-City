@@ -87,6 +87,17 @@
         </div>
     </footer>
 
+    <div id="loadingModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white bg-opacity-90 p-6 rounded-lg flex flex-col items-center">
+            <svg class="animate-spin h-8 w-8 text-gray-800" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8z"></path>
+            </svg>
+            <p class="mt-2 text-gray-800">Uploading…</p>
+        </div>
+    </div>
+
     <script type="module">
         import { fetchProjectList, uploadProject } from "./data/loaders";
 
@@ -122,12 +133,16 @@
             }
 
             try {
+                loadingModal.classList.remove("hidden");
+
                 const result = await uploadProject(projectName, files);
-                alert("Upload complete: " + JSON.stringify(result));
+                // alert("Upload complete: " + JSON.stringify(result));
                 addProject(projectName);
             } catch (err) {
                 console.error(err);
                 alert("Upload failed");
+            } finally {
+                loadingModal.classList.add("hidden");
             }
         });
     </script>
