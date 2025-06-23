@@ -36,3 +36,14 @@ async def create_project_coverall(project_name: str, files: List[UploadFile], co
     except Exception as e:
         raise HTTPException(status.HTTP_500_INTERNAL_SERVER_ERROR,
                             "Something went wrong in the server with message", e)
+
+@coverall_router.post('/project-new/{project_name}', status_code=status.HTTP_201_CREATED)
+@inject
+async def process_coverage(project_name: str, files: List[UploadFile], coverage_processor: CoverageProcessor = Depends(Provide[Container.coverage_processor_service]), file_manager_s3_service: FileManagerS3Service = Depends(Provide[Container.file_manager_s3_service])):
+    try:
+        await file_manager_s3_service.upload_project_target(files, project_name)
+        await coverage_processor.process_coverage(files, project_name)
+        return CommonResponse(True, "Created coverage report").to_json()
+    except Exception as e:
+        raise HTTPException(status.HTTP_500_INTERNAL_SERVER_ERROR,
+                            "Something went wrong in the server with message", e)

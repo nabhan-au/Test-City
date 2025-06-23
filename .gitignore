@@ -63,6 +63,7 @@ docs/_build/
 
 # PyBuilder
 target/
+!example_data_set/commons-codec/target/
 
 # SASS cache
 .sass-cache
