@@ -23,13 +23,13 @@ var classes = 'classes';
 var trace = 'traces'
 
 var legendDiv = $('#code-city-legend')[0];
-var canvasDiv = $('#code-city-canvas')[0];
 
 var rotateLeftSpan = $('#rotate-left');
 var rotateRightSpan = $('#rotate-right');
 var rotateUpSpan = $('#rotate-up');
 var rotateDownSpan = $('#rotate-down');
 var birdEyeToggle = $('#toggle-bird-eye');
+var sphereToggle = $('#toggle-spheres');
 
 var nodeColorScale = [
     // '#a50026',
@@ -230,6 +230,9 @@ fetchData().then(function (d) {
                 ");
     }
 
+    sphereToggle.prop('checked', true);
+    codeCityChart.toggleSpheres(true);
+
     var isRotating = false;
 
     var startRotate = function (left) {
@@ -327,5 +330,8 @@ fetchData().then(function (d) {
         } else {
             codeCityChart.setCameraNormalView();
         }
+    });
+    sphereToggle.on('change', function () {
+        codeCityChart.toggleSpheres(sphereToggle.is(':checked'));
     });
 });
