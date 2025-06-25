@@ -168,6 +168,7 @@ function setGridValue(d) {
 // Call fetchData asynchronously
 fetchData().then(function (d) {
     if (d === null) {
+        $('#project-description').text("Failed to load project data.");
         return;
     }
 
@@ -334,4 +335,30 @@ fetchData().then(function (d) {
     sphereToggle.on('change', function () {
         codeCityChart.toggleSpheres(sphereToggle.is(':checked'));
     });
+
+    // project-description
+    const descriptionEl = $('#project-description');
+
+    // Compute basic summary
+    const totalFiles = Object.keys(d).length;
+    let totalLines = 0;
+    let totalCoveredLines = 0;
+
+    for (const [_, value] of Object.entries(d)) {
+        const [__, data] = Object.entries(value)[0];
+        totalLines += data.lines.total_line || 0;
+        totalCoveredLines += data.lines.covered_line || 0;
+    }
+
+    const coveragePercent = totalLines > 0 ? ((totalCoveredLines / totalLines) * 100).toFixed(2) : '0.00';
+
+    descriptionEl.html(`
+    <ul class="list-disc list-inside text-sm space-y-1">
+        <li>Total Files: <strong>${totalFiles}</strong></li>
+        <li>Total Lines: <strong>${totalLines}</strong></li>
+        <li>Lines Covered: <strong>${totalCoveredLines}</strong></li>
+        <li>Coverage: <strong>${coveragePercent}%</strong></li>
+    </ul>
+`);
+
 });
