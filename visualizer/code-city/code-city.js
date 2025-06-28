@@ -134,22 +134,46 @@ void main() { \
     }
 
     if (is_leaf_mutant) {
-      var sphereRadius = Math.min(gw, gh) * 0.2;
-      // var sphereRadius = 0.05;
+      // var sphereRadius = Math.min(gw, gh) * 0.2;
+      // // var sphereRadius = 0.05;
 
-      var sphereGeometry = new three.SphereGeometry(sphereRadius, 16, 16);
-      var sphereMaterial = new three.MeshBasicMaterial({ color: 0xff0000 });
-      var sphere = new three.Mesh(sphereGeometry, sphereMaterial);
+      // var sphereGeometry = new three.SphereGeometry(sphereRadius, 16, 16);
+      // var sphereMaterial = new three.MeshBasicMaterial({ color: 0xff0000 });
+      // var sphere = new three.Mesh(sphereGeometry, sphereMaterial);
 
-      sphere.position.x = 0;
-      sphere.position.y = 0;
-      sphere.position.z = gd / 2 + sphereRadius;
+      // sphere.position.x = 0;
+      // sphere.position.y = 0;
+      // sphere.position.z = gd / 2 + sphereRadius;
 
-      sphere.d = d;  // share same d
+      // sphere.d = d;  // share same d
 
-      sphere.userData.isMutantSphere = true;
+      // sphere.userData.isMutantSphere = true;
 
-      cube.add(sphere);  // child of cube
+      // cube.add(sphere);  // child of cube
+
+      const fireCount = Math.ceil(5 * Math.min(1, d.data.mutations.coverage)); // 0 to 5 fires
+      const textureLoader = new three.TextureLoader();
+      const fireTexture = textureLoader.load('fire.png');
+    
+      for (let i = 0; i < fireCount; i++) {
+        const spriteMaterial = new three.SpriteMaterial({
+          map: fireTexture,
+          transparent: true,
+          depthWrite: false,
+        });
+    
+        const sprite = new three.Sprite(spriteMaterial);
+        sprite.scale.set(0.1, 0.1, 1); // adjust fire image size
+    
+        const offsetX = (Math.random() - 0.5) * gw * 0.8;
+        const offsetZ = (Math.random() - 0.5) * gd * 0.8;
+    
+        sprite.position.set(offsetX, gh / 2 + 0.011, offsetZ); // front face
+        sprite.d = d;
+        sprite.userData.isMutantFire = true;
+    
+        cube.add(sprite);
+      }
     }
 
     if (!rootHouse) {
@@ -412,14 +436,23 @@ void main() { \
     render();
   }
 
+  // function toggleSpheres(show) {
+  //   scene.traverse(obj => {
+  //     if (obj.userData?.isMutantSphere) {
+  //       obj.visible = show;
+  //     }
+  //   });
+  //   render();
+  // }
+
   function toggleSpheres(show) {
     scene.traverse(obj => {
-      if (obj.userData?.isMutantSphere) {
+      if (obj.userData?.isMutantFire) {
         obj.visible = show;
       }
     });
     render();
-  }
+  }  
 
   window.addEventListener('resize', resizeCanvas);
   resizeCanvas();
