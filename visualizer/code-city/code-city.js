@@ -82,7 +82,12 @@ void main() { \
   var maximumHeight;
   var minimumHeight;
 
+  function isFile(path) {
+    return typeof path === "string" && /\.\w+$/.test(path) || false;
+  }
+
   function addHouse(d) {
+    let is_building = isFile(d.key);
     let is_mutant = d.data?.mutations?.coverage > 0 && d.data?.mutations?.total_mutation > 0;
     let is_leaf_mutant = is_mutant && (d.children?.length ?? 0) < 1;
 
@@ -122,7 +127,12 @@ void main() { \
     var objToAdd = rootHouse || scene;
     objToAdd.add(cube);
 
-    // add mutant sphere
+    if (is_building) {
+      ['front', 'back'].forEach(face => {
+        createWindowsOnBuilding(cube, gw, gh, gd, face);
+      });
+    }
+
     if (is_leaf_mutant) {
       var sphereRadius = Math.min(gw, gh) * 0.2;
       // var sphereRadius = 0.05;
@@ -145,6 +155,67 @@ void main() { \
     if (!rootHouse) {
       rootHouse = cube;
       rootHouse.rotation.z = Math.PI / 4;
+    }
+  }
+
+  function createWindowsOnBuilding(building, width, height, depth, face = 'front') {
+    const windowSize = 0.05;
+    const margin = 0.02; // spacing from edges
+    const spacingX = 0.07;
+    const spacingY = 0.07;
+
+    const windowColors = [0x222222, 0xffffcc, 0xfff2a0];
+
+    // Compute how many columns and rows fit
+    const availableWidth = face === 'front' || face === 'back' ? width : depth;
+    const availableHeight = depth;
+
+    const maxCols = Math.floor((availableWidth - margin * 2) / spacingX);
+    const maxRows = Math.floor((availableHeight - margin * 2) / spacingY);
+
+    if (maxCols < 1 || maxRows < 1) return;
+
+    for (let i = 0; i < maxRows; i++) {
+      for (let j = 0; j < maxCols; j++) {
+        const windowGeometry = new three.PlaneGeometry(windowSize, windowSize);
+        const windowMaterial = new three.MeshBasicMaterial({
+          color: windowColors[Math.floor(Math.random() * windowColors.length)],
+          transparent: true,
+          opacity: 0.6,
+          depthWrite: false,
+        });
+
+        const windowMesh = new three.Mesh(windowGeometry, windowMaterial);
+
+        const offsetX = -((maxCols - 1) * spacingX) / 2 + j * spacingX;
+        const offsetY = -((maxRows - 1) * spacingY) / 2 + i * spacingY;
+
+        let pos = new three.Vector3();
+        let rot = new three.Euler();
+
+        switch (face) {
+          case 'front':
+            pos.set(offsetX, height / 2 + 0.01, offsetY);
+            rot.set(-Math.PI / 2, 0, 0);
+            break;
+          case 'back':
+            pos.set(offsetX, -height / 2 - 0.01, offsetY);
+            rot.set(Math.PI / 2, 0, Math.PI);
+            break;
+          case 'left':
+            pos.set(-width / 2 - 0.01, offsetY, offsetX);
+            rot.set(0, Math.PI / 2, 0);
+            break;
+          case 'right':
+            pos.set(width / 2 + 0.01, offsetY, offsetX);
+            rot.set(0, -Math.PI / 2, 0);
+            break;
+        }
+
+        windowMesh.position.copy(pos);
+        windowMesh.rotation.copy(rot);
+        building.add(windowMesh);
+      }
     }
   }
 
