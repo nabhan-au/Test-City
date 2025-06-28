@@ -134,44 +134,47 @@ void main() { \
     }
 
     if (is_leaf_mutant) {
-      // var sphereRadius = Math.min(gw, gh) * 0.2;
-      // // var sphereRadius = 0.05;
-
-      // var sphereGeometry = new three.SphereGeometry(sphereRadius, 16, 16);
-      // var sphereMaterial = new three.MeshBasicMaterial({ color: 0xff0000 });
-      // var sphere = new three.Mesh(sphereGeometry, sphereMaterial);
-
-      // sphere.position.x = 0;
-      // sphere.position.y = 0;
-      // sphere.position.z = gd / 2 + sphereRadius;
-
-      // sphere.d = d;  // share same d
-
-      // sphere.userData.isMutantSphere = true;
-
-      // cube.add(sphere);  // child of cube
-
-      const fireCount = Math.ceil(5 * Math.min(1, d.data.mutations.coverage)); // 0 to 5 fires
+      const fireCount = Math.ceil(5 * Math.min(1, d.data.mutations.coverage)); // 0–5 fires
       const textureLoader = new three.TextureLoader();
       const fireTexture = textureLoader.load('fire.png');
-    
+
+      const faces = ['front', 'back', 'left', 'right'];
+
       for (let i = 0; i < fireCount; i++) {
+        const face = faces[i % faces.length]; // distribute fires across sides
+
         const spriteMaterial = new three.SpriteMaterial({
           map: fireTexture,
           transparent: true,
           depthWrite: false,
         });
-    
+
         const sprite = new three.Sprite(spriteMaterial);
-        sprite.scale.set(0.1, 0.1, 1); // adjust fire image size
-    
-        const offsetX = (Math.random() - 0.5) * gw * 0.8;
-        const offsetZ = (Math.random() - 0.5) * gd * 0.8;
-    
-        sprite.position.set(offsetX, gh / 2 + 0.011, offsetZ); // front face
-        sprite.d = d;
+        sprite.scale.set(0.1, 0.1, 1);
+
+        const verticalOffset = (Math.random() - 0.5) * gd * 0.8;
+        const horizontalOffset = (Math.random() - 0.5);
+
+        let pos = new three.Vector3();
+
+        switch (face) {
+          case 'front':
+            pos.set(horizontalOffset * gw * 0.8, gh / 2 + 0.011, verticalOffset);
+            break;
+          case 'back':
+            pos.set(horizontalOffset * gw * 0.8, -gh / 2 - 0.011, verticalOffset);
+            break;
+          case 'left':
+            pos.set(-gw / 2 - 0.011, verticalOffset, horizontalOffset * gd * 0.8);
+            break;
+          case 'right':
+            pos.set(gw / 2 + 0.011, verticalOffset, horizontalOffset * gd * 0.8);
+            break;
+        }
+
+        sprite.position.copy(pos);
         sprite.userData.isMutantFire = true;
-    
+        sprite.d = d;
         cube.add(sprite);
       }
     }
@@ -452,7 +455,7 @@ void main() { \
       }
     });
     render();
-  }  
+  }
 
   window.addEventListener('resize', resizeCanvas);
   resizeCanvas();
