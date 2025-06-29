@@ -82,7 +82,12 @@ void main() { \
   var maximumHeight;
   var minimumHeight;
 
+  function isFile(path) {
+    return typeof path === "string" && /\.\w+$/.test(path) || false;
+  }
+
   function addHouse(d) {
+    let is_building = isFile(d.key);
     let is_mutant = d.data?.mutations?.coverage > 0 && d.data?.mutations?.total_mutation > 0;
     let is_leaf_mutant = is_mutant && (d.children?.length ?? 0) < 1;
 
@@ -122,29 +127,122 @@ void main() { \
     var objToAdd = rootHouse || scene;
     objToAdd.add(cube);
 
-    // add mutant sphere
+    if (is_building) {
+      ['front', 'back'].forEach(face => {
+        createWindowsOnBuilding(cube, gw, gh, gd, face);
+      });
+    }
+
     if (is_leaf_mutant) {
-      var sphereRadius = Math.min(gw, gh) * 0.2;
-      // var sphereRadius = 0.05;
+      const fireCount = Math.ceil(5 * Math.min(1, d.data.mutations.coverage)); // 0–5 fires
+      const textureLoader = new three.TextureLoader();
+      const fireTexture = textureLoader.load('fire.png');
 
-      var sphereGeometry = new three.SphereGeometry(sphereRadius, 16, 16);
-      var sphereMaterial = new three.MeshBasicMaterial({ color: 0xff0000 });
-      var sphere = new three.Mesh(sphereGeometry, sphereMaterial);
+      const faces = ['front', 'back', 'left', 'right'];
 
-      sphere.position.x = 0;
-      sphere.position.y = 0;
-      sphere.position.z = gd / 2 + sphereRadius;
+      for (let i = 0; i < fireCount; i++) {
+        const face = faces[i % faces.length]; // distribute fires across sides
 
-      sphere.d = d;  // share same d
+        const spriteMaterial = new three.SpriteMaterial({
+          map: fireTexture,
+          transparent: true,
+          depthWrite: false,
+        });
 
-      sphere.userData.isMutantSphere = true;
+        const sprite = new three.Sprite(spriteMaterial);
+        sprite.scale.set(0.1, 0.1, 1);
 
-      cube.add(sphere);  // child of cube
+        const verticalOffset = (Math.random() - 0.5) * gd * 0.8;
+        const horizontalOffset = (Math.random() - 0.5);
+
+        let pos = new three.Vector3();
+
+        switch (face) {
+          case 'front':
+            pos.set(horizontalOffset * gw * 0.8, gh / 2 + 0.011, verticalOffset);
+            break;
+          case 'back':
+            pos.set(horizontalOffset * gw * 0.8, -gh / 2 - 0.011, verticalOffset);
+            break;
+          case 'left':
+            pos.set(-gw / 2 - 0.011, verticalOffset, horizontalOffset * gd * 0.8);
+            break;
+          case 'right':
+            pos.set(gw / 2 + 0.011, verticalOffset, horizontalOffset * gd * 0.8);
+            break;
+        }
+
+        sprite.position.copy(pos);
+        sprite.userData.isMutantFire = true;
+        sprite.d = d;
+        cube.add(sprite);
+      }
     }
 
     if (!rootHouse) {
       rootHouse = cube;
       rootHouse.rotation.z = Math.PI / 4;
+    }
+  }
+
+  function createWindowsOnBuilding(building, width, height, depth, face = 'front') {
+    const windowSize = 0.05;
+    const margin = 0.02; // spacing from edges
+    const spacingX = 0.07;
+    const spacingY = 0.07;
+
+    const windowColors = [0x222222, 0xffffcc, 0xfff2a0];
+
+    // Compute how many columns and rows fit
+    const availableWidth = face === 'front' || face === 'back' ? width : depth;
+    const availableHeight = depth;
+
+    const maxCols = Math.floor((availableWidth - margin * 2) / spacingX);
+    const maxRows = Math.floor((availableHeight - margin * 2) / spacingY);
+
+    if (maxCols < 1 || maxRows < 1) return;
+
+    for (let i = 0; i < maxRows; i++) {
+      for (let j = 0; j < maxCols; j++) {
+        const windowGeometry = new three.PlaneGeometry(windowSize, windowSize);
+        const windowMaterial = new three.MeshBasicMaterial({
+          color: windowColors[Math.floor(Math.random() * windowColors.length)],
+          transparent: true,
+          opacity: 0.6,
+          depthWrite: false,
+        });
+
+        const windowMesh = new three.Mesh(windowGeometry, windowMaterial);
+
+        const offsetX = -((maxCols - 1) * spacingX) / 2 + j * spacingX;
+        const offsetY = -((maxRows - 1) * spacingY) / 2 + i * spacingY;
+
+        let pos = new three.Vector3();
+        let rot = new three.Euler();
+
+        switch (face) {
+          case 'front':
+            pos.set(offsetX, height / 2 + 0.01, offsetY);
+            rot.set(-Math.PI / 2, 0, 0);
+            break;
+          case 'back':
+            pos.set(offsetX, -height / 2 - 0.01, offsetY);
+            rot.set(Math.PI / 2, 0, Math.PI);
+            break;
+          case 'left':
+            pos.set(-width / 2 - 0.01, offsetY, offsetX);
+            rot.set(0, Math.PI / 2, 0);
+            break;
+          case 'right':
+            pos.set(width / 2 + 0.01, offsetY, offsetX);
+            rot.set(0, -Math.PI / 2, 0);
+            break;
+        }
+
+        windowMesh.position.copy(pos);
+        windowMesh.rotation.copy(rot);
+        building.add(windowMesh);
+      }
     }
   }
 
@@ -341,9 +439,18 @@ void main() { \
     render();
   }
 
+  // function toggleSpheres(show) {
+  //   scene.traverse(obj => {
+  //     if (obj.userData?.isMutantSphere) {
+  //       obj.visible = show;
+  //     }
+  //   });
+  //   render();
+  // }
+
   function toggleSpheres(show) {
     scene.traverse(obj => {
-      if (obj.userData?.isMutantSphere) {
+      if (obj.userData?.isMutantFire) {
         obj.visible = show;
       }
     });
