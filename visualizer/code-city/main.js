@@ -231,8 +231,8 @@ fetchData().then(function (d) {
                 ");
     }
 
-    sphereToggle.prop('checked', true);
-    codeCityChart.toggleSpheres(true);
+    sphereToggle.prop('checked', false);
+    codeCityChart.toggleSpheres(false)
 
     var isRotating = false;
 
