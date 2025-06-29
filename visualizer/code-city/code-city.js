@@ -128,7 +128,7 @@ void main() { \
     objToAdd.add(cube);
 
     if (is_building) {
-      ['front', 'back'].forEach(face => {
+      ['front', 'back', 'left', 'right'].forEach(face => {
         createWindowsOnBuilding(cube, gw, gh, gd, face);
       });
     }
@@ -194,7 +194,7 @@ void main() { \
     const windowColors = [0x222222, 0xffffcc, 0xfff2a0];
 
     // Compute how many columns and rows fit
-    const availableWidth = face === 'front' || face === 'back' ? width : depth;
+    const availableWidth = face === 'front' || face === 'back' ? width : height;
     const availableHeight = depth;
 
     const maxCols = Math.floor((availableWidth - margin * 2) / spacingX);
@@ -229,13 +229,13 @@ void main() { \
             pos.set(offsetX, -height / 2 - 0.01, offsetY);
             rot.set(Math.PI / 2, 0, Math.PI);
             break;
-          case 'left':
-            pos.set(-width / 2 - 0.01, offsetY, offsetX);
-            rot.set(0, Math.PI / 2, 0);
-            break;
           case 'right':
-            pos.set(width / 2 + 0.01, offsetY, offsetX);
-            rot.set(0, -Math.PI / 2, 0);
+            pos.set(-width / 2 - 0.01, offsetX, offsetY);
+            rot.set(-Math.PI / 2, -Math.PI / 2, 0);
+            break;
+          case 'left':
+            pos.set(width / 2 + 0.01, offsetX, offsetY);
+            rot.set(-Math.PI / 2, Math.PI / 2, 0);
             break;
         }
 
