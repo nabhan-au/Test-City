@@ -147,7 +147,7 @@ void main() { \
 
           if (fireCounts > fireOnWindows) {
           //   Add random fire on building
-            const exceedFireCount = fireCounts -fireOnWindows
+            const exceedFireCount = fireCounts - fireOnWindows
           }
         }
     }
@@ -238,9 +238,24 @@ void main() { \
 
     const maxCols = Math.floor((availableWidth - margin * 2) / spacingX);
     const maxRows = Math.floor((availableHeight - margin * 2) / spacingY);
+    const totalWindows = maxCols * maxRows
 
     if (maxCols < 1 || maxRows < 1) return;
 
+    let fireWindowIndices = [];
+    if (fire > 0 && fire <= totalWindows) {
+      // Create an array of all indices
+      const allIndices = Array.from({ length: totalWindows }, (_, idx) => idx);
+      // Shuffle array
+      for (let i = allIndices.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [allIndices[i], allIndices[j]] = [allIndices[j], allIndices[i]];
+      }
+      // Pick the first 'fire' indices
+      fireWindowIndices = allIndices.slice(0, fire);
+    }
+
+    let windowIdx = 0;
     for (let i = 0; i < maxRows; i++) {
       for (let j = 0; j < maxCols; j++) {
         const windowGeometry = new three.PlaneGeometry(windowSize, windowSize);
@@ -282,22 +297,25 @@ void main() { \
         windowMesh.rotation.copy(rot);
         building.add(windowMesh);
 
-        const fireGeometry = new three.PlaneGeometry(windowSize * 1.7, windowSize * 1.7);
-        const fireMaterial = new three.MeshBasicMaterial({
-          map: fireTexture,
-          transparent: true,
-          depthWrite: false
-        });
+        if (windowIdx in fireWindowIndices) {
+          const fireGeometry = new three.PlaneGeometry(windowSize * 1.7, windowSize * 1.7);
+          const fireMaterial = new three.MeshBasicMaterial({
+            map: fireTexture,
+            transparent: true,
+            depthWrite: false
+          });
 
-        const fireMesh = new three.Mesh(fireGeometry, fireMaterial);
-        fireMesh.position.copy(pos);
+          const fireMesh = new three.Mesh(fireGeometry, fireMaterial);
+          fireMesh.position.copy(pos);
 
-        // Move fire above the window (adjust direction based on face)
-        fireMesh.position.z += 0.01;
+          // Move fire above the window (adjust direction based on face)
+          fireMesh.position.z += 0.01;
 
-        fireMesh.rotation.copy(rot);
-        fireMesh.rotateZ(Math.PI);
-        building.add(fireMesh);
+          fireMesh.rotation.copy(rot);
+          fireMesh.rotateZ(Math.PI);
+          building.add(fireMesh);
+        }
+        windowIdx++
       }
     }
   }
