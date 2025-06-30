@@ -139,7 +139,7 @@ void main() { \
           const totalWindows = calculateTotalWindows(gw, gh, gd, faces)
           const totalMutationSurvives = d.data.mutations.total_mutation - d.data.mutations.killed
           // Make it available for user to choose if possible
-          const groupFireCountValue = 2
+          const groupFireCountValue = 1
           const fireCounts = Math.ceil(totalMutationSurvives / groupFireCountValue);
           let fireOnWindows = Math.min(fireCounts, totalWindows)
           const fireOnEachFace = Math.floor(fireOnWindows/faces.length)
@@ -254,7 +254,7 @@ void main() { \
       fireWindowIndices = allIndices.slice(0, fire);
     }
 
-    let windowIdx = 0;
+    let windowIdx = totalWindows - 1;
     for (let i = 0; i < maxRows; i++) {
       for (let j = 0; j < maxCols; j++) {
         const windowGeometry = new three.PlaneGeometry(windowSize, windowSize);
@@ -275,19 +275,19 @@ void main() { \
 
         switch (face) {
           case 'front':
-            pos.set(offsetX, height / 2 + 0.01, offsetY);
+            pos.set(offsetX, height / 2 + 0.005, offsetY);
             rot.set(-Math.PI / 2, 0, 0);
             break;
           case 'back':
-            pos.set(offsetX, -height / 2 - 0.01, offsetY);
+            pos.set(offsetX, -height / 2 - 0.005, offsetY);
             rot.set(Math.PI / 2, 0, Math.PI);
             break;
           case 'right':
-            pos.set(-width / 2 - 0.01, offsetX, offsetY);
+            pos.set(-width / 2 - 0.005, offsetX, offsetY);
             rot.set(-Math.PI / 2, -Math.PI / 2, 0);
             break;
           case 'left':
-            pos.set(width / 2 + 0.01, offsetX, offsetY);
+            pos.set(width / 2 + 0.005, offsetX, offsetY);
             rot.set(-Math.PI / 2, Math.PI / 2, 0);
             break;
         }
@@ -297,7 +297,7 @@ void main() { \
         building.add(windowMesh);
 
         if (windowIdx in fireWindowIndices) {
-          const fireGeometry = new three.PlaneGeometry(windowSize * 1.7, windowSize * 1.7);
+          const fireGeometry = new three.PlaneGeometry(windowSize * 1.5, windowSize * 1.5);
           const fireMaterial = new three.MeshBasicMaterial({
             map: fireTexture,
             transparent: true,
@@ -308,14 +308,33 @@ void main() { \
           fireMesh.position.copy(pos);
 
           // Move fire above the window (adjust direction based on face)
-          fireMesh.position.z += 0.01;
+          fireMesh.position.z += 0.005;
+
+          switch (face) {
+          case 'front':
+            fireMesh.position.x -= 0.01;
+            fireMesh.position.y += 0.005;
+            break;
+          case 'back':
+            fireMesh.position.x += 0.01;
+            fireMesh.position.y -= 0.005;
+            break;
+          case 'right':
+            fireMesh.position.y -= 0.01;
+            fireMesh.position.x -= 0.005;
+            break;
+          case 'left':
+            fireMesh.position.y += 0.01;
+            fireMesh.position.x += 0.005;
+            break;
+        }
 
           fireMesh.rotation.copy(rot);
           fireMesh.rotateZ(Math.PI);
           fireMesh.userData.isMutantFire = true;
           building.add(fireMesh);
         }
-        windowIdx++
+        windowIdx--
       }
     }
   }
