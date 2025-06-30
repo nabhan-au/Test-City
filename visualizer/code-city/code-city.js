@@ -127,11 +127,31 @@ void main() { \
     var objToAdd = rootHouse || scene;
     objToAdd.add(cube);
 
-    if (is_building) {
-      ['front', 'back', 'left', 'right'].forEach(face => {
-        createWindowsOnBuilding(cube, gw, gh, gd, face);
-      });
+    const faces = ['front', 'back', 'left', 'right']
+      if (is_building) {
+        if (!is_leaf_mutant) {
+          faces.forEach(face => {
+            createWindowsOnBuilding(cube, gw, gh, gd, face);
+          });
+        } else {
+          const totalWindows = calculateTotalWindows(gw, gh, gd, faces)
+          const totalMutationSurvives = d.data.mutations.total_mutation - d.data.mutations.killed
+          // Make it available for user to choose if possible
+          const groupFireCountValue = 5
+          const fireCounts = Math.ceil(totalMutationSurvives / groupFireCountValue);
+          let fireOnWindows = Math.min(fireCounts, totalWindows)
+          const fireOnEachFace = Math.floor(fireOnWindows/faces.length)
+          faces.forEach(face => {
+            createWindowsOnBuilding(cube, gw, gh, gd, face, fireOnEachFace);
+          });
+
+          if (fireCounts > fireOnWindows) {
+          //   Add random fire on building
+            const exceedFireCount = fireCounts -fireOnWindows
+          }
+        }
     }
+
 
     if (is_leaf_mutant) {
       const fireCount = Math.ceil(5 * Math.min(1, d.data.mutations.coverage)); // 0–5 fires
@@ -185,11 +205,30 @@ void main() { \
     }
   }
 
-  function createWindowsOnBuilding(building, width, height, depth, face = 'front') {
+  function calculateTotalWindows(width, height, depth, faces) {
+    const margin = 0.02; // spacing from edges
+    const spacingX = 0.07;
+    const spacingY = 0.07;
+    let totalWindow = 0
+
+    for (const face of faces) {
+      const availableWidth = face === 'front' || face === 'back' ? width : height;
+      const availableHeight = depth;
+      const maxCols = Math.floor((availableWidth - margin * 2) / spacingX);
+      const maxRows = Math.floor((availableHeight - margin * 2) / spacingY);
+      totalWindow += maxRows * maxCols
+    }
+    return totalWindow
+  }
+
+  function createWindowsOnBuilding(building, width, height, depth, face = 'front', fire = 0) {
     const windowSize = 0.05;
     const margin = 0.02; // spacing from edges
     const spacingX = 0.07;
     const spacingY = 0.07;
+
+    const textureLoader = new three.TextureLoader();
+    const fireTexture = textureLoader.load('fire.png');
 
     const windowColors = [0x222222, 0xffffcc, 0xfff2a0];
 
@@ -242,6 +281,23 @@ void main() { \
         windowMesh.position.copy(pos);
         windowMesh.rotation.copy(rot);
         building.add(windowMesh);
+
+        const fireGeometry = new three.PlaneGeometry(windowSize * 1.7, windowSize * 1.7);
+        const fireMaterial = new three.MeshBasicMaterial({
+          map: fireTexture,
+          transparent: true,
+          depthWrite: false
+        });
+
+        const fireMesh = new three.Mesh(fireGeometry, fireMaterial);
+        fireMesh.position.copy(pos);
+
+        // Move fire above the window (adjust direction based on face)
+        fireMesh.position.z += 0.01;
+
+        fireMesh.rotation.copy(rot);
+        fireMesh.rotateZ(Math.PI);
+        building.add(fireMesh);
       }
     }
   }
