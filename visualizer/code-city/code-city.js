@@ -145,59 +145,59 @@ void main() { \
             createWindowsOnBuilding(cube, gw, gh, gd, face, fireOnEachFace);
           });
 
-          if (fireCounts > fireOnWindows) {
-          //   Add random fire on building
-            const exceedFireCount = fireCounts - fireOnWindows
-          }
+          // if (fireCounts > fireOnWindows) {
+          // //   Add random fire on building
+          //   const exceedFireCount = fireCounts - fireOnWindows
+          // }
         }
     }
 
 
-    if (is_leaf_mutant) {
-      const fireCount = Math.ceil(5 * Math.min(1, d.data.mutations.coverage)); // 0–5 fires
-      const textureLoader = new three.TextureLoader();
-      const fireTexture = textureLoader.load('fire.png');
+    // if (is_leaf_mutant) {
+      // const fireCount = Math.ceil(5 * Math.min(1, d.data.mutations.coverage)); // 0–5 fires
+      // const textureLoader = new three.TextureLoader();
+      // const fireTexture = textureLoader.load('fire.png');
 
-      const faces = ['front', 'back', 'left', 'right'];
+      // const faces = ['front', 'back', 'left', 'right'];
 
-      for (let i = 0; i < fireCount; i++) {
-        const face = faces[i % faces.length]; // distribute fires across sides
+      // for (let i = 0; i < fireCount; i++) {
+      //   const face = faces[i % faces.length]; // distribute fires across sides
 
-        const spriteMaterial = new three.SpriteMaterial({
-          map: fireTexture,
-          transparent: true,
-          depthWrite: false,
-        });
+      //   const spriteMaterial = new three.SpriteMaterial({
+      //     map: fireTexture,
+      //     transparent: true,
+      //     depthWrite: false,
+      //   });
 
-        const sprite = new three.Sprite(spriteMaterial);
-        sprite.scale.set(0.1, 0.1, 1);
+      //   const sprite = new three.Sprite(spriteMaterial);
+      //   sprite.scale.set(0.1, 0.1, 1);
 
-        const verticalOffset = (Math.random() - 0.5) * gd * 0.8;
-        const horizontalOffset = (Math.random() - 0.5);
+      //   const verticalOffset = (Math.random() - 0.5) * gd * 0.8;
+      //   const horizontalOffset = (Math.random() - 0.5);
 
-        let pos = new three.Vector3();
+      //   let pos = new three.Vector3();
 
-        switch (face) {
-          case 'front':
-            pos.set(horizontalOffset * gw * 0.8, gh / 2 + 0.011, verticalOffset);
-            break;
-          case 'back':
-            pos.set(horizontalOffset * gw * 0.8, -gh / 2 - 0.011, verticalOffset);
-            break;
-          case 'left':
-            pos.set(-gw / 2 - 0.011, verticalOffset, horizontalOffset * gd * 0.8);
-            break;
-          case 'right':
-            pos.set(gw / 2 + 0.011, verticalOffset, horizontalOffset * gd * 0.8);
-            break;
-        }
+      //   switch (face) {
+      //     case 'front':
+      //       pos.set(horizontalOffset * gw * 0.8, gh / 2 + 0.011, verticalOffset);
+      //       break;
+      //     case 'back':
+      //       pos.set(horizontalOffset * gw * 0.8, -gh / 2 - 0.011, verticalOffset);
+      //       break;
+      //     case 'left':
+      //       pos.set(-gw / 2 - 0.011, verticalOffset, horizontalOffset * gd * 0.8);
+      //       break;
+      //     case 'right':
+      //       pos.set(gw / 2 + 0.011, verticalOffset, horizontalOffset * gd * 0.8);
+      //       break;
+      //   }
 
-        sprite.position.copy(pos);
-        sprite.userData.isMutantFire = true;
-        sprite.d = d;
-        cube.add(sprite);
-      }
-    }
+      //   sprite.position.copy(pos);
+      //   sprite.userData.isMutantFire = true;
+      //   sprite.d = d;
+      //   cube.add(sprite);
+      // }
+    // }
 
     if (!rootHouse) {
       rootHouse = cube;
@@ -313,6 +313,7 @@ void main() { \
 
           fireMesh.rotation.copy(rot);
           fireMesh.rotateZ(Math.PI);
+          fireMesh.userData.isMutantFire = true;
           building.add(fireMesh);
         }
         windowIdx++

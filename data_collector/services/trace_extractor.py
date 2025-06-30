@@ -44,6 +44,7 @@ class TraceExtractor:
         files = list(filter(lambda file: file.filename.endswith(".class"), files))
         response = self.trace_extractor_repository.extract_block_data(project_name, files)
         result = {}
+        print("response:", response)
         for row in response["data"]:
             clazz = row["clazz"]
             if clazz not in result:
