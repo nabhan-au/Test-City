@@ -2,6 +2,8 @@ import * as three from 'three';
 import $ from 'jquery';
 
 var houseMargin = 0.005; //min margin in percent
+const textureLoader = new three.TextureLoader();
+const fireTexture = textureLoader.load('fire-preview.png');
 
 function generateTreemap(d3, data, params) {
   var layout = d3.layout.treemap()
@@ -137,7 +139,7 @@ void main() { \
           const totalWindows = calculateTotalWindows(gw, gh, gd, faces)
           const totalMutationSurvives = d.data.mutations.total_mutation - d.data.mutations.killed
           // Make it available for user to choose if possible
-          const groupFireCountValue = 5
+          const groupFireCountValue = 2
           const fireCounts = Math.ceil(totalMutationSurvives / groupFireCountValue);
           let fireOnWindows = Math.min(fireCounts, totalWindows)
           const fireOnEachFace = Math.floor(fireOnWindows/faces.length)
@@ -226,9 +228,6 @@ void main() { \
     const margin = 0.02; // spacing from edges
     const spacingX = 0.07;
     const spacingY = 0.07;
-
-    const textureLoader = new three.TextureLoader();
-    const fireTexture = textureLoader.load('fire.png');
 
     const windowColors = [0x222222, 0xffffcc, 0xfff2a0];
 
