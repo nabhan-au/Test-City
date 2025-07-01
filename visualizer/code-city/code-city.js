@@ -142,15 +142,15 @@ void main() { \
           const groupFireCountValue = 1
           const fireCounts = Math.ceil(totalMutationSurvives / groupFireCountValue);
           let fireOnWindows = Math.min(fireCounts, totalWindows)
-          const fireOnEachFace = Math.floor(fireOnWindows/faces.length)
-          faces.forEach(face => {
-            createWindowsOnBuilding(cube, gw, gh, gd, face, fireOnEachFace);
+          // Distribute fires equally, giving the remainder to the first few faces
+          let firesPerFace = Array(faces.length).fill(Math.floor(fireOnWindows / faces.length));
+          for (let i = 0; i < fireOnWindows % faces.length; i++) {
+            firesPerFace[i] += 1;
+          }
+          // Now call the function for each face with the correct number of fires
+          faces.forEach((face, idx) => {
+            createWindowsOnBuilding(cube, gw, gh, gd, face, firesPerFace[idx]);
           });
-
-          // if (fireCounts > fireOnWindows) {
-          // //   Add random fire on building
-          //   const exceedFireCount = fireCounts - fireOnWindows
-          // }
         }
     }
 
