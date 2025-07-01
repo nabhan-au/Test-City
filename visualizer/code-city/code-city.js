@@ -319,6 +319,7 @@ void main() { \
         }
 
         if (fireWindowIndices.includes(windowIdx)) {
+          windowMesh.userData.firePercentage = fire/totalWindows * 100
           windowMesh.userData.isWindowMutantFire = true
         }
 
@@ -584,7 +585,16 @@ void main() { \
     scene.traverse(obj => {
       if (obj.userData?.isWindowMutantFire) {
         if (show) {
-          obj.material.color.set(0xfb2e2e)
+          const fire_percentage = obj.userData.firePercentage
+          if (fire_percentage < 33) {
+            obj.material.color.set(0xFFEC02)
+          } else if (fire_percentage < 66) {
+            obj.material.color.set(0xFF7102)
+          } else {
+            obj.material.color.set(0xF30101)
+          }
+          obj.transparent = false
+
         } else {
           obj.material.color.set(0xffffcc)
         }
