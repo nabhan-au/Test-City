@@ -3,7 +3,7 @@ import $ from 'jquery';
 
 var houseMargin = 0.005; //min margin in percent
 const textureLoader = new three.TextureLoader();
-const fireTexture = textureLoader.load('fire-preview.png');
+const fireTexture = textureLoader.load('fire-preview-2.png');
 
 function generateTreemap(d3, data, params) {
   var layout = d3.layout.treemap()
@@ -88,6 +88,27 @@ void main() { \
     return typeof path === "string" && /\.\w+$/.test(path) || false;
   }
 
+  function addFireWithWindows(faces, totalFire, windowCounts, totalWindows, cube, gw, gh, gd) {
+    let firesPerFace = {};
+    let fractions = [];
+    let assigned = 0;
+    faces.forEach(face => {
+      const exact = totalFire * windowCounts[face] / totalWindows;
+      firesPerFace[face] = Math.floor(exact);
+      assigned += firesPerFace[face];
+      fractions.push({face, fraction: exact - firesPerFace[face]});
+    });
+
+    let remainder = totalFire - assigned;
+    fractions.sort((a, b) => b.fraction - a.fraction); // descending by fraction
+    for (let i = 0; i < remainder; i++) {
+      firesPerFace[fractions[i].face]++;
+    }
+    faces.forEach(face => {
+      createWindowsOnBuilding(cube, gw, gh, gd, face, firesPerFace[face]);
+    });
+  }
+
   function addHouse(d) {
     let is_building = isFile(d.key);
     let is_mutant = d.data?.mutations?.coverage > 0 && d.data?.mutations?.total_mutation > 0;
@@ -136,21 +157,21 @@ void main() { \
             createWindowsOnBuilding(cube, gw, gh, gd, face);
           });
         } else {
-          const totalWindows = calculateTotalWindows(gw, gh, gd, faces)
-          const totalMutationSurvives = d.data.mutations.total_mutation - d.data.mutations.killed
-          // Make it available for user to choose if possible
-          const groupFireCountValue = 1
-          const fireCounts = Math.ceil(totalMutationSurvives / groupFireCountValue);
-          let fireOnWindows = Math.min(fireCounts, totalWindows)
-          // Distribute fires equally, giving the remainder to the first few faces
-          let firesPerFace = Array(faces.length).fill(Math.floor(fireOnWindows / faces.length));
-          for (let i = 0; i < fireOnWindows % faces.length; i++) {
-            firesPerFace[i] += 1;
+          const windows = calculateTotalWindows(gw, gh, gd, faces)
+          const totalWindows = windows.totalWindows
+          const windowCounts = windows.windowCounts
+          const totalFire = d.data.mutations.total_mutation - d.data.mutations.killed
+
+          if (totalWindows < 1) {
+            return
           }
-          // Now call the function for each face with the correct number of fires
-          faces.forEach((face, idx) => {
-            createWindowsOnBuilding(cube, gw, gh, gd, face, firesPerFace[idx]);
-          });
+          // Make it available for user to choose if possible
+          const fireExceedWindowLimit = totalFire - totalWindows
+          const totalFireOnWindow = Math.min(totalFire, totalWindows)
+          addFireWithWindows(faces, totalFireOnWindow, windowCounts, totalWindows, cube, gw, gh, gd);
+          // if (fireExceedWindowLimit > 0) {
+          //
+          // }
         }
     }
 
@@ -212,6 +233,7 @@ void main() { \
     const spacingX = 0.07;
     const spacingY = 0.07;
     let totalWindow = 0
+    let windowCounts = {}
 
     for (const face of faces) {
       const availableWidth = face === 'front' || face === 'back' ? width : height;
@@ -219,8 +241,12 @@ void main() { \
       const maxCols = Math.floor((availableWidth - margin * 2) / spacingX);
       const maxRows = Math.floor((availableHeight - margin * 2) / spacingY);
       totalWindow += maxRows * maxCols
+      windowCounts[face] = maxRows * maxCols
     }
-    return totalWindow
+    return {
+      "totalWindows": totalWindow,
+      "windowCounts": windowCounts,
+    }
   }
 
   function createWindowsOnBuilding(building, width, height, depth, face = 'front', fire = 0) {
@@ -259,7 +285,7 @@ void main() { \
       for (let j = 0; j < maxCols; j++) {
         const windowGeometry = new three.PlaneGeometry(windowSize, windowSize);
         const windowMaterial = new three.MeshBasicMaterial({
-          color: windowColors[Math.floor(Math.random() * windowColors.length)],
+          color: windowColors[1],
           transparent: true,
           opacity: 0.6,
           depthWrite: false,
@@ -292,16 +318,20 @@ void main() { \
             break;
         }
 
+        if (fireWindowIndices.includes(windowIdx)) {
+          windowMesh.userData.isWindowMutantFire = true
+        }
+
         windowMesh.position.copy(pos);
         windowMesh.rotation.copy(rot);
         building.add(windowMesh);
 
-        if (windowIdx in fireWindowIndices) {
-          const fireGeometry = new three.PlaneGeometry(windowSize * 1.5, windowSize * 1.5);
+        if (fireWindowIndices.includes(windowIdx)) {
+          const fireGeometry = new three.PlaneGeometry(windowSize * 0.9, windowSize * 1.3);
           const fireMaterial = new three.MeshBasicMaterial({
             map: fireTexture,
             transparent: true,
-            depthWrite: false
+            depthWrite: true
           });
 
           const fireMesh = new three.Mesh(fireGeometry, fireMaterial);
@@ -312,19 +342,19 @@ void main() { \
 
           switch (face) {
           case 'front':
-            fireMesh.position.x -= 0.01;
+            fireMesh.position.x -= 0.005;
             fireMesh.position.y += 0.005;
             break;
           case 'back':
-            fireMesh.position.x += 0.01;
+            fireMesh.position.x += 0.005;
             fireMesh.position.y -= 0.005;
             break;
           case 'right':
-            fireMesh.position.y -= 0.01;
+            fireMesh.position.y -= 0.005;
             fireMesh.position.x -= 0.005;
             break;
           case 'left':
-            fireMesh.position.y += 0.01;
+            fireMesh.position.y += 0.005;
             fireMesh.position.x += 0.005;
             break;
         }
@@ -550,6 +580,22 @@ void main() { \
     render();
   }
 
+  function toggleRedWindow(show) {
+    scene.traverse(obj => {
+      if (obj.userData?.isWindowMutantFire) {
+        if (show) {
+          obj.material.color.set(0xfb2e2e)
+        } else {
+          obj.material.color.set(0xffffcc)
+        }
+      }
+      else {
+        // console.log("Not show")
+      }
+    });
+    render();
+  }
+
   window.addEventListener('resize', resizeCanvas);
   resizeCanvas();
 
@@ -561,6 +607,7 @@ void main() { \
     getCameraPitch: getCameraPitch,
     setCameraPitch: setCameraPitch,
     toggleSpheres: toggleSpheres,
+    toggleRedWindow: toggleRedWindow,
   };
 }
 
