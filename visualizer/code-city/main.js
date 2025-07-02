@@ -354,6 +354,39 @@ fetchData().then(function (d) {
 
     const coveragePercent = totalLines > 0 ? ((totalCoveredLines / totalLines) * 100).toFixed(2) : '0.00';
 
+    let isDragging = false;
+    let lastX = 0, lastY = 0;
+    const chartEl = $('#code-city-chart')[0];
+
+    chartEl.addEventListener('mousedown', function (e) {
+        isDragging = true;
+        lastX = e.clientX;
+        lastY = e.clientY;
+    });
+
+    window.addEventListener('mousemove', function (e) {
+        if (!isDragging) return;
+
+        // How much the mouse moved
+        const dx = e.clientX - lastX;
+        const dy = e.clientY - lastY;
+
+        // Sensitivity coefficients (adjust as needed)
+        const rotateSpeed = 0.0018;
+        const pitchSpeed = 0.0018;
+
+        // Update camera
+        codeCityChart.setCameraRotation(codeCityChart.getCameraRotation() + dx * rotateSpeed * -1);
+        codeCityChart.setCameraPitch(codeCityChart.getCameraPitch() + dy * pitchSpeed);
+
+        lastX = e.clientX;
+        lastY = e.clientY;
+    });
+
+    window.addEventListener('mouseup', function (e) {
+        isDragging = false;
+    });
+
     descriptionEl.html(`
     <ul class="list-disc list-inside text-sm space-y-1">
         <li>Total Files: <strong>${totalFiles}</strong></li>
