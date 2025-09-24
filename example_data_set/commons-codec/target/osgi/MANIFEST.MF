@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Build-Jdk-Spec: 21
+Build-Jdk-Spec: 23
 Bundle-Description: The Apache Commons Codec component contains encoders
   and decoders for     formats such as Base16, Base32, Base64, digest, a
  nd Hexadecimal. In addition to these     widely used encoders and decod
