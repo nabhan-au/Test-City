@@ -168,7 +168,7 @@ void main() { \
         // Make it available for user to choose if possible
         const fireExceedWindowLimit = totalFire - totalWindows
         const totalFireOnWindow = Math.min(totalFire, totalWindows)
-        // TOOD: remove later
+        // TODO: remove later
         // addFireWithWindows(faces, totalFireOnWindow, windowCounts, totalWindows, cube, gw, gh, gd);
 
         const totalMut = (d?.data?.mutations?.total_mutation || 0);
