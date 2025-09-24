@@ -234,6 +234,7 @@ fetchData().then(function (d) {
     sphereToggle.prop('checked', false);
     codeCityChart.toggleSpheres(false)
     codeCityChart.toggleRedWindow(false)
++   codeCityChart.toggleMutants(false);
 
     var isRotating = false;
 
@@ -335,7 +336,8 @@ fetchData().then(function (d) {
     });
     sphereToggle.on('change', function () {
         codeCityChart.toggleSpheres(sphereToggle.is(':checked'));
-        codeCityChart.toggleRedWindow(sphereToggle.is(':checked'))
+        codeCityChart.toggleRedWindow(sphereToggle.is(':checked'));
+        codeCityChart.toggleMutants(sphereToggle.is(':checked'));
     });
 
     // project-description
