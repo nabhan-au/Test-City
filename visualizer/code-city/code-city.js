@@ -96,7 +96,7 @@ void main() { \
       const exact = totalFire * windowCounts[face] / totalWindows;
       firesPerFace[face] = Math.floor(exact);
       assigned += firesPerFace[face];
-      fractions.push({face, fraction: exact - firesPerFace[face]});
+      fractions.push({ face, fraction: exact - firesPerFace[face] });
     });
 
     let remainder = totalFire - assigned;
@@ -151,76 +151,40 @@ void main() { \
     objToAdd.add(cube);
 
     const faces = ['front', 'back', 'left', 'right']
-      if (is_building) {
-        if (!is_leaf_mutant) {
-          faces.forEach(face => {
-            createWindowsOnBuilding(cube, gw, gh, gd, face);
-          });
-        } else {
-          const windows = calculateTotalWindows(gw, gh, gd, faces)
-          const totalWindows = windows.totalWindows
-          const windowCounts = windows.windowCounts
-          const totalFire = d.data.mutations.total_mutation - d.data.mutations.killed
+    if (is_building) {
+      if (!is_leaf_mutant) {
+        faces.forEach(face => {
+          createWindowsOnBuilding(cube, gw, gh, gd, face);
+        });
+      } else {
+        const windows = calculateTotalWindows(gw, gh, gd, faces)
+        const totalWindows = windows.totalWindows
+        const windowCounts = windows.windowCounts
+        const totalFire = d.data.mutations.total_mutation - d.data.mutations.killed
 
-          if (totalWindows < 1) {
-            return
-          }
-          // Make it available for user to choose if possible
-          const fireExceedWindowLimit = totalFire - totalWindows
-          const totalFireOnWindow = Math.min(totalFire, totalWindows)
-          addFireWithWindows(faces, totalFireOnWindow, windowCounts, totalWindows, cube, gw, gh, gd);
-          // if (fireExceedWindowLimit > 0) {
-          //
-          // }
+        if (totalWindows < 1) {
+          return
         }
+        // Make it available for user to choose if possible
+        const fireExceedWindowLimit = totalFire - totalWindows
+        const totalFireOnWindow = Math.min(totalFire, totalWindows)
+        // TODO: remove later
+        // addFireWithWindows(faces, totalFireOnWindow, windowCounts, totalWindows, cube, gw, gh, gd);
+
+        const totalMut = (d?.data?.mutations?.total_mutation || 0);
+        const killed = (d?.data?.mutations?.killed || 0);
+        const survivors = Math.max(0, totalMut - killed);
+        if (totalMut > 0) {
+          createMutantStacksOnRoofRingCubes(cube, gw, gh, gd, killed, survivors, {
+            spacingX: 0.05,
+            spacingY: 0.05,
+            gapXY: 0.01,
+            unitH: 0.02,
+            ringThickness: 1,
+          });
+        }
+      }
     }
-
-
-    // if (is_leaf_mutant) {
-      // const fireCount = Math.ceil(5 * Math.min(1, d.data.mutations.coverage)); // 0–5 fires
-      // const textureLoader = new three.TextureLoader();
-      // const fireTexture = textureLoader.load('fire.png');
-
-      // const faces = ['front', 'back', 'left', 'right'];
-
-      // for (let i = 0; i < fireCount; i++) {
-      //   const face = faces[i % faces.length]; // distribute fires across sides
-
-      //   const spriteMaterial = new three.SpriteMaterial({
-      //     map: fireTexture,
-      //     transparent: true,
-      //     depthWrite: false,
-      //   });
-
-      //   const sprite = new three.Sprite(spriteMaterial);
-      //   sprite.scale.set(0.1, 0.1, 1);
-
-      //   const verticalOffset = (Math.random() - 0.5) * gd * 0.8;
-      //   const horizontalOffset = (Math.random() - 0.5);
-
-      //   let pos = new three.Vector3();
-
-      //   switch (face) {
-      //     case 'front':
-      //       pos.set(horizontalOffset * gw * 0.8, gh / 2 + 0.011, verticalOffset);
-      //       break;
-      //     case 'back':
-      //       pos.set(horizontalOffset * gw * 0.8, -gh / 2 - 0.011, verticalOffset);
-      //       break;
-      //     case 'left':
-      //       pos.set(-gw / 2 - 0.011, verticalOffset, horizontalOffset * gd * 0.8);
-      //       break;
-      //     case 'right':
-      //       pos.set(gw / 2 + 0.011, verticalOffset, horizontalOffset * gd * 0.8);
-      //       break;
-      //   }
-
-      //   sprite.position.copy(pos);
-      //   sprite.userData.isMutantFire = true;
-      //   sprite.d = d;
-      //   cube.add(sprite);
-      // }
-    // }
 
     if (!rootHouse) {
       rootHouse = cube;
@@ -319,7 +283,7 @@ void main() { \
         }
 
         if (fireWindowIndices.includes(windowIdx)) {
-          windowMesh.userData.firePercentage = fire/totalWindows * 100
+          windowMesh.userData.firePercentage = fire / totalWindows * 100
           windowMesh.userData.isWindowMutantFire = true
         }
 
@@ -342,23 +306,23 @@ void main() { \
           fireMesh.position.z += 0.005;
 
           switch (face) {
-          case 'front':
-            fireMesh.position.x -= 0.005;
-            fireMesh.position.y += 0.005;
-            break;
-          case 'back':
-            fireMesh.position.x += 0.005;
-            fireMesh.position.y -= 0.005;
-            break;
-          case 'right':
-            fireMesh.position.y -= 0.005;
-            fireMesh.position.x -= 0.005;
-            break;
-          case 'left':
-            fireMesh.position.y += 0.005;
-            fireMesh.position.x += 0.005;
-            break;
-        }
+            case 'front':
+              fireMesh.position.x -= 0.005;
+              fireMesh.position.y += 0.005;
+              break;
+            case 'back':
+              fireMesh.position.x += 0.005;
+              fireMesh.position.y -= 0.005;
+              break;
+            case 'right':
+              fireMesh.position.y -= 0.005;
+              fireMesh.position.x -= 0.005;
+              break;
+            case 'left':
+              fireMesh.position.y += 0.005;
+              fireMesh.position.x += 0.005;
+              break;
+          }
 
           fireMesh.rotation.copy(rot);
           fireMesh.rotateZ(Math.PI);
@@ -366,6 +330,74 @@ void main() { \
           building.add(fireMesh);
         }
         windowIdx--
+      }
+    }
+  }
+
+  function createMutantStacksOnRoofRingCubes(building, gw, gh, gd, killed, survivors, opts = {}) {
+    const margin = opts.margin ?? 0.02;
+    const spacingX = opts.spacingX ?? 0.075;
+    const spacingY = opts.spacingY ?? 0.075;
+    const gapXY = opts.gapXY ?? 0.012;
+    const gapZ = opts.gapZ ?? 0.005;
+    const unitH = opts.unitH ?? 0.03;
+    const ringT = Math.max(1, Math.min(opts.ringThickness ?? 1, 8)); // ring thickness
+    const roofLift = 0.006;
+
+    const cols = Math.max(1, Math.floor((gw - margin * 2) / spacingX));
+    const rows = Math.max(1, Math.floor((gh - margin * 2) / spacingY));
+    if (cols <= 0 || rows <= 0) return;
+
+    // perimeter cells only
+    const cells = [];
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const onRing =
+          r < ringT || r >= rows - ringT || c < ringT || c >= cols - ringT;
+        if (onRing) cells.push([r, c]);
+      }
+    }
+    const capacity = cells.length;
+    if (capacity === 0) return;
+
+    // distribution across perimeter cells
+    const distribute = (N) => {
+      const arr = new Array(capacity).fill(0);
+      for (let i = 0; i < Math.max(0, N); i++) arr[i % capacity] += 1;
+      return arr;
+    };
+
+    const killedPerCell = distribute(killed);
+    const survivorsPerCell = distribute(survivors);
+
+    // cube size with horizontal/vertical gaps
+    const blockX = Math.max(0.01, spacingX - gapXY);
+    const blockY = Math.max(0.01, spacingY - gapXY);
+    const blockZ = Math.max(0.01, unitH);
+
+    const whiteMat = new three.MeshPhongMaterial({ color: 0xffffff });
+    const redMat = new three.MeshPhongMaterial({ color: 0xcc2b2b });
+
+    for (let i = 0; i < capacity; i++) {
+      const [r, c] = cells[i];
+      const k = killedPerCell[i];
+      const s = survivorsPerCell[i];
+      const total = k + s;
+      if (!total) continue;
+
+      const cellCenterX = -((cols - 1) * spacingX) / 2 + c * spacingX;
+      const cellCenterY = -((rows - 1) * spacingY) / 2 + r * spacingY;
+
+      for (let h = 0; h < total; h++) {
+        const mat = h >= k ? redMat : whiteMat;
+        const geom = new three.BoxGeometry(blockX, blockY, blockZ);
+        const mesh = new three.Mesh(geom, mat);
+
+        const z = gd / 2 + roofLift + (blockZ + gapZ) * h + blockZ / 2;
+
+        mesh.position.set(cellCenterX, cellCenterY, z);
+        mesh.userData.isMutantStack = true;
+        building.add(mesh);
       }
     }
   }
@@ -606,6 +638,32 @@ void main() { \
     render();
   }
 
+  function toggleMutants(show) {
+    scene.traverse(obj => {
+      // Roof cubes
+      if (obj.userData?.isMutantStack) {
+        obj.visible = show;
+      }
+      // Fire sprites
+      if (obj.userData?.isMutantFire) {
+        obj.visible = show;
+      }
+      // Windows tint
+      if (obj.userData?.isWindowMutantFire) {
+        if (show) {
+          const p = obj.userData.firePercentage ?? 0;
+          if (p < 33) obj.material.color.set(0xFFEC02);
+          else if (p < 66) obj.material.color.set(0xFF7102);
+          else obj.material.color.set(0xF30101);
+          obj.transparent = false;
+        } else {
+          obj.material.color.set(0xffffcc);
+          obj.transparent = true;
+        }
+      }
+    });
+    render();
+  }
   window.addEventListener('resize', resizeCanvas);
   resizeCanvas();
 
@@ -618,6 +676,7 @@ void main() { \
     setCameraPitch: setCameraPitch,
     toggleSpheres: toggleSpheres,
     toggleRedWindow: toggleRedWindow,
+    toggleMutants: toggleMutants,
   };
 }
 
