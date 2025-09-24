@@ -84,29 +84,44 @@ void main() { \
   var maximumHeight;
   var minimumHeight;
 
-  function isFile(path) {
-    return typeof path === "string" && /\.\w+$/.test(path) || false;
+  // --- FOV zoom helpers ---
+  const fovLimits = { min: 15, max: 85 };  // tighter min = more zoom-in
+  camera.fov = 45;                          // starting FOV
+  camera.updateProjectionMatrix();
+
+  function clampFov(v) {
+    return Math.max(fovLimits.min, Math.min(fovLimits.max, v));
   }
 
-  function addFireWithWindows(faces, totalFire, windowCounts, totalWindows, cube, gw, gh, gd) {
-    let firesPerFace = {};
-    let fractions = [];
-    let assigned = 0;
-    faces.forEach(face => {
-      const exact = totalFire * windowCounts[face] / totalWindows;
-      firesPerFace[face] = Math.floor(exact);
-      assigned += firesPerFace[face];
-      fractions.push({ face, fraction: exact - firesPerFace[face] });
-    });
+  function setFov(fov) {
+    camera.fov = clampFov(fov);
+    camera.updateProjectionMatrix();
+    render();
+  }
 
-    let remainder = totalFire - assigned;
-    fractions.sort((a, b) => b.fraction - a.fraction); // descending by fraction
-    for (let i = 0; i < remainder; i++) {
-      firesPerFace[fractions[i].face]++;
-    }
-    faces.forEach(face => {
-      createWindowsOnBuilding(cube, gw, gh, gd, face, firesPerFace[face]);
-    });
+  function getFov() {
+    return camera.fov;
+  }
+
+  // Optional: normalized zoom (0..1) -> FOV in [min,max]
+  function setZoom(normalized) {
+    const t = Math.max(0, Math.min(1, normalized));
+    const fov = fovLimits.min + (fovLimits.max - fovLimits.min) * (1 - t);
+    setFov(fov);
+  }
+
+  const zoomStep = 1.1; // multiplier per click
+
+  const onZoomIn = () => {
+    setFov(camera.fov / zoomStep); // smaller FOV = zoom in
+  };
+
+  const onZoomOut = () => {
+    setFov(camera.fov * zoomStep); // bigger FOV = zoom out
+  };
+
+  function isFile(path) {
+    return typeof path === "string" && /\.\w+$/.test(path) || false;
   }
 
   function addHouse(d) {
@@ -152,22 +167,22 @@ void main() { \
 
     const faces = ['front', 'back', 'left', 'right']
     if (is_building) {
-      if (!is_leaf_mutant) {
-        faces.forEach(face => {
-          createWindowsOnBuilding(cube, gw, gh, gd, face);
-        });
-      } else {
-        const windows = calculateTotalWindows(gw, gh, gd, faces)
-        const totalWindows = windows.totalWindows
-        const windowCounts = windows.windowCounts
-        const totalFire = d.data.mutations.total_mutation - d.data.mutations.killed
+      // if (!is_leaf_mutant) {
+      //   faces.forEach(face => {
+      //     // createWindowsOnBuilding(cube, gw, gh, gd, face);
+      //   });
+      // } else {
+        // const windows = calculateTotalWindows(gw, gh, gd, faces)
+        // const totalWindows = windows.totalWindows
+        // const windowCounts = windows.windowCounts
+        // const totalFire = d.data.mutations.total_mutation - d.data.mutations.killed
 
-        if (totalWindows < 1) {
-          return
-        }
+        // if (totalWindows < 1) {
+        //   return
+        // }
         // Make it available for user to choose if possible
-        const fireExceedWindowLimit = totalFire - totalWindows
-        const totalFireOnWindow = Math.min(totalFire, totalWindows)
+        // const fireExceedWindowLimit = totalFire - totalWindows
+        // const totalFireOnWindow = Math.min(totalFire, totalWindows)
         // TODO: remove later
         // addFireWithWindows(faces, totalFireOnWindow, windowCounts, totalWindows, cube, gw, gh, gd);
 
@@ -179,11 +194,11 @@ void main() { \
             spacingX: 0.05,
             spacingY: 0.05,
             gapXY: 0.01,
-            unitH: 0.02,
-            ringThickness: 1,
+            unitH: 0.025,
+            margin: -0.001
           });
         }
-      }
+      // }
     }
 
     if (!rootHouse) {
@@ -341,19 +356,18 @@ void main() { \
     const gapXY = opts.gapXY ?? 0.012;
     const gapZ = opts.gapZ ?? 0.005;
     const unitH = opts.unitH ?? 0.03;
-    const ringT = Math.max(1, Math.min(opts.ringThickness ?? 1, 8)); // ring thickness
     const roofLift = 0.006;
 
-    const cols = Math.max(1, Math.floor((gw - margin * 2) / spacingX));
-    const rows = Math.max(1, Math.floor((gh - margin * 2) / spacingY));
+    const cols = Math.max(0, Math.floor((gw - margin * 2) / spacingX));
+    const rows = Math.max(0, Math.floor((gh - margin * 2) / spacingY));
+
     if (cols <= 0 || rows <= 0) return;
 
     // perimeter cells only
     const cells = [];
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
-        const onRing =
-          r < ringT || r >= rows - ringT || c < ringT || c >= cols - ringT;
+        const onRing = (r === 0 || r === rows - 1 || c === 0 || c === cols - 1);
         if (onRing) cells.push([r, c]);
       }
     }
@@ -677,6 +691,8 @@ void main() { \
     toggleSpheres: toggleSpheres,
     toggleRedWindow: toggleRedWindow,
     toggleMutants: toggleMutants,
+    onZoomIn: onZoomIn,
+    onZoomOut: onZoomOut
   };
 }
 
