@@ -1,4 +1,5 @@
 import * as codeCity from './code-city';
+import * as progressive from './progressive-brick-layout.js'
 import $ from 'jquery';
 import { legend } from '../common/legend.js';
 import * as dataLoaders from '../data/loaders.js';
@@ -123,6 +124,8 @@ function nodeArea(d) {
     return d.data[metric].total_line;
 }
 
+
+
 var graphParams = {
     legend: legend(legendDiv, legendTitle, legendContent)
 };
@@ -218,7 +221,11 @@ fetchData().then(function (d) {
     var treeData = dataHelpers.convertToTree(mergedData, mapperParams);
     dataHelpers.colorize(d3, treeData, 'colorValue', nodeColorScale, { min: 20, max: 100 });
 
+    
+
     var codeCityChart;
+
+    // progressive.calculate_area(treeData)
     try {
         codeCityChart = codeCity.codeCity(d3, $('#code-city-chart')[0], treeData, graphParams);
     } catch (e) {
@@ -235,7 +242,7 @@ fetchData().then(function (d) {
 
     sphereToggle.prop('checked', true);
     codeCityChart.toggleSpheres(true)
-+   codeCityChart.toggleMutants(true);
+    codeCityChart.toggleMutants(true);
 
     var isRotating = false;
 

@@ -23,6 +23,7 @@ function codeCity(d3, element, rawData, params) {
 
   var data = generateTreemap(d3, rawData, params);
 
+  console.log(rawData)
   var width = canvas.node().offsetWidth;
   var height = width;
 
@@ -207,147 +208,147 @@ void main() { \
     }
   }
 
-  function calculateTotalWindows(width, height, depth, faces) {
-    const margin = 0.02; // spacing from edges
-    const spacingX = 0.07;
-    const spacingY = 0.07;
-    let totalWindow = 0
-    let windowCounts = {}
+  // function calculateTotalWindows(width, height, depth, faces) {
+  //   const margin = 0.02; // spacing from edges
+  //   const spacingX = 0.07;
+  //   const spacingY = 0.07;
+  //   let totalWindow = 0
+  //   let windowCounts = {}
 
-    for (const face of faces) {
-      const availableWidth = face === 'front' || face === 'back' ? width : height;
-      const availableHeight = depth;
-      const maxCols = Math.floor((availableWidth - margin * 2) / spacingX);
-      const maxRows = Math.floor((availableHeight - margin * 2) / spacingY);
-      totalWindow += maxRows * maxCols
-      windowCounts[face] = maxRows * maxCols
-    }
-    return {
-      "totalWindows": totalWindow,
-      "windowCounts": windowCounts,
-    }
-  }
+  //   for (const face of faces) {
+  //     const availableWidth = face === 'front' || face === 'back' ? width : height;
+  //     const availableHeight = depth;
+  //     const maxCols = Math.floor((availableWidth - margin * 2) / spacingX);
+  //     const maxRows = Math.floor((availableHeight - margin * 2) / spacingY);
+  //     totalWindow += maxRows * maxCols
+  //     windowCounts[face] = maxRows * maxCols
+  //   }
+  //   return {
+  //     "totalWindows": totalWindow,
+  //     "windowCounts": windowCounts,
+  //   }
+  // }
 
-  function createWindowsOnBuilding(building, width, height, depth, face = 'front', fire = 0) {
-    const windowSize = 0.05;
-    const margin = 0.02; // spacing from edges
-    const spacingX = 0.07;
-    const spacingY = 0.07;
+  // function createWindowsOnBuilding(building, width, height, depth, face = 'front', fire = 0) {
+  //   const windowSize = 0.05;
+  //   const margin = 0.02; // spacing from edges
+  //   const spacingX = 0.07;
+  //   const spacingY = 0.07;
 
-    const windowColors = [0x222222, 0xffffcc, 0xfff2a0];
+  //   const windowColors = [0x222222, 0xffffcc, 0xfff2a0];
 
-    // Compute how many columns and rows fit
-    const availableWidth = face === 'front' || face === 'back' ? width : height;
-    const availableHeight = depth;
+  //   // Compute how many columns and rows fit
+  //   const availableWidth = face === 'front' || face === 'back' ? width : height;
+  //   const availableHeight = depth;
 
-    const maxCols = Math.floor((availableWidth - margin * 2) / spacingX);
-    const maxRows = Math.floor((availableHeight - margin * 2) / spacingY);
-    const totalWindows = maxCols * maxRows
+  //   const maxCols = Math.floor((availableWidth - margin * 2) / spacingX);
+  //   const maxRows = Math.floor((availableHeight - margin * 2) / spacingY);
+  //   const totalWindows = maxCols * maxRows
 
-    if (maxCols < 1 || maxRows < 1) return;
+  //   if (maxCols < 1 || maxRows < 1) return;
 
-    let fireWindowIndices = [];
-    if (fire > 0 && fire <= totalWindows) {
-      // Create an array of all indices
-      const allIndices = Array.from({ length: totalWindows }, (_, idx) => idx);
-      // Shuffle array
-      for (let i = allIndices.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [allIndices[i], allIndices[j]] = [allIndices[j], allIndices[i]];
-      }
-      // Pick the first 'fire' indices
-      fireWindowIndices = allIndices.slice(0, fire);
-    }
+  //   let fireWindowIndices = [];
+  //   if (fire > 0 && fire <= totalWindows) {
+  //     // Create an array of all indices
+  //     const allIndices = Array.from({ length: totalWindows }, (_, idx) => idx);
+  //     // Shuffle array
+  //     for (let i = allIndices.length - 1; i > 0; i--) {
+  //       const j = Math.floor(Math.random() * (i + 1));
+  //       [allIndices[i], allIndices[j]] = [allIndices[j], allIndices[i]];
+  //     }
+  //     // Pick the first 'fire' indices
+  //     fireWindowIndices = allIndices.slice(0, fire);
+  //   }
 
-    let windowIdx = totalWindows - 1;
-    for (let i = 0; i < maxRows; i++) {
-      for (let j = 0; j < maxCols; j++) {
-        const windowGeometry = new three.PlaneGeometry(windowSize, windowSize);
-        const windowMaterial = new three.MeshBasicMaterial({
-          color: windowColors[1],
-          transparent: true,
-          opacity: 0.6,
-          depthWrite: false,
-        });
+  //   let windowIdx = totalWindows - 1;
+  //   for (let i = 0; i < maxRows; i++) {
+  //     for (let j = 0; j < maxCols; j++) {
+  //       const windowGeometry = new three.PlaneGeometry(windowSize, windowSize);
+  //       const windowMaterial = new three.MeshBasicMaterial({
+  //         color: windowColors[1],
+  //         transparent: true,
+  //         opacity: 0.6,
+  //         depthWrite: false,
+  //       });
 
-        const windowMesh = new three.Mesh(windowGeometry, windowMaterial);
+  //       const windowMesh = new three.Mesh(windowGeometry, windowMaterial);
 
-        const offsetX = -((maxCols - 1) * spacingX) / 2 + j * spacingX;
-        const offsetY = -((maxRows - 1) * spacingY) / 2 + i * spacingY;
+  //       const offsetX = -((maxCols - 1) * spacingX) / 2 + j * spacingX;
+  //       const offsetY = -((maxRows - 1) * spacingY) / 2 + i * spacingY;
 
-        let pos = new three.Vector3();
-        let rot = new three.Euler();
+  //       let pos = new three.Vector3();
+  //       let rot = new three.Euler();
 
-        switch (face) {
-          case 'front':
-            pos.set(offsetX, height / 2 + 0.005, offsetY);
-            rot.set(-Math.PI / 2, 0, 0);
-            break;
-          case 'back':
-            pos.set(offsetX, -height / 2 - 0.005, offsetY);
-            rot.set(Math.PI / 2, 0, Math.PI);
-            break;
-          case 'right':
-            pos.set(-width / 2 - 0.005, offsetX, offsetY);
-            rot.set(-Math.PI / 2, -Math.PI / 2, 0);
-            break;
-          case 'left':
-            pos.set(width / 2 + 0.005, offsetX, offsetY);
-            rot.set(-Math.PI / 2, Math.PI / 2, 0);
-            break;
-        }
+  //       switch (face) {
+  //         case 'front':
+  //           pos.set(offsetX, height / 2 + 0.005, offsetY);
+  //           rot.set(-Math.PI / 2, 0, 0);
+  //           break;
+  //         case 'back':
+  //           pos.set(offsetX, -height / 2 - 0.005, offsetY);
+  //           rot.set(Math.PI / 2, 0, Math.PI);
+  //           break;
+  //         case 'right':
+  //           pos.set(-width / 2 - 0.005, offsetX, offsetY);
+  //           rot.set(-Math.PI / 2, -Math.PI / 2, 0);
+  //           break;
+  //         case 'left':
+  //           pos.set(width / 2 + 0.005, offsetX, offsetY);
+  //           rot.set(-Math.PI / 2, Math.PI / 2, 0);
+  //           break;
+  //       }
 
-        if (fireWindowIndices.includes(windowIdx)) {
-          windowMesh.userData.firePercentage = fire / totalWindows * 100
-          windowMesh.userData.isWindowMutantFire = true
-        }
+  //       if (fireWindowIndices.includes(windowIdx)) {
+  //         windowMesh.userData.firePercentage = fire / totalWindows * 100
+  //         windowMesh.userData.isWindowMutantFire = true
+  //       }
 
-        windowMesh.position.copy(pos);
-        windowMesh.rotation.copy(rot);
-        building.add(windowMesh);
+  //       windowMesh.position.copy(pos);
+  //       windowMesh.rotation.copy(rot);
+  //       building.add(windowMesh);
 
-        if (fireWindowIndices.includes(windowIdx)) {
-          const fireGeometry = new three.PlaneGeometry(windowSize * 0.9, windowSize * 1.3);
-          const fireMaterial = new three.MeshBasicMaterial({
-            map: fireTexture,
-            transparent: true,
-            depthWrite: true
-          });
+  //       if (fireWindowIndices.includes(windowIdx)) {
+  //         const fireGeometry = new three.PlaneGeometry(windowSize * 0.9, windowSize * 1.3);
+  //         const fireMaterial = new three.MeshBasicMaterial({
+  //           map: fireTexture,
+  //           transparent: true,
+  //           depthWrite: true
+  //         });
 
-          const fireMesh = new three.Mesh(fireGeometry, fireMaterial);
-          fireMesh.position.copy(pos);
+  //         const fireMesh = new three.Mesh(fireGeometry, fireMaterial);
+  //         fireMesh.position.copy(pos);
 
-          // Move fire above the window (adjust direction based on face)
-          fireMesh.position.z += 0.005;
+  //         // Move fire above the window (adjust direction based on face)
+  //         fireMesh.position.z += 0.005;
 
-          switch (face) {
-            case 'front':
-              fireMesh.position.x -= 0.005;
-              fireMesh.position.y += 0.005;
-              break;
-            case 'back':
-              fireMesh.position.x += 0.005;
-              fireMesh.position.y -= 0.005;
-              break;
-            case 'right':
-              fireMesh.position.y -= 0.005;
-              fireMesh.position.x -= 0.005;
-              break;
-            case 'left':
-              fireMesh.position.y += 0.005;
-              fireMesh.position.x += 0.005;
-              break;
-          }
+  //         switch (face) {
+  //           case 'front':
+  //             fireMesh.position.x -= 0.005;
+  //             fireMesh.position.y += 0.005;
+  //             break;
+  //           case 'back':
+  //             fireMesh.position.x += 0.005;
+  //             fireMesh.position.y -= 0.005;
+  //             break;
+  //           case 'right':
+  //             fireMesh.position.y -= 0.005;
+  //             fireMesh.position.x -= 0.005;
+  //             break;
+  //           case 'left':
+  //             fireMesh.position.y += 0.005;
+  //             fireMesh.position.x += 0.005;
+  //             break;
+  //         }
 
-          fireMesh.rotation.copy(rot);
-          fireMesh.rotateZ(Math.PI);
-          fireMesh.userData.isMutantFire = true;
-          building.add(fireMesh);
-        }
-        windowIdx--
-      }
-    }
-  }
+  //         fireMesh.rotation.copy(rot);
+  //         fireMesh.rotateZ(Math.PI);
+  //         fireMesh.userData.isMutantFire = true;
+  //         building.add(fireMesh);
+  //       }
+  //       windowIdx--
+  //     }
+  //   }
+  // }
 
   function createMutantStacksOnRoofRingCubes(building, gw, gh, gd, killed, survivors, opts = {}) {
     const margin = opts.margin ?? 0.02;
