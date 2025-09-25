@@ -28,6 +28,8 @@ var rotateLeftSpan = $('#rotate-left');
 var rotateRightSpan = $('#rotate-right');
 var rotateUpSpan = $('#rotate-up');
 var rotateDownSpan = $('#rotate-down');
+var zoomInSpan = $('#zoom-in')
+var zoomOutSpan = $('#zoom-out')
 var birdEyeToggle = $('#toggle-bird-eye');
 var sphereToggle = $('#toggle-spheres');
 
@@ -231,10 +233,9 @@ fetchData().then(function (d) {
                 ");
     }
 
-    sphereToggle.prop('checked', false);
-    codeCityChart.toggleSpheres(false)
-    codeCityChart.toggleRedWindow(false)
-+   codeCityChart.toggleMutants(false);
+    sphereToggle.prop('checked', true);
+    codeCityChart.toggleSpheres(true)
++   codeCityChart.toggleMutants(true);
 
     var isRotating = false;
 
@@ -317,7 +318,6 @@ fetchData().then(function (d) {
     rotateUpSpan.on('mouseup mouseleave', function () {
         stopRotatePitch();
     });
-
     rotateDownSpan.on('mousedown', function () {
         if (birdEyeToggle.is(':checked')) {
             birdEyeToggle.prop('checked', false).trigger('change');
@@ -326,6 +326,12 @@ fetchData().then(function (d) {
     });
     rotateDownSpan.on('mouseup mouseleave', function () {
         stopRotatePitch();
+    });
+    zoomInSpan.on('mousedown', function () {
+        codeCityChart.onZoomIn()
+    });
+    zoomOutSpan.on('mousedown', function () {
+        codeCityChart.onZoomOut()
     });
     birdEyeToggle.on('change', function () {
         if (birdEyeToggle.is(':checked')) {
