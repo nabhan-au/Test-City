@@ -98,7 +98,7 @@ const calculate_area_offset = (node) => {
     }
   };
 
-const calculate_area_recursive = (current_node) => {
+const calculate_area_recursive = (current_node, margin = 0.5) => {
     if (!current_node.children || !current_node.children.length) {
         const sideCapacity = calculate_side_capacity(current_node.data.mutations.total_mutation)
         current_node.sideCapacity = sideCapacity
@@ -111,11 +111,11 @@ const calculate_area_recursive = (current_node) => {
         calculate_area_recursive(child)
     }
 
-    current_node.children = calculate_layout(current_node)
+    current_node.children = calculate_layout(current_node, margin)
     const maxX = Math.max(...current_node.children.map(c => c.x + c.dx));
     const maxY = Math.max(...current_node.children.map(c => c.y + c.dy));
-    current_node.dx = maxX
-    current_node.dy = maxY
+    current_node.dx = maxX + margin
+    current_node.dy = maxY + margin
 }
 
 class Node {
@@ -153,8 +153,8 @@ const calculate_layout = (node, margin = 0.5) => {
     let root_size_x = 0
     let root_size_y = 0
     for (let child of nodeChildren) {
-        root_size_x += child.dx;
-        root_size_y += child.dy;
+        root_size_x += child.dx + 2 * margin;
+        root_size_y += child.dy + 2 * margin;
     }
     
 
@@ -163,8 +163,8 @@ const calculate_layout = (node, margin = 0.5) => {
     for (let child of nodeChildren) {
         const preservers = new Map()
         const expanders = new Map()
-        let w = child.dx
-        let h = child.dy
+        let w = child.dx + 2 * margin;
+        let h = child.dy + 2 * margin;
         let pnodes = getAvailableNode(startNode, w, h)
 
         for (let node of pnodes) {
@@ -200,10 +200,10 @@ const calculate_layout = (node, margin = 0.5) => {
             placed = splitToFit(targetNode, w, h);
         }
 
-        child.x = placed.x;
-        child.y = placed.y;
-        child.dx = w;
-        child.dy = h;
+        child.x = placed.x + margin;
+        child.y = placed.y + margin;
+        child.dx = w - 2 * margin;;
+        child.dy = h - 2 * margin;;
         result.push(child)
 
         covrec.w = Math.max(covrec.w, placed.x + placed.w);
