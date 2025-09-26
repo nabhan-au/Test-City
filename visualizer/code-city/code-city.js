@@ -537,7 +537,18 @@ void main() { \
 
   data.forEach(findExtremes);
 
-  data.forEach((d) => {
+  data.forEach((d, idx) => {
+    console.log(d)
+    if (idx == 0) {
+      const deepCopy = JSON.parse(JSON.stringify(d));
+      deepCopy.x = 0.5
+      deepCopy.y = 0.5
+      deepCopy.dx = 0.0000000001
+      deepCopy.dy = 0.0000000001
+
+      addHouse(deepCopy, normalized_block_size)
+    }
+
     addHouse(d, normalized_block_size)
   })
 

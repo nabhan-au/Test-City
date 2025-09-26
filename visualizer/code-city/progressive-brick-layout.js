@@ -98,7 +98,7 @@ const calculate_area_offset = (node) => {
     }
   };
 
-const calculate_area_recursive = (current_node, margin = 0) => {
+const calculate_area_recursive = (current_node, margin = 0.5) => {
     if (!current_node.children || !current_node.children.length) {
         const sideCapacity = calculate_side_capacity(current_node.data.mutations.total_mutation)
         current_node.sideCapacity = sideCapacity
