@@ -16,12 +16,70 @@ const calculate_area = (tree) => {
     calculate_area_recursive(tree)
     calculate_area_offset(tree)
     normalize_area_size(tree)
-    return tree
+    return treeToList(tree)
 }
+
+const treeToList = (root) => {
+    const result = [];
+  
+    const traverse = (node, depth = 0) => {
+        if (!node) return;
+
+        node.depth = depth;  
+        result.push(node);
+
+        if (node.children && node.children.length > 0) {
+            for (const child of node.children) {
+            traverse(child, depth + 1);
+            }
+        }
+    };
+  
+    traverse(root);
+    return result;
+  };
 
 const normalize_area_size = (tree) => {
-
-}
+    let maxX = 0;
+    let maxY = 0;
+    let maxArea = 0
+  
+    const collectBounds = (node) => {
+      if (!node) return;
+  
+      maxX = Math.max(maxX, node.x + node.dx);
+      maxY = Math.max(maxY, node.y + node.dy);
+      maxArea = Math.max(maxArea, node.area)
+      node.value = node.area
+  
+      if (node.children) {
+        for (const child of node.children) {
+          collectBounds(child);
+        }
+      }
+    };
+    collectBounds(tree);
+  
+    const scale = 1 / Math.max(maxX, maxY);
+    const areaScale = 1 / maxArea
+  
+    const applyScale = (node) => {
+      node.x *= scale;
+      node.y *= scale;
+      node.dx *= scale;
+      node.dy *= scale;
+      node.area *= areaScale;
+  
+      if (node.children) {
+        for (const child of node.children) {
+          applyScale(child);
+        }
+      }
+    };
+    applyScale(tree);
+  
+    return tree;
+  };
 
 const calculate_area_offset = (node, margin = 0.5) => {
     if (!node.children) return;

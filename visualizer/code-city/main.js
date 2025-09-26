@@ -226,23 +226,24 @@ fetchData().then(function (d) {
     var codeCityChart;
 
     // progressive.calculate_area(treeData)
-    try {
-        codeCityChart = codeCity.codeCity(d3, $('#code-city-chart')[0], treeData, graphParams);
-    } catch (e) {
-        if (e instanceof TypeError)
-            $('#code-city-chart').html("\
-                <div> \
-                <img src=\"../assets/images/code_city_large.png\" width=\"100%\"> \
-                <p style=\"background:rgba(255,0,0,0.7); top:300px; position:absolute; font-size:18px;\" class=\"alert alert-danger\"> \
-                    It seems that your browser does not support (or has deactivated) WebGL, which is required for this graph. Please upgrade your browser or make sure that WebGL is activated. Below is a teaser of what the visualization of your project might look like. \
-                </p> \
-                </div> \
-                ");
-    }
+    codeCityChart = codeCity.codeCity(d3, $('#code-city-chart')[0], treeData, graphParams);
+    // try {
+        
+    // } catch (e) {
+    //     if (e instanceof TypeError)
+    //         $('#code-city-chart').html("\
+    //             <div> \
+    //             <img src=\"../assets/images/code_city_large.png\" width=\"100%\"> \
+    //             <p style=\"background:rgba(255,0,0,0.7); top:300px; position:absolute; font-size:18px;\" class=\"alert alert-danger\"> \
+    //                 It seems that your browser does not support (or has deactivated) WebGL, which is required for this graph. Please upgrade your browser or make sure that WebGL is activated. Below is a teaser of what the visualization of your project might look like. \
+    //             </p> \
+    //             </div> \
+    //             ");
+    // }
 
-    sphereToggle.prop('checked', true);
-    codeCityChart.toggleSpheres(true)
-    codeCityChart.toggleMutants(true);
+    // sphereToggle.prop('checked', true);
+    // codeCityChart.toggleSpheres(true)
+    // codeCityChart.toggleMutants(true);
 
     var isRotating = false;
 

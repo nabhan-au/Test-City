@@ -1,4 +1,5 @@
 import * as three from 'three';
+import * as progressive from './progressive-brick-layout'
 import $ from 'jquery';
 
 var houseMargin = 0.005; //min margin in percent
@@ -21,9 +22,10 @@ function generateTreemap(d3, data, params) {
 function codeCity(d3, element, rawData, params) {
   var canvas = d3.select(element);
 
-  var data = generateTreemap(d3, rawData, params);
+  // var data = generateTreemap(d3, rawData, params);
+  var data = progressive.calculate_area(rawData)
+  console.log(data)
 
-  console.log(rawData)
   var width = canvas.node().offsetWidth;
   var height = width;
 
@@ -527,7 +529,7 @@ void main() { \
 
   data.forEach(findExtremes);
 
-  data.forEach(addHouse);
+  data.forEach(addHouse)
 
   render();
   animate();
