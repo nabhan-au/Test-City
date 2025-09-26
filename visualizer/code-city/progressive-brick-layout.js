@@ -75,7 +75,7 @@ const normalize_area_size = (tree) => {
       node.y *= scale;
       node.dx *= scale;
       node.dy *= scale;
-      node.area *= areaScale;
+      node.area = node.dx * node.dy
   
       if (node.children) {
         for (const child of node.children) {
@@ -98,7 +98,7 @@ const calculate_area_offset = (node) => {
     }
   };
 
-const calculate_area_recursive = (current_node, margin = 0.5) => {
+const calculate_area_recursive = (current_node, margin = 0) => {
     if (!current_node.children || !current_node.children.length) {
         const sideCapacity = calculate_side_capacity(current_node.data.mutations.total_mutation)
         current_node.sideCapacity = sideCapacity
@@ -108,7 +108,7 @@ const calculate_area_recursive = (current_node, margin = 0.5) => {
     }
 
     for (let child of current_node.children) {
-        calculate_area_recursive(child)
+        calculate_area_recursive(child, margin)
     }
 
     current_node.children = calculate_layout(current_node, margin)
