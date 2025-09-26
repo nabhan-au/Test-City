@@ -7,6 +7,10 @@ const calculate_side_capacity = (size) => {
         let nol = sc * 2
         bc_max = next_lc * nol - 1
     }
+
+    if (sc == 0) {
+        return 1
+    }
     return sc
 }
 
@@ -15,14 +19,16 @@ const calculate_area = (tree) => {
     tree.y = 0
     calculate_area_recursive(tree)
     calculate_area_offset(tree)
-    normalize_area_size(tree)
-    return treeToList(tree)
+    const normalized_block_size = normalize_area_size(tree)
+    console.log(normalized_block_size)
+    console.log(tree)
+    return [treeToList(tree), normalized_block_size]
 }
 
 const treeToList = (root) => {
     const result = [];
   
-    const traverse = (node, depth = 0) => {
+    const traverse = (node, depth = 1) => {
         if (!node) return;
 
         node.depth = depth;  
@@ -62,6 +68,7 @@ const normalize_area_size = (tree) => {
   
     const scale = 1 / Math.max(maxX, maxY);
     const areaScale = 1 / maxArea
+    const normalizedBlockSize = 2*scale - (2*scale*0.1)
   
     const applyScale = (node) => {
       node.x *= scale;
@@ -78,19 +85,16 @@ const normalize_area_size = (tree) => {
     };
     applyScale(tree);
   
-    return tree;
+    return normalizedBlockSize;
   };
 
-const calculate_area_offset = (node, margin = 0.5) => {
+const calculate_area_offset = (node) => {
     if (!node.children) return;
   
     for (let child of node.children) {
-      // Convert child's local coordinates to absolute ones
       child.x = node.x + child.x;
       child.y = node.y + child.y;
-  
-      // Recurse into subtree, carrying margin
-      calculate_area_offset(child, margin);
+      calculate_area_offset(child);
     }
   };
 
@@ -149,8 +153,8 @@ const calculate_layout = (node, margin = 0.5) => {
     let root_size_x = 0
     let root_size_y = 0
     for (let child of nodeChildren) {
-        root_size_x += child.dx
-        root_size_y += child.dy
+        root_size_x += child.dx;
+        root_size_y += child.dy;
     }
     
 
@@ -196,10 +200,10 @@ const calculate_layout = (node, margin = 0.5) => {
             placed = splitToFit(targetNode, w, h);
         }
 
-        child.x = placed.x
-        child.y = placed.y
-        child.dx = w
-        child.dy = h
+        child.x = placed.x;
+        child.y = placed.y;
+        child.dx = w;
+        child.dy = h;
         result.push(child)
 
         covrec.w = Math.max(covrec.w, placed.x + placed.w);

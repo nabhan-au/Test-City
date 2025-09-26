@@ -3,8 +3,6 @@ import * as progressive from './progressive-brick-layout'
 import $ from 'jquery';
 
 var houseMargin = 0.005; //min margin in percent
-const textureLoader = new three.TextureLoader();
-const fireTexture = textureLoader.load('fire-preview-2.png');
 
 function generateTreemap(d3, data, params) {
   var layout = d3.layout.treemap()
@@ -19,11 +17,18 @@ function generateTreemap(d3, data, params) {
   });
 }
 
-function codeCity(d3, element, rawData, params) {
+function codeCity(d3, element, rawData, params, isProgressiveLayout = true) {
   var canvas = d3.select(element);
 
-  // var data = generateTreemap(d3, rawData, params);
-  var data = progressive.calculate_area(rawData)
+  var data, normalized_block_size = null
+  
+  if (isProgressiveLayout) {
+    [data, normalized_block_size] = progressive.calculate_area(rawData)
+  } else {
+    normalized_block_size = 0.05
+    data = generateTreemap(d3, rawData, params);
+  }
+  
   console.log(data)
 
   var width = canvas.node().offsetWidth;
@@ -84,8 +89,8 @@ void main() { \
   var cameraZ = -1.4;
   var cameraPitch = 0.0;
   var cameraAngle = 0.0;
-  var maximumHeight;
-  var minimumHeight;
+  var maximumHeight = 250;
+  var minimumHeight = 0.005;
 
   // --- FOV zoom helpers ---
   const fovLimits = { min: 15, max: 85 };  // tighter min = more zoom-in
@@ -127,7 +132,7 @@ void main() { \
     return typeof path === "string" && /\.\w+$/.test(path) || false;
   }
 
-  function addHouse(d) {
+  function addHouse(d, normalized_block_size = 0.05) {
     let is_building = isFile(d.key);
     let is_mutant = d.data?.mutations?.coverage > 0 && d.data?.mutations?.total_mutation > 0;
     let is_leaf_mutant = is_mutant && (d.children?.length ?? 0) < 1;
@@ -138,7 +143,10 @@ void main() { \
     var gw = Math.max(0, (d.dx - 2 * houseMargin) * w) / 500;
     var gh = Math.max(0, (d.dy - 2 * houseMargin) * h) / 500;
     var baseHeight = Math.sqrt((d.height - minimumHeight) / (maximumHeight - minimumHeight));
-    var gd = unitHeight * (d.children ? 0.05 : baseHeight) * 130.0;
+    if (isNaN(baseHeight) || !isFinite(baseHeight)) {
+      baseHeight = 0;
+    }
+    var gd = unitHeight * (d.children.length ? 0.05 : baseHeight) * 130.0;
 
     var gx = ((d.x + d.dx / 2) * w) / 500 - 1;
     var gy = 1 - ((d.y + d.dy / 2) * h) / 500;
@@ -194,11 +202,11 @@ void main() { \
         const survivors = Math.max(0, totalMut - killed);
         if (totalMut > 0) {
           createMutantStacksOnRoofRingCubes(cube, gw, gh, gd, killed, survivors, {
-            spacingX: 0.05,
-            spacingY: 0.05,
+            spacingX: normalized_block_size,
+            spacingY: normalized_block_size,
             gapXY: 0.01,
             unitH: 0.025,
-            margin: -0.001
+            margin: -0.01
           });
         }
       // }
@@ -529,7 +537,9 @@ void main() { \
 
   data.forEach(findExtremes);
 
-  data.forEach(addHouse)
+  data.forEach((d) => {
+    addHouse(d, normalized_block_size)
+  })
 
   render();
   animate();
