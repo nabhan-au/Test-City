@@ -538,7 +538,7 @@ void main() { \
   data.forEach(findExtremes);
 
   data.forEach((d, idx) => {
-    console.log(d)
+    // TODO: (hotfix) remove later
     if (idx == 0) {
       const deepCopy = JSON.parse(JSON.stringify(d));
       deepCopy.x = 0.5
