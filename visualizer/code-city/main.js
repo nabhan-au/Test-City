@@ -17,9 +17,11 @@ function initCity(margin) {
   globalMargin = margin;
 
   const container = document.getElementById('code-city-canvas');
-  while (container.firstChild) container.removeChild(container.firstChild);
 
-  codeCityChart = codeCity.codeCity(d3, container, rawData, params, globalMargin);
+  const newContainer = container.cloneNode(false);
+  container.parentNode.replaceChild(newContainer, container);
+
+  codeCityChart = codeCity.codeCity(d3, newContainer, rawData, params, globalMargin);
 }
 
 async function fetchData() {
@@ -426,6 +428,8 @@ fetchData().then(function (d) {
         const checked = sphereToggle.is(':checked');
         sphereToggle.prop('checked', checked).trigger('change');
         birdEyeToggle.prop('checked', false).trigger('change');
+
+        isDragging = false;
     });
 
     // project-description
