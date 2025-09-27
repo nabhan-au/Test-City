@@ -422,8 +422,11 @@ fetchData().then(function (d) {
         globalMargin = val;
 
         initCity(globalMargin);
-    });
 
+        const checked = sphereToggle.is(':checked');
+        sphereToggle.prop('checked', checked).trigger('change');
+        birdEyeToggle.prop('checked', false).trigger('change');
+    });
 
     // project-description
     const descriptionEl = $('#project-description');
