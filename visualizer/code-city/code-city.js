@@ -17,19 +17,17 @@ function generateTreemap(d3, data, params) {
   });
 }
 
-function codeCity(d3, element, rawData, params, isProgressiveLayout = true) {
+function codeCity(d3, element, rawData, params, margin, isProgressiveLayout = true) {
   var canvas = d3.select(element);
 
   var data, normalized_block_size = null
   
   if (isProgressiveLayout) {
-    [data, normalized_block_size] = progressive.calculate_area(rawData)
+    [data, normalized_block_size] = progressive.calculate_area(rawData, margin)
   } else {
     normalized_block_size = 0.05
     data = generateTreemap(d3, rawData, params);
   }
-  
-  console.log(data)
 
   var width = canvas.node().offsetWidth;
   var height = width;

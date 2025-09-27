@@ -14,14 +14,12 @@ const calculate_side_capacity = (size) => {
     return sc
 }
 
-const calculate_area = (tree) => {
+const calculate_area = (tree, margin) => {
     tree.x = 0
     tree.y = 0
-    calculate_area_recursive(tree)
+    calculate_area_recursive(tree, margin)
     calculate_area_offset(tree)
     const normalized_block_size = normalize_area_size(tree)
-    console.log(normalized_block_size)
-    console.log(tree)
     return [treeToList(tree), normalized_block_size]
 }
 
@@ -139,7 +137,7 @@ const getAvailableNode = (root, w, h, out = []) => {
     return out
 }
 
-const calculate_layout = (node, margin = 0.5) => {
+const calculate_layout = (node, margin) => {
     let nodeChildren = node.children
     let covrec = new Node(0, 0, 0, 0)
     let result = []

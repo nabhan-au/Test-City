@@ -8,7 +8,21 @@ import * as dataHelpers from '../data/helpers.js';
 const d3 = window.d3;
 
 var params = (new URL(document.location)).searchParams;
+let globalMargin = 0.5;
+var codeCityChart;
+var rawData;
 // 'go-jsonnet'
+
+function initCity(margin) {
+  globalMargin = margin;
+
+  const container = document.getElementById('code-city-canvas');
+
+  const newContainer = container.cloneNode(false);
+  container.parentNode.replaceChild(newContainer, container);
+
+  codeCityChart = codeCity.codeCity(d3, newContainer, rawData, params, globalMargin);
+}
 
 async function fetchData() {
     try {
@@ -33,27 +47,25 @@ var zoomInSpan = $('#zoom-in')
 var zoomOutSpan = $('#zoom-out')
 var birdEyeToggle = $('#toggle-bird-eye');
 var sphereToggle = $('#toggle-spheres');
+var marginSlider = $('#margin-slider');
+var marginValueDisplay = $('#margin-value');
 
 var nodeColorScale = [
-    // '#a50026',
-    '#c31727',
-    '#d73027',
-    '#e56a35',
-    '#f46d43',
-    '#fab86d',
-    '#fdae61',
-    '#fee497',
-    '#fee08b',
-    '#ecf497',
-    '#d9ef8b',
-    '#bde487',
-    '#a6d96a',
-    '#86d168',
-    '#66bd63',
-    '#409f5a',
-    '#1a9850',
-    // '#0f7a42',
-    // '#006837'
+    // '#ffffcc', // very low — pale yellow
+    '#ffeda0',
+    '#fed976',
+    '#feb24c',
+    '#fd8d3c',
+    '#fc4e2a',
+    '#e31a1c', // mid — warm balance
+    '#bd0026',
+    '#800026',
+    '#6baed6',
+    '#5392c0',
+    // '#4292c6',
+    // '#2171b5',
+    // '#08519c',
+    // '#08306b', // high — deep blue
 ]
 
 let gridValue;
@@ -221,12 +233,61 @@ fetchData().then(function (d) {
     var treeData = dataHelpers.convertToTree(mergedData, mapperParams);
     dataHelpers.colorize(d3, treeData, 'colorValue', nodeColorScale, { min: 20, max: 100 });
 
-    
+    // compute maxDepth
+    function computeMaxDepth(root) {
+        let maxD = 0;
+        (function walk(n) {
+            if (!n) return;
+            maxD = Math.max(maxD, n.depth || 0);
+            if (n.children) n.children.forEach(walk);
+        })(root);
+        return Math.max(1, maxD); // avoid division by zero
+    }
 
-    var codeCityChart;
+    // convert an integer 0..255 to two-digit hex
+    function toHexByte(v) {
+        const n = Math.max(0, Math.min(255, Math.round(v)));
+        return n.toString(16).padStart(2, '0');
+    }
+
+    // linear interpolation
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    // apply color override
+    function applyLeafPaletteAndPlatformGray(root) {
+        const maxDepth = computeMaxDepth(root);
+
+        // gray range
+        const lightGray = 200; // shallow platforms -> lighter gray
+        const darkGray  =  100; // deep platforms   -> darker gray
+
+        (function walk(n) {
+            if (!n) return;
+
+            const isLeaf = !n.children || n.children.length === 0;
+
+            if (!isLeaf) {
+            const t = (n.depth || 0) / maxDepth;
+            const g = lerp(lightGray, darkGray, t);
+            const hex = `#${toHexByte(g)}${toHexByte(g)}${toHexByte(g)}`;
+            n.color = hex;
+            } else {
+            if (!n.color) {
+                const cov = n.data?.[metric]?.coverage ?? 0;
+                const idx = Math.round((Math.max(0, Math.min(100, cov)) / 100) * (nodeColorScale.length - 1));
+                n.color = nodeColorScale[idx];
+            }
+            }
+
+            if (n.children) n.children.forEach(walk);
+        })(root);
+    }
+
+    applyLeafPaletteAndPlatformGray(treeData);
 
     // progressive.calculate_area(treeData)
-    codeCityChart = codeCity.codeCity(d3, $('#code-city-chart')[0], treeData, graphParams);
+    rawData = treeData;
+    codeCityChart = codeCity.codeCity(d3, $('#code-city-chart')[0], treeData, graphParams, globalMargin);
     // try {
         
     // } catch (e) {
@@ -352,6 +413,23 @@ fetchData().then(function (d) {
         codeCityChart.toggleSpheres(sphereToggle.is(':checked'));
         codeCityChart.toggleRedWindow(sphereToggle.is(':checked'));
         codeCityChart.toggleMutants(sphereToggle.is(':checked'));
+    });
+    marginSlider.on('input', function () {
+        globalMargin = parseFloat(this.value);
+        marginValueDisplay.text(globalMargin.toFixed(3));
+    });
+
+    $('#apply-margin').on('click', function () {
+        const val = parseFloat(marginSlider.val());
+        globalMargin = val;
+
+        initCity(globalMargin);
+
+        const checked = sphereToggle.is(':checked');
+        sphereToggle.prop('checked', checked).trigger('change');
+        birdEyeToggle.prop('checked', false).trigger('change');
+
+        isDragging = false;
     });
 
     // project-description
