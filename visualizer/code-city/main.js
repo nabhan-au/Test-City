@@ -59,9 +59,10 @@ var nodeColorScale = [
     '#bd0026',
     '#800026',
     '#6baed6',
-    '#4292c6',
-    '#2171b5',
-    '#08519c',
+    '#5392c0',
+    // '#4292c6',
+    // '#2171b5',
+    // '#08519c',
     // '#08306b', // high — deep blue
 ]
 
@@ -255,8 +256,8 @@ fetchData().then(function (d) {
         const maxDepth = computeMaxDepth(root);
 
         // gray range
-        const lightGray = 230; // shallow platforms -> lighter gray
-        const darkGray  =  70; // deep platforms   -> darker gray
+        const lightGray = 200; // shallow platforms -> lighter gray
+        const darkGray  =  100; // deep platforms   -> darker gray
 
         (function walk(n) {
             if (!n) return;
