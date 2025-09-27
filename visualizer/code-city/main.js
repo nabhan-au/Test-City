@@ -8,7 +8,19 @@ import * as dataHelpers from '../data/helpers.js';
 const d3 = window.d3;
 
 var params = (new URL(document.location)).searchParams;
+let globalMargin = 0.5;
+var codeCityChart;
+var rawData;
 // 'go-jsonnet'
+
+function initCity(margin) {
+  globalMargin = margin;
+
+  const container = document.getElementById('code-city-canvas');
+  while (container.firstChild) container.removeChild(container.firstChild);
+
+  codeCityChart = codeCity.codeCity(d3, container, rawData, params, globalMargin);
+}
 
 async function fetchData() {
     try {
@@ -33,6 +45,8 @@ var zoomInSpan = $('#zoom-in')
 var zoomOutSpan = $('#zoom-out')
 var birdEyeToggle = $('#toggle-bird-eye');
 var sphereToggle = $('#toggle-spheres');
+var marginSlider = $('#margin-slider');
+var marginValueDisplay = $('#margin-value');
 
 var nodeColorScale = [
     // '#ffffcc', // very low — pale yellow
@@ -267,10 +281,10 @@ fetchData().then(function (d) {
     }
 
     applyLeafPaletteAndPlatformGray(treeData);
-    var codeCityChart;
 
     // progressive.calculate_area(treeData)
-    codeCityChart = codeCity.codeCity(d3, $('#code-city-chart')[0], treeData, graphParams);
+    rawData = treeData;
+    codeCityChart = codeCity.codeCity(d3, $('#code-city-chart')[0], treeData, graphParams, globalMargin);
     // try {
         
     // } catch (e) {
@@ -397,6 +411,18 @@ fetchData().then(function (d) {
         codeCityChart.toggleRedWindow(sphereToggle.is(':checked'));
         codeCityChart.toggleMutants(sphereToggle.is(':checked'));
     });
+    marginSlider.on('input', function () {
+        globalMargin = parseFloat(this.value);
+        marginValueDisplay.text(globalMargin.toFixed(3));
+    });
+
+    $('#apply-margin').on('click', function () {
+        const val = parseFloat(marginSlider.val());
+        globalMargin = val;
+
+        initCity(globalMargin);
+    });
+
 
     // project-description
     const descriptionEl = $('#project-description');
