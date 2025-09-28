@@ -138,16 +138,7 @@ function legendContent(d, e) {
 }
 
 function nodeHeight(d) {
-    let trace_size = 0
-    function snapToGrid(grid, value) {
-        return grid * Math.ceil(value / grid);
-    }
-    if (d.children && d.children.length)
-        return 0;
-    if (d.data[trace].average) {
-        trace_size = d.data[trace].average;
-    }
-    return snapToGrid(gridValue, trace_size);
+    return d.data[metric].total_line;
 }
 
 function nodeColor(d) {
