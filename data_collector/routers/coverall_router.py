@@ -1,11 +1,13 @@
+import logging
 from typing import List
 
-from fastapi import APIRouter, HTTPException, status, Depends, UploadFile
+from fastapi import APIRouter, HTTPException, status, Depends, UploadFile, Query, File
 from fastapi.responses import JSONResponse
 
 from models.common_response import CommonResponse
 from services.coverage_processor import CoverageProcessor
 from services.file_manager.file_manager_s3_service import FileManagerS3Service
+from services.file_manager.file_manager_local_service import FileManagerLocalService
 from dependency_injector.wiring import inject, Provide
 from containers import Container
 
@@ -27,15 +29,53 @@ async def get_coverall(project_name, file_manager_s3_service: FileManagerS3Servi
     return JSONResponse(json_data)
 
 
-@coverall_router.post('/project/{project_name}', status_code=status.HTTP_201_CREATED)
+@coverall_router.post("/project/{project_name}", status_code=status.HTTP_201_CREATED)
 @inject
-async def create_project_coverall(project_name: str, files: List[UploadFile], coverage_processor: CoverageProcessor = Depends(Provide[Container.coverage_processor_service])):
+async def create_project_coverall(
+    project_name: str,
+    files: List[UploadFile] = File(...),
+    start: bool = Query(False),
+    finalize: bool = Query(False),
+    coverage: CoverageProcessor = Depends(Provide[Container.coverage_processor_service]),
+    filemgr: FileManagerLocalService = Depends(Provide[Container.file_manager_local_service]),
+):
     try:
-        await coverage_processor.process_coverage(files, project_name)
+        if start:
+            filemgr.clear_staging(project_name)
+        if not files:
+            raise HTTPException(status.HTTP_400_BAD_REQUEST, "No files uploaded")
+        # (Optional) protect against oversized single requests:
+        # if len(files) > 500:
+        #     raise HTTPException(400, "Too many files in one batch (max 500)")
+
+        # 1) Stage this batch to temp dir
+        logging.info(f"Uploading {len(files)} files...")
+        await filemgr.stage_batch(project_name, files)
+
+        # 2) If NOT final batch, just acknowledge
+        if not finalize:
+            return CommonResponse(True, "Batch accepted").to_json()
+
+        # 3) Final batch: load all staged files and run coverage once
+        logging.info("Finalized")
+        staged = await filemgr.get_staged_uploadfiles(project_name)
+        if not staged:
+            raise HTTPException(400, "No staged files found to finalize")
+        await coverage.process_coverage(staged, project_name)
+
+        # 4) Cleanup staging
+        filemgr.clear_staging(project_name)
+
         return CommonResponse(True, "Created coverage report").to_json()
+
+    except HTTPException as e:
+        raise
     except Exception as e:
-        raise HTTPException(status.HTTP_500_INTERNAL_SERVER_ERROR,
-                            "Something went wrong in the server with message", e)
+        logging.error(e, exc_info=e)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Server error while processing project '{project_name}': {e}",
+        )
 
 @coverall_router.post('/project-new/{project_name}', status_code=status.HTTP_201_CREATED)
 @inject
