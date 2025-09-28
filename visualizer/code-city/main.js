@@ -9,19 +9,47 @@ const d3 = window.d3;
 
 var params = (new URL(document.location)).searchParams;
 let globalMargin = 0.5;
+let isDragging = false;
 var codeCityChart;
 var rawData;
 // 'go-jsonnet'
 
 function initCity(margin) {
-  globalMargin = margin;
+    globalMargin = margin;
 
-  const container = document.getElementById('code-city-canvas');
+    const container = document.getElementById('code-city-canvas');
+    const newContainer = container.cloneNode(false);
+    container.parentNode.replaceChild(newContainer, container);
 
-  const newContainer = container.cloneNode(false);
-  container.parentNode.replaceChild(newContainer, container);
+    codeCityChart = codeCity.codeCity(d3, newContainer, rawData, params, globalMargin);
 
-  codeCityChart = codeCity.codeCity(d3, newContainer, rawData, params, globalMargin);
+    bindChartEvents(newContainer);
+}
+
+function bindChartEvents(chartEl) {
+    let lastX = 0, lastY = 0;
+
+    chartEl.addEventListener('mousedown', function (e) {
+        isDragging = true;
+        lastX = e.clientX;
+        lastY = e.clientY;
+    });
+
+    window.addEventListener('mousemove', function (e) {
+        if (!isDragging) return;
+        const dx = e.clientX - lastX;
+        const dy = e.clientY - lastY;
+        const rotateSpeed = 0.0018;
+        const pitchSpeed = 0.0018;
+        codeCityChart.setCameraRotation(codeCityChart.getCameraRotation() + dx * rotateSpeed * -1);
+        codeCityChart.setCameraPitch(codeCityChart.getCameraPitch() + dy * pitchSpeed);
+        lastX = e.clientX;
+        lastY = e.clientY;
+    });
+
+    window.addEventListener('mouseup', function () {
+        isDragging = false;
+    });
 }
 
 async function fetchData() {
@@ -448,7 +476,6 @@ fetchData().then(function (d) {
 
     const coveragePercent = totalLines > 0 ? ((totalCoveredLines / totalLines) * 100).toFixed(2) : '0.00';
 
-    let isDragging = false;
     let lastX = 0, lastY = 0;
     const chartEl = $('#code-city-chart')[0];
 
