@@ -144,7 +144,7 @@ void main() { \
     if (isNaN(baseHeight) || !isFinite(baseHeight)) {
       baseHeight = 0;
     }
-    var gd = unitHeight * (d.children.length ? 0.05 : baseHeight) * 130.0;
+    var gd = unitHeight * (d.children?.length ? 0.05 : baseHeight) * 130.0;
 
     var gx = ((d.x + d.dx / 2) * w) / 500 - 1;
     var gy = 1 - ((d.y + d.dy / 2) * h) / 500;

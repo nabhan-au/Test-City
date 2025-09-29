@@ -30,9 +30,8 @@ def create_app() -> FastAPI:
     return app
 
 
-if __name__ == "__main__":
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s [%(levelname)s] %(filename)s:%(lineno)d - %(message)s",
-    )
-    app = create_app()
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(filename)s:%(lineno)d - %(message)s",
+)
+app = create_app()
