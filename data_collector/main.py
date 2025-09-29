@@ -35,16 +35,4 @@ if __name__ == "__main__":
         level=logging.INFO,
         format="%(asctime)s [%(levelname)s] %(filename)s:%(lineno)d - %(message)s",
     )
-
-    logging.debug("Debug message")
-    logging.info("Info message")
-    logging.error("Error message")
     app = create_app()
-
-    uvicorn.run(
-        app,              # points to this file (main.py) and the app variable
-        host="0.0.0.0",
-        port=8000,
-        reload=False,
-        log_level="info"
-    )

@@ -66,7 +66,7 @@ const normalize_area_size = (tree) => {
   
     const scale = 1 / Math.max(maxX, maxY);
     const areaScale = 1 / maxArea
-    const normalizedBlockSize = 2*scale - (2*scale*0.1)
+    const normalizedBlockSize = scale - (scale*0.1)
   
     const applyScale = (node) => {
       node.x *= scale;

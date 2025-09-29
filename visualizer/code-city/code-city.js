@@ -135,7 +135,7 @@ void main() { \
     let is_mutant = d.data?.mutations?.coverage > 0 && d.data?.mutations?.total_mutation > 0;
     let is_leaf_mutant = is_mutant && (d.children?.length ?? 0) < 1;
 
-    var unitHeight = 5 / 1000;
+    var unitHeight = 3 / 1000;
     var w = 1000;
     var h = 1000;
     var gw = Math.max(0, (d.dx - 2 * houseMargin) * w) / 500;
@@ -200,11 +200,11 @@ void main() { \
         const survivors = Math.max(0, totalMut - killed);
         if (totalMut > 0) {
           createMutantStacksOnRoofRingCubes(cube, gw, gh, gd, killed, survivors, {
-            spacingX: normalized_block_size,
-            spacingY: normalized_block_size,
-            gapXY: 0.01,
-            unitH: 0.025,
-            margin: -0.01
+            cubeW: normalized_block_size,
+            cubeD: normalized_block_size,
+            gapXY: normalized_block_size*0.25,
+            unitH: normalized_block_size,
+            margin: -0.005
           });
         }
       // }
@@ -360,15 +360,17 @@ void main() { \
 
   function createMutantStacksOnRoofRingCubes(building, gw, gh, gd, killed, survivors, opts = {}) {
     const margin = opts.margin ?? 0.02;
-    const spacingX = opts.spacingX ?? 0.075;
-    const spacingY = opts.spacingY ?? 0.075;
+    const cubeW = opts.cubeW ?? 0.06;  // cube width (X direction)
+    const cubeD = opts.cubeD ?? 0.06;  // cube depth (Y direction)
     const gapXY = opts.gapXY ?? 0.012;
     const gapZ = opts.gapZ ?? 0.005;
     const unitH = opts.unitH ?? 0.03;
     const roofLift = 0.006;
 
+    const spacingX = cubeW + (opts.gapXY);
+    const spacingY = cubeD + (opts.gapXY);
     const cols = Math.max(0, Math.floor((gw - margin * 2) / spacingX));
-    const rows = Math.max(0, Math.floor((gh - margin * 2) / spacingY));
+    const rows = Math.max(0, Math.floor((gh - margin * 2) / spacingY))
 
     if (cols <= 0 || rows <= 0) return;
 
@@ -413,7 +415,7 @@ void main() { \
 
       for (let h = 0; h < total; h++) {
         const mat = h >= k ? redMat : whiteMat;
-        const geom = new three.BoxGeometry(blockX, blockY, blockZ);
+        const geom = new three.BoxGeometry(cubeW, cubeD, blockZ);
         const mesh = new three.Mesh(geom, mat);
 
         const z = gd / 2 + roofLift + (blockZ + gapZ) * h + blockZ / 2;
