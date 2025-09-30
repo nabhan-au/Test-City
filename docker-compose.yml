@@ -44,6 +44,8 @@ services:
     build:
       context: block-extractor/
       dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
 
   frontend:
     build:
