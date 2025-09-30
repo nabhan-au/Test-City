@@ -14,43 +14,6 @@ var codeCityChart;
 var rawData;
 // 'go-jsonnet'
 
-function initCity(margin) {
-    globalMargin = margin;
-
-    const container = document.getElementById('code-city-canvas');
-    const newContainer = container.cloneNode(false);
-    container.parentNode.replaceChild(newContainer, container);
-
-    codeCityChart = codeCity.codeCity(d3, newContainer, rawData, params, globalMargin);
-
-    bindChartEvents(newContainer);
-}
-
-function bindChartEvents(chartEl) {
-    let lastX = 0, lastY = 0;
-
-    chartEl.addEventListener('mousedown', function (e) {
-        isDragging = true;
-        lastX = e.clientX;
-        lastY = e.clientY;
-    });
-
-    window.addEventListener('mousemove', function (e) {
-        if (!isDragging) return;
-        const dx = e.clientX - lastX;
-        const dy = e.clientY - lastY;
-        const rotateSpeed = 0.0018;
-        const pitchSpeed = 0.0018;
-        codeCityChart.setCameraRotation(codeCityChart.getCameraRotation() + dx * rotateSpeed * -1);
-        codeCityChart.setCameraPitch(codeCityChart.getCameraPitch() + dy * pitchSpeed);
-        lastX = e.clientX;
-        lastY = e.clientY;
-    });
-
-    window.addEventListener('mouseup', function () {
-        isDragging = false;
-    });
-}
 
 async function fetchData() {
     try {
@@ -451,13 +414,13 @@ fetchData().then(function (d) {
         const val = parseFloat(marginSlider.val());
         globalMargin = val;
 
-        initCity(globalMargin);
+        if (codeCityChart && typeof codeCityChart.setMargin === 'function') {
+            codeCityChart.setMargin(globalMargin);
+        }
 
         const checked = sphereToggle.is(':checked');
         sphereToggle.prop('checked', checked).trigger('change');
         birdEyeToggle.prop('checked', false).trigger('change');
-
-        isDragging = false;
     });
 
     // project-description

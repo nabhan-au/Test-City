@@ -21,9 +21,10 @@ function codeCity(d3, element, rawData, params, margin, isProgressiveLayout = tr
   var canvas = d3.select(element);
 
   var data, normalized_block_size = null
+  let currentMargin = margin;
   
   if (isProgressiveLayout) {
-    [data, normalized_block_size] = progressive.calculate_area(rawData, margin)
+    [data, normalized_block_size] = progressive.calculate_area(rawData, currentMargin)
   } else {
     normalized_block_size = 0.05
     data = generateTreemap(d3, rawData, params);
@@ -174,27 +175,7 @@ void main() { \
     var objToAdd = rootHouse || scene;
     objToAdd.add(cube);
 
-    const faces = ['front', 'back', 'left', 'right']
     if (is_building) {
-      // if (!is_leaf_mutant) {
-      //   faces.forEach(face => {
-      //     // createWindowsOnBuilding(cube, gw, gh, gd, face);
-      //   });
-      // } else {
-        // const windows = calculateTotalWindows(gw, gh, gd, faces)
-        // const totalWindows = windows.totalWindows
-        // const windowCounts = windows.windowCounts
-        // const totalFire = d.data.mutations.total_mutation - d.data.mutations.killed
-
-        // if (totalWindows < 1) {
-        //   return
-        // }
-        // Make it available for user to choose if possible
-        // const fireExceedWindowLimit = totalFire - totalWindows
-        // const totalFireOnWindow = Math.min(totalFire, totalWindows)
-        // TODO: remove later
-        // addFireWithWindows(faces, totalFireOnWindow, windowCounts, totalWindows, cube, gw, gh, gd);
-
         const totalMut = (d?.data?.mutations?.total_mutation || 0);
         const killed = (d?.data?.mutations?.killed || 0);
         const survivors = Math.max(0, totalMut - killed);
@@ -215,148 +196,6 @@ void main() { \
       rootHouse.rotation.z = Math.PI / 4;
     }
   }
-
-  // function calculateTotalWindows(width, height, depth, faces) {
-  //   const margin = 0.02; // spacing from edges
-  //   const spacingX = 0.07;
-  //   const spacingY = 0.07;
-  //   let totalWindow = 0
-  //   let windowCounts = {}
-
-  //   for (const face of faces) {
-  //     const availableWidth = face === 'front' || face === 'back' ? width : height;
-  //     const availableHeight = depth;
-  //     const maxCols = Math.floor((availableWidth - margin * 2) / spacingX);
-  //     const maxRows = Math.floor((availableHeight - margin * 2) / spacingY);
-  //     totalWindow += maxRows * maxCols
-  //     windowCounts[face] = maxRows * maxCols
-  //   }
-  //   return {
-  //     "totalWindows": totalWindow,
-  //     "windowCounts": windowCounts,
-  //   }
-  // }
-
-  // function createWindowsOnBuilding(building, width, height, depth, face = 'front', fire = 0) {
-  //   const windowSize = 0.05;
-  //   const margin = 0.02; // spacing from edges
-  //   const spacingX = 0.07;
-  //   const spacingY = 0.07;
-
-  //   const windowColors = [0x222222, 0xffffcc, 0xfff2a0];
-
-  //   // Compute how many columns and rows fit
-  //   const availableWidth = face === 'front' || face === 'back' ? width : height;
-  //   const availableHeight = depth;
-
-  //   const maxCols = Math.floor((availableWidth - margin * 2) / spacingX);
-  //   const maxRows = Math.floor((availableHeight - margin * 2) / spacingY);
-  //   const totalWindows = maxCols * maxRows
-
-  //   if (maxCols < 1 || maxRows < 1) return;
-
-  //   let fireWindowIndices = [];
-  //   if (fire > 0 && fire <= totalWindows) {
-  //     // Create an array of all indices
-  //     const allIndices = Array.from({ length: totalWindows }, (_, idx) => idx);
-  //     // Shuffle array
-  //     for (let i = allIndices.length - 1; i > 0; i--) {
-  //       const j = Math.floor(Math.random() * (i + 1));
-  //       [allIndices[i], allIndices[j]] = [allIndices[j], allIndices[i]];
-  //     }
-  //     // Pick the first 'fire' indices
-  //     fireWindowIndices = allIndices.slice(0, fire);
-  //   }
-
-  //   let windowIdx = totalWindows - 1;
-  //   for (let i = 0; i < maxRows; i++) {
-  //     for (let j = 0; j < maxCols; j++) {
-  //       const windowGeometry = new three.PlaneGeometry(windowSize, windowSize);
-  //       const windowMaterial = new three.MeshBasicMaterial({
-  //         color: windowColors[1],
-  //         transparent: true,
-  //         opacity: 0.6,
-  //         depthWrite: false,
-  //       });
-
-  //       const windowMesh = new three.Mesh(windowGeometry, windowMaterial);
-
-  //       const offsetX = -((maxCols - 1) * spacingX) / 2 + j * spacingX;
-  //       const offsetY = -((maxRows - 1) * spacingY) / 2 + i * spacingY;
-
-  //       let pos = new three.Vector3();
-  //       let rot = new three.Euler();
-
-  //       switch (face) {
-  //         case 'front':
-  //           pos.set(offsetX, height / 2 + 0.005, offsetY);
-  //           rot.set(-Math.PI / 2, 0, 0);
-  //           break;
-  //         case 'back':
-  //           pos.set(offsetX, -height / 2 - 0.005, offsetY);
-  //           rot.set(Math.PI / 2, 0, Math.PI);
-  //           break;
-  //         case 'right':
-  //           pos.set(-width / 2 - 0.005, offsetX, offsetY);
-  //           rot.set(-Math.PI / 2, -Math.PI / 2, 0);
-  //           break;
-  //         case 'left':
-  //           pos.set(width / 2 + 0.005, offsetX, offsetY);
-  //           rot.set(-Math.PI / 2, Math.PI / 2, 0);
-  //           break;
-  //       }
-
-  //       if (fireWindowIndices.includes(windowIdx)) {
-  //         windowMesh.userData.firePercentage = fire / totalWindows * 100
-  //         windowMesh.userData.isWindowMutantFire = true
-  //       }
-
-  //       windowMesh.position.copy(pos);
-  //       windowMesh.rotation.copy(rot);
-  //       building.add(windowMesh);
-
-  //       if (fireWindowIndices.includes(windowIdx)) {
-  //         const fireGeometry = new three.PlaneGeometry(windowSize * 0.9, windowSize * 1.3);
-  //         const fireMaterial = new three.MeshBasicMaterial({
-  //           map: fireTexture,
-  //           transparent: true,
-  //           depthWrite: true
-  //         });
-
-  //         const fireMesh = new three.Mesh(fireGeometry, fireMaterial);
-  //         fireMesh.position.copy(pos);
-
-  //         // Move fire above the window (adjust direction based on face)
-  //         fireMesh.position.z += 0.005;
-
-  //         switch (face) {
-  //           case 'front':
-  //             fireMesh.position.x -= 0.005;
-  //             fireMesh.position.y += 0.005;
-  //             break;
-  //           case 'back':
-  //             fireMesh.position.x += 0.005;
-  //             fireMesh.position.y -= 0.005;
-  //             break;
-  //           case 'right':
-  //             fireMesh.position.y -= 0.005;
-  //             fireMesh.position.x -= 0.005;
-  //             break;
-  //           case 'left':
-  //             fireMesh.position.y += 0.005;
-  //             fireMesh.position.x += 0.005;
-  //             break;
-  //         }
-
-  //         fireMesh.rotation.copy(rot);
-  //         fireMesh.rotateZ(Math.PI);
-  //         fireMesh.userData.isMutantFire = true;
-  //         building.add(fireMesh);
-  //       }
-  //       windowIdx--
-  //     }
-  //   }
-  // }
 
   function createMutantStacksOnRoofRingCubes(building, gw, gh, gd, killed, survivors, opts = {}) {
     const margin = opts.margin ?? 0.02;
@@ -533,22 +372,20 @@ void main() { \
       minimumHeight = d.height;
   }
 
-  data.forEach(findExtremes);
-
-  data.forEach((d, idx) => {
-    // TODO: (hotfix) remove later
-    if (idx == 0) {
-      const deepCopy = JSON.parse(JSON.stringify(d));
-      deepCopy.x = 0.5
-      deepCopy.y = 0.5
-      deepCopy.dx = 0.0000000001
-      deepCopy.dy = 0.0000000001
-
-      addHouse(deepCopy, normalized_block_size)
-    }
-
-    addHouse(d, normalized_block_size)
-  })
+  function buildHouses() {
+    data.forEach(findExtremes);
+    data.forEach((d, idx) => {
+      // (hotfix)
+      if (idx === 0) {
+        const deepCopy = JSON.parse(JSON.stringify(d));
+        deepCopy.x = 0.5; deepCopy.y = 0.5;
+        deepCopy.dx = 0.0000000001; deepCopy.dy = 0.0000000001;
+        addHouse(deepCopy, normalized_block_size);
+      }
+      addHouse(d, normalized_block_size);
+    });
+  }
+  buildHouses();
 
   render();
   animate();
@@ -631,15 +468,6 @@ void main() { \
     render();
   }
 
-  // function toggleSpheres(show) {
-  //   scene.traverse(obj => {
-  //     if (obj.userData?.isMutantSphere) {
-  //       obj.visible = show;
-  //     }
-  //   });
-  //   render();
-  // }
-
   function toggleSpheres(show) {
     scene.traverse(obj => {
       if (obj.userData?.isMutantFire) {
@@ -703,6 +531,64 @@ void main() { \
   window.addEventListener('resize', resizeCanvas);
   resizeCanvas();
 
+  function addLights() {
+    const directionalLight = new three.DirectionalLight(0xFFFFFF, 1.0);
+    directionalLight.position.set(-5, -10, 15);
+    directionalLight.castShadow = true;
+    directionalLight.shadowCameraNear = 0.01;
+    directionalLight.shadowCameraFar = 20;
+    directionalLight.shadowCameraRight = 1.5;
+    directionalLight.shadowCameraLeft = -1.5;
+    directionalLight.shadowCameraTop = 1.5;
+    directionalLight.shadowCameraBottom = -1.5;
+    directionalLight.shadowDarkness = 0.5;
+    scene.add(directionalLight);
+
+    const ambientLight = new three.AmbientLight(0x313131);
+    scene.add(ambientLight);
+  }
+
+  function clearScene() {
+    // dispose geometries/materials
+    scene.traverse(obj => {
+      if (obj.isMesh) {
+        obj.geometry?.dispose?.();
+        // ShaderMaterial / MeshPhongMaterial etc.
+        if (obj.material) {
+          if (Array.isArray(obj.material)) obj.material.forEach(m => m.dispose?.());
+          else obj.material.dispose?.();
+        }
+      }
+    });
+    // remove children
+    while (scene.children.length) scene.remove(scene.children[0]);
+  }
+
+  function setMargin(newMargin) {
+    currentMargin = newMargin;
+
+    // recompute layout
+    if (isProgressiveLayout) {
+      [data, normalized_block_size] = progressive.calculate_area(rawData, currentMargin);
+    } else {
+      normalized_block_size = 0.05;
+      data = generateTreemap(d3, rawData, params);
+    }
+
+    // reset per-build state
+    maximumHeight = 250;
+    minimumHeight = 0.005;
+    rootHouse = null;
+
+    clearScene();
+    addLights();
+    buildHouses();
+
+    setCameraRotation(cameraAngle);
+    render();
+  }
+
+
   return {
     getCameraRotation: getCameraRotation,
     setCameraRotation: setCameraRotation,
@@ -714,7 +600,8 @@ void main() { \
     toggleRedWindow: toggleRedWindow,
     toggleMutants: toggleMutants,
     onZoomIn: onZoomIn,
-    onZoomOut: onZoomOut
+    onZoomOut: onZoomOut,
+    setMargin: setMargin
   };
 }
 
