@@ -4,12 +4,19 @@ from fastapi.middleware.cors import CORSMiddleware
 
 
 from fastapi import FastAPI
+import uvicorn
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+from containers import Container
+from routers.coverall_router import coverall_router  # adjust import if needed
+import logging
 
 origins = ["*"]
 
+
 def create_app() -> FastAPI:
     container = Container()
-    
     app = FastAPI()
     app.add_middleware(
         CORSMiddleware,
@@ -22,4 +29,9 @@ def create_app() -> FastAPI:
     app.include_router(coverall_router)
     return app
 
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(filename)s:%(lineno)d - %(message)s",
+)
 app = create_app()

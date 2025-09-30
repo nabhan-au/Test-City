@@ -3,6 +3,8 @@ from configs.trace_config import TraceConfig
 from configs.S3_config import S3Config
 from minio import Minio
 
+from repositories.file_manager_local_repository import FileManagerLocalRepository
+from services.file_manager.file_manager_local_service import FileManagerLocalService
 from repositories.trace_extractor_repository import TraceExtractorRepository
 from services.coverage_processor import CoverageProcessor
 from repositories.file_manager_s3_repository import FileManagerS3Repository
@@ -46,6 +48,15 @@ class Container(containers.DeclarativeContainer):
         FileManagerS3Service,
         file_manager_s3_repository,
         s3_config.get_bucket_name
+    )
+
+    file_manager_local_repository = providers.Factory(
+        FileManagerLocalRepository,
+    )
+
+    file_manager_local_service = providers.Factory(
+        FileManagerLocalService,
+        file_manager_local_repository,
     )
 
     coverage_processor_service = providers.Factory(

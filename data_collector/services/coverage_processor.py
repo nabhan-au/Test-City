@@ -1,3 +1,4 @@
+from io import StringIO
 from typing import List
 
 import xmltodict
@@ -5,6 +6,7 @@ import os
 import re
 import pandas as pd
 from fastapi import UploadFile
+import logging
 
 from services.file_manager.file_manager_service_abstract import FileManagerServiceAbstract
 from services.trace_extractor import TraceExtractor
@@ -13,6 +15,7 @@ from util.path import path_to_class
 
 
 class CoverageProcessor:
+    logger = logging.getLogger(__name__)
 
     INDEX_FILE_NAME = "index.html"
 
@@ -26,14 +29,22 @@ class CoverageProcessor:
         return xml_dict
 
     async def list_index_file(self, files: List[UploadFile]):
-        return list(filter(lambda x: x.filename.endswith(self.INDEX_FILE_NAME), files))
+        return list(filter(lambda x: x.filename.endswith(self.INDEX_FILE_NAME) and "report" in x.filename, files))
 
     async def process_html_file(self, file: UploadFile):
         required_columns = {'Name', 'Line Coverage', 'Mutation Coverage'}
-        data = pd.read_html(str(await file.read()))
+
+        # Read file and decode to string
+        html_bytes = await file.read()
+        html_str = html_bytes.decode("utf-8")
+
+        # Use StringIO instead of passing raw string
+        data = pd.read_html(StringIO(html_str))
+
         filtered_table = [table for table in data if required_columns.issubset(table.columns)]
         file_path = f"/{file.filename.removesuffix(f'/{self.INDEX_FILE_NAME}').split('/')[-1]}"
-        return {"file_path": file_path,"table": filtered_table}
+
+        return {"file_path": file_path, "table": filtered_table}
 
     def get_tree_from_table(self, file_path: str, table):
         result = []
@@ -51,7 +62,7 @@ class CoverageProcessor:
             result.append(data)
         return result
 
-    def extract_line_coverage(self, line_coverage):
+    def extract_line_coverage(seflf, line_coverage):
         match = re.search(r"(\d+)%\s+(\d+)/(\d+)", line_coverage)
         if not match:
             raise Exception(f"Line Coverage could not be extracted: {line_coverage}")
@@ -73,21 +84,26 @@ class CoverageProcessor:
 
     async def combine_trace_data(self, coverage_result, files, repo_name):
         block_data = self.trace_extractor_service.get_project_block_data(repo_name, files)
-        block_coverage_data = await self.trace_extractor_service.get_block_coverage(files)
+        # block_coverage_data = await self.trace_extractor_service.get_block_coverage(files)
         coverage_trace_result = []
         for row in coverage_result:
             path = row["path"]
             class_path = path_to_class(path)
-            total_block = block_data[class_path]
-            total_trace = block_coverage_data[class_path] if class_path in block_coverage_data else 0
+            # total_block = block_data[class_path]
+            # total_trace = block_coverage_data[class_path] if class_path in block_coverage_data else 0
             data = {
                 path: {
                     "lines": row["lines"],
                     "mutations": row["mutations"],
+                    # "traces": {
+                    #     "total_trace": 0,
+                    #     "total_block": total_block,
+                    #     "average": total_trace / total_block
+                    # }
                     "traces": {
-                        "total_trace": total_trace,
-                        "total_block": total_block,
-                        "average": total_trace / total_block
+                        "total_trace": 100,
+                        "total_block": 100,
+                        "average": 100
                     }
                 },
             }
@@ -95,6 +111,7 @@ class CoverageProcessor:
         return coverage_trace_result
 
     async def process_coverage(self, files: List[UploadFile], repo_name):
+        logging.info(f"Processing {len(files)} files")
         coverage_result = []
         index_file_list = await self.list_index_file(files)
         for index_file in index_file_list:

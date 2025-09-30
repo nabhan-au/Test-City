@@ -1,4 +1,5 @@
 import * as codeCity from './code-city';
+import * as progressive from './progressive-brick-layout.js'
 import $ from 'jquery';
 import { legend } from '../common/legend.js';
 import * as dataLoaders from '../data/loaders.js';
@@ -7,7 +8,12 @@ import * as dataHelpers from '../data/helpers.js';
 const d3 = window.d3;
 
 var params = (new URL(document.location)).searchParams;
+let globalMargin = 0.5;
+let isDragging = false;
+var codeCityChart;
+var rawData;
 // 'go-jsonnet'
+
 
 async function fetchData() {
     try {
@@ -32,27 +38,25 @@ var zoomInSpan = $('#zoom-in')
 var zoomOutSpan = $('#zoom-out')
 var birdEyeToggle = $('#toggle-bird-eye');
 var sphereToggle = $('#toggle-spheres');
+var marginSlider = $('#margin-slider');
+var marginValueDisplay = $('#margin-value');
 
 var nodeColorScale = [
-    // '#a50026',
-    '#c31727',
-    '#d73027',
-    '#e56a35',
-    '#f46d43',
-    '#fab86d',
-    '#fdae61',
-    '#fee497',
-    '#fee08b',
-    '#ecf497',
-    '#d9ef8b',
-    '#bde487',
-    '#a6d96a',
-    '#86d168',
-    '#66bd63',
-    '#409f5a',
-    '#1a9850',
-    // '#0f7a42',
-    // '#006837'
+    // '#ffffcc', // very low — pale yellow
+    '#ffeda0',
+    '#fed976',
+    '#feb24c',
+    '#fd8d3c',
+    '#fc4e2a',
+    '#e31a1c', // mid — warm balance
+    '#bd0026',
+    '#800026',
+    '#6baed6',
+    '#5392c0',
+    // '#4292c6',
+    // '#2171b5',
+    // '#08519c',
+    // '#08306b', // high — deep blue
 ]
 
 let gridValue;
@@ -97,16 +101,7 @@ function legendContent(d, e) {
 }
 
 function nodeHeight(d) {
-    let trace_size = 0
-    function snapToGrid(grid, value) {
-        return grid * Math.ceil(value / grid);
-    }
-    if (d.children && d.children.length)
-        return 0;
-    if (d.data[trace].average) {
-        trace_size = d.data[trace].average;
-    }
-    return snapToGrid(gridValue, trace_size);
+    return d.data[metric].total_line;
 }
 
 function nodeColor(d) {
@@ -122,6 +117,8 @@ function nodeColor(d) {
 function nodeArea(d) {
     return d.data[metric].total_line;
 }
+
+
 
 var graphParams = {
     legend: legend(legendDiv, legendTitle, legendContent)
@@ -218,24 +215,78 @@ fetchData().then(function (d) {
     var treeData = dataHelpers.convertToTree(mergedData, mapperParams);
     dataHelpers.colorize(d3, treeData, 'colorValue', nodeColorScale, { min: 20, max: 100 });
 
-    var codeCityChart;
-    try {
-        codeCityChart = codeCity.codeCity(d3, $('#code-city-chart')[0], treeData, graphParams);
-    } catch (e) {
-        if (e instanceof TypeError)
-            $('#code-city-chart').html("\
-                <div> \
-                <img src=\"../assets/images/code_city_large.png\" width=\"100%\"> \
-                <p style=\"background:rgba(255,0,0,0.7); top:300px; position:absolute; font-size:18px;\" class=\"alert alert-danger\"> \
-                    It seems that your browser does not support (or has deactivated) WebGL, which is required for this graph. Please upgrade your browser or make sure that WebGL is activated. Below is a teaser of what the visualization of your project might look like. \
-                </p> \
-                </div> \
-                ");
+    // compute maxDepth
+    function computeMaxDepth(root) {
+        let maxD = 0;
+        (function walk(n) {
+            if (!n) return;
+            maxD = Math.max(maxD, n.depth || 0);
+            if (n.children) n.children.forEach(walk);
+        })(root);
+        return Math.max(1, maxD); // avoid division by zero
     }
 
-    sphereToggle.prop('checked', true);
-    codeCityChart.toggleSpheres(true)
-+   codeCityChart.toggleMutants(true);
+    // convert an integer 0..255 to two-digit hex
+    function toHexByte(v) {
+        const n = Math.max(0, Math.min(255, Math.round(v)));
+        return n.toString(16).padStart(2, '0');
+    }
+
+    // linear interpolation
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    // apply color override
+    function applyLeafPaletteAndPlatformGray(root) {
+        const maxDepth = computeMaxDepth(root);
+
+        // gray range
+        const lightGray = 200; // shallow platforms -> lighter gray
+        const darkGray  =  100; // deep platforms   -> darker gray
+
+        (function walk(n) {
+            if (!n) return;
+
+            const isLeaf = !n.children || n.children.length === 0;
+
+            if (!isLeaf) {
+            const t = (n.depth || 0) / maxDepth;
+            const g = lerp(lightGray, darkGray, t);
+            const hex = `#${toHexByte(g)}${toHexByte(g)}${toHexByte(g)}`;
+            n.color = hex;
+            } else {
+            if (!n.color) {
+                const cov = n.data?.[metric]?.coverage ?? 0;
+                const idx = Math.round((Math.max(0, Math.min(100, cov)) / 100) * (nodeColorScale.length - 1));
+                n.color = nodeColorScale[idx];
+            }
+            }
+
+            if (n.children) n.children.forEach(walk);
+        })(root);
+    }
+
+    applyLeafPaletteAndPlatformGray(treeData);
+
+    // progressive.calculate_area(treeData)
+    rawData = treeData;
+    codeCityChart = codeCity.codeCity(d3, $('#code-city-chart')[0], treeData, graphParams, globalMargin);
+    // try {
+        
+    // } catch (e) {
+    //     if (e instanceof TypeError)
+    //         $('#code-city-chart').html("\
+    //             <div> \
+    //             <img src=\"../assets/images/code_city_large.png\" width=\"100%\"> \
+    //             <p style=\"background:rgba(255,0,0,0.7); top:300px; position:absolute; font-size:18px;\" class=\"alert alert-danger\"> \
+    //                 It seems that your browser does not support (or has deactivated) WebGL, which is required for this graph. Please upgrade your browser or make sure that WebGL is activated. Below is a teaser of what the visualization of your project might look like. \
+    //             </p> \
+    //             </div> \
+    //             ");
+    // }
+
+    // sphereToggle.prop('checked', true);
+    // codeCityChart.toggleSpheres(true)
+    // codeCityChart.toggleMutants(true);
 
     var isRotating = false;
 
@@ -345,6 +396,23 @@ fetchData().then(function (d) {
         codeCityChart.toggleRedWindow(sphereToggle.is(':checked'));
         codeCityChart.toggleMutants(sphereToggle.is(':checked'));
     });
+    marginSlider.on('input', function () {
+        globalMargin = parseFloat(this.value);
+        marginValueDisplay.text(globalMargin.toFixed(3));
+    });
+
+    $('#apply-margin').on('click', function () {
+        const val = parseFloat(marginSlider.val());
+        globalMargin = val;
+
+        if (codeCityChart && typeof codeCityChart.setMargin === 'function') {
+            codeCityChart.setMargin(globalMargin);
+        }
+
+        const checked = sphereToggle.is(':checked');
+        sphereToggle.prop('checked', checked).trigger('change');
+        birdEyeToggle.prop('checked', false).trigger('change');
+    });
 
     // project-description
     const descriptionEl = $('#project-description');
@@ -362,7 +430,6 @@ fetchData().then(function (d) {
 
     const coveragePercent = totalLines > 0 ? ((totalCoveredLines / totalLines) * 100).toFixed(2) : '0.00';
 
-    let isDragging = false;
     let lastX = 0, lastY = 0;
     const chartEl = $('#code-city-chart')[0];
 
