@@ -21,12 +21,10 @@ public class BlockExtractor {
 
     private static final Logger logger = LoggerFactory.getLogger(BlockExtractor.class);
 
-    private final Collection<File> compiledCodeDirectories;
+    private final List<File> compiledCodeDirectories;
 
     public BlockExtractor(File dir) {
-        List<File> collected = new ArrayList<>();
-        collectDirectories(dir, collected);
-        this.compiledCodeDirectories = collected;
+        this.compiledCodeDirectories = new ArrayList<>(Collections.singletonList(dir));
     }
 
     private static void collectDirectories(File dir, List<File> result) {
