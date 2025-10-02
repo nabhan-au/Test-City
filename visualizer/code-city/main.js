@@ -8,7 +8,7 @@ import * as dataHelpers from '../data/helpers.js';
 const d3 = window.d3;
 
 var params = (new URL(document.location)).searchParams;
-let globalMargin = 0.5;
+let globalMargin = 0.2;
 let isDragging = false;
 var codeCityChart;
 // 'go-jsonnet'

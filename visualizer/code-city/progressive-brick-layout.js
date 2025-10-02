@@ -115,7 +115,7 @@ const calculate_area_recursive = (current_node, margin = 0.5) => {
     let effectiveMargin = margin
     if (current_node.children.length == 1) {
       const boost = 0.5 / (margin + 0.5)
-      effectiveMargin = margin + boost
+      effectiveMargin = margin + boost*0.25
     }
 
     current_node.children = calculate_layout(current_node, effectiveMargin)
