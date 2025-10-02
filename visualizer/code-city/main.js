@@ -255,7 +255,7 @@ fetchData().then(function (d) {
             if (!mergedData[currentPath]) {
                 mergedData[currentPath] = {
                     lines: { coverage: 0, covered_line: 0, total_line: 0 },
-                    mutations: { coverage: 0, killed: 0, total_mutation: 0 },
+                    mutations: { coverage: 0, killed: 0, no_coverage: 0, total_mutation: 0 },
                     traces: { total_trace: 0, total_block: 0, average: 0 }
                 };
             }
@@ -266,21 +266,24 @@ fetchData().then(function (d) {
                 : (mergedData[currentPath].lines.covered_line / mergedData[currentPath].lines.total_line) * 100;
 
             mergedData[currentPath].mutations.killed += data.mutation.effective_killed;
-            mergedData[currentPath].mutations.total_mutation += data.mutation.executed_mutations;
+            mergedData[currentPath].mutations.total_mutation += data.mutation.total_mutations;
             mergedData[currentPath].mutations.coverage = 
             mergedData[currentPath].mutations.total_mutation === 0 ? 0
                 : (mergedData[currentPath].mutations.killed / mergedData[currentPath].mutations.total_mutation) * 100;
+            mergedData[currentPath].mutations.no_coverage += data.mutation.no_coverage;
             
 
             mergedData[currentPath].traces.total_trace += data.total_tests;
             mergedData[currentPath].traces.total_block += data.total_blocks;
             mergedData[currentPath].traces.average = mergedData[currentPath].traces.total_block === 0 ? 0
                 : mergedData[currentPath].traces.total_trace / mergedData[currentPath].traces.total_block;
+
+            mergedData[currentPath].mutations.details = data.mutation
         }
     }
 
     var treeData = dataHelpers.convertToTree(mergedData, mapperParams);
-    console.log(treeData)
+    
     dataHelpers.colorize(d3, treeData, 'colorValue', nodeColorScale, { min: 20, max: 100 });
 
     applyLeafPaletteAndPlatformGray(treeData);
