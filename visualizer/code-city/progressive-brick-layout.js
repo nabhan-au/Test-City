@@ -111,12 +111,18 @@ const calculate_area_recursive = (current_node, margin = 0.5) => {
     for (let child of current_node.children) {
         calculate_area_recursive(child, margin)
     }
+    
+    let effectiveMargin = margin
+    if (current_node.children.length == 1) {
+      const boost = 0.5 / (margin + 0.5)
+      effectiveMargin = margin + boost
+    }
 
-    current_node.children = calculate_layout(current_node, margin)
+    current_node.children = calculate_layout(current_node, effectiveMargin)
     const maxX = Math.max(...current_node.children.map(c => c.x + c.dx));
     const maxY = Math.max(...current_node.children.map(c => c.y + c.dy));
-    current_node.dx = maxX + margin
-    current_node.dy = maxY + margin
+    current_node.dx = maxX + effectiveMargin
+    current_node.dy = maxY + effectiveMargin
 }
 
 class Node {
@@ -154,13 +160,13 @@ const calculate_layout = (node, margin) => {
     let root_size_x = 0
     let root_size_y = 0
     for (let child of nodeChildren) {
-        root_size_x += child.dx + 2 * margin;
-        root_size_y += child.dy + 2 * margin;
+        root_size_x += child.dx + 2 * (margin + 1);
+        root_size_y += child.dy + 2 * (margin + 1);
     }
     
 
     let startNode = new Node(0, 0, root_size_x, root_size_y)
-
+    
     for (let child of nodeChildren) {
         const preservers = new Map()
         const expanders = new Map()

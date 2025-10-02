@@ -42,21 +42,19 @@ var marginSlider = $('#margin-slider');
 var marginValueDisplay = $('#margin-value');
 
 var nodeColorScale = [
-    // '#ffffcc', // very low — pale yellow
-    '#ffeda0',
-    '#fed976',
-    '#feb24c',
-    '#fd8d3c',
-    '#fc4e2a',
-    '#e31a1c', // mid — warm balance
-    '#bd0026',
-    '#800026',
-    '#6baed6',
-    '#5392c0',
-    // '#4292c6',
-    // '#2171b5',
-    // '#08519c',
-    // '#08306b', // high — deep blue
+  '#ffd700', // golden yellow
+  '#ffdb33',
+  '#ffdf66',
+  '#ffe399',
+  '#ffe6b3',
+  '#ffeccc',
+  '#b3e5ff',
+  '#99dbff',
+  '#80d1ff',
+  '#66c7ff',
+  '#4dbdff',
+  '#3399ff',
+  '#1a75ff'  // deeper sky blue
 ]
 
 let gridValue;
@@ -130,7 +128,9 @@ var mapperParams = {
         area: nodeArea,
         colorValue: nodeColor,
         title: function (d) { return d.key.split('/').slice(-1)[0]; },
-        path: function (d) { return d.key || '(all files)'; }
+        path: function (d) {
+            return d.key || '(all files)'; 
+        }
     },
     split: function (key) {
         var components = key.split('/');
@@ -205,12 +205,6 @@ fetchData().then(function (d) {
             const g = lerp(lightGray, darkGray, t);
             const hex = `#${toHexByte(g)}${toHexByte(g)}${toHexByte(g)}`;
             n.color = hex;
-            } else {
-            if (!n.color) {
-                const cov = n.data?.[metric]?.coverage ?? 0;
-                const idx = Math.round((Math.max(0, Math.min(100, cov)) / 100) * (nodeColorScale.length - 1));
-                n.color = nodeColorScale[idx];
-            }
             }
 
             if (n.children) n.children.forEach(walk);
@@ -240,11 +234,10 @@ fetchData().then(function (d) {
 
     setGridValue(d);
     d = splitModules(d, [])
-    console.log(d)
     var mergedData = {};
 
     for (const [filePath, data] of Object.entries(d)) {
-        const filePaths = filePath.split('.');
+        const filePaths = filePath.split('/');
 
         // root ""
         let currentPath = "";
@@ -286,7 +279,9 @@ fetchData().then(function (d) {
                 : mergedData[currentPath].traces.total_trace / mergedData[currentPath].traces.total_block;
         }
     }
+
     var treeData = dataHelpers.convertToTree(mergedData, mapperParams);
+    console.log(treeData)
     dataHelpers.colorize(d3, treeData, 'colorValue', nodeColorScale, { min: 20, max: 100 });
 
     applyLeafPaletteAndPlatformGray(treeData);
@@ -445,10 +440,10 @@ fetchData().then(function (d) {
     let totalLines = 0;
     let totalCoveredLines = 0;
 
-    for (const [_, value] of Object.entries(d)) {
-        const [__, data] = Object.entries(value)[0];
-        totalLines += data.lines.total_line || 0;
-        totalCoveredLines += data.lines.covered_line || 0;
+    for (const [_, data] of Object.entries(d)) {
+        const covered_line = data.line_coverage.total_executable_lines - data.line_coverage.total_missed_lines
+        totalLines += data.line_coverage.total_executable_lines || 0;
+        totalCoveredLines += covered_line || 0;
     }
 
     const coveragePercent = totalLines > 0 ? ((totalCoveredLines / totalLines) * 100).toFixed(2) : '0.00';

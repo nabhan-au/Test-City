@@ -331,6 +331,7 @@ class CoverageProcessor:
 
         for class_name, payload in data.items():
             blocks = payload.get("block", [])
+            converted_class_name = "/".join(class_name.split(".")) + ".java"
 
             # Gather all executable lines and lines marked covered
             exec_lines_set: Set[int] = set()
@@ -358,7 +359,7 @@ class CoverageProcessor:
                     "covered_indices": [],
                     "coverage_pct": 0.0,
                 }
-                report[class_name] = {**payload, "line_coverage": summary}
+                report[converted_class_name] = {**payload, "line_coverage": summary}
                 continue
 
             # Create a stable ordering of executable lines and map to indices
@@ -382,6 +383,6 @@ class CoverageProcessor:
                 "covered_indices": covered_indices,
                 "coverage_pct": coverage_pct,
             }
-            report[class_name] = {**payload, "line_coverage": summary}
+            report[converted_class_name] = {**payload, "line_coverage": summary}
 
         return report

@@ -133,8 +133,6 @@ void main() { \
 
   function addHouse(d, normalized_block_size = 0.05) {
     let is_building = isFile(d.key);
-    let is_mutant = d.data?.mutations?.coverage > 0 && d.data?.mutations?.total_mutation > 0;
-    let is_leaf_mutant = is_mutant && (d.children?.length ?? 0) < 1;
 
     var unitHeight = 3 / 1000;
     var w = 1000;
@@ -146,7 +144,6 @@ void main() { \
       baseHeight = 0;
     }
     var gd = unitHeight * (d.children?.length ? 0.05 : baseHeight) * 130.0;
-
     var gx = ((d.x + d.dx / 2) * w) / 500 - 1;
     var gy = 1 - ((d.y + d.dy / 2) * h) / 500;
     var gz = d.depth * unitHeight + gd / 2;
