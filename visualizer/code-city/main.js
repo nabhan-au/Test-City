@@ -272,10 +272,9 @@ fetchData().then(function (d) {
                 : (mergedData[currentPath].mutations.killed / mergedData[currentPath].mutations.total_mutation) * 100;
             
 
-            mergedData[currentPath].total_tests += data.total_tests;
-            mergedData[currentPath].total_blocks += data.total_blocks;
-            mergedData[currentPath].traces.average = mergedData[currentPath].traces.total_block === 0
-            ? 0
+            mergedData[currentPath].traces.total_trace += data.total_tests;
+            mergedData[currentPath].traces.total_block += data.total_blocks;
+            mergedData[currentPath].traces.average = mergedData[currentPath].traces.total_block === 0 ? 0
                 : mergedData[currentPath].traces.total_trace / mergedData[currentPath].traces.total_block;
         }
     }
