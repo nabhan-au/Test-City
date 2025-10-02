@@ -35,11 +35,14 @@ class DataExtractor:
             coverage_data = parsed_data["coverage"]["block"]
             for row in coverage_data:
                 class_name, sub_class_name = self.extract_class_name(row["@classname"])
+                tests = row["tests"]['test']
+                if type(tests) != list:
+                    tests = [tests]
                 coverage_dict = {
                     "sub_class_name": sub_class_name,
                     "method_name_desc": row["@method"],
                     "block": row["@number"],
-                    "tests": row["tests"]['test'],
+                    "tests": tests,
                     "found_match": False
                 }
                 if class_name not in coverage_result:
