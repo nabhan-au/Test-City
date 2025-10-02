@@ -11,13 +11,13 @@ var params = (new URL(document.location)).searchParams;
 let globalMargin = 0.5;
 let isDragging = false;
 var codeCityChart;
-var rawData;
 // 'go-jsonnet'
 
 
 async function fetchData() {
     try {
         var data = await dataLoaders.fetchProjectData(params.get('project'));
+        console.log(data)
         return data;
     } catch (error) {
         return null;
@@ -142,23 +142,24 @@ var mapperParams = {
 };
 
 function setGridValue(d) {
-    let maxTrace = 0;
-    for (const [key, value] of Object.entries(d)) {
-        const [filePath, data] = Object.entries(value)[0];
-
-        if (data[metric].total_line) {
-            maxTrace = Math.max(data[metric].total_line, maxTrace);
+    let maxValue = 0;
+    for (const [key, module] of Object.entries(d)) {
+        for (const [filePath, value] of Object.entries(module)) {
+            const averageTrace = value["average_block_trace"]
+            const loc = value["total_executable_lines"]
+            maxValue = Math.max(averageTrace, loc, maxValue);
         }
+       
     }
-    if (maxTrace > 1000000)
+    if (maxValue > 1000000)
         gridValue = 10000;
-    else if (maxTrace > 100000)
+    else if (maxValue > 100000)
         gridValue = 1000;
-    else if (maxTrace > 10000)
+    else if (maxValue > 10000)
         gridValue = 100;
-    else if (maxTrace > 1000)
+    else if (maxValue > 1000)
         gridValue = 10;
-    else if (maxTrace > 100)
+    else if (maxValue > 100)
         gridValue = 1;
     else
         gridValue = 0.1;
@@ -166,55 +167,6 @@ function setGridValue(d) {
 
 // Call fetchData asynchronously
 fetchData().then(function (d) {
-    if (d === null) {
-        $('#project-description').text("Failed to load project data.");
-        return;
-    }
-
-    setGridValue(d);
-    var mergedData = {};
-
-    for (const [key, value] of Object.entries(d)) {
-        const [filePath, data] = Object.entries(value)[0];
-        const filePaths = filePath.split('/');
-
-        // root ""
-        let currentPath = "";
-
-        for (let i = 0; i < filePaths.length; i++) {
-            if (i === 0 && filePaths[i] === "") {
-                // root
-                currentPath = "";
-            } else {
-                // build the path
-                currentPath += "/" + filePaths[i];
-            }
-
-            // if not found, init
-            if (!mergedData[currentPath]) {
-                mergedData[currentPath] = {
-                    lines: { coverage: 0, covered_line: 0, total_line: 0 },
-                    mutations: { coverage: 0, killed: 0, total_mutation: 0 },
-                    traces: { total_trace: 0, total_block: 0, average: 0 }
-                };
-            }
-
-            mergedData[currentPath].lines.covered_line += data.lines.covered_line;
-            mergedData[currentPath].lines.total_line += data.lines.total_line;
-            mergedData[currentPath].lines.coverage = (mergedData[currentPath].lines.covered_line / mergedData[currentPath].lines.total_line) * 100;
-
-            mergedData[currentPath].mutations.killed += data.mutations.killed;
-            mergedData[currentPath].mutations.total_mutation += data.mutations.total_mutation;
-            mergedData[currentPath].mutations.coverage = (mergedData[currentPath].mutations.killed / mergedData[currentPath].mutations.total_mutation) * 100;
-
-            mergedData[currentPath].traces.total_trace += data.traces.total_trace;
-            mergedData[currentPath].traces.total_block += data.traces.total_block;
-            mergedData[currentPath].traces.average = mergedData[currentPath].traces.total_trace / mergedData[currentPath].traces.total_block;
-        }
-    }
-    var treeData = dataHelpers.convertToTree(mergedData, mapperParams);
-    dataHelpers.colorize(d3, treeData, 'colorValue', nodeColorScale, { min: 20, max: 100 });
-
     // compute maxDepth
     function computeMaxDepth(root) {
         let maxD = 0;
@@ -265,10 +217,81 @@ fetchData().then(function (d) {
         })(root);
     }
 
+    function splitModules(modules, selection) {
+        const selectedKeys = (!selection || selection.length === 0)
+            ? Object.keys(modules)
+            : selection;
+
+        const result = {};
+        for (const key of selectedKeys) {
+            if (modules[key]) {
+                for (const [className, value] of Object.entries(modules[key])) {
+                    result[className] = value;
+                }
+            }
+        }
+        return result;
+    }
+
+    if (d === null) {
+        $('#project-description').text("Failed to load project data.");
+        return;
+    }
+
+    setGridValue(d);
+    d = splitModules(d, [])
+    console.log(d)
+    var mergedData = {};
+
+    for (const [filePath, data] of Object.entries(d)) {
+        const filePaths = filePath.split('.');
+
+        // root ""
+        let currentPath = "";
+
+        for (let i = 0; i < filePaths.length; i++) {
+            if (i === 0 && filePaths[i] === "") {
+                // root
+                currentPath = "";
+            } else {
+                // build the path
+                currentPath += "/" + filePaths[i];
+            }
+
+            // if not found, init
+            if (!mergedData[currentPath]) {
+                mergedData[currentPath] = {
+                    lines: { coverage: 0, covered_line: 0, total_line: 0 },
+                    mutations: { coverage: 0, killed: 0, total_mutation: 0 },
+                    traces: { total_trace: 0, total_block: 0, average: 0 }
+                };
+            }
+            const covered_line = data.line_coverage.total_executable_lines - data.line_coverage.total_missed_lines
+            mergedData[currentPath].lines.covered_line += covered_line
+            mergedData[currentPath].lines.total_line += data.line_coverage.total_executable_lines;
+            mergedData[currentPath].lines.coverage = mergedData[currentPath].lines.total_line === 0 ? 0
+                : (mergedData[currentPath].lines.covered_line / mergedData[currentPath].lines.total_line) * 100;
+
+            mergedData[currentPath].mutations.killed += data.mutation.effective_killed;
+            mergedData[currentPath].mutations.total_mutation += data.mutation.executed_mutations;
+            mergedData[currentPath].mutations.coverage = 
+            mergedData[currentPath].mutations.total_mutation === 0 ? 0
+                : (mergedData[currentPath].mutations.killed / mergedData[currentPath].mutations.total_mutation) * 100;
+            
+
+            mergedData[currentPath].total_tests += data.total_tests;
+            mergedData[currentPath].total_blocks += data.total_blocks;
+            mergedData[currentPath].traces.average = mergedData[currentPath].traces.total_block === 0
+            ? 0
+                : mergedData[currentPath].traces.total_trace / mergedData[currentPath].traces.total_block;
+        }
+    }
+    var treeData = dataHelpers.convertToTree(mergedData, mapperParams);
+    dataHelpers.colorize(d3, treeData, 'colorValue', nodeColorScale, { min: 20, max: 100 });
+
     applyLeafPaletteAndPlatformGray(treeData);
 
     // progressive.calculate_area(treeData)
-    rawData = treeData;
     codeCityChart = codeCity.codeCity(d3, $('#code-city-chart')[0], treeData, graphParams, globalMargin);
     // try {
         
