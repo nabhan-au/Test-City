@@ -9,7 +9,7 @@ from repositories.trace_extractor_repository import TraceExtractorRepository
 from services.coverage_processor import CoverageProcessor
 from repositories.file_manager_s3_repository import FileManagerS3Repository
 from services.file_manager.file_manager_s3_service import FileManagerS3Service
-from services.trace_extractor import TraceExtractor
+from services.data_extractor import DataExtractor
 from util.request import Request
 
 class Container(containers.DeclarativeContainer):
@@ -34,7 +34,7 @@ class Container(containers.DeclarativeContainer):
     )
 
     trace_extractor_service = providers.Factory(
-        TraceExtractor,
+        DataExtractor,
         trace_extractor_repository,
         trace_config
     )

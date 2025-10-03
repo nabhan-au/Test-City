@@ -133,8 +133,6 @@ void main() { \
 
   function addHouse(d, normalized_block_size = 0.05) {
     let is_building = isFile(d.key);
-    let is_mutant = d.data?.mutations?.coverage > 0 && d.data?.mutations?.total_mutation > 0;
-    let is_leaf_mutant = is_mutant && (d.children?.length ?? 0) < 1;
 
     var unitHeight = 3 / 1000;
     var w = 1000;
@@ -146,7 +144,6 @@ void main() { \
       baseHeight = 0;
     }
     var gd = unitHeight * (d.children?.length ? 0.05 : baseHeight) * 130.0;
-
     var gx = ((d.x + d.dx / 2) * w) / 500 - 1;
     var gy = 1 - ((d.y + d.dy / 2) * h) / 500;
     var gz = d.depth * unitHeight + gd / 2;
@@ -178,9 +175,10 @@ void main() { \
     if (is_building) {
         const totalMut = (d?.data?.mutations?.total_mutation || 0);
         const killed = (d?.data?.mutations?.killed || 0);
-        const survivors = Math.max(0, totalMut - killed);
+        const noCoverage = (d?.data?.mutations?.no_coverage || 0)
+        const survivors = Math.max(0, totalMut - killed - noCoverage);
         if (totalMut > 0) {
-          createMutantStacksOnRoofRingCubes(cube, gw, gh, gd, killed, survivors, {
+          createMutantStacksOnRoofRingCubes(cube, gw, gh, gd, killed, survivors, noCoverage, {
             cubeW: normalized_block_size,
             cubeD: normalized_block_size,
             gapXY: normalized_block_size*0.25,
@@ -197,7 +195,7 @@ void main() { \
     }
   }
 
-  function createMutantStacksOnRoofRingCubes(building, gw, gh, gd, killed, survivors, opts = {}) {
+  function createMutantStacksOnRoofRingCubes(building, gw, gh, gd, killed, survivors, noCoverage, opts = {}) {
     const margin = opts.margin ?? 0.02;
     const cubeW = opts.cubeW ?? 0.06;  // cube width (X direction)
     const cubeD = opts.cubeD ?? 0.06;  // cube depth (Y direction)
@@ -233,6 +231,7 @@ void main() { \
 
     const killedPerCell = distribute(killed);
     const survivorsPerCell = distribute(survivors);
+    const noCoveragePerCell = distribute(noCoverage);
 
     // cube size with horizontal/vertical gaps
     const blockX = Math.max(0.01, spacingX - gapXY);
@@ -241,19 +240,26 @@ void main() { \
 
     const whiteMat = new three.MeshPhongMaterial({ color: 0xffffff });
     const redMat = new three.MeshPhongMaterial({ color: 0xcc2b2b });
+    const greyMat = new three.MeshPhongMaterial({ color: 0x888888  });
 
     for (let i = 0; i < capacity; i++) {
       const [r, c] = cells[i];
       const k = killedPerCell[i];
       const s = survivorsPerCell[i];
-      const total = k + s;
+      const n = noCoveragePerCell[i]
+      const total = k + s + n;
       if (!total) continue;
 
       const cellCenterX = -((cols - 1) * spacingX) / 2 + c * spacingX;
       const cellCenterY = -((rows - 1) * spacingY) / 2 + r * spacingY;
 
       for (let h = 0; h < total; h++) {
-        const mat = h >= k ? redMat : whiteMat;
+        let mat = whiteMat;
+        if (h >= k && h < k + s) {
+          mat = redMat
+        } else if (h >= k + s) {
+          mat = greyMat
+        }
         const geom = new three.BoxGeometry(cubeW, cubeD, blockZ);
         const mesh = new three.Mesh(geom, mat);
 
@@ -570,6 +576,27 @@ void main() { \
     currentMargin = newMargin;
 
     // recompute layout
+    if (isProgressiveLayout) {
+      [data, normalized_block_size] = progressive.calculate_area(rawData, currentMargin);
+    } else {
+      normalized_block_size = 0.05;
+      data = generateTreemap(d3, rawData, params);
+    }
+
+    // reset per-build state
+    maximumHeight = 250;
+    minimumHeight = 0.005;
+    rootHouse = null;
+
+    clearScene();
+    addLights();
+    buildHouses();
+
+    setCameraRotation(cameraAngle);
+    render();
+  }
+
+  function setModule(newModule) {
     if (isProgressiveLayout) {
       [data, normalized_block_size] = progressive.calculate_area(rawData, currentMargin);
     } else {

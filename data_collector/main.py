@@ -31,7 +31,7 @@ def create_app() -> FastAPI:
 
 
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.ERROR,
     format="%(asctime)s [%(levelname)s] %(filename)s:%(lineno)d - %(message)s",
 )
 app = create_app()
