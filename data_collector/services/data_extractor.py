@@ -179,8 +179,9 @@ class DataExtractor:
 
             mutation_data = parsed_data["mutations"]["mutation"]
             for row in mutation_data:
-                class_name = row["mutatedClass"]
+                class_name, sub_class_name = self.extract_class_name(row["mutatedClass"])
                 mutation_dict = {
+                    "sub_class_name": sub_class_name,
                     "status": row["@status"],
                     "number_of_tests": row["@numberOfTestsRun"],
                     "method_name": row["mutatedMethod"],

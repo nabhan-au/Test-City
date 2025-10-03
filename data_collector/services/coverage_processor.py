@@ -181,6 +181,28 @@ class CoverageProcessor:
             "mutation_score_executed": round(mutation_score_executed, 4),
         }
 
+    async def integrate_mutation_tests(self, class_name, data, mutation_data):
+        blocks = data.get("block", [])
+        for mut in mutation_data:
+            seen = set()
+            mut["tests"] = []
+            if mut["status"] != "SURVIVED":
+                continue
+
+            mutation_block = self._normalize_blocks(mut["blocks"])
+            for b in blocks:
+                if (
+                        b["method_name"] == mut["method_name"]
+                        and b["method_desc"] == mut["method_desc"]
+                        and int(mut["line_number"]) in b["line"]
+                        and str(b["block"]) in mutation_block
+                ):
+                    for test in b["tests"]:
+                        key = test.get("@name") if isinstance(test, dict) else str(test)
+                        if key not in seen:
+                            seen.add(key)
+                            mut["tests"].append(test)
+
     async def extract_data(self, coverage_result, files, repo_name, project_type ="maven"):
         files_by_modules = self.split_file_by_module(files, project_type)
 
@@ -205,6 +227,7 @@ class CoverageProcessor:
                     mutation_data = []
                 else:
                     mutation_data = mutation_coverage_data[k]
+                    await self.integrate_mutation_tests(k, v, mutation_data)
                 mutation_summary = self.summarize_mutations(mutation_data)
                 v["mutation"] =  {
                      **mutation_summary,
@@ -325,6 +348,16 @@ class CoverageProcessor:
             return out
         # Unknown type -> ignore
         return []
+
+    def _normalize_blocks(self, field):
+        if not field:
+            return []
+        if isinstance(field, dict) and "block" in field:
+            val = field["block"]
+            return val if isinstance(val, list) else [val]
+        if isinstance(field, list):
+            return field
+        return [field]
 
     def summarize_block_style_coverage(self, data: Dict[str, Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
         report: Dict[str, Dict[str, Any]] = {}
