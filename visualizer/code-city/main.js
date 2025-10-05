@@ -60,6 +60,7 @@ var nodeColorScale = [
 ]
 
 let gridValue;
+let rawData
 
 function legendTitle(d, e) {
     return d.path;
@@ -76,7 +77,7 @@ function legendContent(d, e) {
           <tbody>
             <tr class="bg-gray-50">
               <td class="py-1">Lines coverage (%)</td>
-              <td class="py-1 text-right">${lines.coverage}</td>
+              <td class="py-1 text-right">${lines.coverage.toFixed(2)}</td>
             </tr>
             <tr>
               <td class="py-1">Lines covered</td>
@@ -84,7 +85,7 @@ function legendContent(d, e) {
             </tr>
             <tr class="bg-gray-50">
               <td class="py-1">Mutations coverage (%)</td>
-              <td class="py-1 text-right">${mutations.coverage}</td>
+              <td class="py-1 text-right">${mutations.coverage.toFixed(2)}</td>
             </tr>
             <tr>
               <td class="py-1">Mutations killed</td>
@@ -92,7 +93,7 @@ function legendContent(d, e) {
             </tr>
             <tr>
               <td class="py-1">Average trace</td>
-              <td class="py-1 text-right">${traces.average}</td>
+              <td class="py-1 text-right">${traces.average.toFixed(2)}</td>
             </tr>
           </tbody>
         </table>
@@ -103,11 +104,11 @@ function legendContent(d, e) {
 function nodeHeight(d) {
     if (heightMode === 'trace') {
         const v = d?.data?.traces?.average;
-        return (typeof v === 'number' && isFinite(v)) ? v : 0;
+        return (typeof v === 'number' && isFinite(v) && v > 1) ? v : 1;
     }
     // default: LOC total lines
     const tl = d?.data?.lines?.total_line;
-    return (typeof tl === 'number' && isFinite(tl)) ? tl : 0;
+    return (typeof tl === 'number' && isFinite(tl) && tl > 1) ? tl : 1;
 }
 
 function nodeColor(d) {
@@ -175,56 +176,6 @@ function setGridValue(d) {
 
 // Call fetchData asynchronously
 fetchData().then(function (d) {
-    if (d === null) {
-        $('#project-description').text("Failed to load project data.");
-        return;
-    }
-
-    setGridValue(d);
-    var mergedData = {};
-    window.__mergedDataForHeightSwitch = mergedData;
-
-    for (const [key, value] of Object.entries(d)) {
-        const [filePath, data] = Object.entries(value)[0];
-        const filePaths = filePath.split('/');
-
-        // root ""
-        let currentPath = "";
-
-        for (let i = 0; i < filePaths.length; i++) {
-            if (i === 0 && filePaths[i] === "") {
-                // root
-                currentPath = "";
-            } else {
-                // build the path
-                currentPath += "/" + filePaths[i];
-            }
-
-            // if not found, init
-            if (!mergedData[currentPath]) {
-                mergedData[currentPath] = {
-                    lines: { coverage: 0, covered_line: 0, total_line: 0 },
-                    mutations: { coverage: 0, killed: 0, total_mutation: 0 },
-                    traces: { total_trace: 0, total_block: 0, average: 0 }
-                };
-            }
-
-            mergedData[currentPath].lines.covered_line += data.lines.covered_line;
-            mergedData[currentPath].lines.total_line += data.lines.total_line;
-            mergedData[currentPath].lines.coverage = (mergedData[currentPath].lines.covered_line / mergedData[currentPath].lines.total_line) * 100;
-
-            mergedData[currentPath].mutations.killed += data.mutations.killed;
-            mergedData[currentPath].mutations.total_mutation += data.mutations.total_mutation;
-            mergedData[currentPath].mutations.coverage = (mergedData[currentPath].mutations.killed / mergedData[currentPath].mutations.total_mutation) * 100;
-
-            mergedData[currentPath].traces.total_trace += data.traces.total_trace;
-            mergedData[currentPath].traces.total_block += data.traces.total_block;
-            mergedData[currentPath].traces.average = mergedData[currentPath].traces.total_trace / mergedData[currentPath].traces.total_block;
-        }
-    }
-    var treeData = dataHelpers.convertToTree(mergedData, mapperParams);
-    dataHelpers.colorize(d3, treeData, 'colorValue', nodeColorScale, { min: 20, max: 100 });
-
     // compute maxDepth
     function computeMaxDepth(root) {
         let maxD = 0;
@@ -293,6 +244,7 @@ fetchData().then(function (d) {
     setGridValue(d);
     d = splitModules(d, [])
     var mergedData = {};
+    window.__mergedDataForHeightSwitch = mergedData;
 
     for (const [filePath, data] of Object.entries(d)) {
         const filePaths = filePath.split('/');
@@ -346,25 +298,7 @@ fetchData().then(function (d) {
 
     applyLeafPaletteAndPlatformGray(treeData);
 
-    // progressive.calculate_area(treeData)
     codeCityChart = codeCity.codeCity(d3, $('#code-city-chart')[0], treeData, graphParams, globalMargin);
-    // try {
-        
-    // } catch (e) {
-    //     if (e instanceof TypeError)
-    //         $('#code-city-chart').html("\
-    //             <div> \
-    //             <img src=\"../assets/images/code_city_large.png\" width=\"100%\"> \
-    //             <p style=\"background:rgba(255,0,0,0.7); top:300px; position:absolute; font-size:18px;\" class=\"alert alert-danger\"> \
-    //                 It seems that your browser does not support (or has deactivated) WebGL, which is required for this graph. Please upgrade your browser or make sure that WebGL is activated. Below is a teaser of what the visualization of your project might look like. \
-    //             </p> \
-    //             </div> \
-    //             ");
-    // }
-
-    // sphereToggle.prop('checked', true);
-    // codeCityChart.toggleSpheres(true)
-    // codeCityChart.toggleMutants(true);
 
     var isRotating = false;
 
