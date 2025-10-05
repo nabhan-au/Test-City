@@ -9,10 +9,6 @@ h1 {
 .code-city-canvas {
   position: relative; }
 
-.code-city-legend {
-  position: absolute;
-  top: 0;
-  left: 0; }
   .code-city-legend p {
     margin: 0; }
 

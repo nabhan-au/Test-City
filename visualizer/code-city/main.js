@@ -26,9 +26,11 @@ async function fetchData() {
 
 var metric = 'lines';
 var classes = 'classes';
-var trace = 'traces'
+var trace = 'traces';
+let heightMode = 'loc'; // 'loc' | 'trace'
 
 var legendDiv = $('#code-city-legend')[0];
+var heightMetricSelect = $('#height-metric');
 
 var rotateLeftSpan = $('#rotate-left');
 var rotateRightSpan = $('#rotate-right');
@@ -99,7 +101,13 @@ function legendContent(d, e) {
 }
 
 function nodeHeight(d) {
-    return d.data[metric].total_line;
+    if (heightMode === 'trace') {
+        const v = d?.data?.traces?.average;
+        return (typeof v === 'number' && isFinite(v)) ? v : 0;
+    }
+    // default: LOC total lines
+    const tl = d?.data?.lines?.total_line;
+    return (typeof tl === 'number' && isFinite(tl)) ? tl : 0;
 }
 
 function nodeColor(d) {
@@ -167,6 +175,56 @@ function setGridValue(d) {
 
 // Call fetchData asynchronously
 fetchData().then(function (d) {
+    if (d === null) {
+        $('#project-description').text("Failed to load project data.");
+        return;
+    }
+
+    setGridValue(d);
+    var mergedData = {};
+    window.__mergedDataForHeightSwitch = mergedData;
+
+    for (const [key, value] of Object.entries(d)) {
+        const [filePath, data] = Object.entries(value)[0];
+        const filePaths = filePath.split('/');
+
+        // root ""
+        let currentPath = "";
+
+        for (let i = 0; i < filePaths.length; i++) {
+            if (i === 0 && filePaths[i] === "") {
+                // root
+                currentPath = "";
+            } else {
+                // build the path
+                currentPath += "/" + filePaths[i];
+            }
+
+            // if not found, init
+            if (!mergedData[currentPath]) {
+                mergedData[currentPath] = {
+                    lines: { coverage: 0, covered_line: 0, total_line: 0 },
+                    mutations: { coverage: 0, killed: 0, total_mutation: 0 },
+                    traces: { total_trace: 0, total_block: 0, average: 0 }
+                };
+            }
+
+            mergedData[currentPath].lines.covered_line += data.lines.covered_line;
+            mergedData[currentPath].lines.total_line += data.lines.total_line;
+            mergedData[currentPath].lines.coverage = (mergedData[currentPath].lines.covered_line / mergedData[currentPath].lines.total_line) * 100;
+
+            mergedData[currentPath].mutations.killed += data.mutations.killed;
+            mergedData[currentPath].mutations.total_mutation += data.mutations.total_mutation;
+            mergedData[currentPath].mutations.coverage = (mergedData[currentPath].mutations.killed / mergedData[currentPath].mutations.total_mutation) * 100;
+
+            mergedData[currentPath].traces.total_trace += data.traces.total_trace;
+            mergedData[currentPath].traces.total_block += data.traces.total_block;
+            mergedData[currentPath].traces.average = mergedData[currentPath].traces.total_trace / mergedData[currentPath].traces.total_block;
+        }
+    }
+    var treeData = dataHelpers.convertToTree(mergedData, mapperParams);
+    dataHelpers.colorize(d3, treeData, 'colorValue', nodeColorScale, { min: 20, max: 100 });
+
     // compute maxDepth
     function computeMaxDepth(root) {
         let maxD = 0;
@@ -432,6 +490,21 @@ fetchData().then(function (d) {
         const checked = sphereToggle.is(':checked');
         sphereToggle.prop('checked', checked).trigger('change');
         birdEyeToggle.prop('checked', false).trigger('change');
+    });
+
+    heightMetricSelect.on('change', function () {
+        heightMode = this.value; // 'loc' or 'trace'
+
+        const merged = window.__mergedDataForHeightSwitch;
+        const newTree = dataHelpers.convertToTree(merged, mapperParams);
+
+        dataHelpers.colorize(d3, newTree, 'colorValue', nodeColorScale, { min: 20, max: 100 });
+        applyLeafPaletteAndPlatformGray(newTree);
+
+        rawData = newTree;
+        if (codeCityChart?.setRawData) {
+            codeCityChart.setRawData(newTree);
+        }
     });
 
     // project-description
