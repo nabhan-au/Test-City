@@ -13,6 +13,8 @@ class FileManagerLocalService(FileManagerServiceAbstract):
 
     def __init__(self, file_manager: FileManagerLocalRepository) -> None:
         self.__file_manager = file_manager
+        self.upload_root = Path("/tmp/uploads").resolve()
+        self.upload_root.mkdir(parents=True, exist_ok=True)
 
     def save_complexity(self, repository_name, tree_json) -> None:
         pb = PathBuilder(repository_name)
@@ -38,8 +40,7 @@ class FileManagerLocalService(FileManagerServiceAbstract):
           {top}/tmp/{project}/{client_relative_path}
         No filtering. Path-safe.
         """
-        pb = PathBuilder(repository_name)
-        base = Path(f"{pb.top_dir}/tmp/{pb.project_name}")
+        base = self.upload_root / repository_name
         base.mkdir(parents=True, exist_ok=True)
 
         for uf in files:
@@ -65,8 +66,7 @@ class FileManagerLocalService(FileManagerServiceAbstract):
         """
         Load all staged files back as UploadFile objects.
         """
-        pb = PathBuilder(repository_name)
-        base = Path(f"{pb.top_dir}/tmp/{pb.project_name}")
+        base = self.upload_root / repository_name
         if not base.exists():
             return []
 
@@ -87,8 +87,7 @@ class FileManagerLocalService(FileManagerServiceAbstract):
 
     def clear_staging(self, repository_name: str) -> None:
         """Remove the temp area after finalize (or on failure cleanup)."""
-        pb = PathBuilder(repository_name)
-        base = Path(f"{pb.top_dir}/tmp/{pb.project_name}")
+        base = self.upload_root / repository_name
         if base.exists():
             shutil.rmtree(base, ignore_errors=True)
 
