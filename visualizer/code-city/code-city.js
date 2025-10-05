@@ -2,7 +2,7 @@ import * as three from 'three';
 import * as progressive from './progressive-brick-layout'
 import $ from 'jquery';
 
-var houseMargin = 0.005; //min margin in percent
+var houseMargin = 0.001; //min margin in percent
 
 function generateTreemap(d3, data, params) {
   var layout = d3.layout.treemap()
