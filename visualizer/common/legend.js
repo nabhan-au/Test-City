@@ -54,29 +54,53 @@
 export function legend(legendDiv, legendTitle, legendContent) {
   let pinned = false;
 
-  function render(d) {
-    legendDiv.innerHTML = d ? `
-      <div class="space-y-2">
-        <h3 class="text-sm font-semibold break-words">${legendTitle(d)}</h3>
-        <div>${legendContent(d)}</div>
-        <div class="pt-2 text-xs text-gray-400">${pinned ? 'Pinned (click to unpin)' : 'Tip: click to pin'}</div>
+  const placeholder = () =>
+    (legendDiv.innerHTML = `<p class="text-sm text-gray-300">Hover a building…</p>`);
+
+  const fileHTML = (d) => `
+    <div class="space-y-2">
+      <h3 class="text-sm font-semibold break-words">${legendTitle(d)}</h3>
+      <div>${legendContent(d)}</div>
+      <div class="pt-2 text-xs text-gray-400">
+        ${pinned ? 'Pinned (click to unpin)' : 'Tip: click to pin'}
       </div>
-    ` : `<p class="text-sm text-gray-300">Hover a building…</p>`;
+    </div>
+  `;
+
+  const cubeHTML = (d) => `
+    <div class="space-y-2">
+      <h3 class="text-sm font-semibold break-words">Mutant Cube ${d.cubeId}</h3>
+      <div class="bg-white text-gray-800 p-4 rounded-lg shadow-md">
+        <div class="text-sm space-y-1">
+          <div class="flex justify-between"><span>Cube ID</span><strong>${d.cubeId}</strong></div>
+          <div class="flex justify-between"><span>Type</span><strong>${d.kind ?? '-'}</strong></div>
+          ${d.parentTitle || d.parentPath ? `<div class="mt-2 text-xs text-gray-600 break-words">${d.parentTitle || d.parentPath}</div>` : ``}
+        </div>
+      </div>
+      <div class="pt-2 text-xs text-gray-400">
+        ${pinned ? 'Pinned (click to unpin)' : 'Tip: click to pin'}
+      </div>
+    </div>
+  `;
+
+  const isCube = (d) => !!(d && typeof d === 'object' && 'cubeId' in d);
+
+  function render(d) {
+    if (!d) return placeholder();
+    legendDiv.innerHTML = isCube(d) ? cubeHTML(d) : fileHTML(d);
   }
 
-  render(null);
+  function renderCube(d) {
+    legendDiv.innerHTML = cubeHTML(d);
+  }
+
+  placeholder();
 
   return {
-    onClick(d) {
-    //   pinned = !pinned;
-    //   render(pinned ? d : null);
-    render(d);
-    },
-    // onMouseout() {
-    //   if (!pinned) render(null);
-    // },
-    // onMouseover(d) {
-    //   if (!pinned) render(d);
-    // }
+    // onClick(d)    { pinned = !pinned; render(pinned ? d : null); },
+    // onMouseover(d){ if (!pinned) render(d); },
+    // onMouseout()  { if (!pinned) placeholder(); },
+    onClick(d)    { render(d); },
+    renderCube, 
   };
 }

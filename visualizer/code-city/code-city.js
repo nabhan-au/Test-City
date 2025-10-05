@@ -18,6 +18,8 @@ function generateTreemap(d3, data, params) {
 }
 
 function codeCity(d3, element, rawData, params, margin, isProgressiveLayout = true) {
+  // TODO: remove with actual data
+  let cubeIdSeq = 1;
   var canvas = d3.select(element);
 
   var data, normalized_block_size = null
@@ -242,6 +244,7 @@ void main() { \
     const whiteMat = new three.MeshPhongMaterial({ color: 0xffffff });
     const redMat = new three.MeshPhongMaterial({ color: 0xcc2b2b });
 
+    const parentD = building.d || null;
     for (let i = 0; i < capacity; i++) {
       const [r, c] = cells[i];
       const k = killedPerCell[i];
@@ -258,9 +261,14 @@ void main() { \
         const mesh = new three.Mesh(geom, mat);
 
         const z = gd / 2 + roofLift + (blockZ + gapZ) * h + blockZ / 2;
-
         mesh.position.set(cellCenterX, cellCenterY, z);
+
         mesh.userData.isMutantStack = true;
+        mesh.userData.cubeId = `mut-${cubeIdSeq++}`;
+        mesh.userData.kind = (h >= k ? 'survivor' : 'killed');
+        mesh.userData.parentPath = parentD?.path || parentD?.key || '';
+        mesh.userData.parentTitle = parentD?.title || '';
+
         building.add(mesh);
       }
     }
@@ -292,33 +300,51 @@ void main() { \
       const rawHit = intersects[0].object;
 
       let hitMesh = null;
-      if (rawHit.material.uniforms?.glow !== undefined) {
+      if (rawHit.userData?.isMutantStack) {
         hitMesh = rawHit;
-      } else if (
-        rawHit.parent?.material?.uniforms?.glow !== undefined
-      ) {
+      } else if (rawHit.material?.uniforms?.glow !== undefined) {
+        hitMesh = rawHit;
+      } else if (rawHit.parent?.material?.uniforms?.glow !== undefined) {
         hitMesh = rawHit.parent;
       }
 
       if (hitMesh) {
         if (intersected && intersected !== hitMesh) {
-          intersected.material.uniforms.glow.value = 1.0;
-          intersected.material.needsUpdate = true;
+          if (intersected.material?.uniforms?.glow) {
+            intersected.material.uniforms.glow.value = 1.0;
+            intersected.material.needsUpdate = true;
+          } else if (intersected.userData?.isMutantStack) {
+            intersected.scale.set(1, 1, 1);
+          }
         }
 
         intersected = hitMesh;
-        intersected.material.uniforms.glow.value = 1.4;
-        intersected.material.needsUpdate = true;
 
-        selectedD = hitMesh.d;
-        params.legend?.onMouseover(selectedD, event);
+        if (hitMesh.material?.uniforms?.glow) {
+          intersected.material.uniforms.glow.value = 1.4;
+          intersected.material.needsUpdate = true;
+          selectedD = hitMesh.d;
+        } else if (hitMesh.userData?.isMutantStack) {
+          intersected.scale.set(1.15, 1.15, 1.15);
+          selectedD = {
+            cubeId: hitMesh.userData.cubeId,
+            kind: hitMesh.userData.kind,
+            parentPath: hitMesh.userData.parentPath,
+            parentTitle: hitMesh.userData.parentTitle,
+          };
+        }
+
+        // params.legend?.onMouseover(selectedD, event);
         render();
       }
-    }
-    else if (intersected) {
-      intersected.material.uniforms.glow.value = 1.0;
-      intersected.material.needsUpdate = true;
-      params.legend?.onMouseout(selectedD, event);
+    } else if (intersected) {
+      if (intersected.material?.uniforms?.glow) {
+        intersected.material.uniforms.glow.value = 1.0;
+        intersected.material.needsUpdate = true;
+      } else if (intersected.userData?.isMutantStack) {
+        intersected.scale.set(1, 1, 1);
+      }
+      // params.legend?.onMouseout(selectedD, event);
       intersected = null;
       selectedD = undefined;
       render();
@@ -360,7 +386,7 @@ void main() { \
   var canvasDiv = $('#code-city-canvas');
   canvasDiv.on('mouseleave', function () {
     if (params.legend && selectedD) {
-      params.legend.onMouseout(selectedD);
+      // params.legend.onMouseout(selectedD);
       selectedD = undefined;
     }
   });
