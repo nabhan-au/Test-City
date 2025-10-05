@@ -26,9 +26,11 @@ async function fetchData() {
 
 var metric = 'lines';
 var classes = 'classes';
-var trace = 'traces'
+var trace = 'traces';
+let heightMode = 'loc'; // 'loc' | 'trace'
 
 var legendDiv = $('#code-city-legend')[0];
+var heightMetricSelect = $('#height-metric');
 
 var rotateLeftSpan = $('#rotate-left');
 var rotateRightSpan = $('#rotate-right');
@@ -101,7 +103,13 @@ function legendContent(d, e) {
 }
 
 function nodeHeight(d) {
-    return d.data[metric].total_line;
+    if (heightMode === 'trace') {
+        const v = d?.data?.traces?.average;
+        return (typeof v === 'number' && isFinite(v)) ? v : 0;
+    }
+    // default: LOC total lines
+    const tl = d?.data?.lines?.total_line;
+    return (typeof tl === 'number' && isFinite(tl)) ? tl : 0;
 }
 
 function nodeColor(d) {
@@ -173,6 +181,7 @@ fetchData().then(function (d) {
 
     setGridValue(d);
     var mergedData = {};
+    window.__mergedDataForHeightSwitch = mergedData;
 
     for (const [key, value] of Object.entries(d)) {
         const [filePath, data] = Object.entries(value)[0];
@@ -412,6 +421,21 @@ fetchData().then(function (d) {
         const checked = sphereToggle.is(':checked');
         sphereToggle.prop('checked', checked).trigger('change');
         birdEyeToggle.prop('checked', false).trigger('change');
+    });
+
+    heightMetricSelect.on('change', function () {
+        heightMode = this.value; // 'loc' or 'trace'
+
+        const merged = window.__mergedDataForHeightSwitch;
+        const newTree = dataHelpers.convertToTree(merged, mapperParams);
+
+        dataHelpers.colorize(d3, newTree, 'colorValue', nodeColorScale, { min: 20, max: 100 });
+        applyLeafPaletteAndPlatformGray(newTree);
+
+        rawData = newTree;
+        if (codeCityChart?.setRawData) {
+            codeCityChart.setRawData(newTree);
+        }
     });
 
     // project-description

@@ -616,6 +616,27 @@ void main() { \
     render();
   }
 
+  function setRawData(newRawData) {
+    rawData = newRawData;
+
+    if (isProgressiveLayout) {
+      [data, normalized_block_size] = progressive.calculate_area(rawData, currentMargin);
+    } else {
+      normalized_block_size = 0.05;
+      data = generateTreemap(d3, rawData, params);
+    }
+
+    maximumHeight = 250;
+    minimumHeight = 0.005;
+    rootHouse = null;
+
+    clearScene();
+    addLights();
+    buildHouses();
+
+    setCameraRotation(cameraAngle);
+    render();
+  }
 
   return {
     getCameraRotation: getCameraRotation,
@@ -629,7 +650,8 @@ void main() { \
     toggleMutants: toggleMutants,
     onZoomIn: onZoomIn,
     onZoomOut: onZoomOut,
-    setMargin: setMargin
+    setMargin: setMargin,
+    setRawData: setRawData
   };
 }
 
