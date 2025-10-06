@@ -1,40 +1,37 @@
-function convertToTree(data,params) {
-    var minValue,maxValue;
-
+function convertToTree(data, params) {
     var min = {};
     var max = {};
 
-    function recursivelyAddNode(node, keyComponents,key, data) {
+    function recursivelyAddNode(node, keyComponents, key, data, depth = 0) {
         node.children = node.children || [];
+        node.depth = depth;
 
-        if (keyComponents.length && keyComponents[0]){
+        if (keyComponents.length && keyComponents[0]) {
             var keyComponent = keyComponents.shift();
             var child;
 
-            for (var i=0; i<node.children.length; i++){
-                if (node.children[i].name === keyComponent){
+            for (var i = 0; i < node.children.length; i++) {
+                if (node.children[i].name === keyComponent) {
                     child = node.children[i];
                     break;
                 }
             }
 
-            if (!child){
-                child = {
-                    name: keyComponent
-                };
+            if (!child) {
+                child = { name: keyComponent };
                 node.children.push(child);
             }
-            recursivelyAddNode(child,keyComponents,key,data);
-        }
-        else{
+            recursivelyAddNode(child, keyComponents, key, data, depth + 1);
+        } else {
             node.key = key;
             node.data = data;
-            if (params.mappers){
-                for(var mapper in params.mappers){
+
+            if (params.mappers) {
+                for (var mapper in params.mappers) {
                     node[mapper] = params.mappers[mapper](node);
-                    if (min[mapper] === undefined || (min[mapper] > node[mapper]))
+                    if (min[mapper] === undefined || min[mapper] > node[mapper])
                         min[mapper] = node[mapper];
-                    if (max[mapper] === undefined || (max[mapper] < node[mapper]))
+                    if (max[mapper] === undefined || max[mapper] < node[mapper])
                         max[mapper] = node[mapper];
                 }
             }
@@ -44,7 +41,7 @@ function convertToTree(data,params) {
     var tree = {};
 
     for (var key in data)
-        recursivelyAddNode(tree,params.split(key),key,data[key]);
+        recursivelyAddNode(tree, params.split(key), key, data[key], 0);
 
     tree.minima = min;
     tree.maxima = max;
@@ -78,8 +75,21 @@ function colorize(d3, tree,key,colors,params){
         .domain(d3.range(minValue,maxValue,(maxValue-minValue)/colors.length))
         .range(colors);
 
-    var applyColorScale = function(node){
-        node.color = colorScale(Math.max(minValue,Math.min(node[key],maxValue)));
+    var toHexByte = (v) => {
+        const n = Math.max(0, Math.min(255, Math.round(v)));
+        return n.toString(16).padStart(2, '0');
+    }
+
+    var applyColorScale = (node) => {
+        if (node[key] == 0) {
+            const r = 255;
+            const g = 190;
+            const b = 50;
+            const hex = `#${toHexByte(r)}${toHexByte(g)}${toHexByte(b)}`;
+            node.color = hex;
+        } else {
+            node.color = colorScale(Math.max(minValue,Math.min(node[key],maxValue)));
+        }
         for(var i in node.children)
             applyColorScale(node.children[i]);
     };

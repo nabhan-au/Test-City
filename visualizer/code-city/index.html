@@ -54,6 +54,14 @@
                         class="text-white bg-transparent hover:bg-white hover:bg-opacity-10 px-3 py-1 rounded transition-colors duration-200">
                         Rotate Down
                     </button>
+                    <button id="zoom-in"
+                        class="text-white bg-transparent hover:bg-white hover:bg-opacity-10 px-3 py-1 rounded transition-colors duration-200">
+                        Zoom In
+                    </button>
+                    <button id="zoom-out"
+                        class="text-white bg-transparent hover:bg-white hover:bg-opacity-10 px-3 py-1 rounded transition-colors duration-200">
+                        Zoom Out
+                    </button>
                 </div>
                 <div class="mt-4">
                     <label class="inline-flex items-center space-x-2">
@@ -65,22 +73,44 @@
                 <div class="mt-4">
                     <label class="inline-flex items-center space-x-2">
                         <input type="checkbox" id="toggle-spheres"
-                            class="h-6 w-6 accent-green-500 bg-gray-700 border-gray-500 rounded" />
-                        <span class="text-lg text-white select-none">Show Mutant Fires</span>
+                            class="h-6 w-6 accent-green-500 bg-gray-700 border-gray-500 rounded" checked/>
+                        <span class="text-lg text-white select-none">Show Mutants</span>
                     </label>
                 </div>
+               <div class="mt-4">
+                    <label class="text-white mb-1 block">House Margin: <span id="margin-value">0.2</span></label>
+                    <div class="flex items-center space-x-2">
+                        <input id="margin-slider" type="range" min="0" max="1" step="0.001" value="0.2" class="flex-1">
+                        <button id="apply-margin" class="px-3 py-1 bg-blue-600 text-white rounded">Apply</button>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <label class="text-white mb-1 block">Height Metric</label>
+                    <select id="height-metric" class="w-full bg-gray-800 text-white rounded px-2 py-1">
+                        <option value="loc" selected>Total Lines (LOC)</option>
+                        <option value="trace">Trace (average)</option>
+                    </select>
+                </div>
             </section>
-            <section id="project-details" class="bg-white bg-opacity-10 backdrop-blur-sm p-4 rounded-lg">
-                <h2 class="text-lg font-semibold mb-2">Project Summary</h2>
-                <p id="project-description" class="text-sm text-white">Loading summary...</p>
-            </section>            
+            <section id="project-details" class="bg-white bg-opacity-10 backdrop-blur-sm p-4 rounded-lg space-y-4">
+                <div>
+                    <h2 class="text-lg font-semibold">Project Summary</h2>
+                    <p id="project-description" class="text-sm text-white">Loading summary...</p>
+                </div>
+
+                <div class="pt-3 border-t border-white/10">
+                    <h2 class="text-lg font-semibold">Selected File</h2>
+                    <div id="code-city-legend" class="code-city-legend"></div>
+                </div>
+            </section>    
         </aside>
 
         <section class="lg:col-span-3 bg-white bg-opacity-5 backdrop-blur-sm p-6 rounded-lg">
             <p>3D Model Viewer</p>
             <div id="code-city-canvas" class="relative w-full aspect-square mt-4">
                 <div id="code-city-chart" class="code-city-chart"></div>
-                <div id="code-city-legend" class="code-city-legend"></div>
+                <!-- SHOW legend -->
+                <!-- <div id="code-city-legend" class="code-city-legend"></div> -->
             </div>
         </section>
     </main>

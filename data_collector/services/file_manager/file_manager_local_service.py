@@ -1,5 +1,10 @@
+import shutil
+from pathlib import Path
+from tempfile import SpooledTemporaryFile
+
+from fastapi import UploadFile
 from repositories.file_manager_local_repository import FileManagerLocalRepository
-from util.path import PathBuilder
+from util.path import PathBuilder, is_path_valid
 from services.file_manager.file_manager_service_abstract import FileManagerServiceAbstract
 from typing import Dict, List
 
@@ -8,6 +13,8 @@ class FileManagerLocalService(FileManagerServiceAbstract):
 
     def __init__(self, file_manager: FileManagerLocalRepository) -> None:
         self.__file_manager = file_manager
+        self.upload_root = Path("/tmp/uploads").resolve()
+        self.upload_root.mkdir(parents=True, exist_ok=True)
 
     def save_complexity(self, repository_name, tree_json) -> None:
         pb = PathBuilder(repository_name)
@@ -26,3 +33,61 @@ class FileManagerLocalService(FileManagerServiceAbstract):
             repo_name = file_name.replace('_complexity.json', '')
             repo_name_list.append(repo_name)
         return repo_name_list
+
+    async def stage_batch(self, repository_name: str, files: List[UploadFile]) -> None:
+        """
+        Save this batch under:
+          {top}/tmp/{project}/{client_relative_path}
+        No filtering. Path-safe.
+        """
+        base = self.upload_root / repository_name
+        base.mkdir(parents=True, exist_ok=True)
+
+        for uf in files:
+            # Normalize and make path-safe (no absolute / traversal)
+            rel = uf.filename.lstrip("/").replace("\\", "/")
+            target = (base / rel).resolve()
+            if not str(target).startswith(str(base.resolve())):
+                # skip any path that would escape the base dir
+                continue
+
+            target.parent.mkdir(parents=True, exist_ok=True)
+
+            # Stream write to disk
+            with target.open("wb") as out:
+                while True:
+                    chunk = await uf.read(1024 * 1024)
+                    if not chunk:
+                        break
+                    out.write(chunk)
+            await uf.close()
+
+    async def get_staged_uploadfiles(self, repository_name: str) -> List[UploadFile]:
+        """
+        Load all staged files back as UploadFile objects.
+        """
+        base = self.upload_root / repository_name
+        if not base.exists():
+            return []
+
+        result: List[UploadFile] = []
+        for path in base.rglob("*"):
+            if not path.is_file():
+                continue
+            # Use a spooled temp file so we don't load everything into RAM
+            spooled = SpooledTemporaryFile(max_size=10 * 1024 * 1024, mode="w+b")
+            with path.open("rb") as src:
+                shutil.copyfileobj(src, spooled)
+            spooled.seek(0)
+
+            rel_name = str(path.relative_to(base)).replace("\\", "/")
+            result.append(UploadFile(file=spooled, filename=rel_name))
+
+        return result
+
+    def clear_staging(self, repository_name: str) -> None:
+        """Remove the temp area after finalize (or on failure cleanup)."""
+        base = self.upload_root / repository_name
+        if base.exists():
+            shutil.rmtree(base, ignore_errors=True)
+

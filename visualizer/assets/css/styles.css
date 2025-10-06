@@ -46,12 +46,9 @@ h6 {
   }
 }
 
-.code-city-legend {
-  position: absolute;
-  top: 0;
-  left: 0; }
-  .code-city-legend p {
-    margin: 0; }
+.code-city-legend p {
+  margin: 0;
+}
 
 .node {
   position: absolute; }

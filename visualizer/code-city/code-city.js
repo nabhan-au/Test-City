@@ -1,7 +1,8 @@
 import * as three from 'three';
+import * as progressive from './progressive-brick-layout'
 import $ from 'jquery';
 
-var houseMargin = 0.005; //min margin in percent
+var houseMargin = 0.001; //min margin in percent
 
 function generateTreemap(d3, data, params) {
   var layout = d3.layout.treemap()
@@ -16,10 +17,20 @@ function generateTreemap(d3, data, params) {
   });
 }
 
-function codeCity(d3, element, rawData, params) {
+function codeCity(d3, element, rawData, params, margin, isProgressiveLayout = true) {
+  // TODO: remove with actual data
+  let cubeIdSeq = 1;
   var canvas = d3.select(element);
 
-  var data = generateTreemap(d3, rawData, params);
+  var data, normalized_block_size = null
+  let currentMargin = margin;
+  
+  if (isProgressiveLayout) {
+    [data, normalized_block_size] = progressive.calculate_area(rawData, currentMargin)
+  } else {
+    normalized_block_size = 0.05
+    data = generateTreemap(d3, rawData, params);
+  }
 
   var width = canvas.node().offsetWidth;
   var height = width;
@@ -79,26 +90,62 @@ void main() { \
   var cameraZ = -1.4;
   var cameraPitch = 0.0;
   var cameraAngle = 0.0;
-  var maximumHeight;
-  var minimumHeight;
+  var maximumHeight = 250;
+  var minimumHeight = 0.005;
+
+  // --- FOV zoom helpers ---
+  const fovLimits = { min: 15, max: 85 };  // tighter min = more zoom-in
+  camera.fov = 45;                          // starting FOV
+  camera.updateProjectionMatrix();
+
+  function clampFov(v) {
+    return Math.max(fovLimits.min, Math.min(fovLimits.max, v));
+  }
+
+  function setFov(fov) {
+    camera.fov = clampFov(fov);
+    camera.updateProjectionMatrix();
+    render();
+  }
+
+  function getFov() {
+    return camera.fov;
+  }
+
+  // Optional: normalized zoom (0..1) -> FOV in [min,max]
+  function setZoom(normalized) {
+    const t = Math.max(0, Math.min(1, normalized));
+    const fov = fovLimits.min + (fovLimits.max - fovLimits.min) * (1 - t);
+    setFov(fov);
+  }
+
+  const zoomStep = 1.1; // multiplier per click
+
+  const onZoomIn = () => {
+    setFov(camera.fov / zoomStep); // smaller FOV = zoom in
+  };
+
+  const onZoomOut = () => {
+    setFov(camera.fov * zoomStep); // bigger FOV = zoom out
+  };
 
   function isFile(path) {
     return typeof path === "string" && /\.\w+$/.test(path) || false;
   }
 
-  function addHouse(d) {
+  function addHouse(d, normalized_block_size = 0.05) {
     let is_building = isFile(d.key);
-    let is_mutant = d.data?.mutations?.coverage > 0 && d.data?.mutations?.total_mutation > 0;
-    let is_leaf_mutant = is_mutant && (d.children?.length ?? 0) < 1;
 
-    var unitHeight = 5 / 1000;
+    var unitHeight = 3 / 1000;
     var w = 1000;
     var h = 1000;
     var gw = Math.max(0, (d.dx - 2 * houseMargin) * w) / 500;
     var gh = Math.max(0, (d.dy - 2 * houseMargin) * h) / 500;
     var baseHeight = Math.sqrt((d.height - minimumHeight) / (maximumHeight - minimumHeight));
-    var gd = unitHeight * (d.children ? 0.05 : baseHeight) * 130.0;
-
+    if (isNaN(baseHeight) || !isFinite(baseHeight)) {
+      baseHeight = 0;
+    }
+    var gd = unitHeight * (d.children?.length ? 0.05 : baseHeight) * 130.0;
     var gx = ((d.x + d.dx / 2) * w) / 500 - 1;
     var gy = 1 - ((d.y + d.dy / 2) * h) / 500;
     var gz = d.depth * unitHeight + gd / 2;
@@ -128,55 +175,20 @@ void main() { \
     objToAdd.add(cube);
 
     if (is_building) {
-      ['front', 'back'].forEach(face => {
-        createWindowsOnBuilding(cube, gw, gh, gd, face);
-      });
-    }
-
-    if (is_leaf_mutant) {
-      const fireCount = Math.ceil(5 * Math.min(1, d.data.mutations.coverage)); // 0–5 fires
-      const textureLoader = new three.TextureLoader();
-      const fireTexture = textureLoader.load('fire.png');
-
-      const faces = ['front', 'back', 'left', 'right'];
-
-      for (let i = 0; i < fireCount; i++) {
-        const face = faces[i % faces.length]; // distribute fires across sides
-
-        const spriteMaterial = new three.SpriteMaterial({
-          map: fireTexture,
-          transparent: true,
-          depthWrite: false,
-        });
-
-        const sprite = new three.Sprite(spriteMaterial);
-        sprite.scale.set(0.1, 0.1, 1);
-
-        const verticalOffset = (Math.random() - 0.5) * gd * 0.8;
-        const horizontalOffset = (Math.random() - 0.5);
-
-        let pos = new three.Vector3();
-
-        switch (face) {
-          case 'front':
-            pos.set(horizontalOffset * gw * 0.8, gh / 2 + 0.011, verticalOffset);
-            break;
-          case 'back':
-            pos.set(horizontalOffset * gw * 0.8, -gh / 2 - 0.011, verticalOffset);
-            break;
-          case 'left':
-            pos.set(-gw / 2 - 0.011, verticalOffset, horizontalOffset * gd * 0.8);
-            break;
-          case 'right':
-            pos.set(gw / 2 + 0.011, verticalOffset, horizontalOffset * gd * 0.8);
-            break;
+        const totalMut = (d?.data?.mutations?.total_mutation || 0);
+        const killed = (d?.data?.mutations?.killed || 0);
+        const noCoverage = (d?.data?.mutations?.no_coverage || 0)
+        const survivors = Math.max(0, totalMut - killed - noCoverage);
+        if (totalMut > 0) {
+          createMutantStacksOnRoofRingCubes(cube, gw, gh, gd, killed, survivors, noCoverage, d, {
+            cubeW: normalized_block_size,
+            cubeD: normalized_block_size,
+            gapXY: normalized_block_size*0.25,
+            unitH: normalized_block_size,
+            margin: -0.005
+          });
         }
-
-        sprite.position.copy(pos);
-        sprite.userData.isMutantFire = true;
-        sprite.d = d;
-        cube.add(sprite);
-      }
+      // }
     }
 
     if (!rootHouse) {
@@ -185,63 +197,125 @@ void main() { \
     }
   }
 
-  function createWindowsOnBuilding(building, width, height, depth, face = 'front') {
-    const windowSize = 0.05;
-    const margin = 0.02; // spacing from edges
-    const spacingX = 0.07;
-    const spacingY = 0.07;
+  function createMutantStacksOnRoofRingCubes(building, gw, gh, gd, killed, survivors, noCoverage, d, opts = {}) {
+    const margin = opts.margin ?? 0.02;
+    const cubeW = opts.cubeW ?? 0.06;  // cube width (X direction)
+    const cubeD = opts.cubeD ?? 0.06;  // cube depth (Y direction)
+    const gapXY = opts.gapXY ?? 0.012;
+    const gapZ = opts.gapZ ?? 0.005;
+    const unitH = opts.unitH ?? 0.03;
+    const roofLift = 0.006;
 
-    const windowColors = [0x222222, 0xffffcc, 0xfff2a0];
+    const spacingX = cubeW + (opts.gapXY);
+    const spacingY = cubeD + (opts.gapXY);
+    const cols = Math.max(0, Math.floor((gw - margin * 2) / spacingX));
+    const rows = Math.max(0, Math.floor((gh - margin * 2) / spacingY))
 
-    // Compute how many columns and rows fit
-    const availableWidth = face === 'front' || face === 'back' ? width : depth;
-    const availableHeight = depth;
+    if (cols <= 0 || rows <= 0) return;
 
-    const maxCols = Math.floor((availableWidth - margin * 2) / spacingX);
-    const maxRows = Math.floor((availableHeight - margin * 2) / spacingY);
+    // perimeter cells only
+    const cells = [];
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const onRing = (r === 0 || r === rows - 1 || c === 0 || c === cols - 1);
+        if (onRing) cells.push([r, c]);
+      }
+    }
+    const capacity = cells.length;
+    if (capacity === 0) return;
 
-    if (maxCols < 1 || maxRows < 1) return;
+    // distribution across perimeter cells
+    const distribute = (N) => {
+      const arr = new Array(capacity).fill(0);
+      for (let i = 0; i < Math.max(0, N); i++) arr[i % capacity] += 1;
+      return arr;
+    };
 
-    for (let i = 0; i < maxRows; i++) {
-      for (let j = 0; j < maxCols; j++) {
-        const windowGeometry = new three.PlaneGeometry(windowSize, windowSize);
-        const windowMaterial = new three.MeshBasicMaterial({
-          color: windowColors[Math.floor(Math.random() * windowColors.length)],
-          transparent: true,
-          opacity: 0.6,
-          depthWrite: false,
-        });
+    const killedPerCell = distribute(killed);
+    const survivorsPerCell = distribute(survivors);
+    const noCoveragePerCell = distribute(noCoverage);
 
-        const windowMesh = new three.Mesh(windowGeometry, windowMaterial);
+    // cube size with horizontal/vertical gaps
+    const blockX = Math.max(0.01, spacingX - gapXY);
+    const blockY = Math.max(0.01, spacingY - gapXY);
+    const blockZ = Math.max(0.01, unitH);
 
-        const offsetX = -((maxCols - 1) * spacingX) / 2 + j * spacingX;
-        const offsetY = -((maxRows - 1) * spacingY) / 2 + i * spacingY;
+    const whiteMat = new three.MeshPhongMaterial({ color: 0xffffff });
+    const redMat = new three.MeshPhongMaterial({ color: 0xcc2b2b });
+    const greyMat = new three.MeshPhongMaterial({ color: 0x888888  });
+    const killedMutation = []
+    const survivedMutation = []
+    const noCoverageMutation = []
 
-        let pos = new three.Vector3();
-        let rot = new three.Euler();
+    const mutationCases = d.data.mutations.details.details
+    for (let i = 0; i < mutationCases.length; i++) {
+      const mutation = mutationCases[i]
+      switch (mutation.status) {
+        case "NO_COVERAGE":
+          noCoverageMutation.push(mutation)
+          break
+        case "RUN_ERROR":
+          survivedMutation.push(mutation)
+        case "KILLED":
+          killedMutation.push(mutation)
+          break
+        case "TIMED_OUT":
+          killedMutation.push(mutation)
+          break
+        case "SURVIVED":
+          survivedMutation.push(mutation)
+          break
+        default:
+          console.log("Mutation not fall in any case", mutation)
+      }
+    }
 
-        switch (face) {
-          case 'front':
-            pos.set(offsetX, height / 2 + 0.01, offsetY);
-            rot.set(-Math.PI / 2, 0, 0);
-            break;
-          case 'back':
-            pos.set(offsetX, -height / 2 - 0.01, offsetY);
-            rot.set(Math.PI / 2, 0, Math.PI);
-            break;
-          case 'left':
-            pos.set(-width / 2 - 0.01, offsetY, offsetX);
-            rot.set(0, Math.PI / 2, 0);
-            break;
-          case 'right':
-            pos.set(width / 2 + 0.01, offsetY, offsetX);
-            rot.set(0, -Math.PI / 2, 0);
-            break;
+    const parentD = building.d || null;
+    for (let i = 0; i < capacity; i++) {
+      const [r, c] = cells[i];
+      const k = killedPerCell[i];
+      const s = survivorsPerCell[i];
+      const n = noCoveragePerCell[i]
+      const total = k + s + n;
+      if (!total) continue;
+
+      const cellCenterX = -((cols - 1) * spacingX) / 2 + c * spacingX;
+      const cellCenterY = -((rows - 1) * spacingY) / 2 + r * spacingY;
+
+      for (let h = 0; h < total; h++) {
+        let mat = null;
+        let currentMutation = null
+
+        if (h >= k && h < k + s) {
+          // Case when mutation is survived
+          mat = redMat
+          currentMutation = survivedMutation.shift()
+        } else if (h >= k + s) {
+          // Case when mutation is no coverage
+          mat = whiteMat
+          currentMutation = noCoverageMutation.shift()
+        } else {
+          // Case when mutation is killed
+          mat = greyMat;
+          currentMutation = killedMutation.shift()
         }
 
-        windowMesh.position.copy(pos);
-        windowMesh.rotation.copy(rot);
-        building.add(windowMesh);
+        const geom = new three.BoxGeometry(cubeW, cubeD, blockZ);
+        const mesh = new three.Mesh(geom, mat);
+
+        const z = gd / 2 + roofLift + (blockZ + gapZ) * h + blockZ / 2;
+        mesh.position.set(cellCenterX, cellCenterY, z);
+
+        mesh.userData.isMutantStack = true;
+        mesh.userData.kind = currentMutation.status;
+        mesh.userData.parentPath = parentD?.path || parentD?.key || '';
+        mesh.userData.parentTitle = parentD?.title || '';
+        mesh.userData.description = currentMutation.description
+        mesh.userData.methodName = currentMutation.method_name
+        mesh.userData.methodLine = currentMutation.line_number
+        mesh.userData.tests = currentMutation.tests
+
+        building.add(mesh);
       }
     }
   }
@@ -272,33 +346,56 @@ void main() { \
       const rawHit = intersects[0].object;
 
       let hitMesh = null;
-      if (rawHit.material.uniforms?.glow !== undefined) {
+      if (rawHit.userData?.isMutantStack) {
         hitMesh = rawHit;
-      } else if (
-        rawHit.parent?.material?.uniforms?.glow !== undefined
-      ) {
+      } else if (rawHit.material?.uniforms?.glow !== undefined) {
+        hitMesh = rawHit;
+      } else if (rawHit.parent?.material?.uniforms?.glow !== undefined) {
         hitMesh = rawHit.parent;
       }
 
       if (hitMesh) {
         if (intersected && intersected !== hitMesh) {
-          intersected.material.uniforms.glow.value = 1.0;
-          intersected.material.needsUpdate = true;
+          if (intersected.material?.uniforms?.glow) {
+            intersected.material.uniforms.glow.value = 1.0;
+            intersected.material.needsUpdate = true;
+          } else if (intersected.userData?.isMutantStack) {
+            intersected.scale.set(1, 1, 1);
+          }
         }
 
         intersected = hitMesh;
-        intersected.material.uniforms.glow.value = 1.4;
-        intersected.material.needsUpdate = true;
 
-        selectedD = hitMesh.d;
-        params.legend?.onMouseover(selectedD, event);
+        if (hitMesh.material?.uniforms?.glow) {
+          intersected.material.uniforms.glow.value = 1.4;
+          intersected.material.needsUpdate = true;
+          selectedD = hitMesh.d;
+        } else if (hitMesh.userData?.isMutantStack) {
+          intersected.scale.set(1.15, 1.15, 1.15);
+          selectedD = {
+            isMutant: true,
+            cubeId: hitMesh.userData.cubeId,
+            methodName: hitMesh.userData.methodName,
+            methodLine: hitMesh.userData.methodLine,
+            description: hitMesh.userData.description,
+            kind: hitMesh.userData.kind,
+            parentPath: hitMesh.userData.parentPath,
+            parentTitle: hitMesh.userData.parentTitle,
+            tests: hitMesh.userData.tests
+          };
+        }
+
+        // params.legend?.onMouseover(selectedD, event);
         render();
       }
-    }
-    else if (intersected) {
-      intersected.material.uniforms.glow.value = 1.0;
-      intersected.material.needsUpdate = true;
-      params.legend?.onMouseout(selectedD, event);
+    } else if (intersected) {
+      if (intersected.material?.uniforms?.glow) {
+        intersected.material.uniforms.glow.value = 1.0;
+        intersected.material.needsUpdate = true;
+      } else if (intersected.userData?.isMutantStack) {
+        intersected.scale.set(1, 1, 1);
+      }
+      // params.legend?.onMouseout(selectedD, event);
       intersected = null;
       selectedD = undefined;
       render();
@@ -340,7 +437,7 @@ void main() { \
   var canvasDiv = $('#code-city-canvas');
   canvasDiv.on('mouseleave', function () {
     if (params.legend && selectedD) {
-      params.legend.onMouseout(selectedD);
+      // params.legend.onMouseout(selectedD);
       selectedD = undefined;
     }
   });
@@ -354,9 +451,20 @@ void main() { \
       minimumHeight = d.height;
   }
 
-  data.forEach(findExtremes);
-
-  data.forEach(addHouse);
+  function buildHouses() {
+    data.forEach(findExtremes);
+    data.forEach((d, idx) => {
+      // (hotfix)
+      if (idx === 0) {
+        const deepCopy = JSON.parse(JSON.stringify(d));
+        deepCopy.x = 0.5; deepCopy.y = 0.5;
+        deepCopy.dx = 0.0000000001; deepCopy.dy = 0.0000000001;
+        addHouse(deepCopy, normalized_block_size);
+      }
+      addHouse(d, normalized_block_size);
+    });
+  }
+  buildHouses();
 
   render();
   animate();
@@ -439,15 +547,6 @@ void main() { \
     render();
   }
 
-  // function toggleSpheres(show) {
-  //   scene.traverse(obj => {
-  //     if (obj.userData?.isMutantSphere) {
-  //       obj.visible = show;
-  //     }
-  //   });
-  //   render();
-  // }
-
   function toggleSpheres(show) {
     scene.traverse(obj => {
       if (obj.userData?.isMutantFire) {
@@ -457,8 +556,138 @@ void main() { \
     render();
   }
 
+  function toggleRedWindow(show) {
+    scene.traverse(obj => {
+      if (obj.userData?.isWindowMutantFire) {
+        if (show) {
+          const fire_percentage = obj.userData.firePercentage
+          if (fire_percentage < 33) {
+            obj.material.color.set(0xFFEC02)
+          } else if (fire_percentage < 66) {
+            obj.material.color.set(0xFF7102)
+          } else {
+            obj.material.color.set(0xF30101)
+          }
+          obj.transparent = false
+
+        } else {
+          obj.material.color.set(0xffffcc)
+        }
+      }
+      else {
+        // console.log("Not show")
+      }
+    });
+    render();
+  }
+
+  function toggleMutants(show) {
+    scene.traverse(obj => {
+      // Roof cubes
+      if (obj.userData?.isMutantStack) {
+        obj.visible = show;
+      }
+      // Fire sprites
+      if (obj.userData?.isMutantFire) {
+        obj.visible = show;
+      }
+      // Windows tint
+      if (obj.userData?.isWindowMutantFire) {
+        if (show) {
+          const p = obj.userData.firePercentage ?? 0;
+          if (p < 33) obj.material.color.set(0xFFEC02);
+          else if (p < 66) obj.material.color.set(0xFF7102);
+          else obj.material.color.set(0xF30101);
+          obj.transparent = false;
+        } else {
+          obj.material.color.set(0xffffcc);
+          obj.transparent = true;
+        }
+      }
+    });
+    render();
+  }
   window.addEventListener('resize', resizeCanvas);
   resizeCanvas();
+
+  function addLights() {
+    const directionalLight = new three.DirectionalLight(0xFFFFFF, 1.0);
+    directionalLight.position.set(-5, -10, 15);
+    directionalLight.castShadow = true;
+    directionalLight.shadowCameraNear = 0.01;
+    directionalLight.shadowCameraFar = 20;
+    directionalLight.shadowCameraRight = 1.5;
+    directionalLight.shadowCameraLeft = -1.5;
+    directionalLight.shadowCameraTop = 1.5;
+    directionalLight.shadowCameraBottom = -1.5;
+    directionalLight.shadowDarkness = 0.5;
+    scene.add(directionalLight);
+
+    const ambientLight = new three.AmbientLight(0x313131);
+    scene.add(ambientLight);
+  }
+
+  function clearScene() {
+    // dispose geometries/materials
+    scene.traverse(obj => {
+      if (obj.isMesh) {
+        obj.geometry?.dispose?.();
+        // ShaderMaterial / MeshPhongMaterial etc.
+        if (obj.material) {
+          if (Array.isArray(obj.material)) obj.material.forEach(m => m.dispose?.());
+          else obj.material.dispose?.();
+        }
+      }
+    });
+    // remove children
+    while (scene.children.length) scene.remove(scene.children[0]);
+  }
+
+  function setMargin(newMargin) {
+    currentMargin = newMargin;
+
+    // recompute layout
+    if (isProgressiveLayout) {
+      [data, normalized_block_size] = progressive.calculate_area(rawData, currentMargin);
+    } else {
+      normalized_block_size = 0.05;
+      data = generateTreemap(d3, rawData, params);
+    }
+
+    // reset per-build state
+    maximumHeight = 250;
+    minimumHeight = 0.005;
+    rootHouse = null;
+
+    clearScene();
+    addLights();
+    buildHouses();
+
+    setCameraRotation(cameraAngle);
+    render();
+  }
+
+  function setRawData(newRawData) {
+    rawData = newRawData;
+
+    if (isProgressiveLayout) {
+      [data, normalized_block_size] = progressive.calculate_area(rawData, currentMargin);
+    } else {
+      normalized_block_size = 0.05;
+      data = generateTreemap(d3, rawData, params);
+    }
+
+    maximumHeight = 250;
+    minimumHeight = 0.005;
+    rootHouse = null;
+
+    clearScene();
+    addLights();
+    buildHouses();
+
+    setCameraRotation(cameraAngle);
+    render();
+  }
 
   return {
     getCameraRotation: getCameraRotation,
@@ -468,6 +697,12 @@ void main() { \
     getCameraPitch: getCameraPitch,
     setCameraPitch: setCameraPitch,
     toggleSpheres: toggleSpheres,
+    toggleRedWindow: toggleRedWindow,
+    toggleMutants: toggleMutants,
+    onZoomIn: onZoomIn,
+    onZoomOut: onZoomOut,
+    setMargin: setMargin,
+    setRawData: setRawData
   };
 }
 

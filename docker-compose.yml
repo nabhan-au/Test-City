@@ -11,8 +11,8 @@ services:
     ports:
       - '9000:9000'
       - '9001:9001'
-    volumes:
-      - /tmp/minio:/data
+    # volumes:
+    #   - /tmp/minio:/data
     restart: unless-stopped
 
   createbuckets:
@@ -44,6 +44,8 @@ services:
     build:
       context: block-extractor/
       dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
 
   frontend:
     build:
