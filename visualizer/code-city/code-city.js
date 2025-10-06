@@ -180,7 +180,7 @@ void main() { \
         const noCoverage = (d?.data?.mutations?.no_coverage || 0)
         const survivors = Math.max(0, totalMut - killed - noCoverage);
         if (totalMut > 0) {
-          createMutantStacksOnRoofRingCubes(cube, gw, gh, gd, killed, survivors, noCoverage, {
+          createMutantStacksOnRoofRingCubes(cube, gw, gh, gd, killed, survivors, noCoverage, d, {
             cubeW: normalized_block_size,
             cubeD: normalized_block_size,
             gapXY: normalized_block_size*0.25,
@@ -197,7 +197,7 @@ void main() { \
     }
   }
 
-  function createMutantStacksOnRoofRingCubes(building, gw, gh, gd, killed, survivors, noCoverage, opts = {}) {
+  function createMutantStacksOnRoofRingCubes(building, gw, gh, gd, killed, survivors, noCoverage, d, opts = {}) {
     const margin = opts.margin ?? 0.02;
     const cubeW = opts.cubeW ?? 0.06;  // cube width (X direction)
     const cubeD = opts.cubeD ?? 0.06;  // cube depth (Y direction)
@@ -243,6 +243,32 @@ void main() { \
     const whiteMat = new three.MeshPhongMaterial({ color: 0xffffff });
     const redMat = new three.MeshPhongMaterial({ color: 0xcc2b2b });
     const greyMat = new three.MeshPhongMaterial({ color: 0x888888  });
+    const killedMutation = []
+    const survivedMutation = []
+    const noCoverageMutation = []
+
+    const mutationCases = d.data.mutations.details.details
+    for (let i = 0; i < mutationCases.length; i++) {
+      const mutation = mutationCases[i]
+      switch (mutation.status) {
+        case "NO_COVERAGE":
+          noCoverageMutation.push(mutation)
+          break
+        case "RUN_ERROR":
+          survivedMutation.push(mutation)
+        case "KILLED":
+          killedMutation.push(mutation)
+          break
+        case "TIMED_OUT":
+          killedMutation.push(mutation)
+          break
+        case "SURVIVED":
+          survivedMutation.push(mutation)
+          break
+        default:
+          console.log("Mutation not fall in any case", mutation)
+      }
+    }
 
     const parentD = building.d || null;
     for (let i = 0; i < capacity; i++) {
@@ -257,12 +283,23 @@ void main() { \
       const cellCenterY = -((rows - 1) * spacingY) / 2 + r * spacingY;
 
       for (let h = 0; h < total; h++) {
-        let mat = whiteMat;
+        let mat = null;
+        let currentMutation = null
+
         if (h >= k && h < k + s) {
+          // Case when mutation is survived
           mat = redMat
+          currentMutation = survivedMutation.shift()
         } else if (h >= k + s) {
-          mat = greyMat
+          // Case when mutation is no coverage
+          mat = whiteMat
+          currentMutation = noCoverageMutation.shift()
+        } else {
+          // Case when mutation is killed
+          mat = greyMat;
+          currentMutation = killedMutation.shift()
         }
+
         const geom = new three.BoxGeometry(cubeW, cubeD, blockZ);
         const mesh = new three.Mesh(geom, mat);
 
@@ -270,10 +307,13 @@ void main() { \
         mesh.position.set(cellCenterX, cellCenterY, z);
 
         mesh.userData.isMutantStack = true;
-        mesh.userData.cubeId = `mut-${cubeIdSeq++}`;
-        mesh.userData.kind = (h >= k ? 'survivor' : 'killed');
+        mesh.userData.kind = currentMutation.status;
         mesh.userData.parentPath = parentD?.path || parentD?.key || '';
         mesh.userData.parentTitle = parentD?.title || '';
+        mesh.userData.description = currentMutation.description
+        mesh.userData.methodName = currentMutation.method_name
+        mesh.userData.methodLine = currentMutation.line_number
+        mesh.userData.tests = currentMutation.tests
 
         building.add(mesh);
       }
@@ -333,10 +373,15 @@ void main() { \
         } else if (hitMesh.userData?.isMutantStack) {
           intersected.scale.set(1.15, 1.15, 1.15);
           selectedD = {
+            isMutant: true,
             cubeId: hitMesh.userData.cubeId,
+            methodName: hitMesh.userData.methodName,
+            methodLine: hitMesh.userData.methodLine,
+            description: hitMesh.userData.description,
             kind: hitMesh.userData.kind,
             parentPath: hitMesh.userData.parentPath,
             parentTitle: hitMesh.userData.parentTitle,
+            tests: hitMesh.userData.tests
           };
         }
 
