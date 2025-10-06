@@ -246,7 +246,7 @@ void main() { \
     const killedMutation = []
     const survivedMutation = []
     const noCoverageMutation = []
-    
+
     const mutationCases = d.data.mutations.details.details
     for (let i = 0; i < mutationCases.length; i++) {
       const mutation = mutationCases[i]
@@ -292,11 +292,11 @@ void main() { \
           currentMutation = survivedMutation.shift()
         } else if (h >= k + s) {
           // Case when mutation is no coverage
-          mat = greyMat
+          mat = whiteMat
           currentMutation = noCoverageMutation.shift()
         } else {
           // Case when mutation is killed
-          mat = whiteMat;
+          mat = greyMat;
           currentMutation = killedMutation.shift()
         }
 

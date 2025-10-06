@@ -17,7 +17,7 @@ class TraceExtractorRepository:
         self,
         project_name: str,
         files: List[UploadFile],
-        chunk_size: int = 200,   # adjustable — how many files per request
+        chunk_size: int = 900,   # adjustable — how many files per request
     ):
         """
         Upload files in chunks to the block extractor server using the new API.

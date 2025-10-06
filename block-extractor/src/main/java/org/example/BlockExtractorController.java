@@ -38,14 +38,26 @@ public class BlockExtractorController {
                 deleteDirectoryRecursively(sessionDir);
                 logger.info("Cleared previous upload folder for project={} uploadId={}", projectName, uploadId);
             }
-
-            sessionDir.mkdirs();
+            if (isFirst) {
+                sessionDir.mkdirs();
+            }
+            long totalFiles = Files.walk(sessionDir.toPath())
+                    .filter(Files::isRegularFile)
+                    .count();
+            logger.info("Total files available for processing: {}", totalFiles);
+            logger.info("Saving file to dest={} for project={} uploadId={}", sessionDir.getAbsolutePath(), projectName, uploadId);
 
             // Save chunk files
             for (MultipartFile file : files) {
                 File dest = new File(sessionDir, file.getOriginalFilename());
-                dest.getParentFile().mkdirs();
-                file.transferTo(dest);
+                File parentDir = dest.getParentFile();
+                if (!parentDir.exists()) {
+                    parentDir.mkdirs();
+                }
+
+                try (var inputStream = file.getInputStream()) {
+                    Files.copy(inputStream, dest.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+                }
             }
 
             // ✅ Process automatically if last chunk
