@@ -183,12 +183,12 @@ class DataExtractor:
                 mutation_dict = {
                     "sub_class_name": sub_class_name,
                     "status": row["@status"],
-                    "number_of_tests": row["@numberOfTestsRun"],
+                    "number_of_tests": row["@numberOfTestsRun"] if "@numberOfTestsRun" in row else 0,
                     "method_name": row["mutatedMethod"],
                     "method_desc": row["methodDescription"],
                     "line_number": row["lineNumber"],
                     "mutator": row["mutator"],
-                    "blocks": row["blocks"],
+                    "blocks": row["blocks"] if "blocks" in row else row["block"],
                     "description": row["description"],
                     "killingTest": row["killingTest"],
                 }

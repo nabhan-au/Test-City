@@ -217,7 +217,6 @@ class CoverageProcessor:
             block_coverage = await self.data_extractor_service.get_block_coverage(files)
             mutation_coverage_data = await self.data_extractor_service.get_mutation_block_data(files)
 
-
             for k, v in block_data.items():
                 if k not in block_coverage:
                     logging.info(f"Class {k} does not contain any line coverage data.")
