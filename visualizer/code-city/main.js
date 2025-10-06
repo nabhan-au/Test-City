@@ -8,16 +8,16 @@ import * as dataHelpers from '../data/helpers.js';
 const d3 = window.d3;
 
 var params = (new URL(document.location)).searchParams;
-let globalMargin = 0.5;
+let globalMargin = 0.2;
 let isDragging = false;
 var codeCityChart;
-var rawData;
 // 'go-jsonnet'
 
 
 async function fetchData() {
     try {
         var data = await dataLoaders.fetchProjectData(params.get('project'));
+        console.log(data)
         return data;
     } catch (error) {
         return null;
@@ -47,24 +47,23 @@ var viewModeSelect = $('#view-mode');
 const chartBox = $('#code-city-chart');
 
 var nodeColorScale = [
-    // '#ffffcc', // very low — pale yellow
-    '#ffeda0',
-    '#fed976',
-    '#feb24c',
-    '#fd8d3c',
-    '#fc4e2a',
-    '#e31a1c', // mid — warm balance
-    '#bd0026',
-    '#800026',
-    '#6baed6',
-    '#5392c0',
-    // '#4292c6',
-    // '#2171b5',
-    // '#08519c',
-    // '#08306b', // high — deep blue
+  '#ffd700', // golden yellow
+  '#ffdb33',
+  '#ffdf66',
+  '#ffe399',
+  '#ffe6b3',
+  '#ffeccc',
+  '#b3e5ff',
+  '#99dbff',
+  '#80d1ff',
+  '#66c7ff',
+  '#4dbdff',
+  '#3399ff',
+  '#1a75ff'  // deeper sky blue
 ]
 
 let gridValue;
+let rawData
 
 function legendTitle(d, e) {
     return d.path;
@@ -81,7 +80,7 @@ function legendContent(d, e) {
           <tbody>
             <tr class="bg-gray-50">
               <td class="py-1">Lines coverage (%)</td>
-              <td class="py-1 text-right">${lines.coverage}</td>
+              <td class="py-1 text-right">${lines.coverage.toFixed(2)}</td>
             </tr>
             <tr>
               <td class="py-1">Lines covered</td>
@@ -89,7 +88,7 @@ function legendContent(d, e) {
             </tr>
             <tr class="bg-gray-50">
               <td class="py-1">Mutations coverage (%)</td>
-              <td class="py-1 text-right">${mutations.coverage}</td>
+              <td class="py-1 text-right">${mutations.coverage.toFixed(2)}</td>
             </tr>
             <tr>
               <td class="py-1">Mutations killed</td>
@@ -97,7 +96,7 @@ function legendContent(d, e) {
             </tr>
             <tr>
               <td class="py-1">Average trace</td>
-              <td class="py-1 text-right">${traces.average}</td>
+              <td class="py-1 text-right">${traces.average.toFixed(2)}</td>
             </tr>
           </tbody>
         </table>
@@ -108,11 +107,11 @@ function legendContent(d, e) {
 function nodeHeight(d) {
     if (heightMode === 'trace') {
         const v = d?.data?.traces?.average;
-        return (typeof v === 'number' && isFinite(v)) ? v : 0;
+        return (typeof v === 'number' && isFinite(v) && v > 1) ? v : 1;
     }
     // default: LOC total lines
     const tl = d?.data?.lines?.total_line;
-    return (typeof tl === 'number' && isFinite(tl)) ? tl : 0;
+    return (typeof tl === 'number' && isFinite(tl) && tl > 1) ? tl : 1;
 }
 
 function nodeColor(d) {
@@ -141,7 +140,9 @@ var mapperParams = {
         area: nodeArea,
         colorValue: nodeColor,
         title: function (d) { return d.key.split('/').slice(-1)[0]; },
-        path: function (d) { return d.key || '(all files)'; }
+        path: function (d) {
+            return d.key || '(all files)'; 
+        }
     },
     split: function (key) {
         var components = key.split('/');
@@ -153,23 +154,24 @@ var mapperParams = {
 };
 
 function setGridValue(d) {
-    let maxTrace = 0;
-    for (const [key, value] of Object.entries(d)) {
-        const [filePath, data] = Object.entries(value)[0];
-
-        if (data[metric].total_line) {
-            maxTrace = Math.max(data[metric].total_line, maxTrace);
+    let maxValue = 0;
+    for (const [key, module] of Object.entries(d)) {
+        for (const [filePath, value] of Object.entries(module)) {
+            const averageTrace = value["average_block_trace"]
+            const loc = value["total_executable_lines"]
+            maxValue = Math.max(averageTrace, loc, maxValue);
         }
+       
     }
-    if (maxTrace > 1000000)
+    if (maxValue > 1000000)
         gridValue = 10000;
-    else if (maxTrace > 100000)
+    else if (maxValue > 100000)
         gridValue = 1000;
-    else if (maxTrace > 10000)
+    else if (maxValue > 10000)
         gridValue = 100;
-    else if (maxTrace > 1000)
+    else if (maxValue > 1000)
         gridValue = 10;
-    else if (maxTrace > 100)
+    else if (maxValue > 100)
         gridValue = 1;
     else
         gridValue = 0.1;
@@ -177,56 +179,6 @@ function setGridValue(d) {
 
 // Call fetchData asynchronously
 fetchData().then(function (d) {
-    if (d === null) {
-        $('#project-description').text("Failed to load project data.");
-        return;
-    }
-
-    setGridValue(d);
-    var mergedData = {};
-    window.__mergedDataForHeightSwitch = mergedData;
-
-    for (const [key, value] of Object.entries(d)) {
-        const [filePath, data] = Object.entries(value)[0];
-        const filePaths = filePath.split('/');
-
-        // root ""
-        let currentPath = "";
-
-        for (let i = 0; i < filePaths.length; i++) {
-            if (i === 0 && filePaths[i] === "") {
-                // root
-                currentPath = "";
-            } else {
-                // build the path
-                currentPath += "/" + filePaths[i];
-            }
-
-            // if not found, init
-            if (!mergedData[currentPath]) {
-                mergedData[currentPath] = {
-                    lines: { coverage: 0, covered_line: 0, total_line: 0 },
-                    mutations: { coverage: 0, killed: 0, total_mutation: 0 },
-                    traces: { total_trace: 0, total_block: 0, average: 0 }
-                };
-            }
-
-            mergedData[currentPath].lines.covered_line += data.lines.covered_line;
-            mergedData[currentPath].lines.total_line += data.lines.total_line;
-            mergedData[currentPath].lines.coverage = (mergedData[currentPath].lines.covered_line / mergedData[currentPath].lines.total_line) * 100;
-
-            mergedData[currentPath].mutations.killed += data.mutations.killed;
-            mergedData[currentPath].mutations.total_mutation += data.mutations.total_mutation;
-            mergedData[currentPath].mutations.coverage = (mergedData[currentPath].mutations.killed / mergedData[currentPath].mutations.total_mutation) * 100;
-
-            mergedData[currentPath].traces.total_trace += data.traces.total_trace;
-            mergedData[currentPath].traces.total_block += data.traces.total_block;
-            mergedData[currentPath].traces.average = mergedData[currentPath].traces.total_trace / mergedData[currentPath].traces.total_block;
-        }
-    }
-    var treeData = dataHelpers.convertToTree(mergedData, mapperParams);
-    dataHelpers.colorize(d3, treeData, 'colorValue', nodeColorScale, { min: 20, max: 100 });
-
     // compute maxDepth
     function computeMaxDepth(root) {
         let maxD = 0;
@@ -265,40 +217,91 @@ fetchData().then(function (d) {
             const g = lerp(lightGray, darkGray, t);
             const hex = `#${toHexByte(g)}${toHexByte(g)}${toHexByte(g)}`;
             n.color = hex;
-            } else {
-            if (!n.color) {
-                const cov = n.data?.[metric]?.coverage ?? 0;
-                const idx = Math.round((Math.max(0, Math.min(100, cov)) / 100) * (nodeColorScale.length - 1));
-                n.color = nodeColorScale[idx];
-            }
             }
 
             if (n.children) n.children.forEach(walk);
         })(root);
     }
 
+    function splitModules(modules, selection) {
+        const selectedKeys = (!selection || selection.length === 0)
+            ? Object.keys(modules)
+            : selection;
+
+        const result = {};
+        for (const key of selectedKeys) {
+            if (modules[key]) {
+                for (const [className, value] of Object.entries(modules[key])) {
+                    result[className] = value;
+                }
+            }
+        }
+        return result;
+    }
+
+    if (d === null) {
+        $('#project-description').text("Failed to load project data.");
+        return;
+    }
+
+    setGridValue(d);
+    d = splitModules(d, [])
+    var mergedData = {};
+    window.__mergedDataForHeightSwitch = mergedData;
+
+    for (const [filePath, data] of Object.entries(d)) {
+        const filePaths = filePath.split('/');
+
+        // root ""
+        let currentPath = "";
+
+        for (let i = 0; i < filePaths.length; i++) {
+            if (i === 0 && filePaths[i] === "") {
+                // root
+                currentPath = "";
+            } else {
+                // build the path
+                currentPath += "/" + filePaths[i];
+            }
+
+            // if not found, init
+            if (!mergedData[currentPath]) {
+                mergedData[currentPath] = {
+                    lines: { coverage: 0, covered_line: 0, total_line: 0 },
+                    mutations: { coverage: 0, killed: 0, no_coverage: 0, total_mutation: 0 },
+                    traces: { total_trace: 0, total_block: 0, average: 0 }
+                };
+            }
+            const covered_line = data.line_coverage.total_executable_lines - data.line_coverage.total_missed_lines
+            mergedData[currentPath].lines.covered_line += covered_line
+            mergedData[currentPath].lines.total_line += data.line_coverage.total_executable_lines;
+            mergedData[currentPath].lines.coverage = mergedData[currentPath].lines.total_line === 0 ? 0
+                : (mergedData[currentPath].lines.covered_line / mergedData[currentPath].lines.total_line) * 100;
+
+            mergedData[currentPath].mutations.killed += data.mutation.effective_killed;
+            mergedData[currentPath].mutations.total_mutation += data.mutation.total_mutations;
+            mergedData[currentPath].mutations.coverage = 
+            mergedData[currentPath].mutations.total_mutation === 0 ? 0
+                : (mergedData[currentPath].mutations.killed / mergedData[currentPath].mutations.total_mutation) * 100;
+            mergedData[currentPath].mutations.no_coverage += data.mutation.no_coverage;
+            
+
+            mergedData[currentPath].traces.total_trace += data.total_tests;
+            mergedData[currentPath].traces.total_block += data.total_blocks;
+            mergedData[currentPath].traces.average = mergedData[currentPath].traces.total_block === 0 ? 0
+                : mergedData[currentPath].traces.total_trace / mergedData[currentPath].traces.total_block;
+
+            mergedData[currentPath].mutations.details = data.mutation
+        }
+    }
+
+    var treeData = dataHelpers.convertToTree(mergedData, mapperParams);
+    
+    dataHelpers.colorize(d3, treeData, 'colorValue', nodeColorScale, { min: 20, max: 100 });
+
     applyLeafPaletteAndPlatformGray(treeData);
 
-    // progressive.calculate_area(treeData)
-    rawData = treeData;
     codeCityChart = codeCity.codeCity(d3, $('#code-city-chart')[0], treeData, graphParams, globalMargin);
-    // try {
-        
-    // } catch (e) {
-    //     if (e instanceof TypeError)
-    //         $('#code-city-chart').html("\
-    //             <div> \
-    //             <img src=\"../assets/images/code_city_large.png\" width=\"100%\"> \
-    //             <p style=\"background:rgba(255,0,0,0.7); top:300px; position:absolute; font-size:18px;\" class=\"alert alert-danger\"> \
-    //                 It seems that your browser does not support (or has deactivated) WebGL, which is required for this graph. Please upgrade your browser or make sure that WebGL is activated. Below is a teaser of what the visualization of your project might look like. \
-    //             </p> \
-    //             </div> \
-    //             ");
-    // }
-
-    // sphereToggle.prop('checked', true);
-    // codeCityChart.toggleSpheres(true)
-    // codeCityChart.toggleMutants(true);
 
     var isRotating = false;
 
@@ -478,10 +481,10 @@ fetchData().then(function (d) {
     let totalLines = 0;
     let totalCoveredLines = 0;
 
-    for (const [_, value] of Object.entries(d)) {
-        const [__, data] = Object.entries(value)[0];
-        totalLines += data.lines.total_line || 0;
-        totalCoveredLines += data.lines.covered_line || 0;
+    for (const [_, data] of Object.entries(d)) {
+        const covered_line = data.line_coverage.total_executable_lines - data.line_coverage.total_missed_lines
+        totalLines += data.line_coverage.total_executable_lines || 0;
+        totalCoveredLines += covered_line || 0;
     }
 
     const coveragePercent = totalLines > 0 ? ((totalCoveredLines / totalLines) * 100).toFixed(2) : '0.00';

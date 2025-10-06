@@ -2,7 +2,7 @@ import * as three from 'three';
 import * as progressive from './progressive-brick-layout'
 import $ from 'jquery';
 
-var houseMargin = 0.005; //min margin in percent
+var houseMargin = 0.001; //min margin in percent
 let roofRingSides = ['north', 'east', 'south', 'west'];
 
 function generateTreemap(d3, data, params) {
@@ -137,8 +137,6 @@ void main() { \
 
   function addHouse(d, normalized_block_size = 0.05) {
     let is_building = isFile(d.key);
-    let is_mutant = d.data?.mutations?.coverage > 0 && d.data?.mutations?.total_mutation > 0;
-    let is_leaf_mutant = is_mutant && (d.children?.length ?? 0) < 1;
 
     var unitHeight = 3 / 1000;
     var w = 1000;
@@ -150,7 +148,6 @@ void main() { \
       baseHeight = 0;
     }
     var gd = unitHeight * (d.children?.length ? 0.05 : baseHeight) * 130.0;
-
     var gx = ((d.x + d.dx / 2) * w) / 500 - 1;
     var gy = 1 - ((d.y + d.dy / 2) * h) / 500;
     var gz = d.depth * unitHeight + gd / 2;
@@ -189,9 +186,10 @@ void main() { \
     if (is_building) {
       const totalMut = (d?.data?.mutations?.total_mutation || 0);
       const killed = (d?.data?.mutations?.killed || 0);
-      const survivors = Math.max(0, totalMut - killed);
+      const noCoverage = (d?.data?.mutations?.no_coverage || 0)
+      const survivors = Math.max(0, totalMut - killed - noCoverage);
       if (totalMut > 0) {
-        createMutantStacksOnRoofRingCubes(cube, gw, gh, gd, killed, survivors, {
+        createMutantStacksOnRoofRingCubes(cube, gw, gh, gd, killed, survivors, noCoverage, d, {
           cubeW: normalized_block_size,
           cubeD: normalized_block_size,
           gapXY: normalized_block_size * 0.25,
@@ -210,11 +208,7 @@ void main() { \
     }
   }
 
-  function createMutantStacksOnRoofRingCubes(
-    building, gw, gh, gd, killed, survivors,
-    opts = {},
-    sides = ['north', 'east', 'south', 'west']
-  ) {
+  function createMutantStacksOnRoofRingCubes(building, gw, gh, gd, killed, survivors, noCoverage, d, opts = {}, sides = ['north', 'east', 'south', 'west']) {
     const margin = opts.margin ?? 0.02;
     const cubeW = opts.cubeW ?? 0.06;
     const cubeD = opts.cubeD ?? 0.06;
@@ -267,12 +261,40 @@ void main() { \
       return arr;
     };
 
-    const killedPerCell = distribute(killed, ring.length);
-    const survivorsPerCell = distribute(survivors, ring.length);
+    const killedPerCell = distribute(killed, ring.lengt);
+    const survivorsPerCell = distribute(survivors, ring.lengt);
+    const noCoveragePerCell = distribute(noCoverage, ring.lengt);
 
     const blockZ = Math.max(0.01, unitH);
     const whiteMat = new three.MeshPhongMaterial({ color: 0xffffff });
     const redMat = new three.MeshPhongMaterial({ color: 0xcc2b2b });
+    const greyMat = new three.MeshPhongMaterial({ color: 0x888888  });
+    const killedMutation = []
+    const survivedMutation = []
+    const noCoverageMutation = []
+
+    const mutationCases = d.data.mutations.details.details
+    for (let i = 0; i < mutationCases.length; i++) {
+      const mutation = mutationCases[i]
+      switch (mutation.status) {
+        case "NO_COVERAGE":
+          noCoverageMutation.push(mutation)
+          break
+        case "RUN_ERROR":
+          survivedMutation.push(mutation)
+        case "KILLED":
+          killedMutation.push(mutation)
+          break
+        case "TIMED_OUT":
+          killedMutation.push(mutation)
+          break
+        case "SURVIVED":
+          survivedMutation.push(mutation)
+          break
+        default:
+          console.log("Mutation not fall in any case", mutation)
+      }
+    }
 
     const parentD = building.d || null;
 
@@ -283,14 +305,31 @@ void main() { \
       const [r, c] = ring[i];
       const k = killedPerCell[i];
       const s = survivorsPerCell[i];
-      const total = k + s;
+      const n = noCoveragePerCell[i]
+      const total = k + s + n;
       if (!total) continue;
 
       const x = cellCenterX(c);
       const y = cellCenterY(r);
 
       for (let h = 0; h < total; h++) {
-        const mat = h >= k ? redMat : whiteMat;
+        let mat = null;
+        let currentMutation = null
+
+        if (h >= k && h < k + s) {
+          // Case when mutation is survived
+          mat = redMat
+          currentMutation = survivedMutation.shift()
+        } else if (h >= k + s) {
+          // Case when mutation is no coverage
+          mat = whiteMat
+          currentMutation = noCoverageMutation.shift()
+        } else {
+          // Case when mutation is killed
+          mat = greyMat;
+          currentMutation = killedMutation.shift()
+        }
+
         const geom = new three.BoxGeometry(cubeW, cubeD, blockZ);
         const mesh = new three.Mesh(geom, mat);
 
@@ -298,10 +337,13 @@ void main() { \
 
         mesh.position.set(x, y, z);
         mesh.userData.isMutantStack = true;
-        mesh.userData.cubeId = `mut-${cubeIdSeq++}`;
-        mesh.userData.kind = (h >= k ? 'survivor' : 'killed');
+        mesh.userData.kind = currentMutation.status;
         mesh.userData.parentPath = parentD?.path || parentD?.key || '';
         mesh.userData.parentTitle = parentD?.title || '';
+        mesh.userData.description = currentMutation.description
+        mesh.userData.methodName = currentMutation.method_name
+        mesh.userData.methodLine = currentMutation.line_number
+        mesh.userData.tests = currentMutation.tests
 
         building.add(mesh);
       }
@@ -379,10 +421,15 @@ void main() { \
         } else if (hitMesh.userData?.isMutantStack) {
           intersected.scale.set(1.15, 1.15, 1.15);
           selectedD = {
+            isMutant: true,
             cubeId: hitMesh.userData.cubeId,
+            methodName: hitMesh.userData.methodName,
+            methodLine: hitMesh.userData.methodLine,
+            description: hitMesh.userData.description,
             kind: hitMesh.userData.kind,
             parentPath: hitMesh.userData.parentPath,
             parentTitle: hitMesh.userData.parentTitle,
+            tests: hitMesh.userData.tests
           };
         }
 

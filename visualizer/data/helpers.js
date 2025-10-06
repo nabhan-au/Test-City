@@ -75,8 +75,21 @@ function colorize(d3, tree,key,colors,params){
         .domain(d3.range(minValue,maxValue,(maxValue-minValue)/colors.length))
         .range(colors);
 
-    var applyColorScale = function(node){
-        node.color = colorScale(Math.max(minValue,Math.min(node[key],maxValue)));
+    var toHexByte = (v) => {
+        const n = Math.max(0, Math.min(255, Math.round(v)));
+        return n.toString(16).padStart(2, '0');
+    }
+
+    var applyColorScale = (node) => {
+        if (node[key] == 0) {
+            const r = 255;
+            const g = 190;
+            const b = 50;
+            const hex = `#${toHexByte(r)}${toHexByte(g)}${toHexByte(b)}`;
+            node.color = hex;
+        } else {
+            node.color = colorScale(Math.max(minValue,Math.min(node[key],maxValue)));
+        }
         for(var i in node.children)
             applyColorScale(node.children[i]);
     };
