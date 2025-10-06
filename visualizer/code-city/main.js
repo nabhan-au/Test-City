@@ -459,13 +459,13 @@ fetchData().then(function (d) {
         setDragEnabled(mode === 'normal');
 
         if (mode === 'bird') {
-            // codeCityChart.setLinearLayout(false);
+            codeCityChart.setLinearLayout(false);
             codeCityChart.setCameraBirdEyeView();
         } else if (mode === '2d') {
-            // codeCityChart.setLinearLayout(true); 
-            // codeCityChart.setCamera2DView();     
+            codeCityChart.setLinearLayout(true); 
+            codeCityChart.setCamera2DView();     
         } else {
-            // codeCityChart.setLinearLayout(false);
+            codeCityChart.setLinearLayout(false);
             codeCityChart.setCameraNormalView();
         }
     });
