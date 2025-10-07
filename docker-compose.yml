@@ -19,12 +19,17 @@ services:
     image: minio/mc
     depends_on:
       - minio
+    volumes:
+      - ./data/:/init
     entrypoint: >
       /bin/sh -c "
         sleep 5;
         mc alias set local http://minio:9000 admin supersecret;
         mc mb local/results;
         mc mb local/temp;
+        echo 'Uploading complexity JSON files...';
+        mc cp --recursive /init/ local/results/;
+        echo 'Upload complete!';
       "
 
   server:
