@@ -3,7 +3,6 @@ import * as progressive from './progressive-brick-layout'
 import $ from 'jquery';
 
 var houseMargin = 0.001; //min margin in percent
-let roofRingSides = ['north', 'east', 'south', 'west'];
 
 function generateTreemap(d3, data, params) {
   var layout = d3.layout.treemap()
@@ -22,12 +21,10 @@ function codeCity(d3, element, rawData, params, margin, isProgressiveLayout = tr
   // TODO: remove with actual data
   let cubeIdSeq = 1;
   var canvas = d3.select(element);
-  let houseMeshes = [];
-  let linearLayoutEnabled = false;
 
   var data, normalized_block_size = null
   let currentMargin = margin;
-
+  
   if (isProgressiveLayout) {
     [data, normalized_block_size] = progressive.calculate_area(rawData, currentMargin)
   } else {
@@ -46,6 +43,7 @@ function codeCity(d3, element, rawData, params, margin, isProgressiveLayout = tr
     window.renderer = new three.WebGLRenderer({ alpha: true, antialias: true });
   var renderer = window.renderer;
 
+  var renderer;
   var intersected;
   var rootHouse;
 
@@ -168,13 +166,6 @@ void main() { \
     cube.position.y = gy;
     cube.position.z = gz;
 
-    cube.userData.origPos = cube.position.clone();
-    cube.userData.isHouse = true;
-
-    if (is_building) {
-      houseMeshes.push(cube);
-    }
-
     cube.castShadow = true;
     cube.receiveShadow = true;
 
@@ -184,21 +175,19 @@ void main() { \
     objToAdd.add(cube);
 
     if (is_building) {
-      const totalMut = (d?.data?.mutations?.total_mutation || 0);
-      const killed = (d?.data?.mutations?.killed || 0);
-      const noCoverage = (d?.data?.mutations?.no_coverage || 0)
-      const survivors = Math.max(0, totalMut - killed - noCoverage);
-      if (totalMut > 0) {
-        createMutantStacksOnRoofRingCubes(cube, gw, gh, gd, killed, survivors, noCoverage, d, {
-          cubeW: normalized_block_size,
-          cubeD: normalized_block_size,
-          gapXY: normalized_block_size * 0.25,
-          unitH: normalized_block_size,
-          margin: -0.005
-        },
-          roofRingSides
-        );
-      }
+        const totalMut = (d?.data?.mutations?.total_mutation || 0);
+        const killed = (d?.data?.mutations?.killed || 0);
+        const noCoverage = (d?.data?.mutations?.no_coverage || 0)
+        const survivors = Math.max(0, totalMut - killed - noCoverage);
+        if (totalMut > 0) {
+          createMutantStacksOnRoofRingCubes(cube, gw, gh, gd, killed, survivors, noCoverage, d, {
+            cubeW: normalized_block_size,
+            cubeD: normalized_block_size,
+            gapXY: normalized_block_size*0.25,
+            unitH: normalized_block_size,
+            margin: -0.005
+          });
+        }
       // }
     }
 
@@ -208,64 +197,49 @@ void main() { \
     }
   }
 
-  function createMutantStacksOnRoofRingCubes(building, gw, gh, gd, killed, survivors, noCoverage, d, opts = {}, sides = ['north', 'east', 'south', 'west']) {
+  function createMutantStacksOnRoofRingCubes(building, gw, gh, gd, killed, survivors, noCoverage, d, opts = {}) {
     const margin = opts.margin ?? 0.02;
-    const cubeW = opts.cubeW ?? 0.06;
-    const cubeD = opts.cubeD ?? 0.06;
+    const cubeW = opts.cubeW ?? 0.06;  // cube width (X direction)
+    const cubeD = opts.cubeD ?? 0.06;  // cube depth (Y direction)
     const gapXY = opts.gapXY ?? 0.012;
     const gapZ = opts.gapZ ?? 0.005;
     const unitH = opts.unitH ?? 0.03;
     const roofLift = 0.006;
 
-    const spacingX = cubeW + gapXY;
-    const spacingY = cubeD + gapXY;
-
+    const spacingX = cubeW + (opts.gapXY);
+    const spacingY = cubeD + (opts.gapXY);
     const cols = Math.max(0, Math.floor((gw - margin * 2) / spacingX));
-    const rows = Math.max(0, Math.floor((gh - margin * 2) / spacingY));
+    const rows = Math.max(0, Math.floor((gh - margin * 2) / spacingY))
+
     if (cols <= 0 || rows <= 0) return;
 
-    const toCells = {
-      north: () => {
-        const out = [];
-        for (let c = 0; c < cols; c++) out.push([0, c]);
-        return out;
-      },
-      east: () => {
-        const out = [];
-        for (let r = 1; r < Math.max(1, rows - 1); r++) out.push([r, cols - 1]);
-        return out;
-      },
-      south: () => {
-        const out = [];
-        for (let c = cols - 1; c >= 0; c--) out.push([rows - 1, c]);
-        return out;
-      },
-      west: () => {
-        const out = [];
-        for (let r = Math.max(1, rows - 2); r >= 1; r--) out.push([r, 0]);
-        return out;
+    // perimeter cells only
+    const cells = [];
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const onRing = (r === 0 || r === rows - 1 || c === 0 || c === cols - 1);
+        if (onRing) cells.push([r, c]);
       }
-    };
-
-    const allowed = new Set(sides.map(s => s.toLowerCase()));
-    const ring = [];
-    for (const side of sides) {
-      const fn = toCells[side.toLowerCase()];
-      if (fn) ring.push(...fn());
     }
-    if (ring.length === 0) return;
+    const capacity = cells.length;
+    if (capacity === 0) return;
 
-    const distribute = (N, cap) => {
-      const arr = new Array(cap).fill(0);
-      for (let i = 0; i < Math.max(0, N); i++) arr[i % cap] += 1;
+    // distribution across perimeter cells
+    const distribute = (N) => {
+      const arr = new Array(capacity).fill(0);
+      for (let i = 0; i < Math.max(0, N); i++) arr[i % capacity] += 1;
       return arr;
     };
 
-    const killedPerCell = distribute(killed, ring.lengt);
-    const survivorsPerCell = distribute(survivors, ring.lengt);
-    const noCoveragePerCell = distribute(noCoverage, ring.lengt);
+    const killedPerCell = distribute(killed);
+    const survivorsPerCell = distribute(survivors);
+    const noCoveragePerCell = distribute(noCoverage);
 
+    // cube size with horizontal/vertical gaps
+    const blockX = Math.max(0.01, spacingX - gapXY);
+    const blockY = Math.max(0.01, spacingY - gapXY);
     const blockZ = Math.max(0.01, unitH);
+
     const whiteMat = new three.MeshPhongMaterial({ color: 0xffffff });
     const redMat = new three.MeshPhongMaterial({ color: 0xcc2b2b });
     const greyMat = new three.MeshPhongMaterial({ color: 0x888888  });
@@ -292,25 +266,21 @@ void main() { \
           survivedMutation.push(mutation)
           break
         default:
-          // console.log("Mutation not fall in any case", mutation)
+          console.log("Mutation not fall in any case", mutation)
       }
     }
 
     const parentD = building.d || null;
-
-    const cellCenterX = c => -((cols - 1) * spacingX) / 2 + c * spacingX;
-    const cellCenterY = r => -((rows - 1) * spacingY) / 2 + r * spacingY;
-
-    for (let i = 0; i < ring.length; i++) {
-      const [r, c] = ring[i];
+    for (let i = 0; i < capacity; i++) {
+      const [r, c] = cells[i];
       const k = killedPerCell[i];
       const s = survivorsPerCell[i];
       const n = noCoveragePerCell[i]
       const total = k + s + n;
       if (!total) continue;
 
-      const x = cellCenterX(c);
-      const y = cellCenterY(r);
+      const cellCenterX = -((cols - 1) * spacingX) / 2 + c * spacingX;
+      const cellCenterY = -((rows - 1) * spacingY) / 2 + r * spacingY;
 
       for (let h = 0; h < total; h++) {
         let mat = null;
@@ -334,8 +304,8 @@ void main() { \
         const mesh = new three.Mesh(geom, mat);
 
         const z = gd / 2 + roofLift + (blockZ + gapZ) * h + blockZ / 2;
+        mesh.position.set(cellCenterX, cellCenterY, z);
 
-        mesh.position.set(x, y, z);
         mesh.userData.isMutantStack = true;
         mesh.userData.kind = currentMutation.status;
         mesh.userData.parentPath = parentD?.path || parentD?.key || '';
@@ -348,24 +318,6 @@ void main() { \
         building.add(mesh);
       }
     }
-  }
-
-  function setRoofRingSides(sides) {
-    roofRingSides = (Array.isArray(sides) && sides.length)
-      ? sides.map(s => s.toLowerCase())
-      : ['north', 'east', 'south', 'west'];
-
-    maximumHeight = 250;
-    minimumHeight = 0.005;
-    rootHouse = null;
-    houseMeshes = [];
-
-    clearScene();
-    addLights();
-    buildHouses();
-
-    setCameraRotation(cameraAngle);
-    render();
   }
 
   function render() {
@@ -511,7 +463,6 @@ void main() { \
       }
       addHouse(d, normalized_block_size);
     });
-    if (linearLayoutEnabled) applyLinearLayout();
   }
   buildHouses();
 
@@ -560,7 +511,6 @@ void main() { \
   }
 
   var setCameraBirdEyeView = function () {
-    setRoofRingSides(['north','east','south','west']);
     var angleRad = Math.PI / 4;
 
     camera.position.set(0, 0, 5);
@@ -573,7 +523,6 @@ void main() { \
   };
 
   var setCameraNormalView = function () {
-    setRoofRingSides(['north','east','south','west']);
     setCameraRotation(cameraAngle);
   };
 
@@ -692,7 +641,6 @@ void main() { \
     });
     // remove children
     while (scene.children.length) scene.remove(scene.children[0]);
-    houseMeshes = [];
   }
 
   function setMargin(newMargin) {
@@ -710,8 +658,6 @@ void main() { \
     maximumHeight = 250;
     minimumHeight = 0.005;
     rootHouse = null;
-
-    houseMeshes = [];
 
     clearScene();
     addLights();
@@ -735,103 +681,11 @@ void main() { \
     minimumHeight = 0.005;
     rootHouse = null;
 
-    houseMeshes = [];
-
     clearScene();
     addLights();
     buildHouses();
 
     setCameraRotation(cameraAngle);
-    render();
-  }
-
-  function applyLinearLayout() {
-    if (!houseMeshes.length) return;
-
-    // compute total width to center nicely
-    const gap = 0.04; // space between buildings
-    const widths = houseMeshes.map(m => m.geometry?.parameters?.width || 0.05);
-    const totalWidth = widths.reduce((a, b) => a + b, 0) + gap * (houseMeshes.length - 1);
-
-    let cursor = -totalWidth / 2;
-    for (let i = 0; i < houseMeshes.length; i++) {
-      const m = houseMeshes[i];
-      const w = widths[i];
-
-      // set X so each building sits next to the previous one
-      m.position.x = cursor + w / 2;
-      cursor += w + gap;
-
-      // align along Y to form a "line"; keep Z (height) as-is
-      m.position.y = 0;
-    }
-    render();
-  }
-
-  function revertLinearLayout() {
-    // restore original positions
-    scene.traverse(obj => {
-      if (obj.userData?.isHouse && obj.userData?.origPos) {
-        obj.position.copy(obj.userData.origPos);
-      }
-    });
-    render();
-  }
-
-  function setLinearLayout(enable) {
-    linearLayoutEnabled = !!enable;
-    if (linearLayoutEnabled) applyLinearLayout();
-    else revertLinearLayout();
-  }
-
-  const tmpBox = new three.Box3();
-  function getRowSphere() {
-    if (!houseMeshes || houseMeshes.length === 0) return null;
-
-    const all = new three.Box3();
-    let first = true;
-
-    for (const m of houseMeshes) {
-      tmpBox.setFromObject(m);
-      if (first) { all.copy(tmpBox); first = false; }
-      else { all.union(tmpBox); }
-    }
-
-    const s = new three.Sphere();
-    all.getBoundingSphere(s);
-    return s;
-  }
-
-  function setCamera2DView(opts = {}) {
-    setRoofRingSides(['south']);
-
-    const {
-      dir = new three.Vector3(-1, 1, 0),
-      padding = 1.05,
-      eyeZ = 0,
-    } = opts;
-
-    const sphere = getRowSphere();
-    if (!sphere) {
-      camera.position.set(-15, 15, eyeZ);
-      camera.up.set(0, 0, 1);
-      camera.lookAt(new three.Vector3(0, 0, 0));
-      render();
-      return;
-    }
-
-    const halfFovRad = three.MathUtils.degToRad(camera.fov / 2);
-    const D = (sphere.radius * padding) / Math.tan(halfFovRad);
-
-    const look = sphere.center.clone();
-    const viewDir = dir.clone().normalize();
-    const pos = look.clone().addScaledVector(viewDir, D);
-
-    pos.z = eyeZ;
-
-    camera.position.copy(pos);
-    camera.up.set(0, 0, 1);
-    camera.lookAt(look);
     render();
   }
 
@@ -848,9 +702,7 @@ void main() { \
     onZoomIn: onZoomIn,
     onZoomOut: onZoomOut,
     setMargin: setMargin,
-    setRawData: setRawData,
-    setCamera2DView,
-    setLinearLayout
+    setRawData: setRawData
   };
 }
 
