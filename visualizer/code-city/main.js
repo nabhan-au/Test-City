@@ -249,7 +249,8 @@ fetchData().then(function (d) {
     window.__mergedDataForHeightSwitch = mergedData;
 
     for (const [filePath, data] of Object.entries(d)) {
-        const filePaths = ('/' + filePath).split('/');
+        const normalizedPath = filePath.startsWith('/') ? filePath : '/' + filePath;
+        const filePaths = normalizedPath.split('/');
 
         // root ""
         let currentPath = "";
