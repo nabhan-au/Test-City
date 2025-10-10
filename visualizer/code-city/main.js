@@ -17,7 +17,6 @@ var codeCityChart;
 async function fetchData() {
     try {
         var data = await dataLoaders.fetchProjectData(params.get('project'));
-        console.log(data)
         return data;
     } catch (error) {
         return null;
@@ -32,6 +31,7 @@ let heightMode = 'loc'; // 'loc' | 'trace'
 var legendDiv = $('#code-city-legend')[0];
 var heightMetricSelect = $('#height-metric');
 
+const rotateZoomBtns = $('#rotate-left, #rotate-right, #rotate-up, #rotate-down, #zoom-in, #zoom-out');
 var rotateLeftSpan = $('#rotate-left');
 var rotateRightSpan = $('#rotate-right');
 var rotateUpSpan = $('#rotate-up');
@@ -42,6 +42,8 @@ var birdEyeToggle = $('#toggle-bird-eye');
 var sphereToggle = $('#toggle-spheres');
 var marginSlider = $('#margin-slider');
 var marginValueDisplay = $('#margin-value');
+var viewModeSelect = $('#view-mode');
+const chartBox = $('#code-city-chart');
 
 var nodeColorScale = [
   '#ffd700', // golden yellow
@@ -247,7 +249,8 @@ fetchData().then(function (d) {
     window.__mergedDataForHeightSwitch = mergedData;
 
     for (const [filePath, data] of Object.entries(d)) {
-        const filePaths = filePath.split('/');
+        const normalizedPath = filePath.startsWith('/') ? filePath : '/' + filePath;
+        const filePaths = normalizedPath.split('/');
 
         // root ""
         let currentPath = "";
@@ -293,7 +296,6 @@ fetchData().then(function (d) {
     }
 
     var treeData = dataHelpers.convertToTree(mergedData, mapperParams);
-    
     dataHelpers.colorize(d3, treeData, 'colorValue', nodeColorScale, { min: 20, max: 100 });
 
     applyLeafPaletteAndPlatformGray(treeData);
@@ -351,11 +353,20 @@ fetchData().then(function (d) {
         isRotatingPitch = false;
     };
 
-    rotateLeftSpan.on('mousedown', function () {
-        if (birdEyeToggle.is(':checked')) {
-            birdEyeToggle.prop('checked', false).trigger('change');
-        }
+    function setRotateZoomEnabled(enabled) {
+        rotateZoomBtns.prop('disabled', !enabled);
+        rotateZoomBtns.toggleClass('opacity-50 cursor-not-allowed', !enabled);
+    }
+    setRotateZoomEnabled(true);
 
+    const ensureNormalView = () => {
+        if (viewModeSelect.val() !== 'normal') {
+            viewModeSelect.val('normal').trigger('change');
+        }
+    };
+
+    rotateLeftSpan.on('mousedown', function () {
+        ensureNormalView();
         startRotate(false);
     });
     rotateLeftSpan.on('mouseup mouseleave', function () {
@@ -363,28 +374,21 @@ fetchData().then(function (d) {
     });
 
     rotateRightSpan.on('mousedown', function () {
-        if (birdEyeToggle.is(':checked')) {
-            birdEyeToggle.prop('checked', false).trigger('change');
-        }
-
+        ensureNormalView();
         startRotate(true);
     });
     rotateRightSpan.on('mouseup mouseleave', function () {
         stopRotate();
     });
     rotateUpSpan.on('mousedown', function () {
-        if (birdEyeToggle.is(':checked')) {
-            birdEyeToggle.prop('checked', false).trigger('change');
-        }
+        ensureNormalView();
         startRotatePitch(true);
     });
     rotateUpSpan.on('mouseup mouseleave', function () {
         stopRotatePitch();
     });
     rotateDownSpan.on('mousedown', function () {
-        if (birdEyeToggle.is(':checked')) {
-            birdEyeToggle.prop('checked', false).trigger('change');
-        }
+        ensureNormalView();
         startRotatePitch(false);
     });
     rotateDownSpan.on('mouseup mouseleave', function () {
@@ -441,6 +445,33 @@ fetchData().then(function (d) {
         }
     });
 
+    function isNormalView() {
+        return viewModeSelect.length ? viewModeSelect.val() === 'normal' : true;
+    }
+
+    function setDragEnabled(enabled) {
+        chartBox.toggleClass('cursor-grab', enabled);
+        chartBox.toggleClass('cursor-not-allowed', !enabled);
+    }
+    setDragEnabled(true); 
+
+    viewModeSelect.on('change', function () {
+        const mode = this.value; // 'normal'|'bird'|'2d'
+        setRotateZoomEnabled(mode === 'normal');
+        setDragEnabled(mode === 'normal');
+
+        if (mode === 'bird') {
+            codeCityChart.setLinearLayout(false);
+            codeCityChart.setCameraBirdEyeView();
+        } else if (mode === '2d') {
+            codeCityChart.setLinearLayout(true); 
+            codeCityChart.setCamera2DView();     
+        } else {
+            codeCityChart.setLinearLayout(false);
+            codeCityChart.setCameraNormalView();
+        }
+    });
+
     // project-description
     const descriptionEl = $('#project-description');
 
@@ -461,6 +492,7 @@ fetchData().then(function (d) {
     const chartEl = $('#code-city-chart')[0];
 
     chartEl.addEventListener('mousedown', function (e) {
+        if (!isNormalView()) return;     
         isDragging = true;
         lastX = e.clientX;
         lastY = e.clientY;
