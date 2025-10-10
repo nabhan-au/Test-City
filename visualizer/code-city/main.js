@@ -17,7 +17,6 @@ var codeCityChart;
 async function fetchData() {
     try {
         var data = await dataLoaders.fetchProjectData(params.get('project'));
-        console.log(data)
         return data;
     } catch (error) {
         return null;
@@ -250,7 +249,7 @@ fetchData().then(function (d) {
     window.__mergedDataForHeightSwitch = mergedData;
 
     for (const [filePath, data] of Object.entries(d)) {
-        const filePaths = filePath.split('/');
+        const filePaths = ('/' + filePath).split('/');
 
         // root ""
         let currentPath = "";
@@ -296,7 +295,6 @@ fetchData().then(function (d) {
     }
 
     var treeData = dataHelpers.convertToTree(mergedData, mapperParams);
-    
     dataHelpers.colorize(d3, treeData, 'colorValue', nodeColorScale, { min: 20, max: 100 });
 
     applyLeafPaletteAndPlatformGray(treeData);

@@ -107,7 +107,6 @@ export function legend(legendDiv, legendTitle, legendContent) {
   const isCube = (d) => !!(d && typeof d === 'object' && 'isMutant' in d);
 
   const testRenderCube = (d) => {
-    console.log(d)
     return cubeHTML
   }
 

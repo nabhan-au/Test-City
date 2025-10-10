@@ -292,7 +292,7 @@ void main() { \
           survivedMutation.push(mutation)
           break
         default:
-          console.log("Mutation not fall in any case", mutation)
+          // console.log("Mutation not fall in any case", mutation)
       }
     }
 
