@@ -162,10 +162,11 @@ class CoverageProcessor:
         killed = status_counts.get("KILLED", 0)
         survived = status_counts.get("SURVIVED", 0)
         timed_out = status_counts.get("TIMED_OUT", 0)
+        memory_error = status_counts.get("MEMORY_ERROR", 0)
         no_cov = status_counts.get("NO_COVERAGE", 0)
 
         # 👉 treat TIMEOUT as killed if requested
-        effective_killed = killed + timed_out
+        effective_killed = killed + timed_out + memory_error
 
         executed = total - no_cov
         mutation_score_overall = effective_killed / total if total else 0.0

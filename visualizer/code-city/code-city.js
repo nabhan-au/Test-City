@@ -256,10 +256,14 @@ void main() { \
           break
         case "RUN_ERROR":
           survivedMutation.push(mutation)
+          break
         case "KILLED":
           killedMutation.push(mutation)
           break
         case "TIMED_OUT":
+          killedMutation.push(mutation)
+          break
+        case "MEMORY_ERROR":
           killedMutation.push(mutation)
           break
         case "SURVIVED":
