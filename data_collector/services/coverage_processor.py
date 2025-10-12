@@ -9,6 +9,7 @@ import re
 import pandas as pd
 from fastapi import UploadFile
 import logging
+import pprint
 
 from services.file_manager.file_manager_service_abstract import FileManagerServiceAbstract
 from services.data_extractor import DataExtractor
@@ -161,10 +162,11 @@ class CoverageProcessor:
         killed = status_counts.get("KILLED", 0)
         survived = status_counts.get("SURVIVED", 0)
         timed_out = status_counts.get("TIMED_OUT", 0)
+        memory_error = status_counts.get("MEMORY_ERROR", 0)
         no_cov = status_counts.get("NO_COVERAGE", 0)
 
         # 👉 treat TIMEOUT as killed if requested
-        effective_killed = killed + timed_out
+        effective_killed = killed + timed_out + memory_error
 
         executed = total - no_cov
         mutation_score_overall = effective_killed / total if total else 0.0
@@ -208,6 +210,7 @@ class CoverageProcessor:
 
         data = {}
         for module, files in files_by_modules.items():
+            logging.info("Processing module %s", module)
             production_class_files = list(filter(lambda f: self.filter_production_class_file(f, project_type), files))
             if len(production_class_files) == 0:
                 logging.info(f"{module} does not contain any .class files.")
@@ -383,6 +386,7 @@ class CoverageProcessor:
 
             # If nothing executable, produce an empty summary and continue
             if not exec_lines_set:
+                del payload["block"]
                 summary = {
                     "total_executable_lines": 0,
                     "total_missed_lines": 0,
@@ -415,6 +419,7 @@ class CoverageProcessor:
                 "covered_indices": covered_indices,
                 "coverage_pct": coverage_pct,
             }
+            del payload["block"]
             report[converted_class_name] = {**payload, "line_coverage": summary}
 
         return report
