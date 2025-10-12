@@ -701,7 +701,13 @@ void main() { \
   function setMargin(newMargin) {
     currentMargin = newMargin;
 
-    // recompute layout
+    const prePos = camera.position.clone();
+    const preUp = camera.up.clone();
+    const preFov = camera.fov;
+    const preDir = new three.Vector3();
+    camera.getWorldDirection(preDir);
+    const preTarget = prePos.clone().add(preDir);
+
     if (isProgressiveLayout) {
       [data, normalized_block_size] = progressive.calculate_area(rawData, currentMargin);
     } else {
@@ -709,18 +715,20 @@ void main() { \
       data = generateTreemap(d3, rawData, params);
     }
 
-    // reset per-build state
     maximumHeight = 250;
     minimumHeight = 0.005;
     rootHouse = null;
-
     houseMeshes = [];
 
     clearScene();
     addLights();
     buildHouses();
 
-    setCameraRotation(cameraAngle);
+    camera.fov = preFov;
+    camera.updateProjectionMatrix();
+    camera.position.copy(prePos);
+    camera.up.copy(preUp);
+    camera.lookAt(preTarget);
     render();
   }
 
