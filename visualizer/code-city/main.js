@@ -36,8 +36,10 @@ var rotateLeftSpan = $('#rotate-left');
 var rotateRightSpan = $('#rotate-right');
 var rotateUpSpan = $('#rotate-up');
 var rotateDownSpan = $('#rotate-down');
-var zoomInSpan = $('#zoom-in')
-var zoomOutSpan = $('#zoom-out')
+var zoomInSpan = $('#zoom-in');
+var zoomOutSpan = $('#zoom-out');
+var panLeftBtn = $('#pan-left');
+var panRightBtn = $('#pan-right');
 var birdEyeToggle = $('#toggle-bird-eye');
 var sphereToggle = $('#toggle-spheres');
 var marginSlider = $('#margin-slider');
@@ -46,19 +48,19 @@ var viewModeSelect = $('#view-mode');
 const chartBox = $('#code-city-chart');
 
 var nodeColorScale = [
-  '#ffd700', // golden yellow
-  '#ffdb33',
-  '#ffdf66',
-  '#ffe399',
-  '#ffe6b3',
-  '#ffeccc',
-  '#b3e5ff',
-  '#99dbff',
-  '#80d1ff',
-  '#66c7ff',
-  '#4dbdff',
-  '#3399ff',
-  '#1a75ff'  // deeper sky blue
+    '#ffd700', // golden yellow
+    '#ffdb33',
+    '#ffdf66',
+    '#ffe399',
+    '#ffe6b3',
+    '#ffeccc',
+    '#b3e5ff',
+    '#99dbff',
+    '#80d1ff',
+    '#66c7ff',
+    '#4dbdff',
+    '#3399ff',
+    '#1a75ff'  // deeper sky blue
 ]
 
 let gridValue;
@@ -140,7 +142,7 @@ var mapperParams = {
         colorValue: nodeColor,
         title: function (d) { return d.key.split('/').slice(-1)[0]; },
         path: function (d) {
-            return d.key || '(all files)'; 
+            return d.key || '(all files)';
         }
     },
     split: function (key) {
@@ -160,7 +162,7 @@ function setGridValue(d) {
             const loc = value["total_executable_lines"]
             maxValue = Math.max(averageTrace, loc, maxValue);
         }
-       
+
     }
     if (maxValue > 1000000)
         gridValue = 10000;
@@ -204,7 +206,7 @@ fetchData().then(function (d) {
 
         // gray range
         const lightGray = 200; // shallow platforms -> lighter gray
-        const darkGray  =  100; // deep platforms   -> darker gray
+        const darkGray = 100; // deep platforms   -> darker gray
 
         (function walk(n) {
             if (!n) return;
@@ -212,10 +214,10 @@ fetchData().then(function (d) {
             const isLeaf = !n.children || n.children.length === 0;
 
             if (!isLeaf) {
-            const t = (n.depth || 0) / maxDepth;
-            const g = lerp(lightGray, darkGray, t);
-            const hex = `#${toHexByte(g)}${toHexByte(g)}${toHexByte(g)}`;
-            n.color = hex;
+                const t = (n.depth || 0) / maxDepth;
+                const g = lerp(lightGray, darkGray, t);
+                const hex = `#${toHexByte(g)}${toHexByte(g)}${toHexByte(g)}`;
+                n.color = hex;
             }
 
             if (n.children) n.children.forEach(walk);
@@ -280,11 +282,11 @@ fetchData().then(function (d) {
 
             mergedData[currentPath].mutations.killed += data.mutation.effective_killed;
             mergedData[currentPath].mutations.total_mutation += data.mutation.total_mutations;
-            mergedData[currentPath].mutations.coverage = 
-            mergedData[currentPath].mutations.total_mutation === 0 ? 0
-                : (mergedData[currentPath].mutations.killed / mergedData[currentPath].mutations.total_mutation) * 100;
+            mergedData[currentPath].mutations.coverage =
+                mergedData[currentPath].mutations.total_mutation === 0 ? 0
+                    : (mergedData[currentPath].mutations.killed / mergedData[currentPath].mutations.total_mutation) * 100;
             mergedData[currentPath].mutations.no_coverage += data.mutation.no_coverage;
-            
+
 
             mergedData[currentPath].traces.total_trace += data.total_tests;
             mergedData[currentPath].traces.total_block += data.total_blocks;
@@ -445,6 +447,29 @@ fetchData().then(function (d) {
         }
     });
 
+    function ensure2DView() {
+        if (viewModeSelect.val() !== '2d') {
+            viewModeSelect.val('2d').trigger('change');
+        }
+    }
+
+    panLeftBtn.on('mousedown', function () {
+        ensure2DView();
+        codeCityChart.startPan2D(-1);
+    });
+    panLeftBtn.on('mouseup mouseleave', function () {
+        codeCityChart.stopPan2D();
+    });
+
+    panRightBtn.on('mousedown', function () {
+        ensure2DView();
+        codeCityChart.startPan2D(1);
+    });
+    panRightBtn.on('mouseup mouseleave', function () {
+        codeCityChart.stopPan2D();
+    });
+
+
     function isNormalView() {
         return viewModeSelect.length ? viewModeSelect.val() === 'normal' : true;
     }
@@ -453,7 +478,13 @@ fetchData().then(function (d) {
         chartBox.toggleClass('cursor-grab', enabled);
         chartBox.toggleClass('cursor-not-allowed', !enabled);
     }
-    setDragEnabled(true); 
+    setDragEnabled(true);
+
+    function setPanButtonsEnabled(enabled) {
+        panLeftBtn.prop('disabled', !enabled).toggleClass('opacity-50 cursor-not-allowed', !enabled);
+        panRightBtn.prop('disabled', !enabled).toggleClass('opacity-50 cursor-not-allowed', !enabled);
+    }
+    setPanButtonsEnabled(false);
 
     viewModeSelect.on('change', function () {
         const mode = this.value; // 'normal'|'bird'|'2d'
@@ -461,12 +492,15 @@ fetchData().then(function (d) {
         setDragEnabled(mode === 'normal');
 
         if (mode === 'bird') {
+            setPanButtonsEnabled(false);
             codeCityChart.setLinearLayout(false);
             codeCityChart.setCameraBirdEyeView();
         } else if (mode === '2d') {
-            codeCityChart.setLinearLayout(true); 
-            codeCityChart.setCamera2DView();     
+            setPanButtonsEnabled(true);
+            codeCityChart.setLinearLayout(true);
+            codeCityChart.setCamera2DView();
         } else {
+            setPanButtonsEnabled(false);
             codeCityChart.setLinearLayout(false);
             codeCityChart.setCameraNormalView();
         }
@@ -492,7 +526,7 @@ fetchData().then(function (d) {
     const chartEl = $('#code-city-chart')[0];
 
     chartEl.addEventListener('mousedown', function (e) {
-        if (!isNormalView()) return;     
+        if (!isNormalView()) return;
         isDragging = true;
         lastX = e.clientX;
         lastY = e.clientY;

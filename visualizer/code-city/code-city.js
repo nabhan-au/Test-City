@@ -95,6 +95,9 @@ void main() { \
   var maximumHeight = 250;
   var minimumHeight = 0.005;
 
+  let twoDState = null;
+  let panRAF = null;
+
   // --- FOV zoom helpers ---
   const fovLimits = { min: 15, max: 85 };  // tighter min = more zoom-in
   camera.fov = 45;                          // starting FOV
@@ -268,7 +271,7 @@ void main() { \
     const blockZ = Math.max(0.01, unitH);
     const whiteMat = new three.MeshPhongMaterial({ color: 0xffffff });
     const redMat = new three.MeshPhongMaterial({ color: 0xcc2b2b });
-    const greyMat = new three.MeshPhongMaterial({ color: 0x888888  });
+    const greyMat = new three.MeshPhongMaterial({ color: 0x888888 });
     const killedMutation = []
     const survivedMutation = []
     const noCoverageMutation = []
@@ -292,7 +295,7 @@ void main() { \
           survivedMutation.push(mutation)
           break
         default:
-          // console.log("Mutation not fall in any case", mutation)
+        // console.log("Mutation not fall in any case", mutation)
       }
     }
 
@@ -560,7 +563,7 @@ void main() { \
   }
 
   var setCameraBirdEyeView = function () {
-    setRoofRingSides(['north','east','south','west']);
+    setRoofRingSides(['north', 'east', 'south', 'west']);
     var angleRad = Math.PI / 4;
 
     camera.position.set(0, 0, 5);
@@ -573,7 +576,7 @@ void main() { \
   };
 
   var setCameraNormalView = function () {
-    setRoofRingSides(['north','east','south','west']);
+    setRoofRingSides(['north', 'east', 'south', 'west']);
     setCameraRotation(cameraAngle);
   };
 
@@ -802,37 +805,94 @@ void main() { \
     return s;
   }
 
+  function getRowBounds() {
+    if (!houseMeshes || !houseMeshes.length) return null;
+    const box = new three.Box3();
+    let first = true;
+    for (const m of houseMeshes) {
+      tmpBox.setFromObject(m);
+      if (first) { box.copy(tmpBox); first = false; }
+      else { box.union(tmpBox); }
+    }
+    return box;
+  }
+
   function setCamera2DView(opts = {}) {
     setRoofRingSides(['south']);
 
     const {
       dir = new three.Vector3(-1, 1, 0),
-      padding = 1.05,
-      eyeZ = 0,
+      padding = 4,
+      eyeZ = null,
     } = opts;
 
-    const sphere = getRowSphere();
-    if (!sphere) {
-      camera.position.set(-15, 15, eyeZ);
-      camera.up.set(0, 0, 1);
-      camera.lookAt(new three.Vector3(0, 0, 0));
-      render();
-      return;
-    }
+    const box = getRowBounds();
+    const look = box ? box.getCenter(new three.Vector3()) : new three.Vector3(0, 0, 0);
+    const size = box ? box.getSize(new three.Vector3()) : new three.Vector3(1, 1, 1);
 
+    const halfHeight = Math.max(0.001, size.z / 2);
     const halfFovRad = three.MathUtils.degToRad(camera.fov / 2);
-    const D = (sphere.radius * padding) / Math.tan(halfFovRad);
+    const D = (halfHeight * padding) / Math.tan(halfFovRad);
 
-    const look = sphere.center.clone();
     const viewDir = dir.clone().normalize();
     const pos = look.clone().addScaledVector(viewDir, D);
-
-    pos.z = eyeZ;
+    pos.z = eyeZ ? eyeZ : look.z;
 
     camera.position.copy(pos);
     camera.up.set(0, 0, 1);
     camera.lookAt(look);
+
+    twoDState = {
+      look,
+      D,
+      viewDir,
+      bounds: box ?? new three.Box3(
+        new three.Vector3(-1, -1, -1),
+        new three.Vector3(1, 1, 1)
+      ),
+    };
+
     render();
+  }
+
+  function pan2D(delta) {
+    if (!twoDState) return;
+    const { look, bounds, viewDir } = twoDState;
+
+    const lateral = new three.Vector3(-viewDir.y, viewDir.x, 0).normalize();
+
+    const proposed = look.clone().addScaledVector(lateral, delta);
+
+    const clampedX = three.MathUtils.clamp(proposed.x, bounds.min.x, bounds.max.x);
+    const clampedY = three.MathUtils.clamp(proposed.y, bounds.min.y, bounds.max.y);
+
+    const appliedDx = clampedX - look.x;
+    const appliedDy = clampedY - look.y;
+
+    look.x = clampedX;
+    look.y = clampedY;
+    camera.position.x += appliedDx;
+    camera.position.y += appliedDy;
+
+    camera.lookAt(look);
+    render();
+  }
+
+  function startPan2D(direction = 1) {
+    stopPan2D();
+    const speed = 0.02;
+    const step = () => {
+      pan2D(direction * speed);
+      panRAF = requestAnimationFrame(step);
+    };
+    panRAF = requestAnimationFrame(step);
+  }
+
+  function stopPan2D() {
+    if (panRAF) {
+      cancelAnimationFrame(panRAF);
+      panRAF = null;
+    }
   }
 
   return {
@@ -850,7 +910,9 @@ void main() { \
     setMargin: setMargin,
     setRawData: setRawData,
     setCamera2DView,
-    setLinearLayout
+    setLinearLayout,
+    startPan2D,
+    stopPan2D
   };
 }
 
