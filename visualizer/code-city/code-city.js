@@ -19,8 +19,6 @@ function generateTreemap(d3, data, params) {
 }
 
 function codeCity(d3, element, rawData, params, margin, isProgressiveLayout = true) {
-  // TODO: remove with actual data
-  let cubeIdSeq = 1;
   var canvas = d3.select(element);
   let houseMeshes = [];
   let linearLayoutEnabled = false;
@@ -572,12 +570,14 @@ void main() { \
     camera.up.set(Math.sin(angleRad), Math.cos(angleRad), 0);
 
     camera.lookAt(new three.Vector3(0, 0, 0));
+    setFloorVisible(true);
     render();
   };
 
   var setCameraNormalView = function () {
     setRoofRingSides(['north', 'east', 'south', 'west']);
     setCameraRotation(cameraAngle);
+    setFloorVisible(true);
   };
 
   var getCameraPitch = function () {
@@ -860,6 +860,7 @@ void main() { \
       ),
     };
 
+    setFloorVisible(false);
     render();
   }
 
@@ -901,6 +902,25 @@ void main() { \
       cancelAnimationFrame(panRAF);
       panRAF = null;
     }
+  }
+
+  function setFloorVisible(show) {
+    const isLeaf = (k) => typeof k === 'string' && /\.\w+$/.test(k);
+
+    scene.traverse(obj => {
+      if (!obj.isMesh || !obj.userData?.isHouse || !obj.material) return;
+
+      const key = obj.d?.key;
+      const leaf = isLeaf(key);
+
+      if (!leaf) {
+        obj.material.colorWrite = show;
+        obj.material.depthWrite = show;
+        obj.material.needsUpdate = true;
+      }
+    });
+
+    render();
   }
 
   return {
