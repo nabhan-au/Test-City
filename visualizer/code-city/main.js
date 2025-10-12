@@ -31,7 +31,8 @@ let heightMode = 'loc'; // 'loc' | 'trace'
 var legendDiv = $('#code-city-legend')[0];
 var heightMetricSelect = $('#height-metric');
 
-const rotateZoomBtns = $('#rotate-left, #rotate-right, #rotate-up, #rotate-down, #zoom-in, #zoom-out');
+const rotateBtns = $('#rotate-left, #rotate-right, #rotate-up, #rotate-down');
+const zoomBtns = $('#zoom-in, #zoom-out');
 var rotateLeftSpan = $('#rotate-left');
 var rotateRightSpan = $('#rotate-right');
 var rotateUpSpan = $('#rotate-up');
@@ -355,11 +356,16 @@ fetchData().then(function (d) {
         isRotatingPitch = false;
     };
 
-    function setRotateZoomEnabled(enabled) {
-        rotateZoomBtns.prop('disabled', !enabled);
-        rotateZoomBtns.toggleClass('opacity-50 cursor-not-allowed', !enabled);
+    function setRotateEnabled(enabled) {
+        rotateBtns.prop('disabled', !enabled);
+        rotateBtns.toggleClass('opacity-50 cursor-not-allowed', !enabled);
     }
-    setRotateZoomEnabled(true);
+    setRotateEnabled(true);
+    function setZoomEnabled(enabled) {
+        zoomBtns.prop('disabled', !enabled);
+        zoomBtns.toggleClass('opacity-50 cursor-not-allowed', !enabled);
+    }
+    setZoomEnabled(true);
 
     const ensureNormalView = () => {
         if (viewModeSelect.val() !== 'normal') {
@@ -488,19 +494,22 @@ fetchData().then(function (d) {
 
     viewModeSelect.on('change', function () {
         const mode = this.value; // 'normal'|'bird'|'2d'
-        setRotateZoomEnabled(mode === 'normal');
+        setRotateEnabled(mode === 'normal');
         setDragEnabled(mode === 'normal');
 
         if (mode === 'bird') {
             setPanButtonsEnabled(false);
+            setZoomEnabled(true);
             codeCityChart.setLinearLayout(false);
             codeCityChart.setCameraBirdEyeView();
         } else if (mode === '2d') {
             setPanButtonsEnabled(true);
+            setZoomEnabled(false);
             codeCityChart.setLinearLayout(true);
             codeCityChart.setCamera2DView();
         } else {
             setPanButtonsEnabled(false);
+            setZoomEnabled(true);
             codeCityChart.setLinearLayout(false);
             codeCityChart.setCameraNormalView();
         }
