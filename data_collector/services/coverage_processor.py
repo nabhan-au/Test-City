@@ -205,7 +205,9 @@ class CoverageProcessor:
                             seen.add(key)
                             mut["tests"].append(test)
 
-    async def extract_data(self, coverage_result, files, repo_name, project_type ="maven"):
+    async def extract_data(self, coverage_result, files, repo_name, git_url, report_path_map, project_type ="maven"):
+        repo_url = self.data_extractor_service.extract_repo_urls(files)
+        class_map = self.data_extractor_service.get_class_map(repo_name, files)
         files_by_modules = self.split_file_by_module(files, project_type)
 
         data = {}
@@ -221,8 +223,13 @@ class CoverageProcessor:
             mutation_coverage_data = await self.data_extractor_service.get_mutation_block_data(files)
 
             for k, v in block_data.items():
+                file_path = class_map[k]
+                report_path = report_path_map.get(k, "")
+                logging.info(f"report file {report_path}")
+                v["git_url"] = f"{git_url}/{file_path}"
+                v["report_path"] = report_path
                 if k not in block_coverage:
-                    logging.info(f"Class {k} does not contain any line coverage data.")
+                    logging.debug(f"Class {k} does not contain any line coverage data.")
                 else:
                     await self.integrate_coverage_result(block_coverage[k], k, v)
                 if k not in mutation_coverage_data:
@@ -301,23 +308,31 @@ class CoverageProcessor:
                 raise Exception(f"Multiple blocks found for class: {class_name} block: {block} with {match_block}")
 
             if len(match_block) == 0:
-                logging.info(f"{block} not covered")
+                logging.debug(f"{block} not covered")
                 continue
 
             block["is_line_cover"] = True
             block["tests"] = match_block[0]["tests"]
             match_block[0]["found_match"] = True
 
-    async def process_coverage(self, files: List[UploadFile], repo_name):
+    def get_github_url(self, project_identifier: str) -> str:
+        """
+        Convert project identifier (e.g. 'apache/commons-lang')
+        to a full GitHub URL.
+        """
+        project_identifier = project_identifier.strip()
+        if not project_identifier or "/" not in project_identifier:
+            raise ValueError("Invalid project identifier format. Expected 'owner/repo'.")
+
+        return f"https://github.com/{project_identifier}"
+
+    async def process_coverage(self, files: List[UploadFile], repo_name, project_identifier):
+        github_url = self.get_github_url(project_identifier)
+        report_path_map = await self.file_manager_service.upload_pitest_reports(files, repo_name)
+        logging.info(f"Report paths: {report_path_map}")
         logging.info(f"Processing {len(files)} files")
         coverage_result = []
-        # index_file_list = await self.list_index_file(files)
-        # for index_file in index_file_list:
-        #     process_data = await self.process_html_file(index_file)
-        #     result = flat_map(lambda x: self.get_tree_from_table(process_data['file_path'], x), process_data['table'])
-        #     coverage_result.extend(result)
-
-        coverage_result = await self.extract_data(coverage_result, files, repo_name)
+        coverage_result = await self.extract_data(coverage_result, files, repo_name, github_url, report_path_map)
         self.file_manager_service.save_complexity(repo_name, {"summary": coverage_result})
         return {
             "success": True,

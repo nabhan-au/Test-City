@@ -24,9 +24,10 @@ export function fetchProjectList() {
   }
   
   // POST one batch to your endpoint (finalize on last batch)
-  async function uploadBatch(projectName, filesChunk, finalize, start) {
+  async function uploadBatch(projectName, projectIdentifier, filesChunk, finalize, start) {
     const url = `${backendUrl}/coverall/project/${encodeURIComponent(projectName)}?finalize=${finalize}&start=${start}`;
     const form = new FormData();
+    form.append("projectIdentifier", projectIdentifier);
     for (const f of filesChunk) {
         form.append("files", f, f.webkitRelativePath); // optional metadata
     }
@@ -61,18 +62,25 @@ export function fetchProjectList() {
    * The endpoint you provided will stage batches; on the last batch it will run coverage and clean up.
    *
    * @param {string} projectName
+   * @param {string} projectIdentifier
    * @param {FileList|File[]} files
    * @param {{ backendUrl: string, batchSize?: number, limit?: number, onProgress?: (info)=>void }} opts
    */
-  export async function uploadProject(projectName, files) {  
+  export async function uploadProject(projectName, projectIdentifier, files) {
     const list = Array.from(files);
     const toSend = typeof limit === "number" ? list.slice(0, 1000000) : list;
     const chunks = chunkFiles(toSend, batchSize);
+
+    if (projectIdentifier == null || projectIdentifier.length === 0) {
+        projectIdentifier = projectName + "/" + projectName
+    }
+
+    console.log(projectName, projectIdentifier)
   
     for (let i = 0; i < chunks.length; i++) {
       const isLast = i === chunks.length - 1;
       const isStart = i === 0
-      await uploadBatch(projectName, chunks[i], isLast, isStart);
+      await uploadBatch(projectName, projectIdentifier, chunks[i], isLast, isStart);
     }
   }
 

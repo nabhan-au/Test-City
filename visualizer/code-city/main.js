@@ -70,6 +70,10 @@ function legendContent(d, e) {
     const lines = d.data?.lines || { coverage: 0, covered_line: 0, total_line: 0 };
     const mutations = d.data?.mutations || { coverage: 0, killed: 0, total_mutation: 0 };
     const traces = d.data?.traces || { average: 0 };
+    const reportPath = d.data?.report_path || "";
+    const reportUrl = reportPath
+    ? `//${window.location.hostname}:9000/pit-reports/${reportPath}`
+    : "#";
 
     return `
       <div class="bg-white text-gray-800 p-4 rounded-lg shadow-md">
@@ -97,6 +101,18 @@ function legendContent(d, e) {
             </tr>
           </tbody>
         </table>
+        ${
+        reportPath
+          ? `
+          <div class="flex justify-left mt-5 items-center mt-3">
+            <a href="${reportUrl}" target="_blank" rel="noopener noreferrer"
+               class="inline-flex items-center bg-blue-600 text-white text-xs font-semibold px-3 py-1.5 rounded-md hover:bg-blue-700 active:scale-[0.97] transition-all duration-150">
+              Open Report
+            </a>
+          </div>
+          `
+          : ""
+      }
       </div>
     `;
 }
@@ -261,13 +277,18 @@ fetchData().then(function (d) {
                 // build the path
                 currentPath += "/" + filePaths[i];
             }
-
             // if not found, init
             if (!mergedData[currentPath]) {
+                let reportPath = ""
+                if (currentPath.endsWith(".java")) {
+                    reportPath = data.report_path
+                    // console.log(currentPath)
+                }
                 mergedData[currentPath] = {
                     lines: { coverage: 0, covered_line: 0, total_line: 0 },
                     mutations: { coverage: 0, killed: 0, no_coverage: 0, total_mutation: 0 },
-                    traces: { total_trace: 0, total_block: 0, average: 0 }
+                    traces: { total_trace: 0, total_block: 0, average: 0 },
+                    report_path: reportPath
                 };
             }
             const covered_line = data.line_coverage.total_executable_lines - data.line_coverage.total_missed_lines
@@ -292,6 +313,8 @@ fetchData().then(function (d) {
             mergedData[currentPath].mutations.details = data.mutation
         }
     }
+
+    console.log(mergedData)
 
     var treeData = dataHelpers.convertToTree(mergedData, mapperParams);
     

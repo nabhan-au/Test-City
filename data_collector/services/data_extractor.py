@@ -179,6 +179,10 @@ class DataExtractor:
 
             mutation_data = parsed_data["mutations"]["mutation"]
             for row in mutation_data:
+                if not isinstance(row, dict):
+                    continue
+                if "block" not in row and "blocks" not in row:
+                    continue
                 class_name, sub_class_name = self.extract_class_name(row["mutatedClass"])
                 mutation_dict = {
                     "sub_class_name": sub_class_name,
@@ -199,12 +203,12 @@ class DataExtractor:
         return mutations_result
 
 
-    def get_project_block_data(self, project_name: str, module: str, files: List[UploadFile], project_type: str = "maven"):
-        logging.info("Total java .class file:" + str(len(files)))
-        block_data = self.trace_extractor_repository.extract_block_data(project_name, files)
+    def get_project_block_data(self, project_name: str, module: str, compiledFiles: List[UploadFile], project_type: str = "maven"):
+        logging.info("Total java .class file:" + str(len(compiledFiles)))
+        block_data = self.trace_extractor_repository.extract_block_data(project_name, compiledFiles)
         result = {}
         if "data" not in block_data:
-            print(module, len(files), len(files))
+            print(module, len(compiledFiles), len(compiledFiles))
         for row in block_data["data"]:
             class_name, sub_class_name = self.extract_class_name(row["clazz"])
             block_info = {
@@ -225,6 +229,21 @@ class DataExtractor:
                 result[class_name]["block"].append(block_info)
         return result
 
+    def get_class_map(self, project_name, files: List[UploadFile]):
+        java_files = [f for f in files if f.filename.endswith(".java")]
+
+        if not java_files:
+            logging.warning("No .java files found to upload.")
+            return {}
+
+        logging.info(f"Found {len(java_files)} Java files for project: {project_name}")
+
+        # ✅ Call the class extractor uploader
+        class_map = self.trace_extractor_repository.extract_class_map(project_name, java_files)
+
+        logging.info(f"Extracted {len(class_map)} class mappings.")
+        return class_map
+
     def extract_class_name(self, original_class_name):
         split_original_class_name = original_class_name.split(".")
         parent_path = ".".join(split_original_class_name[: -1])
@@ -237,6 +256,41 @@ class DataExtractor:
             class_name = original_class_name
             sub_class_name = None
         return class_name, sub_class_name
+
+    def extract_repo_urls(self, files: List[UploadFile]) -> dict:
+        """
+        Extract Git remote URLs (origin) from uploaded `.git/config` files.
+        Returns a dict: {repo_root_name: remote_url}
+        """
+        repo_urls = {}
+
+        for f in files:
+            if ".git/config" not in f.filename:
+                continue  # only interested in config files
+            logging.info(f"Extracting {f.filename}")
+            # Try reading the file contents
+            try:
+                content = f.file.read().decode("utf-8", errors="ignore")
+                f.file.seek(0)  # reset cursor after reading
+            except Exception:
+                continue
+
+            # Extract repo root (everything before ".git")
+            path = f.filename.replace("\\", "/")
+            repo_root = path.split("/.git/")[0].split("/")[-1]
+
+            # Find remote origin URL
+            url = None
+            for line in content.splitlines():
+                line = line.strip()
+                if line.startswith("url"):
+                    url = line.split("=", 1)[-1].strip()
+                    break
+
+            if url:
+                repo_urls[repo_root] = url
+
+        return repo_urls
 
 
 if "__main__" == __name__:

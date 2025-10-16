@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,10 +29,16 @@ public class BlockExtractorController {
             @RequestParam("uploadId") String uploadId,
             @RequestParam("isFirst") boolean isFirst,
             @RequestParam("isLast") boolean isLast,
-            @RequestParam("files") MultipartFile[] files
+            @RequestParam("files") MultipartFile[] files,
+            @RequestParam("isClass") boolean isClass
     ) {
+        var processType = "block";
+        if (isClass) {
+            processType = "class";
+        }
+
         File sessionDir = new File(System.getProperty("java.io.tmpdir"),
-                projectName + "-" + uploadId + "-uploaded-classes");
+                projectName + "-" + processType + "-" + uploadId + "-uploaded-classes");
 
         try {
             if (isFirst && sessionDir.exists()) {
@@ -62,19 +69,38 @@ public class BlockExtractorController {
 
             // ✅ Process automatically if last chunk
             if (isLast) {
-                logger.info("Last chunk received → starting processing for {} ({})", projectName, uploadId);
+                logger.info("Last chunk received → starting processing {} for {} ({})", processType, projectName, uploadId);
+                Object response = null;
+                if (isClass) {
+                    ClassNameExtractor extractor = new ClassNameExtractor(sessionDir);
+                    String basePath = sessionDir.getAbsolutePath();
+                    var result = extractor.extractClassMappings();
+                    response = result.entrySet().stream()
+                            .map(entry -> {
+                                String className = entry.getKey();
+                                String filePath = entry.getValue();
 
-                BlockExtractor extractor = new BlockExtractor(sessionDir);
-                var result = extractor.process();
+                                // remove sessionDir prefix if present
+                                String relativePath = filePath.startsWith(basePath)
+                                        ? filePath.substring(basePath.length() + 1) // +1 to remove "/"
+                                        : filePath;
 
-                var response = result.stream()
-                        .flatMap(blockMap -> blockMap.entrySet().stream()
-                                .map(entry -> new BlockLocationDTO(entry.getKey(), entry.getValue())))
-                        .toList();
+                                return new AbstractMap.SimpleEntry<>(
+                                        className,
+                                        relativePath
+                                );
+                            })
+                            .toList();
+                } else {
+                    BlockExtractor extractor = new BlockExtractor(sessionDir);
+                    var result = extractor.process();
 
-                // Optional cleanup
+                    response = result.stream()
+                            .flatMap(blockMap -> blockMap.entrySet().stream()
+                                    .map(entry -> new BlockLocationDTO(entry.getKey(), entry.getValue())))
+                            .toList();
+                }
                 deleteDirectoryRecursively(sessionDir);
-
                 return ResponseEntity.ok(new CommonResponse<>(true, "Processed successfully", response));
             }
 
