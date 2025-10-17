@@ -223,7 +223,7 @@ class CoverageProcessor:
             mutation_coverage_data = await self.data_extractor_service.get_mutation_block_data(files)
 
             for k, v in block_data.items():
-                file_path = class_map[k]
+                file_path = class_map.get(k, "")
                 report_path = report_path_map.get(k, "")
                 logging.info(f"report file {report_path}")
                 v["git_url"] = f"{git_url}/{file_path}"
