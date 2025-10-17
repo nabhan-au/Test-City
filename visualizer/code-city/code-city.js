@@ -229,48 +229,45 @@ void main() { \
     const rows = Math.max(0, Math.floor((gh - margin * 2) / spacingY));
     if (cols <= 0 || rows <= 0) return;
 
-    // normalize requested sides
-    const allowed = new Set(
-      (Array.isArray(sides) && sides.length ? sides : ['north', 'east', 'south', 'west'])
-        .map(s => String(s).toLowerCase())
-    );
+    // normalize requested sides (PRESERVE CALLER ORDER)
+    const toCells = {
+      north: () => {
+        const out = [];
+        for (let c = 0; c < cols; c++) out.push([0, c]);
+        return out;
+      },
+      south: () => {
+        const out = [];
+        for (let c = 0; c < cols; c++) out.push([rows - 1, c]);
+        return out;
+      },
+      west: () => {
+        const out = [];
+        for (let r = 1; r < Math.max(1, rows - 1); r++) out.push([r, 0]);
+        return out;
+      },
+      east: () => {
+        const out = [];
+        for (let r = 1; r < Math.max(1, rows - 1); r++) out.push([r, cols - 1]);
+        return out;
+      }
+    };
 
-    // Build ring cells PER SIDE (avoid double-adding corners):
     const ring = [];
-    if (allowed.has('north')) {
-      for (let c = 0; c < cols; c++) ring.push([0, c]); // top row
-    }
-    if (allowed.has('south')) {
-      for (let c = 0; c < cols; c++) ring.push([rows - 1, c]); // bottom row
-    }
-    if (allowed.has('west')) {
-      for (let r = 1; r < Math.max(1, rows - 1); r++) ring.push([r, 0]); // left col (no corners)
-    }
-    if (allowed.has('east')) {
-      for (let r = 1; r < Math.max(1, rows - 1); r++) ring.push([r, cols - 1]); // right col (no corners)
+    const safeSides = (Array.isArray(sides) && sides.length) ? sides : ['north', 'east', 'south', 'west'];
+    for (const s of safeSides) {
+      const fn = toCells[String(s).toLowerCase()];
+      if (fn) ring.push(...fn());
     }
     if (!ring.length) return;
 
-    // even distribution across chosen ring cells
-    const distribute = (N, cap) => {
-      const arr = new Array(cap).fill(0);
-      for (let i = 0; i < Math.max(0, N); i++) arr[i % cap] += 1;
-      return arr;
-    };
     const cap = ring.length;
-    const killedPerCell = distribute(killed, cap);
-    const survivorsPerCell = distribute(survivors, cap);
-    const noCoveragePerCell = distribute(noCoverage, cap);
-
-    // vertical block size
-    const blockZ = Math.max(0.01, unitH);
 
     // materials
     const whiteMat = new three.MeshPhongMaterial({ color: 0xffffff }); // NO_COVERAGE
     const redMat = new three.MeshPhongMaterial({ color: 0xcc2b2b }); // SURVIVED/RUN_ERROR
     const greyMat = new three.MeshPhongMaterial({ color: 0x888888 }); // KILLED/TIMED_OUT/MEMORY_ERROR
 
-    // bucket mutations by status
     const killedMutation = [];
     const survivedMutation = [];
     const noCoverageMutation = [];
@@ -283,8 +280,16 @@ void main() { \
         case 'KILLED':
         case 'TIMED_OUT':
         case 'MEMORY_ERROR': killedMutation.push(m); break;
-        default: /* ignore */ break;
+        default: break;
       }
+    }
+
+    // helper to pop a metadata object for a kind
+    function takeMutation(kind) {
+      if (kind === 'KILLED') return killedMutation.shift() || null;
+      if (kind === 'SURVIVED') return survivedMutation.shift() || null;
+      if (kind === 'NO_COVERAGE') return noCoverageMutation.shift() || null;
+      return null;
     }
 
     const parentD = building.d || null;
@@ -293,52 +298,54 @@ void main() { \
     const cellCenterX = c => -((cols - 1) * spacingX) / 2 + c * spacingX;
     const cellCenterY = r => -((rows - 1) * spacingY) / 2 + r * spacingY;
 
-    for (let i = 0; i < cap; i++) {
-      const [r, c] = ring[i];
-      const k = killedPerCell[i];
-      const s = survivorsPerCell[i];
-      const n = noCoveragePerCell[i];
-      const total = k + s + n;
-      if (!total) continue;
+    // ---- GROUPED-BY-KIND, STILL FLOOR-FILLING (no gaps) ----
+    const useSpheres = (opts?.shape === 'sphere');
+    const blockZ = Math.max(0.01, unitH);
+    const sphereRadius = Math.min(cubeW, cubeD) * 0.5;
+    const verticalStep = useSpheres ? (sphereRadius * 2 + gapZ) : (blockZ + gapZ);
+    const baseTop = gd / 2 + roofLift;
 
-      const x = cellCenterX(c);
-      const y = cellCenterY(r);
+    let placed = 0;
 
-      for (let h = 0; h < total; h++) {
-        let mat, currentMutation;
+    const placeKind = (kind, count, mat, popMeta) => {
+      for (let i = 0; i < count; i++) {
+        const cellIndex = placed % cap;
+        const level = Math.floor(placed / cap);
 
-        if (h >= k && h < k + s) {
-          mat = redMat;
-          currentMutation = survivedMutation.shift();
-        } else if (h >= k + s) {
-          mat = whiteMat;
-          currentMutation = noCoverageMutation.shift();
-        } else {
-          mat = greyMat;
-          currentMutation = killedMutation.shift();
-        }
+        const [r, c] = ring[cellIndex];
+        const x = cellCenterX(c);
+        const y = cellCenterY(r);
 
-        const geom = new three.BoxGeometry(cubeW, cubeD, blockZ);
+        const geom = useSpheres
+          ? new three.SphereGeometry(sphereRadius, 16, 12)
+          : new three.BoxGeometry(cubeW, cubeD, blockZ);
+
         const mesh = new three.Mesh(geom, mat);
 
-        const z = gd / 2 + roofLift + (blockZ + gapZ) * h + blockZ / 2;
+        const z = baseTop + verticalStep * level + (useSpheres ? 0 : blockZ / 2);
         mesh.position.set(x, y, z);
 
         // metadata
+        const meta = popMeta?.() || null;
         mesh.userData.isMutantStack = true;
-        if (currentMutation) {
-          mesh.userData.kind = currentMutation.status;
-          mesh.userData.description = currentMutation.description;
-          mesh.userData.methodName = currentMutation.method_name;
-          mesh.userData.methodLine = currentMutation.line_number;
-          mesh.userData.tests = currentMutation.tests;
+        mesh.userData.kind = meta?.status || kind;
+        if (meta) {
+          mesh.userData.description = meta.description;
+          mesh.userData.methodName = meta.method_name;
+          mesh.userData.methodLine = meta.line_number;
+          mesh.userData.tests = meta.tests;
         }
         mesh.userData.parentPath = parentD?.path || parentD?.key || '';
         mesh.userData.parentTitle = parentD?.title || '';
 
         building.add(mesh);
+        placed++;
       }
-    }
+    };
+
+    placeKind('NO_COVERAGE', noCoverage, whiteMat, () => noCoverageMutation.shift() || null);
+    placeKind('SURVIVED', survivors, redMat, () => survivedMutation.shift() || null);
+    placeKind('KILLED', killed, greyMat, () => killedMutation.shift() || null);
   }
 
   function setRoofRingSides(sides) {
@@ -854,7 +861,7 @@ void main() { \
 
     setFloorVisible(false);
     removeAllDirection2DLights();
-    addAllDirection2DLights();     
+    addAllDirection2DLights();
     render();
   }
 
