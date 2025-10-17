@@ -54,16 +54,67 @@
 
     <!-- Upload Section -->
     <section class="container mx-auto px-6 py-20">
-        <h2 class="text-4xl text-center mb-10">Upload Your Model</h2>
-        <div class="bg-white bg-opacity-10 rounded-lg p-8 text-center">
-            <form id="uploadForm" enctype="multipart/form-data">
-                <input type="file" id="folderInput" name="files" webkitdirectory directory multiple
-                    class="py-4 px-6 bg-white bg-opacity-5 rounded mr-4">
-                <input type="text" id="project_name" name="project_name" placeholder="Project Name"
-                    class="mt-4 mb-4 py-2 px-4 rounded bg-opacity-5 bg-white text-white">
-                <button type="submit" class="mt-4 bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded">Upload</button>
-            </form>
-        </div>
+      <h2 class="text-4xl font-semibold text-center text-white mb-10">Upload Your Project</h2>
+
+      <div class="bg-white bg-opacity-10 rounded-xl p-8 max-w-2xl mx-auto shadow-lg">
+        <form id="uploadForm" enctype="multipart/form-data" class="space-y-6">
+
+          <!-- Project Identifier -->
+          <div class="hidden">
+            <label for="project_identifier" class="block text-gray-200 text-sm mb-2 font-medium">
+              Enter your project identifier
+              <span class="text-gray-400">(e.g., <code>apache/commons-lang</code>)</span>
+            </label>
+            <input
+              type="text"
+              id="project_identifier"
+              name="project_identifier"
+              placeholder="e.g., owner/repo-name"
+              class="w-full py-3 px-4 rounded-lg bg-white bg-opacity-5 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+          </div>
+
+          <!-- Project Name -->
+          <div>
+            <label for="project_name" class="block text-gray-200 text-sm mb-2 font-medium">
+              Project name
+            </label>
+            <input
+              type="text"
+              id="project_name"
+              name="project_name"
+              placeholder="e.g., project-1"
+              class="w-full py-3 px-4 rounded-lg bg-white bg-opacity-5 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+          </div>
+
+          <!-- Folder Upload -->
+          <div>
+            <label for="folderInput" class="block text-gray-200 text-sm mb-2 font-medium">
+              Select your project folder
+            </label>
+            <input
+              type="file"
+              id="folderInput"
+              name="files"
+              webkitdirectory
+              directory
+              multiple
+              class="block w-full py-3 px-4 rounded-lg bg-white bg-opacity-5 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+          </div>
+
+          <!-- Button -->
+          <div class="flex justify-center pt-4">
+            <button
+              type="submit"
+              class="bg-blue-500 hover:bg-blue-600 px-8 py-3 rounded-lg text-white font-semibold transition"
+            >
+              Upload
+            </button>
+          </div>
+        </form>
+      </div>
     </section>
     <hr class="border-t border-gray-600 my-12">
 
@@ -101,6 +152,14 @@
     <script type="module">
         import { fetchProjectList, uploadProject } from "./data/loaders";
 
+        const projectNameInput = document.getElementById("project_name");
+        const projectIdentifierInput = document.getElementById("project_identifier");
+        projectIdentifierInput.addEventListener("input", () => {
+            // Replace "/" with "-" and update the project name field
+            const value = projectIdentifierInput.value.trim().replace(/\//g, "-");
+            projectNameInput.value = value;
+  });
+
         function addProject(projectName) {
             const defaultMessage = document.getElementById("defaultMessage");
             if (defaultMessage) defaultMessage.remove();
@@ -125,7 +184,9 @@
         document.getElementById("uploadForm").addEventListener("submit", async e => {
             e.preventDefault();
             const files = document.getElementById("folderInput").files;
+            const projectIdentifier = document.getElementById("project_identifier").value.trim();
             const projectName = document.getElementById("project_name").value.trim();
+
 
             if (files.length === 0 || !projectName) {
                 alert("Please select a folder and enter a project name.");
@@ -134,7 +195,7 @@
 
             try {
                 loadingModal.classList.remove("hidden");
-                const result = await uploadProject(projectName, files);
+                const result = await uploadProject(projectName, projectIdentifier, files);
                 addProject(projectName);
             } catch (err) {
                 console.error(err);

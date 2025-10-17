@@ -26,7 +26,8 @@ services:
         sleep 5;
         mc alias set local http://minio:9000 admin supersecret;
         mc mb local/results;
-        mc mb local/temp;
+        mc mb local/pit-reports;
+        mc anonymous set download local/pit-reports;
         echo 'Uploading complexity JSON files...';
         mc cp --recursive /init/ local/results/;
         echo 'Upload complete!';

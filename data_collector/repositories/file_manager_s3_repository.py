@@ -1,5 +1,6 @@
 from io import BytesIO
 
+from mimetypes import guess_type
 from fastapi import UploadFile
 from minio import Minio, S3Error
 from urllib3.response import HTTPResponse
@@ -41,11 +42,13 @@ class FileManagerS3Repository:
     async def upload_raw_file(self, file: UploadFile, object_name: str, bucket_name: str = bucket_name_default):
         self.validate_bucket(bucket_name)
         content = await file.read()
+        guessed, _ = guess_type(file.filename or object_name)
+        content_type = guessed or "application/octet-stream"
         self.__minio_client.put_object(
             bucket_name,
             object_name,
             data=BytesIO(content),
             length=len(content),
-            content_type=file.content_type or "application/octet-stream"
+            content_type=content_type
         )
                 

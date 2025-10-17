@@ -1,7 +1,7 @@
 import logging
 from typing import List
 
-from fastapi import APIRouter, HTTPException, status, Depends, UploadFile, Query, File
+from fastapi import APIRouter, HTTPException, status, Depends, UploadFile, Query, File, Form
 from fastapi.responses import JSONResponse
 
 from models.common_response import CommonResponse
@@ -35,11 +35,13 @@ async def get_coverall(project_name, file_manager_s3_service: FileManagerS3Servi
 async def create_project_coverall(
     project_name: str,
     files: List[UploadFile] = File(...),
+    project_identifier: str = Form(..., alias="projectIdentifier"),
     start: bool = Query(False),
     finalize: bool = Query(False),
     coverage: CoverageProcessor = Depends(Provide[Container.coverage_processor_service]),
     filemgr: FileManagerLocalService = Depends(Provide[Container.file_manager_local_service]),
 ):
+    logging.info(f"Creating project {project_name} with identifier {project_identifier}")
     try:
         if start:
             filemgr.clear_staging(project_name)
@@ -56,7 +58,7 @@ async def create_project_coverall(
         staged = await filemgr.get_staged_uploadfiles(project_name)
         if not staged:
             raise HTTPException(400, "No staged files found to finalize")
-        await coverage.process_coverage(staged, project_name)
+        await coverage.process_coverage(staged, project_name, project_identifier)
 
         filemgr.clear_staging(project_name)
 
