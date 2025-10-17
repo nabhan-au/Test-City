@@ -299,6 +299,7 @@ fetchData().then(function (d) {
     }
 
     var treeData = dataHelpers.convertToTree(mergedData, mapperParams);
+    
     dataHelpers.colorize(d3, treeData, 'colorValue', nodeColorScale, { min: 20, max: 100 });
 
     applyLeafPaletteAndPlatformGray(treeData);
@@ -374,7 +375,10 @@ fetchData().then(function (d) {
     };
 
     rotateLeftSpan.on('mousedown', function () {
-        ensureNormalView();
+        if (birdEyeToggle.is(':checked')) {
+            birdEyeToggle.prop('checked', false).trigger('change');
+        }
+
         startRotate(false);
     });
     rotateLeftSpan.on('mouseup mouseleave', function () {
@@ -382,21 +386,28 @@ fetchData().then(function (d) {
     });
 
     rotateRightSpan.on('mousedown', function () {
-        ensureNormalView();
+        if (birdEyeToggle.is(':checked')) {
+            birdEyeToggle.prop('checked', false).trigger('change');
+        }
+
         startRotate(true);
     });
     rotateRightSpan.on('mouseup mouseleave', function () {
         stopRotate();
     });
     rotateUpSpan.on('mousedown', function () {
-        ensureNormalView();
+        if (birdEyeToggle.is(':checked')) {
+            birdEyeToggle.prop('checked', false).trigger('change');
+        }
         startRotatePitch(true);
     });
     rotateUpSpan.on('mouseup mouseleave', function () {
         stopRotatePitch();
     });
     rotateDownSpan.on('mousedown', function () {
-        ensureNormalView();
+        if (birdEyeToggle.is(':checked')) {
+            birdEyeToggle.prop('checked', false).trigger('change');
+        }
         startRotatePitch(false);
     });
     rotateDownSpan.on('mouseup mouseleave', function () {

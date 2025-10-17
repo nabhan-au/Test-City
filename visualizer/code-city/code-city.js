@@ -44,7 +44,6 @@ function codeCity(d3, element, rawData, params, margin, isProgressiveLayout = tr
   if (!window.renderer)
     window.renderer = new three.WebGLRenderer({ alpha: true, antialias: true });
   var renderer = window.renderer;
-
   var intersected;
   var rootHouse;
 
@@ -173,10 +172,6 @@ void main() { \
     cube.userData.origPos = cube.position.clone();
     cube.userData.isHouse = true;
 
-    if (is_building) {
-      houseMeshes.push(cube);
-    }
-
     cube.castShadow = true;
     cube.receiveShadow = true;
 
@@ -201,7 +196,7 @@ void main() { \
           roofRingSides
         );
       }
-      // }
+      houseMeshes.push(cube);
     }
 
     if (!rootHouse) {
@@ -210,104 +205,99 @@ void main() { \
     }
   }
 
-  function createMutantStacksOnRoofRingCubes(building, gw, gh, gd, killed, survivors, noCoverage, d, opts = {}, sides = ['north', 'east', 'south', 'west']) {
+  function createMutantStacksOnRoofRingCubes(
+    building, gw, gh, gd,
+    killed, survivors, noCoverage,
+    d,
+    opts = {},
+    sides = ['north', 'east', 'south', 'west']
+  ) {
     const margin = opts.margin ?? 0.02;
-    const cubeW = opts.cubeW ?? 0.06;
-    const cubeD = opts.cubeD ?? 0.06;
+    const cubeW = opts.cubeW ?? 0.06;     // width (X)
+    const cubeD = opts.cubeD ?? 0.06;     // depth (Y)
     const gapXY = opts.gapXY ?? 0.012;
     const gapZ = opts.gapZ ?? 0.005;
     const unitH = opts.unitH ?? 0.03;
     const roofLift = 0.006;
 
+    // spacing between cell centers
     const spacingX = cubeW + gapXY;
     const spacingY = cubeD + gapXY;
 
+    // grid (in "cell space") that fits the roof after margins
     const cols = Math.max(0, Math.floor((gw - margin * 2) / spacingX));
     const rows = Math.max(0, Math.floor((gh - margin * 2) / spacingY));
     if (cols <= 0 || rows <= 0) return;
 
-    const toCells = {
-      north: () => {
-        const out = [];
-        for (let c = 0; c < cols; c++) out.push([0, c]);
-        return out;
-      },
-      east: () => {
-        const out = [];
-        for (let r = 1; r < Math.max(1, rows - 1); r++) out.push([r, cols - 1]);
-        return out;
-      },
-      south: () => {
-        const out = [];
-        for (let c = cols - 1; c >= 0; c--) out.push([rows - 1, c]);
-        return out;
-      },
-      west: () => {
-        const out = [];
-        for (let r = Math.max(1, rows - 2); r >= 1; r--) out.push([r, 0]);
-        return out;
-      }
-    };
+    // normalize requested sides
+    const allowed = new Set(
+      (Array.isArray(sides) && sides.length ? sides : ['north', 'east', 'south', 'west'])
+        .map(s => String(s).toLowerCase())
+    );
 
-    const allowed = new Set(sides.map(s => s.toLowerCase()));
+    // Build ring cells PER SIDE (avoid double-adding corners):
     const ring = [];
-    for (const side of sides) {
-      const fn = toCells[side.toLowerCase()];
-      if (fn) ring.push(...fn());
+    if (allowed.has('north')) {
+      for (let c = 0; c < cols; c++) ring.push([0, c]); // top row
     }
-    if (ring.length === 0) return;
+    if (allowed.has('south')) {
+      for (let c = 0; c < cols; c++) ring.push([rows - 1, c]); // bottom row
+    }
+    if (allowed.has('west')) {
+      for (let r = 1; r < Math.max(1, rows - 1); r++) ring.push([r, 0]); // left col (no corners)
+    }
+    if (allowed.has('east')) {
+      for (let r = 1; r < Math.max(1, rows - 1); r++) ring.push([r, cols - 1]); // right col (no corners)
+    }
+    if (!ring.length) return;
 
+    // even distribution across chosen ring cells
     const distribute = (N, cap) => {
       const arr = new Array(cap).fill(0);
       for (let i = 0; i < Math.max(0, N); i++) arr[i % cap] += 1;
       return arr;
     };
+    const cap = ring.length;
+    const killedPerCell = distribute(killed, cap);
+    const survivorsPerCell = distribute(survivors, cap);
+    const noCoveragePerCell = distribute(noCoverage, cap);
 
-    const killedPerCell = distribute(killed, ring.lengt);
-    const survivorsPerCell = distribute(survivors, ring.lengt);
-    const noCoveragePerCell = distribute(noCoverage, ring.lengt);
-
+    // vertical block size
     const blockZ = Math.max(0.01, unitH);
-    const whiteMat = new three.MeshPhongMaterial({ color: 0xffffff });
-    const redMat = new three.MeshPhongMaterial({ color: 0xcc2b2b });
-    const greyMat = new three.MeshPhongMaterial({ color: 0x888888 });
-    const killedMutation = []
-    const survivedMutation = []
-    const noCoverageMutation = []
 
-    const mutationCases = d.data.mutations.details.details
-    for (let i = 0; i < mutationCases.length; i++) {
-      const mutation = mutationCases[i]
-      switch (mutation.status) {
-        case "NO_COVERAGE":
-          noCoverageMutation.push(mutation)
-          break
-        case "RUN_ERROR":
-          survivedMutation.push(mutation)
-        case "KILLED":
-          killedMutation.push(mutation)
-          break
-        case "TIMED_OUT":
-          killedMutation.push(mutation)
-          break
-        case "SURVIVED":
-          survivedMutation.push(mutation)
-          break
-        default:
-        // console.log("Mutation not fall in any case", mutation)
+    // materials
+    const whiteMat = new three.MeshPhongMaterial({ color: 0xffffff }); // NO_COVERAGE
+    const redMat = new three.MeshPhongMaterial({ color: 0xcc2b2b }); // SURVIVED/RUN_ERROR
+    const greyMat = new three.MeshPhongMaterial({ color: 0x888888 }); // KILLED/TIMED_OUT/MEMORY_ERROR
+
+    // bucket mutations by status
+    const killedMutation = [];
+    const survivedMutation = [];
+    const noCoverageMutation = [];
+    const mutationCases = d?.data?.mutations?.details?.details || [];
+    for (const m of mutationCases) {
+      switch (m.status) {
+        case 'NO_COVERAGE': noCoverageMutation.push(m); break;
+        case 'SURVIVED':
+        case 'RUN_ERROR': survivedMutation.push(m); break;
+        case 'KILLED':
+        case 'TIMED_OUT':
+        case 'MEMORY_ERROR': killedMutation.push(m); break;
+        default: /* ignore */ break;
       }
     }
 
     const parentD = building.d || null;
 
+    // helpers: convert cell index to local roof coordinates (centered)
     const cellCenterX = c => -((cols - 1) * spacingX) / 2 + c * spacingX;
     const cellCenterY = r => -((rows - 1) * spacingY) / 2 + r * spacingY;
 
-    for (let i = 0; i < ring.length; i++) {
+    for (let i = 0; i < cap; i++) {
       const [r, c] = ring[i];
       const k = killedPerCell[i];
       const s = survivorsPerCell[i];
-      const n = noCoveragePerCell[i]
+      const n = noCoveragePerCell[i];
       const total = k + s + n;
       if (!total) continue;
 
@@ -315,37 +305,36 @@ void main() { \
       const y = cellCenterY(r);
 
       for (let h = 0; h < total; h++) {
-        let mat = null;
-        let currentMutation = null
+        let mat, currentMutation;
 
         if (h >= k && h < k + s) {
-          // Case when mutation is survived
-          mat = redMat
-          currentMutation = survivedMutation.shift()
+          mat = redMat;
+          currentMutation = survivedMutation.shift();
         } else if (h >= k + s) {
-          // Case when mutation is no coverage
-          mat = whiteMat
-          currentMutation = noCoverageMutation.shift()
+          mat = whiteMat;
+          currentMutation = noCoverageMutation.shift();
         } else {
-          // Case when mutation is killed
           mat = greyMat;
-          currentMutation = killedMutation.shift()
+          currentMutation = killedMutation.shift();
         }
 
         const geom = new three.BoxGeometry(cubeW, cubeD, blockZ);
         const mesh = new three.Mesh(geom, mat);
 
         const z = gd / 2 + roofLift + (blockZ + gapZ) * h + blockZ / 2;
-
         mesh.position.set(x, y, z);
+
+        // metadata
         mesh.userData.isMutantStack = true;
-        mesh.userData.kind = currentMutation.status;
+        if (currentMutation) {
+          mesh.userData.kind = currentMutation.status;
+          mesh.userData.description = currentMutation.description;
+          mesh.userData.methodName = currentMutation.method_name;
+          mesh.userData.methodLine = currentMutation.line_number;
+          mesh.userData.tests = currentMutation.tests;
+        }
         mesh.userData.parentPath = parentD?.path || parentD?.key || '';
         mesh.userData.parentTitle = parentD?.title || '';
-        mesh.userData.description = currentMutation.description
-        mesh.userData.methodName = currentMutation.method_name
-        mesh.userData.methodLine = currentMutation.line_number
-        mesh.userData.tests = currentMutation.tests
 
         building.add(mesh);
       }
@@ -573,6 +562,7 @@ void main() { \
 
     camera.lookAt(new three.Vector3(0, 0, 0));
     setFloorVisible(true);
+    removeAllDirection2DLights();
     render();
   };
 
@@ -580,6 +570,7 @@ void main() { \
     setRoofRingSides(['north', 'east', 'south', 'west']);
     setCameraRotation(cameraAngle);
     setFloorVisible(true);
+    removeAllDirection2DLights();
   };
 
   var getCameraPitch = function () {
@@ -749,8 +740,6 @@ void main() { \
     minimumHeight = 0.005;
     rootHouse = null;
 
-    houseMeshes = [];
-
     clearScene();
     addLights();
     buildHouses();
@@ -864,6 +853,8 @@ void main() { \
     };
 
     setFloorVisible(false);
+    removeAllDirection2DLights();
+    addAllDirection2DLights();     
     render();
   }
 
@@ -925,6 +916,45 @@ void main() { \
 
     floorEnable = show;
     render();
+  }
+
+  function addAllDirection2DLights() {
+    const hemi = new three.HemisphereLight(0xffffff, 0x444444, 0.6);
+    hemi.position.set(0, 0, 10);
+    hemi.userData.is2DLight = true;
+    scene.add(hemi);
+
+    const dirs = [
+      new three.Vector3(8, 0, 6),
+      new three.Vector3(-8, 0, 6),
+      new three.Vector3(0, 8, 6),
+      new three.Vector3(0, -8, 6),
+    ];
+
+    for (const p of dirs) {
+      const dl = new three.DirectionalLight(0xffffff, 0.6);
+      dl.position.copy(p);
+      dl.target.position.set(0, 0, 0);
+      dl.userData.is2DLight = true;
+      dl.castShadow = false;
+      scene.add(dl);
+      scene.add(dl.target);
+    }
+  }
+
+  function removeAllDirection2DLights() {
+    const toRemove = [];
+    scene.traverse(obj => {
+      if ((obj.isLight || obj.isObject3D) && obj.userData?.is2DLight) {
+        toRemove.push(obj);
+      }
+    });
+    for (const obj of toRemove) {
+      if (obj.target && obj.target.userData?.is2DLight) {
+        scene.remove(obj.target);
+      }
+      scene.remove(obj);
+    }
   }
 
   return {
