@@ -22,6 +22,7 @@ function codeCity(d3, element, rawData, params, margin, isProgressiveLayout = tr
   var canvas = d3.select(element);
   let houseMeshes = [];
   let linearLayoutEnabled = false;
+  let floorEnable = true;
 
   var data, normalized_block_size = null
   let currentMargin = margin;
@@ -366,6 +367,7 @@ void main() { \
     buildHouses();
 
     setCameraRotation(cameraAngle);
+    setFloorVisible(floorEnable);
     render();
   }
 
@@ -729,6 +731,7 @@ void main() { \
     camera.position.copy(prePos);
     camera.up.copy(preUp);
     camera.lookAt(preTarget);
+    setFloorVisible(floorEnable);
     render();
   }
 
@@ -752,7 +755,7 @@ void main() { \
     addLights();
     buildHouses();
 
-    setCameraRotation(cameraAngle);
+    setFloorVisible(floorEnable);
     render();
   }
 
@@ -920,6 +923,7 @@ void main() { \
       }
     });
 
+    floorEnable = show;
     render();
   }
 
