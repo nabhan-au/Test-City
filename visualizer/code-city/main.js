@@ -17,7 +17,6 @@ var codeCityChart;
 async function fetchData() {
     try {
         var data = await dataLoaders.fetchProjectData(params.get('project'));
-        console.log(data)
         return data;
     } catch (error) {
         return null;
@@ -32,31 +31,37 @@ let heightMode = 'loc'; // 'loc' | 'trace'
 var legendDiv = $('#code-city-legend')[0];
 var heightMetricSelect = $('#height-metric');
 
+const rotateBtns = $('#rotate-left, #rotate-right, #rotate-up, #rotate-down');
+const zoomBtns = $('#zoom-in, #zoom-out');
 var rotateLeftSpan = $('#rotate-left');
 var rotateRightSpan = $('#rotate-right');
 var rotateUpSpan = $('#rotate-up');
 var rotateDownSpan = $('#rotate-down');
-var zoomInSpan = $('#zoom-in')
-var zoomOutSpan = $('#zoom-out')
+var zoomInSpan = $('#zoom-in');
+var zoomOutSpan = $('#zoom-out');
+var panLeftBtn = $('#pan-left');
+var panRightBtn = $('#pan-right');
 var birdEyeToggle = $('#toggle-bird-eye');
 var sphereToggle = $('#toggle-spheres');
 var marginSlider = $('#margin-slider');
 var marginValueDisplay = $('#margin-value');
+var viewModeSelect = $('#view-mode');
+const chartBox = $('#code-city-chart');
 
 var nodeColorScale = [
-  '#ffd700', // golden yellow
-  '#ffdb33',
-  '#ffdf66',
-  '#ffe399',
-  '#ffe6b3',
-  '#ffeccc',
-  '#b3e5ff',
-  '#99dbff',
-  '#80d1ff',
-  '#66c7ff',
-  '#4dbdff',
-  '#3399ff',
-  '#1a75ff'  // deeper sky blue
+    '#ffd700', // golden yellow
+    '#ffdb33',
+    '#ffdf66',
+    '#ffe399',
+    '#ffe6b3',
+    '#ffeccc',
+    '#b3e5ff',
+    '#99dbff',
+    '#80d1ff',
+    '#66c7ff',
+    '#4dbdff',
+    '#3399ff',
+    '#1a75ff'  // deeper sky blue
 ]
 
 let gridValue;
@@ -70,10 +75,6 @@ function legendContent(d, e) {
     const lines = d.data?.lines || { coverage: 0, covered_line: 0, total_line: 0 };
     const mutations = d.data?.mutations || { coverage: 0, killed: 0, total_mutation: 0 };
     const traces = d.data?.traces || { average: 0 };
-    const reportPath = d.data?.report_path || "";
-    const reportUrl = reportPath
-    ? `//${window.location.hostname}:9000/pit-reports/${reportPath}`
-    : "#";
 
     return `
       <div class="bg-white text-gray-800 p-4 rounded-lg shadow-md">
@@ -101,18 +102,6 @@ function legendContent(d, e) {
             </tr>
           </tbody>
         </table>
-        ${
-        reportPath
-          ? `
-          <div class="flex justify-left mt-5 items-center mt-3">
-            <a href="${reportUrl}" target="_blank" rel="noopener noreferrer"
-               class="inline-flex items-center bg-blue-600 text-white text-xs font-semibold px-3 py-1.5 rounded-md hover:bg-blue-700 active:scale-[0.97] transition-all duration-150">
-              Open Report
-            </a>
-          </div>
-          `
-          : ""
-      }
       </div>
     `;
 }
@@ -154,7 +143,7 @@ var mapperParams = {
         colorValue: nodeColor,
         title: function (d) { return d.key.split('/').slice(-1)[0]; },
         path: function (d) {
-            return d.key || '(all files)'; 
+            return d.key || '(all files)';
         }
     },
     split: function (key) {
@@ -174,7 +163,7 @@ function setGridValue(d) {
             const loc = value["total_executable_lines"]
             maxValue = Math.max(averageTrace, loc, maxValue);
         }
-       
+
     }
     if (maxValue > 1000000)
         gridValue = 10000;
@@ -218,7 +207,7 @@ fetchData().then(function (d) {
 
         // gray range
         const lightGray = 200; // shallow platforms -> lighter gray
-        const darkGray  =  100; // deep platforms   -> darker gray
+        const darkGray = 100; // deep platforms   -> darker gray
 
         (function walk(n) {
             if (!n) return;
@@ -226,10 +215,10 @@ fetchData().then(function (d) {
             const isLeaf = !n.children || n.children.length === 0;
 
             if (!isLeaf) {
-            const t = (n.depth || 0) / maxDepth;
-            const g = lerp(lightGray, darkGray, t);
-            const hex = `#${toHexByte(g)}${toHexByte(g)}${toHexByte(g)}`;
-            n.color = hex;
+                const t = (n.depth || 0) / maxDepth;
+                const g = lerp(lightGray, darkGray, t);
+                const hex = `#${toHexByte(g)}${toHexByte(g)}${toHexByte(g)}`;
+                n.color = hex;
             }
 
             if (n.children) n.children.forEach(walk);
@@ -277,18 +266,13 @@ fetchData().then(function (d) {
                 // build the path
                 currentPath += "/" + filePaths[i];
             }
+
             // if not found, init
             if (!mergedData[currentPath]) {
-                let reportPath = ""
-                if (currentPath.endsWith(".java")) {
-                    reportPath = data.report_path
-                    // console.log(currentPath)
-                }
                 mergedData[currentPath] = {
                     lines: { coverage: 0, covered_line: 0, total_line: 0 },
                     mutations: { coverage: 0, killed: 0, no_coverage: 0, total_mutation: 0 },
-                    traces: { total_trace: 0, total_block: 0, average: 0 },
-                    report_path: reportPath
+                    traces: { total_trace: 0, total_block: 0, average: 0 }
                 };
             }
             const covered_line = data.line_coverage.total_executable_lines - data.line_coverage.total_missed_lines
@@ -299,11 +283,11 @@ fetchData().then(function (d) {
 
             mergedData[currentPath].mutations.killed += data.mutation.effective_killed;
             mergedData[currentPath].mutations.total_mutation += data.mutation.total_mutations;
-            mergedData[currentPath].mutations.coverage = 
-            mergedData[currentPath].mutations.total_mutation === 0 ? 0
-                : (mergedData[currentPath].mutations.killed / mergedData[currentPath].mutations.total_mutation) * 100;
+            mergedData[currentPath].mutations.coverage =
+                mergedData[currentPath].mutations.total_mutation === 0 ? 0
+                    : (mergedData[currentPath].mutations.killed / mergedData[currentPath].mutations.total_mutation) * 100;
             mergedData[currentPath].mutations.no_coverage += data.mutation.no_coverage;
-            
+
 
             mergedData[currentPath].traces.total_trace += data.total_tests;
             mergedData[currentPath].traces.total_block += data.total_blocks;
@@ -313,8 +297,6 @@ fetchData().then(function (d) {
             mergedData[currentPath].mutations.details = data.mutation
         }
     }
-
-    console.log(mergedData)
 
     var treeData = dataHelpers.convertToTree(mergedData, mapperParams);
     
@@ -373,6 +355,23 @@ fetchData().then(function (d) {
 
     var stopRotatePitch = function () {
         isRotatingPitch = false;
+    };
+
+    function setRotateEnabled(enabled) {
+        rotateBtns.prop('disabled', !enabled);
+        rotateBtns.toggleClass('opacity-50 cursor-not-allowed', !enabled);
+    }
+    setRotateEnabled(true);
+    function setZoomEnabled(enabled) {
+        zoomBtns.prop('disabled', !enabled);
+        zoomBtns.toggleClass('opacity-50 cursor-not-allowed', !enabled);
+    }
+    setZoomEnabled(true);
+
+    const ensureNormalView = () => {
+        if (viewModeSelect.val() !== 'normal') {
+            viewModeSelect.val('normal').trigger('change');
+        }
     };
 
     rotateLeftSpan.on('mousedown', function () {
@@ -465,6 +464,68 @@ fetchData().then(function (d) {
         }
     });
 
+    function ensure2DView() {
+        if (viewModeSelect.val() !== '2d') {
+            viewModeSelect.val('2d').trigger('change');
+        }
+    }
+
+    panLeftBtn.on('mousedown', function () {
+        ensure2DView();
+        codeCityChart.startPan2D(-1);
+    });
+    panLeftBtn.on('mouseup mouseleave', function () {
+        codeCityChart.stopPan2D();
+    });
+
+    panRightBtn.on('mousedown', function () {
+        ensure2DView();
+        codeCityChart.startPan2D(1);
+    });
+    panRightBtn.on('mouseup mouseleave', function () {
+        codeCityChart.stopPan2D();
+    });
+
+
+    function isNormalView() {
+        return viewModeSelect.length ? viewModeSelect.val() === 'normal' : true;
+    }
+
+    function setDragEnabled(enabled) {
+        chartBox.toggleClass('cursor-grab', enabled);
+        chartBox.toggleClass('cursor-not-allowed', !enabled);
+    }
+    setDragEnabled(true);
+
+    function setPanButtonsEnabled(enabled) {
+        panLeftBtn.prop('disabled', !enabled).toggleClass('opacity-50 cursor-not-allowed', !enabled);
+        panRightBtn.prop('disabled', !enabled).toggleClass('opacity-50 cursor-not-allowed', !enabled);
+    }
+    setPanButtonsEnabled(false);
+
+    viewModeSelect.on('change', function () {
+        const mode = this.value; // 'normal'|'bird'|'2d'
+        setRotateEnabled(mode === 'normal');
+        setDragEnabled(mode === 'normal');
+
+        if (mode === 'bird') {
+            setPanButtonsEnabled(false);
+            setZoomEnabled(true);
+            codeCityChart.setLinearLayout(false);
+            codeCityChart.setCameraBirdEyeView();
+        } else if (mode === '2d') {
+            setPanButtonsEnabled(true);
+            setZoomEnabled(false);
+            codeCityChart.setLinearLayout(true);
+            codeCityChart.setCamera2DView();
+        } else {
+            setPanButtonsEnabled(false);
+            setZoomEnabled(true);
+            codeCityChart.setLinearLayout(false);
+            codeCityChart.setCameraNormalView();
+        }
+    });
+
     // project-description
     const descriptionEl = $('#project-description');
 
@@ -485,6 +546,7 @@ fetchData().then(function (d) {
     const chartEl = $('#code-city-chart')[0];
 
     chartEl.addEventListener('mousedown', function (e) {
+        if (!isNormalView()) return;
         isDragging = true;
         lastX = e.clientX;
         lastY = e.clientY;

@@ -196,7 +196,6 @@
             try {
                 loadingModal.classList.remove("hidden");
                 const result = await uploadProject(projectName, projectIdentifier, files);
-                // alert("Upload complete: " + JSON.stringify(result));
                 addProject(projectName);
             } catch (err) {
                 console.error(err);
