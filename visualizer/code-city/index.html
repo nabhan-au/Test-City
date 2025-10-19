@@ -62,21 +62,20 @@
                         class="text-white bg-transparent hover:bg-white hover:bg-opacity-10 px-3 py-1 rounded transition-colors duration-200">
                         Zoom Out
                     </button>
-                    <button id="pan-left"
-                        class="text-white bg-transparent hover:bg-white hover:bg-opacity-10 px-3 py-1 rounded transition-colors duration-200">
-                        ⟵ Pan Left (2D)
-                        </button>
-                        <button id="pan-right"
-                        class="text-white bg-transparent hover:bg-white hover:bg-opacity-10 px-3 py-1 rounded transition-colors duration-200">
-                        Pan Right (2D) ⟶
-                    </button>
+<!--                    <button id="pan-left"-->
+<!--                        class="text-white bg-transparent hover:bg-white hover:bg-opacity-10 px-3 py-1 rounded transition-colors duration-200">-->
+<!--                        ⟵ Pan Left (2D)-->
+<!--                        </button>-->
+<!--                        <button id="pan-right"-->
+<!--                        class="text-white bg-transparent hover:bg-white hover:bg-opacity-10 px-3 py-1 rounded transition-colors duration-200">-->
+<!--                        Pan Right (2D) ⟶-->
+<!--                    </button>-->
                 </div>
                 <div class="mt-4">
                     <label class="text-white mb-1 block">View Mode</label>
                     <select id="view-mode" class="w-full bg-gray-800 text-white rounded px-2 py-1">
                         <option value="normal" selected>Normal (3D)</option>
                         <option value="bird">Bird's Eye</option>
-                        <option value="2d">2D Side</option>
                     </select>
                 </div>
                 <div class="mt-4">
@@ -96,8 +95,8 @@
                 <div class="mt-4">
                     <label class="text-white mb-1 block">Height Metric</label>
                     <select id="height-metric" class="w-full bg-gray-800 text-white rounded px-2 py-1">
-                        <option value="loc" selected>Total Lines (LOC)</option>
-                        <option value="trace">Trace (average)</option>
+                        <option value="loc" selected>Total Executable Lines</option>
+                        <option value="trace">Total Test Cases</option>
                     </select>
                 </div>
             </section>

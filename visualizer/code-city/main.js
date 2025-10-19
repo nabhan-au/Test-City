@@ -577,8 +577,8 @@ fetchData().then(function (d) {
 
     descriptionEl.html(`
     <ul class="list-disc list-inside text-sm space-y-1">
-        <li>Total Files: <strong>${totalFiles}</strong></li>
-        <li>Total Lines: <strong>${totalLines}</strong></li>
+        <li>Total Java Files: <strong>${totalFiles}</strong></li>
+        <li>Total Executable Lines: <strong>${totalLines}</strong></li>
         <li>Lines Covered: <strong>${totalCoveredLines}</strong></li>
         <li>Coverage: <strong>${coveragePercent}%</strong></li>
     </ul>

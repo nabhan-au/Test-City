@@ -343,9 +343,9 @@ void main() { \
       }
     };
 
-    placeKind('NO_COVERAGE', noCoverage, whiteMat, () => noCoverageMutation.shift() || null);
-    placeKind('SURVIVED', survivors, redMat, () => survivedMutation.shift() || null);
     placeKind('KILLED', killed, greyMat, () => killedMutation.shift() || null);
+    placeKind('SURVIVED', survivors, redMat, () => survivedMutation.shift() || null);
+    placeKind('NO_COVERAGE', noCoverage, whiteMat, () => noCoverageMutation.shift() || null);
   }
 
   function setRoofRingSides(sides) {

@@ -305,7 +305,7 @@ class CoverageProcessor:
             ))
 
             if len(match_block) > 1:
-                raise Exception(f"Multiple blocks found for class: {class_name} block: {block} with {match_block}")
+                logging.error(f"Multiple blocks found for class: {class_name} block: {block} with {match_block}")
 
             if len(match_block) == 0:
                 logging.debug(f"{block} not covered")
