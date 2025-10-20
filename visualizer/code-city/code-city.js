@@ -456,7 +456,6 @@ void main() { \
       params.legend.onClick(selectedD, e);
   }
 
-  renderer.setSize(width, height);
   renderer.setClearColor(0x222222, 1);
   renderer.shadowMapEnabled = true;
 

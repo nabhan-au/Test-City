@@ -74,7 +74,7 @@ function legendTitle(d, e) {
 function legendContent(d, e) {
     const lines = d.data?.lines || { coverage: 0, covered_line: 0, total_line: 0 };
     const mutations = d.data?.mutations || { coverage: 0, killed: 0, total_mutation: 0 };
-    const traces = d.data?.traces || { average: 0 };
+    const tests = d.data?.testCount || 0;
     const reportPath = d.data?.report_path || "";
     const reportUrl = reportPath
     ? `//${window.location.hostname}:9000/pit-reports/${reportPath}`
@@ -101,8 +101,8 @@ function legendContent(d, e) {
               <td class="py-1 text-right">${mutations.killed} / ${mutations.total_mutation}</td>
             </tr>
             <tr>
-              <td class="py-1">Average trace</td>
-              <td class="py-1 text-right">${traces.average.toFixed(2)}</td>
+              <td class="py-1">Total distinct tests</td>
+              <td class="py-1 text-right">${tests}</td>
             </tr>
           </tbody>
         </table>
@@ -273,7 +273,6 @@ fetchData().then(function (d) {
 
         // root ""
         let currentPath = "";
-
         for (let i = 0; i < filePaths.length; i++) {
             if (i === 0 && filePaths[i] === "") {
                 // root
@@ -286,16 +285,20 @@ fetchData().then(function (d) {
             // if not found, init
             if (!mergedData[currentPath]) {
                 let reportPath = ""
+                let details = []
                 if (currentPath.endsWith(".java")) {
                     reportPath = data.report_path
-                    // console.log(currentPath)
+                    details = data.mutation
                 }
+
                 mergedData[currentPath] = {
                     lines: { coverage: 0, covered_line: 0, total_line: 0 },
-                    mutations: { coverage: 0, killed: 0, no_coverage: 0, total_mutation: 0 },
+                    mutations: { coverage: 0, killed: 0, no_coverage: 0, total_mutation: 0, details: details },
                     traces: { total_trace: 0, total_block: 0, average: 0 },
+                    tests: new Set(),
                     report_path: reportPath
                 };
+
             }
             const covered_line = data.line_coverage.total_executable_lines - data.line_coverage.total_missed_lines
             mergedData[currentPath].lines.covered_line += covered_line
@@ -309,14 +312,8 @@ fetchData().then(function (d) {
                 mergedData[currentPath].mutations.total_mutation === 0 ? 0
                     : (mergedData[currentPath].mutations.killed / mergedData[currentPath].mutations.total_mutation) * 100;
             mergedData[currentPath].mutations.no_coverage += data.mutation.no_coverage;
-
-
-            mergedData[currentPath].traces.total_trace += data.total_tests;
-            mergedData[currentPath].traces.total_block += data.total_blocks;
-            mergedData[currentPath].traces.average = mergedData[currentPath].traces.total_block === 0 ? 0
-                : mergedData[currentPath].traces.total_trace / mergedData[currentPath].traces.total_block;
-
-            mergedData[currentPath].mutations.details = data.mutation
+            mergedData[currentPath].tests = new Set([...mergedData[currentPath].tests, ...data.tests])
+            mergedData[currentPath].testCount = mergedData[currentPath].tests.size
         }
     }
 

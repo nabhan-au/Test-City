@@ -128,6 +128,9 @@ class CoverageProcessor:
             blocks = payload.get("block", [])
             if not blocks:
                 payload["average_block_trace"] = 0.0
+                payload["total_blocks"] = 0
+                payload["total_tests"] = 0
+                payload["distinct_tests"] = 0
                 continue
 
             total_tests = 0
@@ -218,20 +221,30 @@ class CoverageProcessor:
                 logging.info(f"{module} does not contain any .class files.")
                 continue
 
+            block_coverage, test_result = await self.data_extractor_service.get_block_coverage(files)
             block_data = self.data_extractor_service.get_project_block_data(repo_name, module, production_class_files)
-            block_coverage = await self.data_extractor_service.get_block_coverage(files)
             mutation_coverage_data = await self.data_extractor_service.get_mutation_block_data(files)
 
             for k, v in block_data.items():
                 file_path = class_map.get(k, "")
                 report_path = report_path_map.get(k, "")
-                logging.info(f"report file {report_path}")
                 v["git_url"] = f"{git_url}/{file_path}"
                 v["report_path"] = report_path
+
+                # Code Coverage
                 if k not in block_coverage:
                     logging.debug(f"Class {k} does not contain any line coverage data.")
                 else:
                     await self.integrate_coverage_result(block_coverage[k], k, v)
+
+                #Test cases
+                if k not in test_result:
+                    logging.debug(f"Class {k} does not contain any test result.")
+                    v["tests"] = []
+                else:
+                    v["tests"] = list(test_result[k])
+
+                #Mutation tests
                 if k not in mutation_coverage_data:
                     mutation_data = []
                 else:
@@ -329,7 +342,6 @@ class CoverageProcessor:
     async def process_coverage(self, files: List[UploadFile], repo_name, project_identifier):
         github_url = self.get_github_url(project_identifier)
         report_path_map = await self.file_manager_service.upload_pitest_reports(files, repo_name)
-        logging.info(f"Report paths: {report_path_map}")
         logging.info(f"Processing {len(files)} files")
         coverage_result = []
         coverage_result = await self.extract_data(coverage_result, files, repo_name, github_url, report_path_map)

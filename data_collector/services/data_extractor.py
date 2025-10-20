@@ -25,6 +25,7 @@ class DataExtractor:
         if not line_coverage_file:
             return {}
 
+        test_result = {}
         coverage_result = {}
         for file in line_coverage_file:
             content = await file.read()
@@ -45,124 +46,17 @@ class DataExtractor:
                     "tests": tests,
                     "found_match": False
                 }
+                test_set = set([t["@name"] for t in tests])
                 if class_name not in coverage_result:
                     coverage_result[class_name] = [coverage_dict]
+                    test_result[class_name] = test_set
                 else:
                     coverage_result[class_name].append(coverage_dict)
-        return coverage_result
+                    test_result[class_name].update(test_set)
+                if class_name.endswith("net.SocketClient"):
+                    logging.info(test_result[class_name])
+        return [coverage_result, test_result]
 
-    # def _internal_to_qualified(self, internal: str) -> str:
-    #     # com/example/Foo -> com.example.Foo
-    #     return internal.replace('/', '.')
-    #
-    # def _top_level_only(self, internal: str) -> str:
-    #     # com/example/Foo$Inner -> com/example/Foo ; com/example/Foo$1 -> com/example/Foo
-    #     return internal.split('$', 1)[0]
-    #
-    # # ---------- main ----------
-    # async def get_line_coverage(self, files: List[UploadFile]) -> Dict[str, Dict[str, Any]]:
-    #     """
-    #     Returns a dict keyed by top-level class name (fully qualified, dotted),
-    #     with missing line numbers and their 0-based indices among executable lines.
-    #
-    #     {
-    #       "com.example.Foo": {
-    #         "total_executable_lines": 14,
-    #         "total_missed_lines": 3,
-    #         "missed_lines": [83, 97, 101],       # actual source line numbers
-    #         "missed_indices": [0, 5, 7]          # 0-based positions in sorted executable-line list
-    #       },
-    #       ...
-    #     }
-    #     """
-    #     jacoco_files = [f for f in files if f.filename.endswith("jacoco.xml")]
-    #     if not jacoco_files:
-    #         return {}
-    #
-    #     # Accumulators per class:
-    #     #   - executable_lines: set of all executable line numbers seen (union across reports)
-    #     #   - covered_lines   : set of line numbers seen as covered in any report
-    #     class_exec_lines: Dict[str, set] = defaultdict(set)
-    #     class_cov_lines: Dict[str, set] = defaultdict(set)
-    #
-    #     for up in jacoco_files:
-    #         content = await up.read()
-    #         try:
-    #             root = ET.fromstring(content)
-    #         except ET.ParseError:
-    #             continue  # skip malformed XML
-    #
-    #         # 1) Build mapping (package, sourcefilename) -> top-level class (qualified)
-    #         file_to_topclass: Dict[Tuple[str, str], str] = {}
-    #         for pkg in root.findall("package"):
-    #             pkg_name_internal = pkg.get("name", "")
-    #             for cls in pkg.findall("class"):
-    #                 internal_name = cls.get("name")
-    #                 src_file = cls.get("sourcefilename")
-    #                 if not internal_name or not src_file:
-    #                     continue
-    #                 top_level = self._top_level_only(internal_name)
-    #                 key = (pkg_name_internal, src_file)
-    #                 # first seen wins; normal Java has one public top-level per file
-    #                 if key not in file_to_topclass:
-    #                     file_to_topclass[key] = self._internal_to_qualified(top_level)
-    #         # 2) Walk <sourcefile>/<line> and bucket into the owning top-level class
-    #         for pkg in root.findall("package"):
-    #             pkg_name_internal = pkg.get("name", "")
-    #             for sf in pkg.findall("sourcefile"):
-    #                 src_name = sf.get("name")
-    #                 if not src_name:
-    #                     continue
-    #                 key = (pkg_name_internal, src_name)
-    #                 if key not in file_to_topclass:
-    #                     # No top-level class detected for this file (only inner/anonymous) — skip
-    #                     continue
-    #
-    #                 class_name = file_to_topclass[key]
-    #
-    #                 # collect (nr, ci>0?) for this source file
-    #                 lines: List[Tuple[int, bool]] = []
-    #                 for ln in sf.findall("line"):
-    #                     nr = ln.get("nr")
-    #                     ci = ln.get("ci", "0")
-    #                     if nr is None:
-    #                         continue
-    #                     try:
-    #                         line_nr = int(nr)
-    #                         is_cov = int(ci) > 0
-    #                     except ValueError:
-    #                         continue
-    #                     lines.append((line_nr, is_cov))
-    #
-    #                 if not lines:
-    #                     continue
-    #
-    #                 # Merge into class accumulators
-    #                 for line_nr, is_cov in lines:
-    #                     class_exec_lines[class_name].add(line_nr)
-    #                     if is_cov:
-    #                         class_cov_lines[class_name].add(line_nr)
-    #
-    #     # 3) Build final report with indices
-    #     report: Dict[str, Dict[str, Any]] = {}
-    #     for class_name, exec_set in class_exec_lines.items():
-    #         # ordered list of executable lines for this class
-    #         exec_lines_sorted = sorted(exec_set)
-    #         covered = class_cov_lines.get(class_name, set())
-    #         missed_lines = [ln for ln in exec_lines_sorted if ln not in covered]
-    #
-    #         # indices are positions in exec_lines_sorted
-    #         idx_map = {ln: i for i, ln in enumerate(exec_lines_sorted)}
-    #         missed_indices = [idx_map[ln] for ln in missed_lines]
-    #
-    #         report[class_name] = {
-    #             "total_executable_lines": len(exec_lines_sorted),
-    #             "total_missed_lines": len(missed_lines),
-    #             "missed_lines": missed_lines,
-    #             "missed_indices": missed_indices,
-    #         }
-    #
-    #     return report
 
     async def get_mutation_block_data(self, files: List[UploadFile]):
         mutations_file = list(filter(lambda file: file.filename.endswith("mutations.xml"), files))
