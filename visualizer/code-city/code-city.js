@@ -238,12 +238,13 @@ void main() { \
       },
       south: () => {
         const out = [];
-        for (let c = 0; c < cols; c++) out.push([rows - 1, c]);
+        for (let c = cols - 1; c >= 0; c--) out.push([rows - 1, c]);
         return out;
       },
       west: () => {
         const out = [];
-        for (let r = 1; r < Math.max(1, rows - 1); r++) out.push([r, 0]);
+        const maxR = Math.max(1, rows - 1);
+        for (let r = maxR - 1; r >= 1; r--) out.push([r, 0]);
         return out;
       },
       east: () => {
