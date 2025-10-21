@@ -126,6 +126,9 @@ function nodeHeight(d) {
     if (heightMode === 'trace') {
         const v = d?.data?.traces?.average;
         return (typeof v === 'number' && isFinite(v) && v > 1) ? v : 1;
+    } else if (heightMode === 'test-count') {
+        const tc = d?.data?.testCount;
+        return (typeof tc === 'number' && isFinite(tc) && tc > 1) ? tc : 1;
     }
     // default: LOC total lines
     const tl = d?.data?.lines?.total_line;
