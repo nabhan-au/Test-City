@@ -298,7 +298,7 @@ class CoverageProcessor:
                     "details": mutation_data
                 }
 
-            summarized_result = self.summarize_block_style_coverage(block_data, total_lines_map)
+            summarized_result = self.summarize_block_style_coverage(block_data, {})
             data[module] = summarized_result
 
         return data
@@ -455,11 +455,8 @@ class CoverageProcessor:
 
             if not exec_lines_set:
                 del payload["block"]
-                total_executable_lines = 0
-                if class_name in total_lines_map:
-                    total_executable_lines = total_lines_map[class_name]
                 summary = {
-                    "total_executable_lines": total_executable_lines,
+                    "total_executable_lines": 0,
                     "total_covered_lines": 0,
                     "covered_indices": [],
                 }
@@ -474,8 +471,6 @@ class CoverageProcessor:
             total_exec = len(exec_sorted)
             total_covered = len(covered_set)
 
-            if class_name in total_lines_map:
-                total_exec = total_lines_map[class_name]
             summary = {
                 "total_executable_lines": total_exec,
                 "total_covered_lines": total_covered,

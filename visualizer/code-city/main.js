@@ -304,8 +304,7 @@ fetchData().then(function (d) {
                 };
 
             }
-            const covered_line = data.line_coverage.total_covered_lines
-            mergedData[currentPath].lines.covered_line += covered_line
+            mergedData[currentPath].lines.covered_line += data.line_coverage.total_covered_lines
             mergedData[currentPath].lines.total_line += data.line_coverage.total_executable_lines;
             mergedData[currentPath].lines.coverage = mergedData[currentPath].lines.total_line === 0 ? 0
                 : (mergedData[currentPath].lines.covered_line / mergedData[currentPath].lines.total_line) * 100;
@@ -557,7 +556,8 @@ fetchData().then(function (d) {
     let totalLines = 0;
     let totalCoveredLines = 0;
 
-    for (const [_, data] of Object.entries(d)) {
+    for (const [key, data] of Object.entries(d)) {
+        console.log(key, data.line_coverage.total_executable_lines, data.line_coverage.total_covered_lines)
         totalLines += data.line_coverage.total_executable_lines || 0;
         totalCoveredLines += data.line_coverage.total_covered_lines || 0;
     }
