@@ -270,6 +270,7 @@ fetchData().then(function (d) {
     var mergedData = {};
     window.__mergedDataForHeightSwitch = mergedData;
 
+    console.log(d)
     for (const [filePath, data] of Object.entries(d)) {
         const normalizedPath = filePath.startsWith('/') ? filePath : '/' + filePath;
         const filePaths = normalizedPath.split('/');
@@ -303,7 +304,7 @@ fetchData().then(function (d) {
                 };
 
             }
-            const covered_line = data.line_coverage.total_executable_lines - data.line_coverage.total_missed_lines
+            const covered_line = data.line_coverage.total_covered_lines
             mergedData[currentPath].lines.covered_line += covered_line
             mergedData[currentPath].lines.total_line += data.line_coverage.total_executable_lines;
             mergedData[currentPath].lines.coverage = mergedData[currentPath].lines.total_line === 0 ? 0
@@ -557,9 +558,8 @@ fetchData().then(function (d) {
     let totalCoveredLines = 0;
 
     for (const [_, data] of Object.entries(d)) {
-        const covered_line = data.line_coverage.total_executable_lines - data.line_coverage.total_missed_lines
         totalLines += data.line_coverage.total_executable_lines || 0;
-        totalCoveredLines += covered_line || 0;
+        totalCoveredLines += data.line_coverage.total_covered_lines || 0;
     }
 
     const coveragePercent = totalLines > 0 ? ((totalCoveredLines / totalLines) * 100).toFixed(2) : '0.00';

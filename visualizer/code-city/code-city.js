@@ -219,6 +219,7 @@ void main() { \
     const gapZ = opts.gapZ ?? 0.005;
     const unitH = opts.unitH ?? 0.03;
     const roofLift = 0.006;
+    const reportPath = d?.data?.report_path ?? null
 
     // spacing between cell centers
     const spacingX = cubeW + gapXY;
@@ -308,7 +309,7 @@ void main() { \
 
     let placed = 0;
 
-    const placeKind = (kind, count, mat, popMeta) => {
+    const placeKind = (kind, count, mat, reportPath, popMeta) => {
       for (let i = 0; i < count; i++) {
         const cellIndex = placed % cap;
         const level = Math.floor(placed / cap);
@@ -335,6 +336,7 @@ void main() { \
           mesh.userData.methodName = meta.method_name;
           mesh.userData.methodLine = meta.line_number;
           mesh.userData.tests = meta.tests;
+          mesh.userData.reportPath = reportPath ? reportPath + meta.href : null
         }
         mesh.userData.parentPath = parentD?.path || parentD?.key || '';
         mesh.userData.parentTitle = parentD?.title || '';
@@ -344,9 +346,9 @@ void main() { \
       }
     };
 
-    placeKind('KILLED', killed, greyMat, () => killedMutation.shift() || null);
-    placeKind('SURVIVED', survivors, redMat, () => survivedMutation.shift() || null);
-    placeKind('NO_COVERAGE', noCoverage, whiteMat, () => noCoverageMutation.shift() || null);
+    placeKind('KILLED', killed, greyMat, reportPath,  () => killedMutation.shift() || null);
+    placeKind('SURVIVED', survivors, redMat, reportPath, () => survivedMutation.shift() || null);
+    placeKind('NO_COVERAGE', noCoverage, whiteMat, reportPath, () => noCoverageMutation.shift() || null);
   }
 
   function setRoofRingSides(sides) {
@@ -429,7 +431,8 @@ void main() { \
             kind: hitMesh.userData.kind,
             parentPath: hitMesh.userData.parentPath,
             parentTitle: hitMesh.userData.parentTitle,
-            tests: hitMesh.userData.tests
+            tests: hitMesh.userData.tests,
+            reportPath: hitMesh.userData.reportPath
           };
         }
 

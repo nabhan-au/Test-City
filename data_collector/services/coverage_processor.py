@@ -65,7 +65,7 @@ class CoverageProcessor:
             result.append(data)
         return result
 
-    def extract_line_coverage(seflf, line_coverage):
+    def extract_line_coverage(self, line_coverage):
         match = re.search(r"(\d+)%\s+(\d+)/(\d+)", line_coverage)
         if not match:
             raise Exception(f"Line Coverage could not be extracted: {line_coverage}")
@@ -208,9 +208,29 @@ class CoverageProcessor:
                             seen.add(key)
                             mut["tests"].append(test)
 
-    async def extract_data(self, coverage_result, files, repo_name, git_url, report_path_map, project_type ="maven"):
-        repo_url = self.data_extractor_service.extract_repo_urls(files)
+    def integrate_mutation_location(self, mutation_block_dict, mutation_location_dict):
+        current_line = mutation_block_dict["line_number"]
+        mutation_block_dict["href"] = mutation_location_dict[int(current_line)]
+
+    def merge_class(self, class1, class2):
+        class1["mutation"]["details"].extend(class2["mutation"]["details"])
+        new_tests = set(class1["tests"])
+        new_tests.update(set(class2["tests"]))
+        class1["tests"] = list(new_tests)
+        class1["block"].extend(class2["block"])
+        return class1
+
+    async def extract_data(self, coverage_result, files, repo_name, git_url, report_path_map, mutation_html_link_map, total_lines_map, project_type ="maven"):
         class_map = self.data_extractor_service.get_class_map(repo_name, files)
+
+        class_to_file_map = {}
+        for k, v in class_map.items():
+            if k.split(".")[-1] != v.split("/")[-1].split(".java")[0]:
+                split_class_name = k.split(".")
+                split_class_name[-1] = v.split("/")[-1].split(".java")[0]
+                class_to_file_map[k] = ".".join(split_class_name)
+
+
         files_by_modules = self.split_file_by_module(files, project_type)
 
         data = {}
@@ -250,14 +270,35 @@ class CoverageProcessor:
                 else:
                     mutation_data = mutation_coverage_data[k]
                     await self.integrate_mutation_tests(k, v, mutation_data)
-                mutation_summary = self.summarize_mutations(mutation_data)
+
+
                 v["mutation"] =  {
-                     **mutation_summary,
                     "details": mutation_data
                 }
 
-            block_data = self.compute_average_block_trace(block_data)
-            summarized_result = self.summarize_block_style_coverage(block_data)
+            class_to_remove = []
+            for k, v in block_data.items():
+                if k not in class_to_file_map:
+                    continue
+                new_class = class_to_file_map[k]
+                block_data[new_class] = self.merge_class(block_data[new_class], v)
+                class_to_remove.append(k)
+
+            logging.info(f"Converted class name: {', '.join(class_to_remove)}")
+            for class_name in class_to_remove:
+                del block_data[class_name]
+
+            for k, v in block_data.items():
+                mutation_data = v["mutation"]["details"]
+                for mutation in mutation_data:
+                    self.integrate_mutation_location(mutation, mutation_html_link_map[k])
+                mutation_summary = self.summarize_mutations(mutation_data)
+                v["mutation"] = {
+                    **mutation_summary,
+                    "details": mutation_data
+                }
+
+            summarized_result = self.summarize_block_style_coverage(block_data, total_lines_map)
             data[module] = summarized_result
 
         return data
@@ -342,9 +383,12 @@ class CoverageProcessor:
     async def process_coverage(self, files: List[UploadFile], repo_name, project_identifier):
         github_url = self.get_github_url(project_identifier)
         report_path_map = await self.file_manager_service.upload_pitest_reports(files, repo_name)
+        extracted_html_result = await self.data_extractor_service.extract_html_files(files)
+        mutation_html_link_map = extracted_html_result["link_result"]
+        total_lines_map = extracted_html_result["total_lines"]
         logging.info(f"Processing {len(files)} files")
         coverage_result = []
-        coverage_result = await self.extract_data(coverage_result, files, repo_name, github_url, report_path_map)
+        coverage_result = await self.extract_data(coverage_result, files, repo_name, github_url, report_path_map, mutation_html_link_map, total_lines_map)
         self.file_manager_service.save_complexity(repo_name, {"summary": coverage_result})
         return {
             "success": True,
@@ -388,7 +432,7 @@ class CoverageProcessor:
             return field
         return [field]
 
-    def summarize_block_style_coverage(self, data: Dict[str, Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
+    def summarize_block_style_coverage(self, data: Dict[str, Dict[str, Any]], total_lines_map) -> Dict[str, Dict[str, Any]]:
         report: Dict[str, Dict[str, Any]] = {}
 
         for class_name, payload in data.items():
@@ -400,51 +444,42 @@ class CoverageProcessor:
             covered_set: Set[int] = set()
 
             for b in blocks:
-                # "line" is always a list of ints per your schema
                 lines_field = b.get("line", [])
                 if not lines_field:
                     continue
 
-                # Defensive cast to int in case upstream slipped strings
                 lines = {int(x) for x in lines_field}
                 exec_lines_set |= lines
                 if b.get("is_line_cover") is True:
                     covered_set |= lines
 
-            # If nothing executable, produce an empty summary and continue
             if not exec_lines_set:
                 del payload["block"]
+                total_executable_lines = 0
+                if class_name in total_lines_map:
+                    total_executable_lines = total_lines_map[class_name]
                 summary = {
-                    "total_executable_lines": 0,
-                    "total_missed_lines": 0,
-                    "missed_lines": [],
-                    "missed_indices": [],
+                    "total_executable_lines": total_executable_lines,
+                    "total_covered_lines": 0,
                     "covered_indices": [],
-                    "coverage_pct": 0.0,
                 }
                 report[converted_class_name] = {**payload, "line_coverage": summary}
                 continue
 
-            # Create a stable ordering of executable lines and map to indices
             exec_sorted: List[int] = sorted(exec_lines_set)
             index_of = {ln: i for i, ln in enumerate(exec_sorted)}
 
-            # Missed = executable - covered
-            missed_lines = [ln for ln in exec_sorted if ln not in covered_set]
-            missed_indices = [index_of[ln] for ln in missed_lines]
             covered_indices = [index_of[ln] for ln in exec_sorted if ln in covered_set]
 
             total_exec = len(exec_sorted)
-            total_missed = len(missed_lines)
-            coverage_pct = round(((total_exec - total_missed) / total_exec) * 100.0, 2)
+            total_covered = len(covered_set)
 
+            if class_name in total_lines_map:
+                total_exec = total_lines_map[class_name]
             summary = {
                 "total_executable_lines": total_exec,
-                "total_missed_lines": total_missed,
-                "missed_lines": missed_lines,
-                "missed_indices": missed_indices,
+                "total_covered_lines": total_covered,
                 "covered_indices": covered_indices,
-                "coverage_pct": coverage_pct,
             }
             del payload["block"]
             report[converted_class_name] = {**payload, "line_coverage": summary}
