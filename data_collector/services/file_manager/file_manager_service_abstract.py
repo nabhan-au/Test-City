@@ -1,6 +1,9 @@
 from abc import ABC, abstractmethod
 from typing import List, Dict
 
+from fastapi import UploadFile
+
+
 class FileManagerServiceAbstract(ABC):
     
     @abstractmethod
@@ -13,4 +16,8 @@ class FileManagerServiceAbstract(ABC):
     
     @abstractmethod
     def get_project_list(self) -> List[str]:
+        raise NotImplementedError
+
+    @abstractmethod
+    def upload_pitest_reports(self, files: List[UploadFile], project_name: str) -> Dict[str, str]:
         raise NotImplementedError

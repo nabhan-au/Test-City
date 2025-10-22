@@ -63,7 +63,11 @@ export function legend(legendDiv, legendTitle, legendContent) {
     </div>
   `;
 
-  const cubeHTML = (d) => `
+  const cubeHTML = (d) => {
+      const reportUrl = d.reportPath
+    ? `//${window.location.hostname}:9000/pit-reports/${d.reportPath}`
+    : "#";
+    return `
     <div class="space-y-2">
       <div class="bg-white text-gray-800 p-4 rounded-lg shadow-md">
         <div class="text-sm space-y-1">
@@ -94,7 +98,7 @@ export function legend(legendDiv, legendTitle, legendContent) {
             : ``
           }
           <div class="flex justify-left mt-5 items-center mt-3">
-                <a href="" target="_blank" rel="noopener noreferrer"
+                <a href="${reportUrl}" target="_blank" rel="noopener noreferrer"
                    class="inline-flex items-center bg-blue-600 text-white text-xs font-semibold px-3 py-1.5 rounded-md hover:bg-blue-700 active:scale-[0.97] transition-all duration-150">
                   Open Report
                 </a>
@@ -102,7 +106,7 @@ export function legend(legendDiv, legendTitle, legendContent) {
         </div>
       </div>
     </div>
-  `;
+  `};
 
   const isCube = (d) => !!(d && typeof d === 'object' && 'isMutant' in d);
 

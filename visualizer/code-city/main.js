@@ -17,7 +17,6 @@ var codeCityChart;
 async function fetchData() {
     try {
         var data = await dataLoaders.fetchProjectData(params.get('project'));
-        console.log(data)
         return data;
     } catch (error) {
         return null;
@@ -32,31 +31,37 @@ let heightMode = 'loc'; // 'loc' | 'trace'
 var legendDiv = $('#code-city-legend')[0];
 var heightMetricSelect = $('#height-metric');
 
+const rotateBtns = $('#rotate-left, #rotate-right, #rotate-up, #rotate-down');
+const zoomBtns = $('#zoom-in, #zoom-out');
 var rotateLeftSpan = $('#rotate-left');
 var rotateRightSpan = $('#rotate-right');
 var rotateUpSpan = $('#rotate-up');
 var rotateDownSpan = $('#rotate-down');
-var zoomInSpan = $('#zoom-in')
-var zoomOutSpan = $('#zoom-out')
+var zoomInSpan = $('#zoom-in');
+var zoomOutSpan = $('#zoom-out');
+var panLeftBtn = $('#pan-left');
+var panRightBtn = $('#pan-right');
 var birdEyeToggle = $('#toggle-bird-eye');
 var sphereToggle = $('#toggle-spheres');
 var marginSlider = $('#margin-slider');
 var marginValueDisplay = $('#margin-value');
+var viewModeSelect = $('#view-mode');
+const chartBox = $('#code-city-chart');
 
 var nodeColorScale = [
-  '#ffd700', // golden yellow
-  '#ffdb33',
-  '#ffdf66',
-  '#ffe399',
-  '#ffe6b3',
-  '#ffeccc',
-  '#b3e5ff',
-  '#99dbff',
-  '#80d1ff',
-  '#66c7ff',
-  '#4dbdff',
-  '#3399ff',
-  '#1a75ff'  // deeper sky blue
+    '#ffd700', // golden yellow
+    '#ffdb33',
+    '#ffdf66',
+    '#ffe399',
+    '#ffe6b3',
+    '#ffeccc',
+    '#b3e5ff',
+    '#99dbff',
+    '#80d1ff',
+    '#66c7ff',
+    '#4dbdff',
+    '#3399ff',
+    '#1a75ff'  // deeper sky blue
 ]
 
 let gridValue;
@@ -69,7 +74,11 @@ function legendTitle(d, e) {
 function legendContent(d, e) {
     const lines = d.data?.lines || { coverage: 0, covered_line: 0, total_line: 0 };
     const mutations = d.data?.mutations || { coverage: 0, killed: 0, total_mutation: 0 };
-    const traces = d.data?.traces || { average: 0 };
+    const tests = d.data?.testCount || 0;
+    const reportPath = d.data?.report_path || "";
+    const reportUrl = reportPath
+        ? `//${window.location.hostname}:9000/pit-reports/${reportPath}`
+        : "#";
 
     return `
       <div class="bg-white text-gray-800 p-4 rounded-lg shadow-md">
@@ -92,11 +101,22 @@ function legendContent(d, e) {
               <td class="py-1 text-right">${mutations.killed} / ${mutations.total_mutation}</td>
             </tr>
             <tr>
-              <td class="py-1">Average trace</td>
-              <td class="py-1 text-right">${traces.average.toFixed(2)}</td>
+              <td class="py-1">Total distinct tests</td>
+              <td class="py-1 text-right">${tests}</td>
             </tr>
           </tbody>
         </table>
+        ${reportPath
+            ? `
+          <div class="flex justify-left mt-5 items-center mt-3">
+            <a href="${reportUrl}" target="_blank" rel="noopener noreferrer"
+               class="inline-flex items-center bg-blue-600 text-white text-xs font-semibold px-3 py-1.5 rounded-md hover:bg-blue-700 active:scale-[0.97] transition-all duration-150">
+              Open Report
+            </a>
+          </div>
+          `
+            : ""
+        }
       </div>
     `;
 }
@@ -105,10 +125,39 @@ function nodeHeight(d) {
     if (heightMode === 'trace') {
         const v = d?.data?.traces?.average;
         return (typeof v === 'number' && isFinite(v) && v > 1) ? v : 1;
+    } else if (heightMode === 'test-count') {
+        const tc = d?.data?.testCount;
+        const raw = (typeof tc === 'number' && isFinite(tc) && tc >= 0) ? tc : 0;
+
+        const base = window.__heightNorm?.baseFloor ?? 0.2;
+        const cap = Math.max(1, window.__heightNorm?.testCountCap ?? 1);
+
+        const clamped = Math.min(raw, cap);
+        const scaled = Math.log1p(clamped) / Math.log1p(cap);
+        return base + ((window.__heightNorm?.maxHeight ?? 1.0) - base) * scaled;
+
     }
     // default: LOC total lines
     const tl = d?.data?.lines?.total_line;
     return (typeof tl === 'number' && isFinite(tl) && tl > 1) ? tl : 1;
+}
+
+
+window.__heightNorm = window.__heightNorm || { baseFloor: 2, testCountCap: 1, maxHeight: 100 };
+
+function computePercentile(arr, p) {
+    if (!arr || arr.length === 0) return 1;
+    const a = [...arr].sort((x, y) => x - y);
+    const idx = Math.floor((p / 100) * (a.length - 1));
+    return a[idx];
+}
+
+function computeTestCountCap(merged, percentile = 95) {
+    const vals = Object.values(merged || {})
+        .map(v => v?.testCount ?? 0)
+        .filter(n => typeof n === 'number' && isFinite(n) && n >= 0);
+    const cap = computePercentile(vals, percentile);
+    return Math.max(1, cap);
 }
 
 function nodeColor(d) {
@@ -138,7 +187,7 @@ var mapperParams = {
         colorValue: nodeColor,
         title: function (d) { return d.key.split('/').slice(-1)[0]; },
         path: function (d) {
-            return d.key || '(all files)'; 
+            return d.key || '(all files)';
         }
     },
     split: function (key) {
@@ -158,7 +207,7 @@ function setGridValue(d) {
             const loc = value["total_executable_lines"]
             maxValue = Math.max(averageTrace, loc, maxValue);
         }
-       
+
     }
     if (maxValue > 1000000)
         gridValue = 10000;
@@ -202,7 +251,7 @@ fetchData().then(function (d) {
 
         // gray range
         const lightGray = 200; // shallow platforms -> lighter gray
-        const darkGray  =  100; // deep platforms   -> darker gray
+        const darkGray = 100; // deep platforms   -> darker gray
 
         (function walk(n) {
             if (!n) return;
@@ -210,10 +259,10 @@ fetchData().then(function (d) {
             const isLeaf = !n.children || n.children.length === 0;
 
             if (!isLeaf) {
-            const t = (n.depth || 0) / maxDepth;
-            const g = lerp(lightGray, darkGray, t);
-            const hex = `#${toHexByte(g)}${toHexByte(g)}${toHexByte(g)}`;
-            n.color = hex;
+                const t = (n.depth || 0) / maxDepth;
+                const g = lerp(lightGray, darkGray, t);
+                const hex = `#${toHexByte(g)}${toHexByte(g)}${toHexByte(g)}`;
+                n.color = hex;
             }
 
             if (n.children) n.children.forEach(walk);
@@ -246,12 +295,13 @@ fetchData().then(function (d) {
     var mergedData = {};
     window.__mergedDataForHeightSwitch = mergedData;
 
+    console.log(d)
     for (const [filePath, data] of Object.entries(d)) {
-        const filePaths = filePath.split('/');
+        const normalizedPath = filePath.startsWith('/') ? filePath : '/' + filePath;
+        const filePaths = normalizedPath.split('/');
 
         // root ""
         let currentPath = "";
-
         for (let i = 0; i < filePaths.length; i++) {
             if (i === 0 && filePaths[i] === "") {
                 // root
@@ -263,37 +313,41 @@ fetchData().then(function (d) {
 
             // if not found, init
             if (!mergedData[currentPath]) {
+                let reportPath = ""
+                let details = []
+                if (currentPath.endsWith(".java")) {
+                    reportPath = data.report_path
+                    details = data.mutation
+                }
+
                 mergedData[currentPath] = {
                     lines: { coverage: 0, covered_line: 0, total_line: 0 },
-                    mutations: { coverage: 0, killed: 0, no_coverage: 0, total_mutation: 0 },
-                    traces: { total_trace: 0, total_block: 0, average: 0 }
+                    mutations: { coverage: 0, killed: 0, no_coverage: 0, total_mutation: 0, details: details },
+                    traces: { total_trace: 0, total_block: 0, average: 0 },
+                    tests: new Set(),
+                    report_path: reportPath
                 };
+
             }
-            const covered_line = data.line_coverage.total_executable_lines - data.line_coverage.total_missed_lines
-            mergedData[currentPath].lines.covered_line += covered_line
+            mergedData[currentPath].lines.covered_line += data.line_coverage.total_covered_lines
             mergedData[currentPath].lines.total_line += data.line_coverage.total_executable_lines;
             mergedData[currentPath].lines.coverage = mergedData[currentPath].lines.total_line === 0 ? 0
                 : (mergedData[currentPath].lines.covered_line / mergedData[currentPath].lines.total_line) * 100;
 
             mergedData[currentPath].mutations.killed += data.mutation.effective_killed;
             mergedData[currentPath].mutations.total_mutation += data.mutation.total_mutations;
-            mergedData[currentPath].mutations.coverage = 
-            mergedData[currentPath].mutations.total_mutation === 0 ? 0
-                : (mergedData[currentPath].mutations.killed / mergedData[currentPath].mutations.total_mutation) * 100;
+            mergedData[currentPath].mutations.coverage =
+                mergedData[currentPath].mutations.total_mutation === 0 ? 0
+                    : (mergedData[currentPath].mutations.killed / mergedData[currentPath].mutations.total_mutation) * 100;
             mergedData[currentPath].mutations.no_coverage += data.mutation.no_coverage;
-            
-
-            mergedData[currentPath].traces.total_trace += data.total_tests;
-            mergedData[currentPath].traces.total_block += data.total_blocks;
-            mergedData[currentPath].traces.average = mergedData[currentPath].traces.total_block === 0 ? 0
-                : mergedData[currentPath].traces.total_trace / mergedData[currentPath].traces.total_block;
-
-            mergedData[currentPath].mutations.details = data.mutation
+            mergedData[currentPath].tests = new Set([...mergedData[currentPath].tests, ...data.tests])
+            mergedData[currentPath].testCount = mergedData[currentPath].tests.size
         }
     }
 
+    window.__heightNorm.testCountCap = computeTestCountCap(mergedData, 95);
     var treeData = dataHelpers.convertToTree(mergedData, mapperParams);
-    
+
     dataHelpers.colorize(d3, treeData, 'colorValue', nodeColorScale, { min: 20, max: 100 });
 
     applyLeafPaletteAndPlatformGray(treeData);
@@ -349,6 +403,23 @@ fetchData().then(function (d) {
 
     var stopRotatePitch = function () {
         isRotatingPitch = false;
+    };
+
+    function setRotateEnabled(enabled) {
+        rotateBtns.prop('disabled', !enabled);
+        rotateBtns.toggleClass('opacity-50 cursor-not-allowed', !enabled);
+    }
+    setRotateEnabled(true);
+    function setZoomEnabled(enabled) {
+        zoomBtns.prop('disabled', !enabled);
+        zoomBtns.toggleClass('opacity-50 cursor-not-allowed', !enabled);
+    }
+    setZoomEnabled(true);
+
+    const ensureNormalView = () => {
+        if (viewModeSelect.val() !== 'normal') {
+            viewModeSelect.val('normal').trigger('change');
+        }
     };
 
     rotateLeftSpan.on('mousedown', function () {
@@ -427,9 +498,14 @@ fetchData().then(function (d) {
     });
 
     heightMetricSelect.on('change', function () {
-        heightMode = this.value; // 'loc' or 'trace'
+        heightMode = this.value; // 'loc' or 'trace' or 'test-count'
 
         const merged = window.__mergedDataForHeightSwitch;
+
+        if (heightMode === 'test-count') {
+            window.__heightNorm.testCountCap = computeTestCountCap(merged, 95);
+        }
+
         const newTree = dataHelpers.convertToTree(merged, mapperParams);
 
         dataHelpers.colorize(d3, newTree, 'colorValue', nodeColorScale, { min: 20, max: 100 });
@@ -441,6 +517,68 @@ fetchData().then(function (d) {
         }
     });
 
+    function ensure2DView() {
+        if (viewModeSelect.val() !== '2d') {
+            viewModeSelect.val('2d').trigger('change');
+        }
+    }
+
+    panLeftBtn.on('mousedown', function () {
+        ensure2DView();
+        codeCityChart.startPan2D(-1);
+    });
+    panLeftBtn.on('mouseup mouseleave', function () {
+        codeCityChart.stopPan2D();
+    });
+
+    panRightBtn.on('mousedown', function () {
+        ensure2DView();
+        codeCityChart.startPan2D(1);
+    });
+    panRightBtn.on('mouseup mouseleave', function () {
+        codeCityChart.stopPan2D();
+    });
+
+
+    function isNormalView() {
+        return viewModeSelect.length ? viewModeSelect.val() === 'normal' : true;
+    }
+
+    function setDragEnabled(enabled) {
+        chartBox.toggleClass('cursor-grab', enabled);
+        chartBox.toggleClass('cursor-not-allowed', !enabled);
+    }
+    setDragEnabled(true);
+
+    function setPanButtonsEnabled(enabled) {
+        panLeftBtn.prop('disabled', !enabled).toggleClass('opacity-50 cursor-not-allowed', !enabled);
+        panRightBtn.prop('disabled', !enabled).toggleClass('opacity-50 cursor-not-allowed', !enabled);
+    }
+    setPanButtonsEnabled(false);
+
+    viewModeSelect.on('change', function () {
+        const mode = this.value; // 'normal'|'bird'|'2d'
+        setRotateEnabled(mode === 'normal');
+        setDragEnabled(mode === 'normal');
+
+        if (mode === 'bird') {
+            setPanButtonsEnabled(false);
+            setZoomEnabled(true);
+            codeCityChart.setLinearLayout(false);
+            codeCityChart.setCameraBirdEyeView();
+        } else if (mode === '2d') {
+            setPanButtonsEnabled(true);
+            setZoomEnabled(false);
+            codeCityChart.setLinearLayout(true);
+            codeCityChart.setCamera2DView();
+        } else {
+            setPanButtonsEnabled(false);
+            setZoomEnabled(true);
+            codeCityChart.setLinearLayout(false);
+            codeCityChart.setCameraNormalView();
+        }
+    });
+
     // project-description
     const descriptionEl = $('#project-description');
 
@@ -449,10 +587,10 @@ fetchData().then(function (d) {
     let totalLines = 0;
     let totalCoveredLines = 0;
 
-    for (const [_, data] of Object.entries(d)) {
-        const covered_line = data.line_coverage.total_executable_lines - data.line_coverage.total_missed_lines
+    for (const [key, data] of Object.entries(d)) {
+        console.log(key, data.line_coverage.total_executable_lines, data.line_coverage.total_covered_lines)
         totalLines += data.line_coverage.total_executable_lines || 0;
-        totalCoveredLines += covered_line || 0;
+        totalCoveredLines += data.line_coverage.total_covered_lines || 0;
     }
 
     const coveragePercent = totalLines > 0 ? ((totalCoveredLines / totalLines) * 100).toFixed(2) : '0.00';
@@ -461,6 +599,7 @@ fetchData().then(function (d) {
     const chartEl = $('#code-city-chart')[0];
 
     chartEl.addEventListener('mousedown', function (e) {
+        if (!isNormalView()) return;
         isDragging = true;
         lastX = e.clientX;
         lastY = e.clientY;
@@ -491,8 +630,8 @@ fetchData().then(function (d) {
 
     descriptionEl.html(`
     <ul class="list-disc list-inside text-sm space-y-1">
-        <li>Total Files: <strong>${totalFiles}</strong></li>
-        <li>Total Lines: <strong>${totalLines}</strong></li>
+        <li>Total Java Files: <strong>${totalFiles}</strong></li>
+        <li>Total Executable Lines: <strong>${totalLines}</strong></li>
         <li>Lines Covered: <strong>${totalCoveredLines}</strong></li>
         <li>Coverage: <strong>${coveragePercent}%</strong></li>
     </ul>

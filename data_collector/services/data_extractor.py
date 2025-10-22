@@ -1,21 +1,29 @@
 import logging
+import os
 import pprint
+import re
 from collections import defaultdict
+from io import StringIO
 from typing import List, Dict, Any, Tuple
 
 import csv
+import copy
+
+import pandas as pd
 import xmltodict
 import json
 import xml.etree.ElementTree as ET
 
-
+from bs4 import BeautifulSoup
 from fastapi import UploadFile
 
 from configs.trace_config import TraceConfig
+from lxml.html.defs import link_attrs
 from repositories.trace_extractor_repository import TraceExtractorRepository
 
 
 class DataExtractor:
+    INDEX_FILE_NAME = "index.html"
 
     def __init__(self, trace_extractor_repository: TraceExtractorRepository, trace_config: TraceConfig):
         self.trace_extractor_repository = trace_extractor_repository
@@ -23,14 +31,15 @@ class DataExtractor:
     async def get_block_coverage(self, files: List[UploadFile]):
         line_coverage_file = list(filter(lambda file: file.filename.endswith("linecoverage.xml"), files))
         if not line_coverage_file:
-            return {}
+            return [{}, {}]
 
+        test_result = {}
         coverage_result = {}
         for file in line_coverage_file:
             content = await file.read()
             parsed_data = xmltodict.parse(content)
             if not parsed_data or not parsed_data["coverage"] or not parsed_data["coverage"]["block"]:
-                return coverage_result
+                return [coverage_result, test_result]
 
             coverage_data = parsed_data["coverage"]["block"]
             for row in coverage_data:
@@ -45,124 +54,15 @@ class DataExtractor:
                     "tests": tests,
                     "found_match": False
                 }
+                test_set = set([t["@name"] for t in tests])
                 if class_name not in coverage_result:
                     coverage_result[class_name] = [coverage_dict]
+                    test_result[class_name] = test_set
                 else:
                     coverage_result[class_name].append(coverage_dict)
-        return coverage_result
+                    test_result[class_name].update(test_set)
+        return [coverage_result, test_result]
 
-    # def _internal_to_qualified(self, internal: str) -> str:
-    #     # com/example/Foo -> com.example.Foo
-    #     return internal.replace('/', '.')
-    #
-    # def _top_level_only(self, internal: str) -> str:
-    #     # com/example/Foo$Inner -> com/example/Foo ; com/example/Foo$1 -> com/example/Foo
-    #     return internal.split('$', 1)[0]
-    #
-    # # ---------- main ----------
-    # async def get_line_coverage(self, files: List[UploadFile]) -> Dict[str, Dict[str, Any]]:
-    #     """
-    #     Returns a dict keyed by top-level class name (fully qualified, dotted),
-    #     with missing line numbers and their 0-based indices among executable lines.
-    #
-    #     {
-    #       "com.example.Foo": {
-    #         "total_executable_lines": 14,
-    #         "total_missed_lines": 3,
-    #         "missed_lines": [83, 97, 101],       # actual source line numbers
-    #         "missed_indices": [0, 5, 7]          # 0-based positions in sorted executable-line list
-    #       },
-    #       ...
-    #     }
-    #     """
-    #     jacoco_files = [f for f in files if f.filename.endswith("jacoco.xml")]
-    #     if not jacoco_files:
-    #         return {}
-    #
-    #     # Accumulators per class:
-    #     #   - executable_lines: set of all executable line numbers seen (union across reports)
-    #     #   - covered_lines   : set of line numbers seen as covered in any report
-    #     class_exec_lines: Dict[str, set] = defaultdict(set)
-    #     class_cov_lines: Dict[str, set] = defaultdict(set)
-    #
-    #     for up in jacoco_files:
-    #         content = await up.read()
-    #         try:
-    #             root = ET.fromstring(content)
-    #         except ET.ParseError:
-    #             continue  # skip malformed XML
-    #
-    #         # 1) Build mapping (package, sourcefilename) -> top-level class (qualified)
-    #         file_to_topclass: Dict[Tuple[str, str], str] = {}
-    #         for pkg in root.findall("package"):
-    #             pkg_name_internal = pkg.get("name", "")
-    #             for cls in pkg.findall("class"):
-    #                 internal_name = cls.get("name")
-    #                 src_file = cls.get("sourcefilename")
-    #                 if not internal_name or not src_file:
-    #                     continue
-    #                 top_level = self._top_level_only(internal_name)
-    #                 key = (pkg_name_internal, src_file)
-    #                 # first seen wins; normal Java has one public top-level per file
-    #                 if key not in file_to_topclass:
-    #                     file_to_topclass[key] = self._internal_to_qualified(top_level)
-    #         # 2) Walk <sourcefile>/<line> and bucket into the owning top-level class
-    #         for pkg in root.findall("package"):
-    #             pkg_name_internal = pkg.get("name", "")
-    #             for sf in pkg.findall("sourcefile"):
-    #                 src_name = sf.get("name")
-    #                 if not src_name:
-    #                     continue
-    #                 key = (pkg_name_internal, src_name)
-    #                 if key not in file_to_topclass:
-    #                     # No top-level class detected for this file (only inner/anonymous) — skip
-    #                     continue
-    #
-    #                 class_name = file_to_topclass[key]
-    #
-    #                 # collect (nr, ci>0?) for this source file
-    #                 lines: List[Tuple[int, bool]] = []
-    #                 for ln in sf.findall("line"):
-    #                     nr = ln.get("nr")
-    #                     ci = ln.get("ci", "0")
-    #                     if nr is None:
-    #                         continue
-    #                     try:
-    #                         line_nr = int(nr)
-    #                         is_cov = int(ci) > 0
-    #                     except ValueError:
-    #                         continue
-    #                     lines.append((line_nr, is_cov))
-    #
-    #                 if not lines:
-    #                     continue
-    #
-    #                 # Merge into class accumulators
-    #                 for line_nr, is_cov in lines:
-    #                     class_exec_lines[class_name].add(line_nr)
-    #                     if is_cov:
-    #                         class_cov_lines[class_name].add(line_nr)
-    #
-    #     # 3) Build final report with indices
-    #     report: Dict[str, Dict[str, Any]] = {}
-    #     for class_name, exec_set in class_exec_lines.items():
-    #         # ordered list of executable lines for this class
-    #         exec_lines_sorted = sorted(exec_set)
-    #         covered = class_cov_lines.get(class_name, set())
-    #         missed_lines = [ln for ln in exec_lines_sorted if ln not in covered]
-    #
-    #         # indices are positions in exec_lines_sorted
-    #         idx_map = {ln: i for i, ln in enumerate(exec_lines_sorted)}
-    #         missed_indices = [idx_map[ln] for ln in missed_lines]
-    #
-    #         report[class_name] = {
-    #             "total_executable_lines": len(exec_lines_sorted),
-    #             "total_missed_lines": len(missed_lines),
-    #             "missed_lines": missed_lines,
-    #             "missed_indices": missed_indices,
-    #         }
-    #
-    #     return report
 
     async def get_mutation_block_data(self, files: List[UploadFile]):
         mutations_file = list(filter(lambda file: file.filename.endswith("mutations.xml"), files))
@@ -179,6 +79,10 @@ class DataExtractor:
 
             mutation_data = parsed_data["mutations"]["mutation"]
             for row in mutation_data:
+                if not isinstance(row, dict):
+                    continue
+                if "block" not in row and "blocks" not in row:
+                    continue
                 class_name, sub_class_name = self.extract_class_name(row["mutatedClass"])
                 mutation_dict = {
                     "sub_class_name": sub_class_name,
@@ -199,12 +103,12 @@ class DataExtractor:
         return mutations_result
 
 
-    def get_project_block_data(self, project_name: str, module: str, files: List[UploadFile], project_type: str = "maven"):
-        logging.info("Total java .class file:" + str(len(files)))
-        block_data = self.trace_extractor_repository.extract_block_data(project_name, files)
+    def get_project_block_data(self, project_name: str, module: str, compiledFiles: List[UploadFile], project_type: str = "maven"):
+        logging.info("Total java .class file:" + str(len(compiledFiles)))
+        block_data = self.trace_extractor_repository.extract_block_data(project_name, compiledFiles)
         result = {}
         if "data" not in block_data:
-            print(module, len(files), len(files))
+            print(module, len(compiledFiles), len(compiledFiles))
         for row in block_data["data"]:
             class_name, sub_class_name = self.extract_class_name(row["clazz"])
             block_info = {
@@ -225,6 +129,21 @@ class DataExtractor:
                 result[class_name]["block"].append(block_info)
         return result
 
+    def get_class_map(self, project_name, files: List[UploadFile]):
+        java_files = [f for f in files if f.filename.endswith(".java")]
+
+        if not java_files:
+            logging.warning("No .java files found to upload.")
+            return {}
+
+        logging.info(f"Found {len(java_files)} Java files for project: {project_name}")
+
+        # ✅ Call the class extractor uploader
+        class_map = self.trace_extractor_repository.extract_class_map(project_name, java_files)
+
+        logging.info(f"Extracted {len(class_map)} class mappings.")
+        return class_map
+
     def extract_class_name(self, original_class_name):
         split_original_class_name = original_class_name.split(".")
         parent_path = ".".join(split_original_class_name[: -1])
@@ -237,6 +156,132 @@ class DataExtractor:
             class_name = original_class_name
             sub_class_name = None
         return class_name, sub_class_name
+
+    def extract_repo_urls(self, files: List[UploadFile]) -> dict:
+        """
+        Extract Git remote URLs (origin) from uploaded `.git/config` files.
+        Returns a dict: {repo_root_name: remote_url}
+        """
+        repo_urls = {}
+
+        for f in files:
+            if ".git/config" not in f.filename:
+                continue  # only interested in config files
+            logging.info(f"Extracting {f.filename}")
+            # Try reading the file contents
+            try:
+                content = f.file.read().decode("utf-8", errors="ignore")
+                f.file.seek(0)  # reset cursor after reading
+            except Exception:
+                continue
+
+            # Extract repo root (everything before ".git")
+            path = f.filename.replace("\\", "/")
+            repo_root = path.split("/.git/")[0].split("/")[-1]
+
+            # Find remote origin URL
+            url = None
+            for line in content.splitlines():
+                line = line.strip()
+                if line.startswith("url"):
+                    url = line.split("=", 1)[-1].strip()
+                    break
+
+            if url:
+                repo_urls[repo_root] = url
+
+        return repo_urls
+
+    async def extract_html_files(self, files: List[UploadFile]):
+        results = {
+            "link_result": {},
+            "total_lines": {}
+        }
+
+        for file in files:
+            # only process .html PIT report files
+            if not file.filename.endswith(".html"):
+                continue
+
+            relative_path = file.filename
+            class_path = ".".join(relative_path.split("pit-reports/")[-1].split("/"))
+            class_path = class_path.split(".java.html")[0].split(".html")[0]
+
+            if class_path not in results["link_result"]:
+                results["link_result"][class_path] = {}
+            link_result = await self.get_line_level_link(file)
+            results["link_result"][class_path] = link_result
+            file.file.seek(0)
+
+
+            total_line_result = await self.get_total_line(file)
+            if total_line_result is not None:
+                results["total_lines"].update(total_line_result)
+            file.file.seek(0)
+
+        return results
+
+    async def process_index_file(self, file: UploadFile):
+        logging.info(f"Processing {file.filename}")
+        required_columns = {'Name', 'Line Coverage', 'Mutation Coverage'}
+
+        # Read file and decode to string
+        html_bytes = await file.read()
+        html_str = html_bytes.decode("utf-8")
+
+        # Use StringIO instead of passing raw string
+        data = pd.read_html(StringIO(html_str))
+
+        filtered_table = [table for table in data if required_columns.issubset(table.columns)]
+        file_path = f"{file.filename.removesuffix(f'/{self.INDEX_FILE_NAME}').split('/')[-1]}"
+
+        return {"file_path": file_path, "table": filtered_table}
+
+    async def get_total_line(self, file):
+        if not file.filename.endswith(self.INDEX_FILE_NAME):
+            return
+        processed_index = await self.process_index_file(file)
+        result = {}
+        for table in processed_index["table"]:
+            get_line_data = self.get_line_data_from_table(processed_index["file_path"], table)
+            result.update(get_line_data)
+        return result
+
+
+    def get_line_data_from_table(self, file_path, table):
+        result = {}
+        for _, row in table.iterrows():
+            if not row["Name"].endswith(".java"):
+                continue
+            full_path = os.path.join(file_path.replace("/", "."), row["Name"].removesuffix(".java")).replace("/", ".")
+            match = re.search(r"(\d+)%\s+(\d+)/(\d+)", row["Line Coverage"])
+            if not match:
+                raise Exception(f"Line Coverage could not be extracted: {row['Line Coverage']}")
+            result[full_path] = int(match.group(3))
+        return result
+
+    async def get_line_level_link(self, file):
+        # read HTML
+        file.file.seek(0)
+        html = file.file.read()
+        if isinstance(html, bytes):
+            html = html.decode("utf-8", errors="ignore")
+        soup = BeautifulSoup(html, "html.parser")
+        # find all mutation rows (td.killed or td.survived)
+        results = {}
+        for a_tag in soup.find_all("a", href=True):
+            href = a_tag["href"]
+            text = a_tag.get_text(strip=True)
+            if not text.isdigit():
+                continue
+
+            # Skip group anchors (mutation summary)
+            if href.startswith("#group"):
+                continue
+
+            line_no = int(text)
+            results[line_no] = href
+        return results
 
 
 if "__main__" == __name__:

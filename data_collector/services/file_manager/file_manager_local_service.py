@@ -91,3 +91,6 @@ class FileManagerLocalService(FileManagerServiceAbstract):
         if base.exists():
             shutil.rmtree(base, ignore_errors=True)
 
+    def upload_pitest_reports(self, files: List[UploadFile], project_name: str) -> Dict[str, str]:
+        raise NotImplementedError()
+
