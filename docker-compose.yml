@@ -20,7 +20,8 @@ services:
     depends_on:
       - minio
     volumes:
-      - ./data/:/init
+      - ./data/results/:/init/results
+      - ./data/pit-reports/:/init/pit-reports
     entrypoint: >
       /bin/sh -c "
         sleep 5;
@@ -28,8 +29,10 @@ services:
         mc mb local/results;
         mc mb local/pit-reports;
         mc anonymous set download local/pit-reports;
-        echo 'Uploading complexity JSON files...';
-        mc cp --recursive /init/ local/results/;
+        echo 'Uploading data to results...';
+        mc cp --recursive /init/results/ local/results/;
+        echo 'Uploading data to pit-reports...';
+        mc cp --recursive /init/pit-reports/ local/pit-reports/;
         echo 'Upload complete!';
       "
 
