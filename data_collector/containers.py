@@ -10,7 +10,6 @@ from services.coverage_processor import CoverageProcessor
 from repositories.file_manager_s3_repository import FileManagerS3Repository
 from services.file_manager.file_manager_s3_service import FileManagerS3Service
 from services.data_extractor import DataExtractor
-from util.request import Request
 
 class Container(containers.DeclarativeContainer):
     
@@ -18,7 +17,6 @@ class Container(containers.DeclarativeContainer):
     
     s3_config = S3Config()
     trace_config = TraceConfig()
-    request = Request()
 
     minio_client = providers.Singleton(
         Minio,

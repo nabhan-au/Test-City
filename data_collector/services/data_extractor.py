@@ -157,50 +157,14 @@ class DataExtractor:
             sub_class_name = None
         return class_name, sub_class_name
 
-    def extract_repo_urls(self, files: List[UploadFile]) -> dict:
-        """
-        Extract Git remote URLs (origin) from uploaded `.git/config` files.
-        Returns a dict: {repo_root_name: remote_url}
-        """
-        repo_urls = {}
-
-        for f in files:
-            if ".git/config" not in f.filename:
-                continue  # only interested in config files
-            logging.info(f"Extracting {f.filename}")
-            # Try reading the file contents
-            try:
-                content = f.file.read().decode("utf-8", errors="ignore")
-                f.file.seek(0)  # reset cursor after reading
-            except Exception:
-                continue
-
-            # Extract repo root (everything before ".git")
-            path = f.filename.replace("\\", "/")
-            repo_root = path.split("/.git/")[0].split("/")[-1]
-
-            # Find remote origin URL
-            url = None
-            for line in content.splitlines():
-                line = line.strip()
-                if line.startswith("url"):
-                    url = line.split("=", 1)[-1].strip()
-                    break
-
-            if url:
-                repo_urls[repo_root] = url
-
-        return repo_urls
-
     async def extract_html_files(self, files: List[UploadFile]):
         results = {
             "link_result": {},
-            "total_lines": {}
         }
 
         for file in files:
             # only process .html PIT report files
-            if not file.filename.endswith(".html"):
+            if not file.filename.endswith(".html") or file.filename.endswith("/index.html"):
                 continue
 
             relative_path = file.filename
@@ -212,53 +176,7 @@ class DataExtractor:
             link_result = await self.get_line_level_link(file)
             results["link_result"][class_path] = link_result
             file.file.seek(0)
-
-
-            total_line_result = await self.get_total_line(file)
-            if total_line_result is not None:
-                results["total_lines"].update(total_line_result)
-            file.file.seek(0)
-
         return results
-
-    async def process_index_file(self, file: UploadFile):
-        logging.info(f"Processing {file.filename}")
-        required_columns = {'Name', 'Line Coverage', 'Mutation Coverage'}
-
-        # Read file and decode to string
-        html_bytes = await file.read()
-        html_str = html_bytes.decode("utf-8")
-
-        # Use StringIO instead of passing raw string
-        data = pd.read_html(StringIO(html_str))
-
-        filtered_table = [table for table in data if required_columns.issubset(table.columns)]
-        file_path = f"{file.filename.removesuffix(f'/{self.INDEX_FILE_NAME}').split('/')[-1]}"
-
-        return {"file_path": file_path, "table": filtered_table}
-
-    async def get_total_line(self, file):
-        if not file.filename.endswith(self.INDEX_FILE_NAME):
-            return
-        processed_index = await self.process_index_file(file)
-        result = {}
-        for table in processed_index["table"]:
-            get_line_data = self.get_line_data_from_table(processed_index["file_path"], table)
-            result.update(get_line_data)
-        return result
-
-
-    def get_line_data_from_table(self, file_path, table):
-        result = {}
-        for _, row in table.iterrows():
-            if not row["Name"].endswith(".java"):
-                continue
-            full_path = os.path.join(file_path.replace("/", "."), row["Name"].removesuffix(".java")).replace("/", ".")
-            match = re.search(r"(\d+)%\s+(\d+)/(\d+)", row["Line Coverage"])
-            if not match:
-                raise Exception(f"Line Coverage could not be extracted: {row['Line Coverage']}")
-            result[full_path] = int(match.group(3))
-        return result
 
     async def get_line_level_link(self, file):
         # read HTML

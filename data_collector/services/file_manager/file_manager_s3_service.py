@@ -49,13 +49,9 @@ class FileManagerS3Service(FileManagerServiceAbstract):
 
 
     async def upload_pitest_reports(self, files: List[UploadFile], project_name: str) -> dict[str, str]:
-        """
-        Upload PIT mutation reports to a public S3 bucket.
-        Files are uploaded to the pit-reports bucket under {project_name}/pit-reports/.
-        """
         path_map = {}
         for file in files:
-            if ".html" not in file.filename and ".css" not in file.filename and ".js" not in file.filename:
+            if (".html" not in file.filename and ".css" not in file.filename and ".js" not in file.filename) or (file.filename.endswith("/index.html")):
                 continue
             relative_path = file.filename
 

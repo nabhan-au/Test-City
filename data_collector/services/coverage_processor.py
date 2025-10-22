@@ -26,65 +26,6 @@ class CoverageProcessor:
         self.file_manager_service = file_manager_service
         self.data_extractor_service = data_extractor
 
-    async def read_line_coverage_report(self, file_path):
-        with open(file_path, 'r', encoding='utf-8') as f:
-            xml_dict = xmltodict.parse(f.read())
-        return xml_dict
-
-    async def list_index_file(self, files: List[UploadFile]):
-        return list(filter(lambda x: x.filename.endswith(self.INDEX_FILE_NAME) and "report" in x.filename, files))
-
-    async def process_html_file(self, file: UploadFile):
-        required_columns = {'Name', 'Line Coverage', 'Mutation Coverage'}
-
-        # Read file and decode to string
-        html_bytes = await file.read()
-        html_str = html_bytes.decode("utf-8")
-
-        # Use StringIO instead of passing raw string
-        data = pd.read_html(StringIO(html_str))
-
-        filtered_table = [table for table in data if required_columns.issubset(table.columns)]
-        file_path = f"/{file.filename.removesuffix(f'/{self.INDEX_FILE_NAME}').split('/')[-1]}"
-
-        return {"file_path": file_path, "table": filtered_table}
-
-    def get_tree_from_table(self, file_path: str, table):
-        result = []
-        for _, row in table.iterrows():
-            if not row["Name"].endswith(".java"):
-                continue
-            full_path = os.path.join(file_path.replace(".", "/"), row["Name"])
-            line_coverage = self.extract_line_coverage(row["Line Coverage"])
-            mutation_coverage = self.extract_mutation_coverage(row["Mutation Coverage"])
-            data = {
-                    "path": full_path,
-                    "lines": line_coverage,
-                    "mutations": mutation_coverage
-            }
-            result.append(data)
-        return result
-
-    def extract_line_coverage(self, line_coverage):
-        match = re.search(r"(\d+)%\s+(\d+)/(\d+)", line_coverage)
-        if not match:
-            raise Exception(f"Line Coverage could not be extracted: {line_coverage}")
-        return {
-            "coverage": int(match.group(1)),
-            "covered_line": int(match.group(2)),
-            "total_line": int(match.group(3))
-        }
-
-    def extract_mutation_coverage(self, mutation_coverage):
-        match = re.search(r"(\d+)%\s+(\d+)/(\d+)", mutation_coverage)
-        if not match:
-            raise Exception(f"Mutation Coverage could not be extracted: {mutation_coverage}")
-        return {
-            "coverage": int(match.group(1)),
-            "killed": int(match.group(2)),
-            "total_mutation": int(match.group(3)),
-        }
-
     def split_file_by_module(self, files, project_type):
         if project_type == "maven":
             identifier = "/target/"
@@ -112,40 +53,6 @@ class CoverageProcessor:
         if project_type == "maven" and "/target/classes/" in filename:
             return True
         return False
-
-    def compute_average_block_trace(self, block_data: dict) -> dict:
-        """
-        For each class in block_data, compute the average number of tests per block
-        and add it into the dict as `average_block_trace`.
-
-        Example output for each class:
-          {
-            ...,
-            "average_block_trace": 3.75
-          }
-        """
-        for class_name, payload in block_data.items():
-            blocks = payload.get("block", [])
-            if not blocks:
-                payload["average_block_trace"] = 0.0
-                payload["total_blocks"] = 0
-                payload["total_tests"] = 0
-                payload["distinct_tests"] = 0
-                continue
-
-            total_tests = 0
-            total_blocks = 0
-            for b in blocks:
-                tests = b.get("tests", [])
-                total_tests += len(tests)
-                total_blocks += 1
-
-            avg_trace = round(total_tests / total_blocks, 2) if total_blocks else 0.0
-            payload["average_block_trace"] = avg_trace
-            payload["total_blocks"] = total_blocks
-            payload["total_tests"] = total_tests
-
-        return block_data
 
     def summarize_mutations(self, mutations):
         if len(mutations) == 0:
@@ -220,7 +127,7 @@ class CoverageProcessor:
         class1["block"].extend(class2["block"])
         return class1
 
-    async def extract_data(self, coverage_result, files, repo_name, git_url, report_path_map, mutation_html_link_map, total_lines_map, project_type ="maven"):
+    async def extract_data(self, files, repo_name, git_url, report_path_map, mutation_html_link_map, project_type ="maven"):
         class_map = self.data_extractor_service.get_class_map(repo_name, files)
 
         class_to_file_map = {}
@@ -298,56 +205,10 @@ class CoverageProcessor:
                     "details": mutation_data
                 }
 
-            summarized_result = self.summarize_block_style_coverage(block_data, {})
+            summarized_result = self.summarize_block_style_coverage(block_data)
             data[module] = summarized_result
 
         return data
-
-
-        #
-        # for k, v in block_data.items():
-        #     print(k)
-        #     pprint.pprint(v)
-        #     break
-        #
-        # for k, v in block_coverage_data.items():
-        #     print(k)
-        #     pprint.pprint(v)
-        #     break
-        #
-        #
-        #
-        # raise Exception("test")
-        #
-        # for row in coverage_result:
-        #     path = row["path"]
-        #     class_path = path_to_class(path)
-        #     block_data[class_path] = {
-        #         "lines": row["lines"],
-        #         "mutations": row["mutations"]
-        #
-        #     }
-        #
-        #
-        # # block_coverage_data = await self.trace_extractor_service.get_block_coverage(files)
-        # for row in coverage_result:
-        #     path = row["path"]
-        #     class_path = path_to_class(path)
-        #     total_block = block_data[class_path]
-        #     # total_trace = block_coverage_data[class_path] if class_path in block_coverage_data else 0
-        #     data = {
-        #         path: {
-        #             "lines": row["lines"],
-        #             "mutations": row["mutations"],
-        #             "traces": {
-        #                 "total_trace": 0,
-        #                 "total_block": total_block,
-        #                 "average": 0 / total_block
-        #             }
-        #         },
-        #     }
-        #     coverage_trace_result.append(data)
-        # return coverage_trace_result
 
     async def integrate_coverage_result(self, coverage_result, class_name, data):
         for block in data["block"]:
@@ -385,10 +246,8 @@ class CoverageProcessor:
         report_path_map = await self.file_manager_service.upload_pitest_reports(files, repo_name)
         extracted_html_result = await self.data_extractor_service.extract_html_files(files)
         mutation_html_link_map = extracted_html_result["link_result"]
-        total_lines_map = extracted_html_result["total_lines"]
         logging.info(f"Processing {len(files)} files")
-        coverage_result = []
-        coverage_result = await self.extract_data(coverage_result, files, repo_name, github_url, report_path_map, mutation_html_link_map, total_lines_map)
+        coverage_result = await self.extract_data(files, repo_name, github_url, report_path_map, mutation_html_link_map)
         self.file_manager_service.save_complexity(repo_name, {"summary": coverage_result})
         return {
             "success": True,
@@ -397,13 +256,6 @@ class CoverageProcessor:
     from typing import Dict, Any, Iterable, List, Set
 
     def _normalize_line_range(self, line_range: Any) -> Iterable[int]:
-        """
-        Accepts several shapes and yields concrete line numbers:
-          - int                         -> [int]
-          - [int, int] (start,end)      -> inclusive range [start..end]
-          - [int, int, ...]             -> list of individual lines
-          - list/tuple of such mixes    -> flatten recursively
-        """
         if line_range is None:
             return []
         if isinstance(line_range, int):
@@ -432,7 +284,7 @@ class CoverageProcessor:
             return field
         return [field]
 
-    def summarize_block_style_coverage(self, data: Dict[str, Dict[str, Any]], total_lines_map) -> Dict[str, Dict[str, Any]]:
+    def summarize_block_style_coverage(self, data: Dict[str, Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
         report: Dict[str, Dict[str, Any]] = {}
 
         for class_name, payload in data.items():
