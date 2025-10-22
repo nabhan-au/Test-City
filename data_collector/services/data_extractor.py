@@ -1,21 +1,29 @@
 import logging
+import os
 import pprint
+import re
 from collections import defaultdict
+from io import StringIO
 from typing import List, Dict, Any, Tuple
 
 import csv
+import copy
+
+import pandas as pd
 import xmltodict
 import json
 import xml.etree.ElementTree as ET
 
-
+from bs4 import BeautifulSoup
 from fastapi import UploadFile
 
 from configs.trace_config import TraceConfig
+from lxml.html.defs import link_attrs
 from repositories.trace_extractor_repository import TraceExtractorRepository
 
 
 class DataExtractor:
+    INDEX_FILE_NAME = "index.html"
 
     def __init__(self, trace_extractor_repository: TraceExtractorRepository, trace_config: TraceConfig):
         self.trace_extractor_repository = trace_extractor_repository
@@ -23,7 +31,7 @@ class DataExtractor:
     async def get_block_coverage(self, files: List[UploadFile]):
         line_coverage_file = list(filter(lambda file: file.filename.endswith("linecoverage.xml"), files))
         if not line_coverage_file:
-            return {}
+            return [{}, {}]
 
         test_result = {}
         coverage_result = {}
@@ -31,7 +39,7 @@ class DataExtractor:
             content = await file.read()
             parsed_data = xmltodict.parse(content)
             if not parsed_data or not parsed_data["coverage"] or not parsed_data["coverage"]["block"]:
-                return coverage_result
+                return [coverage_result, test_result]
 
             coverage_data = parsed_data["coverage"]["block"]
             for row in coverage_data:
@@ -53,8 +61,6 @@ class DataExtractor:
                 else:
                     coverage_result[class_name].append(coverage_dict)
                     test_result[class_name].update(test_set)
-                if class_name.endswith("net.SocketClient"):
-                    logging.info(test_result[class_name])
         return [coverage_result, test_result]
 
 
@@ -185,6 +191,97 @@ class DataExtractor:
                 repo_urls[repo_root] = url
 
         return repo_urls
+
+    async def extract_html_files(self, files: List[UploadFile]):
+        results = {
+            "link_result": {},
+            "total_lines": {}
+        }
+
+        for file in files:
+            # only process .html PIT report files
+            if not file.filename.endswith(".html"):
+                continue
+
+            relative_path = file.filename
+            class_path = ".".join(relative_path.split("pit-reports/")[-1].split("/"))
+            class_path = class_path.split(".java.html")[0].split(".html")[0]
+
+            if class_path not in results["link_result"]:
+                results["link_result"][class_path] = {}
+            link_result = await self.get_line_level_link(file)
+            results["link_result"][class_path] = link_result
+            file.file.seek(0)
+
+
+            total_line_result = await self.get_total_line(file)
+            if total_line_result is not None:
+                results["total_lines"].update(total_line_result)
+            file.file.seek(0)
+
+        return results
+
+    async def process_index_file(self, file: UploadFile):
+        logging.info(f"Processing {file.filename}")
+        required_columns = {'Name', 'Line Coverage', 'Mutation Coverage'}
+
+        # Read file and decode to string
+        html_bytes = await file.read()
+        html_str = html_bytes.decode("utf-8")
+
+        # Use StringIO instead of passing raw string
+        data = pd.read_html(StringIO(html_str))
+
+        filtered_table = [table for table in data if required_columns.issubset(table.columns)]
+        file_path = f"{file.filename.removesuffix(f'/{self.INDEX_FILE_NAME}').split('/')[-1]}"
+
+        return {"file_path": file_path, "table": filtered_table}
+
+    async def get_total_line(self, file):
+        if not file.filename.endswith(self.INDEX_FILE_NAME):
+            return
+        processed_index = await self.process_index_file(file)
+        result = {}
+        for table in processed_index["table"]:
+            get_line_data = self.get_line_data_from_table(processed_index["file_path"], table)
+            result.update(get_line_data)
+        return result
+
+
+    def get_line_data_from_table(self, file_path, table):
+        result = {}
+        for _, row in table.iterrows():
+            if not row["Name"].endswith(".java"):
+                continue
+            full_path = os.path.join(file_path.replace("/", "."), row["Name"].removesuffix(".java")).replace("/", ".")
+            match = re.search(r"(\d+)%\s+(\d+)/(\d+)", row["Line Coverage"])
+            if not match:
+                raise Exception(f"Line Coverage could not be extracted: {row['Line Coverage']}")
+            result[full_path] = int(match.group(3))
+        return result
+
+    async def get_line_level_link(self, file):
+        # read HTML
+        file.file.seek(0)
+        html = file.file.read()
+        if isinstance(html, bytes):
+            html = html.decode("utf-8", errors="ignore")
+        soup = BeautifulSoup(html, "html.parser")
+        # find all mutation rows (td.killed or td.survived)
+        results = {}
+        for a_tag in soup.find_all("a", href=True):
+            href = a_tag["href"]
+            text = a_tag.get_text(strip=True)
+            if not text.isdigit():
+                continue
+
+            # Skip group anchors (mutation summary)
+            if href.startswith("#group"):
+                continue
+
+            line_no = int(text)
+            results[line_no] = href
+        return results
 
 
 if "__main__" == __name__:
