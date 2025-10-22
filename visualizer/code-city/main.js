@@ -77,8 +77,8 @@ function legendContent(d, e) {
     const tests = d.data?.testCount || 0;
     const reportPath = d.data?.report_path || "";
     const reportUrl = reportPath
-    ? `//${window.location.hostname}:9000/pit-reports/${reportPath}`
-    : "#";
+        ? `//${window.location.hostname}:9000/pit-reports/${reportPath}`
+        : "#";
 
     return `
       <div class="bg-white text-gray-800 p-4 rounded-lg shadow-md">
@@ -106,9 +106,8 @@ function legendContent(d, e) {
             </tr>
           </tbody>
         </table>
-        ${
-        reportPath
-          ? `
+        ${reportPath
+            ? `
           <div class="flex justify-left mt-5 items-center mt-3">
             <a href="${reportUrl}" target="_blank" rel="noopener noreferrer"
                class="inline-flex items-center bg-blue-600 text-white text-xs font-semibold px-3 py-1.5 rounded-md hover:bg-blue-700 active:scale-[0.97] transition-all duration-150">
@@ -116,8 +115,8 @@ function legendContent(d, e) {
             </a>
           </div>
           `
-          : ""
-      }
+            : ""
+        }
       </div>
     `;
 }
@@ -128,11 +127,37 @@ function nodeHeight(d) {
         return (typeof v === 'number' && isFinite(v) && v > 1) ? v : 1;
     } else if (heightMode === 'test-count') {
         const tc = d?.data?.testCount;
-        return (typeof tc === 'number' && isFinite(tc) && tc > 1) ? tc : 1;
+        const raw = (typeof tc === 'number' && isFinite(tc) && tc >= 0) ? tc : 0;
+
+        const base = window.__heightNorm?.baseFloor ?? 0.2;
+        const cap = Math.max(1, window.__heightNorm?.testCountCap ?? 1);
+
+        const clamped = Math.min(raw, cap);
+        const scaled = Math.log1p(clamped) / Math.log1p(cap);
+        return base + ((window.__heightNorm?.maxHeight ?? 1.0) - base) * scaled;
+
     }
     // default: LOC total lines
     const tl = d?.data?.lines?.total_line;
     return (typeof tl === 'number' && isFinite(tl) && tl > 1) ? tl : 1;
+}
+
+
+window.__heightNorm = window.__heightNorm || { baseFloor: 2, testCountCap: 1, maxHeight: 100 };
+
+function computePercentile(arr, p) {
+    if (!arr || arr.length === 0) return 1;
+    const a = [...arr].sort((x, y) => x - y);
+    const idx = Math.floor((p / 100) * (a.length - 1));
+    return a[idx];
+}
+
+function computeTestCountCap(merged, percentile = 95) {
+    const vals = Object.values(merged || {})
+        .map(v => v?.testCount ?? 0)
+        .filter(n => typeof n === 'number' && isFinite(n) && n >= 0);
+    const cap = computePercentile(vals, percentile);
+    return Math.max(1, cap);
 }
 
 function nodeColor(d) {
@@ -320,8 +345,9 @@ fetchData().then(function (d) {
         }
     }
 
+    window.__heightNorm.testCountCap = computeTestCountCap(mergedData, 95);
     var treeData = dataHelpers.convertToTree(mergedData, mapperParams);
-    
+
     dataHelpers.colorize(d3, treeData, 'colorValue', nodeColorScale, { min: 20, max: 100 });
 
     applyLeafPaletteAndPlatformGray(treeData);
@@ -472,9 +498,14 @@ fetchData().then(function (d) {
     });
 
     heightMetricSelect.on('change', function () {
-        heightMode = this.value; // 'loc' or 'trace'
+        heightMode = this.value; // 'loc' or 'trace' or 'test-count'
 
         const merged = window.__mergedDataForHeightSwitch;
+
+        if (heightMode === 'test-count') {
+            window.__heightNorm.testCountCap = computeTestCountCap(merged, 95);
+        }
+
         const newTree = dataHelpers.convertToTree(merged, mapperParams);
 
         dataHelpers.colorize(d3, newTree, 'colorValue', nodeColorScale, { min: 20, max: 100 });
