@@ -127,15 +127,8 @@ function nodeHeight(d) {
         return (typeof v === 'number' && isFinite(v) && v > 1) ? v : 1;
     } else if (heightMode === 'test-count') {
         const tc = d?.data?.testCount;
-        const raw = (typeof tc === 'number' && isFinite(tc) && tc >= 0) ? tc : 0;
-
-        const base = window.__heightNorm?.baseFloor ?? 0.2;
-        const cap = Math.max(1, window.__heightNorm?.testCountCap ?? 1);
-
-        const clamped = Math.min(raw, cap);
-        const scaled = Math.log1p(clamped) / Math.log1p(cap);
-        return base + ((window.__heightNorm?.maxHeight ?? 1.0) - base) * scaled;
-
+        const v = tc * window.__heightNorm.normValue
+        return(typeof v === 'number' && isFinite(v) && v > 1) ? v : 1;
     }
     // default: LOC total lines
     const tl = d?.data?.lines?.total_line;
@@ -143,7 +136,7 @@ function nodeHeight(d) {
 }
 
 
-window.__heightNorm = window.__heightNorm || { baseFloor: 2, testCountCap: 1, maxHeight: 100 };
+window.__heightNorm = window.__heightNorm || { normValue: 1, maxTestCounts: 1000 };
 
 function computePercentile(arr, p) {
     if (!arr || arr.length === 0) return 1;
@@ -152,12 +145,17 @@ function computePercentile(arr, p) {
     return a[idx];
 }
 
-function computeTestCountCap(merged, percentile = 95) {
-    const vals = Object.values(merged || {})
+function computeNormalizeValue(merged) {
+    const filtered = Object.fromEntries(
+        Object.entries(merged).filter(([key, value]) => {
+            return key.endsWith('.java');
+        })
+    );
+    const vals = Object.values(filtered || {})
         .map(v => v?.testCount ?? 0)
         .filter(n => typeof n === 'number' && isFinite(n) && n >= 0);
-    const cap = computePercentile(vals, percentile);
-    return Math.max(1, cap);
+    const maxTestCount = Math.max(...vals)
+    return Math.min(1, window.__heightNorm.maxTestCounts/maxTestCount);
 }
 
 function nodeColor(d) {
@@ -295,7 +293,6 @@ fetchData().then(function (d) {
     var mergedData = {};
     window.__mergedDataForHeightSwitch = mergedData;
 
-    console.log(d)
     for (const [filePath, data] of Object.entries(d)) {
         const normalizedPath = filePath.startsWith('/') ? filePath : '/' + filePath;
         const filePaths = normalizedPath.split('/');
@@ -345,7 +342,7 @@ fetchData().then(function (d) {
         }
     }
 
-    window.__heightNorm.testCountCap = computeTestCountCap(mergedData, 95);
+    window.__heightNorm.normValue = computeNormalizeValue(mergedData);
     var treeData = dataHelpers.convertToTree(mergedData, mapperParams);
 
     dataHelpers.colorize(d3, treeData, 'colorValue', nodeColorScale, { min: 20, max: 100 });
@@ -503,7 +500,7 @@ fetchData().then(function (d) {
         const merged = window.__mergedDataForHeightSwitch;
 
         if (heightMode === 'test-count') {
-            window.__heightNorm.testCountCap = computeTestCountCap(merged, 95);
+            window.__heightNorm.normValue = computeNormalizeValue(merged, 95);
         }
 
         const newTree = dataHelpers.convertToTree(merged, mapperParams);
@@ -588,7 +585,6 @@ fetchData().then(function (d) {
     let totalCoveredLines = 0;
 
     for (const [key, data] of Object.entries(d)) {
-        console.log(key, data.line_coverage.total_executable_lines, data.line_coverage.total_covered_lines)
         totalLines += data.line_coverage.total_executable_lines || 0;
         totalCoveredLines += data.line_coverage.total_covered_lines || 0;
     }
