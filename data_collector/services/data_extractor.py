@@ -200,13 +200,3 @@ class DataExtractor:
             line_no = int(text)
             results[line_no] = href
         return results
-
-
-if "__main__" == __name__:
-    with open("/Users/nabhansuwanachote/Desktop/pit-reports/linecoverage.xml", "r", encoding="utf-8") as file:
-        xml_string = file.read()
-
-    # Convert XML to Python dictionary
-    data_dict = xmltodict.parse(xml_string)
-
-    trace = DataExtractor(data_dict)

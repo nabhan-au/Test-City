@@ -23,7 +23,7 @@ async def get_project_list(file_manager_s3_service: FileManagerS3Service = Depen
 
 @coverall_router.get('/project/{project_name}')
 @inject
-async def get_coverall(project_name, file_manager_s3_service: FileManagerS3Service = Depends(Provide[Container.file_manager_s3_service])):
+async def get_complexity(project_name, file_manager_s3_service: FileManagerS3Service = Depends(Provide[Container.file_manager_s3_service])):
     json_data = file_manager_s3_service.get_complexity(
         f"{project_name}")
     json_data.pop("block", None)
@@ -32,7 +32,7 @@ async def get_coverall(project_name, file_manager_s3_service: FileManagerS3Servi
 
 @coverall_router.post("/project/{project_name}", status_code=status.HTTP_201_CREATED)
 @inject
-async def create_project_coverall(
+async def create_project_complexity(
     project_name: str,
     files: List[UploadFile] = File(...),
     project_identifier: str = Form(..., alias="projectIdentifier"),
@@ -58,7 +58,7 @@ async def create_project_coverall(
         staged = await filemgr.get_staged_uploadfiles(project_name)
         if not staged:
             raise HTTPException(400, "No staged files found to finalize")
-        await coverage.process_coverage(staged, project_name, project_identifier)
+        await coverage.process_coverage(staged, project_name)
 
         filemgr.clear_staging(project_name)
 
@@ -72,14 +72,3 @@ async def create_project_coverall(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Server error while processing project '{project_name}': {e}",
         )
-
-@coverall_router.post('/project-new/{project_name}', status_code=status.HTTP_201_CREATED)
-@inject
-async def process_coverage(project_name: str, files: List[UploadFile], coverage_processor: CoverageProcessor = Depends(Provide[Container.coverage_processor_service]), file_manager_s3_service: FileManagerS3Service = Depends(Provide[Container.file_manager_s3_service])):
-    try:
-        await file_manager_s3_service.upload_project_target(files, project_name)
-        await coverage_processor.process_coverage(files, project_name)
-        return CommonResponse(True, "Created coverage report").to_json()
-    except Exception as e:
-        raise HTTPException(status.HTTP_500_INTERNAL_SERVER_ERROR,
-                            "Something went wrong in the server with message", e)
