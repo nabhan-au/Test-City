@@ -21,26 +21,16 @@ It uses interactive 3D representations to help understand code structure, testin
      ```
 
 3. Download this repository.  
-   *(Note: This is an anonymous repository and cannot be cloned from github.)*
-4. Unzip file
-5.	Start all services:
+   *(Note: This is an anonymous repository and cannot be cloned from GitHub.)*  
+   *(You can download it using the **Download Repository** button at the top-right corner.)*
+5. Unzip file
+6.	Start all services (if Docker asks for permission to access files, please allow it):
    ```bash
    cd Test-City-6E3E
    docker compose up
    ```
-Note: If your system uses the legacy docker-compose, use: 
-```bash
-docker-compose up
-```
+Note: If your system uses the legacy docker-compose, use: `docker-compose up`
 
-This will:
-
-- Launch the **Test City** web service.  
-- Initialize a **MinIO** instance for storing reports.  
-- Automatically create two buckets:
-  - `results` — stores complexity and coverage results  
-  - `pit-reports` — stores mutation testing reports  
-- Upload initial data from the `./data` directory.
 
 6. Access **Test City** at:
 [http://localhost:5173](http://localhost:5173)  
