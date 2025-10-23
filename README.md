@@ -9,14 +9,15 @@ It uses interactive 3D representations to help understand code structure, testin
 
 ### Run with Docker
 
-1. Make sure you have **Docker** and **Docker Compose** installed.
-2. Clone or download this repository:
-   ```bash
-   git clone https://github.com/<anonymous>/Test-City.git
-   cd Test-City
-   ```
+1. Make sure you have **Docker** and **Docker Compose** installed.  
+   You can follow the installation guide here:  
+   [https://docs.docker.com/desktop/setup/install/mac-install/](https://docs.docker.com/desktop/setup/install/mac-install/)
+
+2. Clone or download this repository.  
+   *(Note: This is an anonymous repository and cannot be downloaded publicly.)*
 3.	Start all services:
    ```bash
+   cd Test-City-6E3E
    docker compose up
    ```
 
