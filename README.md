@@ -13,13 +13,19 @@ It uses interactive 3D representations to help understand code structure, testin
    You can follow the installation guide here:  
    [https://docs.docker.com/desktop/setup/install/mac-install/](https://docs.docker.com/desktop/setup/install/mac-install/)
 
-2. Download this repository.  
+2. Make sure docker is running. by using ... If running on linux docker-compose
+
+3. Download this repository.  
    *(Note: This is an anonymous repository and cannot be cloned from github.)*
-3.	Start all services:
+4. Unzip file
+5.	Start all services:
    ```bash
    cd Test-City-6E3E
    docker compose up
    ```
+Note: If your system uses the legacy docker-compose, use: ```bash
+docker-compose up
+```
 
 This will:
 
