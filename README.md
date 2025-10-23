@@ -28,7 +28,8 @@ It uses interactive 3D representations to help understand code structure, testin
    cd Test-City-6E3E
    docker compose up
    ```
-Note: If your system uses the legacy docker-compose, use: ```bash
+Note: If your system uses the legacy docker-compose, use: 
+```bash
 docker-compose up
 ```
 
