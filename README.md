@@ -13,7 +13,12 @@ It uses interactive 3D representations to help understand code structure, testin
    You can follow the installation guide here:  
    [https://docs.docker.com/desktop/setup/install/mac-install/](https://docs.docker.com/desktop/setup/install/mac-install/)
 
-2. Make sure docker is running. by using ... If running on linux docker-compose
+2. Ensure **Docker** is running.  
+   - On macOS/Windows, open **Docker Desktop**.  
+   - On Linux, you may need to start it manually using:
+     ```bash
+     sudo systemctl start docker
+     ```
 
 3. Download this repository.  
    *(Note: This is an anonymous repository and cannot be cloned from github.)*
