@@ -42,6 +42,9 @@ This will:
   - `pit-reports` — stores mutation testing reports  
 - Upload initial data from the `./data` directory.
 
+6. Access **Test City** at:
+[http://localhost:5173](http://localhost:5173)  
+
 
 ### Accessing the Services
 
