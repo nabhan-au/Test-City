@@ -13,8 +13,8 @@ It uses interactive 3D representations to help understand code structure, testin
    You can follow the installation guide here:  
    [https://docs.docker.com/desktop/setup/install/mac-install/](https://docs.docker.com/desktop/setup/install/mac-install/)
 
-2. Clone or download this repository.  
-   *(Note: This is an anonymous repository and cannot be downloaded publicly.)*
+2. Download this repository.  
+   *(Note: This is an anonymous repository and cannot be cloned from github.)*
 3.	Start all services:
    ```bash
    cd Test-City-6E3E
