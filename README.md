@@ -25,6 +25,7 @@ It uses interactive 3D representations to help understand code structure, testin
    *(You can download it using the **Download Repository** button at the top-right corner.)*
 4. Unzip file
 5.	Start all services (if Docker asks for permission to access files, please allow it):
+   
       ```bash
       cd Test-City-6E3E
       docker compose up
