@@ -58,7 +58,7 @@ async def create_project_coverall(
         staged = await filemgr.get_staged_uploadfiles(project_name)
         if not staged:
             raise HTTPException(400, "No staged files found to finalize")
-        await coverage.process_coverage(staged, project_name, project_identifier)
+        await coverage.process_coverage(staged, project_name)
 
         filemgr.clear_staging(project_name)
 

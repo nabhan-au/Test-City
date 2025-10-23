@@ -127,7 +127,7 @@ class CoverageProcessor:
         class1["block"].extend(class2["block"])
         return class1
 
-    async def extract_data(self, files, repo_name, git_url, report_path_map, mutation_html_link_map, project_type ="maven"):
+    async def extract_data(self, files, repo_name, report_path_map, mutation_html_link_map, project_type ="maven"):
         class_map = self.data_extractor_service.get_class_map(repo_name, files)
 
         class_to_file_map = {}
@@ -155,7 +155,6 @@ class CoverageProcessor:
             for k, v in block_data.items():
                 file_path = class_map.get(k, "")
                 report_path = report_path_map.get(k, "")
-                v["git_url"] = f"{git_url}/{file_path}"
                 v["report_path"] = report_path
 
                 # Code Coverage
@@ -230,24 +229,12 @@ class CoverageProcessor:
             block["tests"] = match_block[0]["tests"]
             match_block[0]["found_match"] = True
 
-    def get_github_url(self, project_identifier: str) -> str:
-        """
-        Convert project identifier (e.g. 'apache/commons-lang')
-        to a full GitHub URL.
-        """
-        project_identifier = project_identifier.strip()
-        if not project_identifier or "/" not in project_identifier:
-            raise ValueError("Invalid project identifier format. Expected 'owner/repo'.")
-
-        return f"https://github.com/{project_identifier}"
-
-    async def process_coverage(self, files: List[UploadFile], repo_name, project_identifier):
-        github_url = self.get_github_url(project_identifier)
+    async def process_coverage(self, files: List[UploadFile], repo_name):
         report_path_map = await self.file_manager_service.upload_pitest_reports(files, repo_name)
         extracted_html_result = await self.data_extractor_service.extract_html_files(files)
         mutation_html_link_map = extracted_html_result["link_result"]
         logging.info(f"Processing {len(files)} files")
-        coverage_result = await self.extract_data(files, repo_name, github_url, report_path_map, mutation_html_link_map)
+        coverage_result = await self.extract_data(files, repo_name, report_path_map, mutation_html_link_map)
         self.file_manager_service.save_complexity(repo_name, {"summary": coverage_result})
         return {
             "success": True,
