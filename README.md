@@ -23,16 +23,16 @@ It uses interactive 3D representations to help understand code structure, testin
 3. Download this repository.  
    *(Note: This is an anonymous repository and cannot be cloned from GitHub.)*  
    *(You can download it using the **Download Repository** button at the top-right corner.)*
-5. Unzip file
-6.	Start all services (if Docker asks for permission to access files, please allow it):
-   ```bash
-   cd Test-City-6E3E
-   docker compose up
-   ```
-Note: If your system uses the legacy docker-compose, use: `docker-compose up`
+4. Unzip file
+5.	Start all services (if Docker asks for permission to access files, please allow it):
+      ```bash
+      cd Test-City-6E3E
+      docker compose up
+      ```
+      Note: If your system uses the legacy docker-compose, use:`docker-compose up`
 
 
-6. Access **Test City** at:
+7. Access **Test City** at:
 [http://localhost:5173](http://localhost:5173)  
 
 
