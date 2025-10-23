@@ -11,8 +11,6 @@ var params = (new URL(document.location)).searchParams;
 let globalMargin = 0.2;
 let isDragging = false;
 var codeCityChart;
-// 'go-jsonnet'
-
 
 async function fetchData() {
     try {
@@ -24,8 +22,6 @@ async function fetchData() {
 }
 
 var metric = 'lines';
-var classes = 'classes';
-var trace = 'traces';
 let heightMode = 'loc'; // 'loc' | 'trace'
 
 var legendDiv = $('#code-city-legend')[0];
@@ -137,13 +133,6 @@ function nodeHeight(d) {
 
 
 window.__heightNorm = window.__heightNorm || { normValue: 1, maxTestCounts: 1000 };
-
-function computePercentile(arr, p) {
-    if (!arr || arr.length === 0) return 1;
-    const a = [...arr].sort((x, y) => x - y);
-    const idx = Math.floor((p / 100) * (a.length - 1));
-    return a[idx];
-}
 
 function computeNormalizeValue(merged) {
     const filtered = Object.fromEntries(
@@ -412,12 +401,6 @@ fetchData().then(function (d) {
         zoomBtns.toggleClass('opacity-50 cursor-not-allowed', !enabled);
     }
     setZoomEnabled(true);
-
-    const ensureNormalView = () => {
-        if (viewModeSelect.val() !== 'normal') {
-            viewModeSelect.val('normal').trigger('change');
-        }
-    };
 
     rotateLeftSpan.on('mousedown', function () {
         if (birdEyeToggle.is(':checked')) {

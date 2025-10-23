@@ -5,7 +5,7 @@ import $ from 'jquery';
 var houseMargin = 0.001; //min margin in percent
 let roofRingSides = ['north', 'east', 'south', 'west'];
 
-function generateTreemap(d3, data, params) {
+function generateTreemap(d3, data) {
   var layout = d3.layout.treemap()
     .size([1.0, 1.0])
     .sticky(true)
@@ -31,7 +31,7 @@ function codeCity(d3, element, rawData, params, margin, isProgressiveLayout = tr
     [data, normalized_block_size] = progressive.calculate_area(rawData, currentMargin)
   } else {
     normalized_block_size = 0.05
-    data = generateTreemap(d3, rawData, params);
+    data = generateTreemap(d3, rawData);
   }
 
   var width = canvas.node().offsetWidth;
@@ -436,7 +436,6 @@ void main() { \
           };
         }
 
-        // params.legend?.onMouseover(selectedD, event);
         render();
       }
     } else if (intersected) {
@@ -446,7 +445,6 @@ void main() { \
       } else if (intersected.userData?.isMutantStack) {
         intersected.scale.set(1, 1, 1);
       }
-      // params.legend?.onMouseout(selectedD, event);
       intersected = null;
       selectedD = undefined;
       render();
@@ -487,7 +485,6 @@ void main() { \
   var canvasDiv = $('#code-city-canvas');
   canvasDiv.on('mouseleave', function () {
     if (params.legend && selectedD) {
-      // params.legend.onMouseout(selectedD);
       selectedD = undefined;
     }
   });
@@ -715,7 +712,7 @@ void main() { \
       [data, normalized_block_size] = progressive.calculate_area(rawData, currentMargin);
     } else {
       normalized_block_size = 0.05;
-      data = generateTreemap(d3, rawData, params);
+      data = generateTreemap(d3, rawData);
     }
 
     maximumHeight = 250;
@@ -743,7 +740,7 @@ void main() { \
       [data, normalized_block_size] = progressive.calculate_area(rawData, currentMargin);
     } else {
       normalized_block_size = 0.05;
-      data = generateTreemap(d3, rawData, params);
+      data = generateTreemap(d3, rawData);
     }
 
     maximumHeight = 250;
