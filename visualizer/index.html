@@ -26,7 +26,7 @@
 
     <!-- Projects Section -->
     <section class="container mx-auto px-6 py-10">
-        <h2 class="text-4xl text-center mb-10">Your Projects</h2>
+        <h1 class="text-4xl font-semibold text-center mb-10">Your Projects</h1>
         <div id="projectList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <p id="defaultMessage" class="col-span-full text-center">No projects available. Upload your first model to
                 get started.</p>
@@ -35,7 +35,7 @@
 
     <!-- Upload Section -->
     <section class="container mx-auto px-6 mt-10 my-20">
-      <h2 class="text-4xl font-semibold text-center text-white mb-10">Upload Your Project</h2>
+      <h2 class="text-3xl font-semibold text-center text-white mb-10">Upload Your Project</h2>
 
       <div class="bg-white bg-opacity-10 rounded-xl p-8 max-w-2xl mx-auto shadow-lg">
         <form id="uploadForm" enctype="multipart/form-data" class="space-y-6">
@@ -127,7 +127,7 @@
             const projectList = document.getElementById("projectList");
             const projectElement = document.createElement("button");
             projectElement.textContent = projectName;
-            projectElement.className = "bg-white bg-opacity-5 rounded-lg p-4 hover:bg-opacity-10";
+            projectElement.className = "text-xl bg-white bg-opacity-5 rounded-lg p-4 hover:bg-opacity-10";
             projectElement.onclick = () => window.location.href = "./code-city/index.html?project=" + projectName;
             projectList.appendChild(projectElement);
         }
