@@ -30,11 +30,12 @@ It uses interactive 3D representations to help understand code structure, testin
    docker compose up
    </code></pre>
 
-   Note: If your system uses the legacy `docker-compose`, use `docker-compose up`.
+   **Note:** If your system uses the legacy `docker-compose`, use `docker-compose up`.
 
+6. Access **Test City** at:
+[http://localhost:5173](http://localhost:5173)
 
-7. Access **Test City** at:
-[http://localhost:5173](http://localhost:5173)  
+   **Note:** Please wait until all Docker containers finish starting up before accessing the URL. 
 
 
 ### Accessing the Services
