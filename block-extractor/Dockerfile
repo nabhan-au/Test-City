@@ -5,7 +5,7 @@ RUN mvn dependency:go-offline
 COPY src ./src
 RUN mvn clean package -DskipTests
 
-FROM openjdk:24-slim
+FROM openjdk:24-ea-17-jdk-slim
 WORKDIR /app
 COPY --from=build /build/target/*.jar app.jar
 EXPOSE 8080
