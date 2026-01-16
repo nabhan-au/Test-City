@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+<body>
+
+
+<h1>CountingLongPredicate.java</h1>
+
+<table class="src">
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_1'/>
+1
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_1'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>/*</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_2'/>
+2
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_2'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Licensed to the Apache Software Foundation (ASF) under one or more</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_3'/>
+3
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_3'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * contributor license agreements.  See the NOTICE file distributed with</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_4'/>
+4
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_4'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * this work for additional information regarding copyright ownership.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_5'/>
+5
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_5'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * The ASF licenses this file to You under the Apache License, Version 2.0</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_6'/>
+6
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_6'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * (the &#34;License&#34;); you may not use this file except in compliance with</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_7'/>
+7
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_7'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * the License.  You may obtain a copy of the License at</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_8'/>
+8
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_8'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_9'/>
+9
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_9'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *      http://www.apache.org/licenses/LICENSE-2.0</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_10'/>
+10
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_10'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_11'/>
+11
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_11'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Unless required by applicable law or agreed to in writing, software</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_12'/>
+12
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_12'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * distributed under the License is distributed on an &#34;AS IS&#34; BASIS,</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_13'/>
+13
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_13'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_14'/>
+14
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_14'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * See the License for the specific language governing permissions and</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_15'/>
+15
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_15'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * limitations under the License.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_16'/>
+16
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_16'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_17'/>
+17
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_17'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>package org.apache.commons.collections4.bloomfilter;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_18'/>
+18
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_18'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_19'/>
+19
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_19'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.util.function.LongPredicate;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_20'/>
+20
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_20'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_21'/>
+21
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_21'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>/**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_22'/>
+22
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_22'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * A long predicate that applies the test func to each member of the {@code ary} in sequence for each call to {@code test()}.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_23'/>
+23
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_23'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * if the {@code ary} is exhausted, the subsequent calls to {@code test} are executed with a zero value.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_24'/>
+24
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_24'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * If the calls to {@code test} do not exhaust the {@code ary} the {@code processRemaining} method can be called to</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_25'/>
+25
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_25'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * execute the @{code test} with a zero value for each remaining {@code idx} value.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_26'/>
+26
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_26'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_27'/>
+27
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_27'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>class CountingLongPredicate implements LongPredicate {</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_28'/>
+28
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_28'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_29'/>
+29
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_29'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    private int idx;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_30'/>
+30
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_30'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    private final long[] ary;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_31'/>
+31
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_31'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    private final LongBiPredicate func;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_32'/>
+32
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_32'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_33'/>
+33
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_33'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_34'/>
+34
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_34'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Constructs an instance that will compare the elements in {@code ary} with the elements returned by {@code func}.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_35'/>
+35
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_35'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * function is called as {@code func.test( idxValue, otherValue )}. If there are more {@code otherValue} values than</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_36'/>
+36
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_36'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * {@code idxValues} then {@code func} is called as {@code func.test( 0, otherValue )}.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_37'/>
+37
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_37'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_38'/>
+38
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_38'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param ary The array of long values to compare.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_39'/>
+39
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_39'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param func The function to apply to the pairs of long values.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_40'/>
+40
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_40'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_41'/>
+41
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_41'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    CountingLongPredicate(final long[] ary, final LongBiPredicate func) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_42'/>
+42
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_42'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        this.ary = ary;</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_43'/>
+43
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_43'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        this.func = func;</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_44'/>
+44
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_44'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_45'/>
+45
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_45'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_46'/>
+46
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_46'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_47'/>
+47
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_47'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Call the long-long consuming bi-predicate for each remaining unpaired long in</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_48'/>
+48
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_48'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * the input array. This method should be invoked after the predicate has been</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_49'/>
+49
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_49'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * passed to {@link BitMapExtractor#processBitMaps(LongPredicate)} to consume any</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_50'/>
+50
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_50'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * unpaired bitmaps. The second argument to the bi-predicate will be zero.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_51'/>
+51
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_51'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_52'/>
+52
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_52'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @return true if all calls to the predicate were successful</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_53'/>
+53
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_53'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_54'/>
+54
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_54'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    boolean processRemaining() {</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_55'/>
+55
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_55'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        // uses local references for optimization benefit.</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_56'/>
+56
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_56'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        int i = idx;</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_57'/>
+57
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_57'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        final long[] a = ary;</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_58'/>
+58
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_58'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        final int limit = a.length;</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_59'/>
+59
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_59'>2</a>
+<span>
+1. processRemaining : negated conditional &rarr; KILLED<br/>
+2. processRemaining : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        while (i != limit &#38;&#38; func.test(a[i], 0)) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_60'/>
+60
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_60'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            i++;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_61'/>
+61
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_61'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_62'/>
+62
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_62'>2</a>
+<span>
+1. processRemaining : negated conditional &rarr; KILLED<br/>
+2. processRemaining : replaced boolean return with true for org/apache/commons/collections4/bloomfilter/CountingLongPredicate::processRemaining &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return i == limit;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_63'/>
+63
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_63'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_64'/>
+64
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_64'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_65'/>
+65
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_65'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_66'/>
+66
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_66'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public boolean test(final long other) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_67'/>
+67
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_67'>4</a>
+<span>
+1. test : negated conditional &rarr; KILLED<br/>
+2. test : Replaced integer addition with subtraction &rarr; KILLED<br/>
+3. test : replaced boolean return with false for org/apache/commons/collections4/bloomfilter/CountingLongPredicate::test &rarr; KILLED<br/>
+4. test : replaced boolean return with true for org/apache/commons/collections4/bloomfilter/CountingLongPredicate::test &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return func.test(idx == ary.length ? 0 : ary[idx++], other);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_68'/>
+68
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_68'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5b2787ac_69'/>
+69
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_69'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>}</span></pre></td></tr>
+
+
+
+<tr><td></td><td></td><td><h2>Mutations</h2></td></tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5b2787ac_59'>59</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_59'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>processRemaining<br/><b>Killed by : </b>org.apache.commons.collections4.bloomfilter.BitMapExtractorFromLongArrayTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.BitMapExtractorFromLongArrayTest]/[method:testForEachBitMapPairEarlyExit()]</span></span> negated conditional &rarr; KILLED</span>
+</div> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>processRemaining<br/><b>Killed by : </b>org.apache.commons.collections4.bloomfilter.BitMapExtractorFromLongArrayTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.BitMapExtractorFromLongArrayTest]/[method:testForEachBitMapPairEarlyExit()]</span></span> negated conditional &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5b2787ac_62'>62</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_62'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>processRemaining<br/><b>Killed by : </b>org.apache.commons.collections4.bloomfilter.BitMapExtractorFromLongArrayTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.BitMapExtractorFromLongArrayTest]/[method:testForEachBitMapPair()]</span></span> negated conditional &rarr; KILLED</span>
+</div> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>processRemaining<br/><b>Killed by : </b>org.apache.commons.collections4.bloomfilter.BitMapExtractorFromLongArrayTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.BitMapExtractorFromLongArrayTest]/[method:testForEachBitMapPair()]</span></span> replaced boolean return with true for org/apache/commons/collections4/bloomfilter/CountingLongPredicate::processRemaining &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5b2787ac_67'>67</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5b2787ac_67'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>test<br/><b>Killed by : </b>org.apache.commons.collections4.bloomfilter.BitMapExtractorFromLongArrayTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.BitMapExtractorFromLongArrayTest]/[method:testForEachBitMapPairEarlyExit()]</span></span> negated conditional &rarr; KILLED</span>
+</div> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>test<br/><b>Killed by : </b>org.apache.commons.collections4.bloomfilter.BitMapExtractorFromLongArrayTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.BitMapExtractorFromLongArrayTest]/[method:testForEachBitMapPair()]</span></span> Replaced integer addition with subtraction &rarr; KILLED</span>
+</div> <p class='KILLED'><span class='pop'>3.<span><b>3</b><br/><b>Location : </b>test<br/><b>Killed by : </b>org.apache.commons.collections4.bloomfilter.BitMapExtractorFromLongArrayTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.BitMapExtractorFromLongArrayTest]/[method:testForEachBitMapPair()]</span></span> replaced boolean return with false for org/apache/commons/collections4/bloomfilter/CountingLongPredicate::test &rarr; KILLED</span>
+</div> <p class='KILLED'><span class='pop'>4.<span><b>4</b><br/><b>Location : </b>test<br/><b>Killed by : </b>org.apache.commons.collections4.bloomfilter.BitMapExtractorFromLongArrayTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.BitMapExtractorFromLongArrayTest]/[method:testForEachBitMapPairEarlyExit()]</span></span> replaced boolean return with true for org/apache/commons/collections4/bloomfilter/CountingLongPredicate::test &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+
+</table>
+
+
+<h2>Active mutators</h2>
+<ul>
+<li class='mutator'>CONDITIONALS_BOUNDARY</li>
+<li class='mutator'>EMPTY_RETURNS</li>
+<li class='mutator'>FALSE_RETURNS</li>
+<li class='mutator'>INCREMENTS</li>
+<li class='mutator'>INVERT_NEGS</li>
+<li class='mutator'>MATH</li>
+<li class='mutator'>NEGATE_CONDITIONALS</li>
+<li class='mutator'>NULL_RETURNS</li>
+<li class='mutator'>PRIMITIVE_RETURNS</li>
+<li class='mutator'>TRUE_RETURNS</li>
+<li class='mutator'>VOID_METHOD_CALLS</li>
+
+</ul>
+
+<h2>Tests examined</h2>
+<ul>
+<li>org.apache.commons.collections4.bloomfilter.BitMapExtractorFromLongArrayTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.BitMapExtractorFromLongArrayTest]/[method:testForEachBitMapPairEarlyExit()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.DefaultBitMapExtractorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.DefaultBitMapExtractorTest]/[method:testForEachBitMapPairEarlyExit()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.BitMapExtractorFromLongArrayTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.BitMapExtractorFromLongArrayTest]/[method:testForEachBitMapPair()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.DefaultBitMapExtractorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.DefaultBitMapExtractorTest]/[method:testForEachBitMapPair()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.SetOperationsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.SetOperationsTest]/[method:testHammingDistance()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.SetOperationsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.SetOperationsTest]/[method:testCommutativityOnMismatchedSizes()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.SetOperationsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.SetOperationsTest]/[method:testJaccardSimilarity()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.SetOperationsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.SetOperationsTest]/[method:testJaccardDistance()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.BitMapExtractorFromIndexExtractorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.BitMapExtractorFromIndexExtractorTest]/[method:testForEachBitMapPair()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.SetOperationsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.SetOperationsTest]/[method:testCosineSimilarity()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.SetOperationsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.SetOperationsTest]/[method:testXorCardinalityWithDifferentLengthFilters()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.SetOperationsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.SetOperationsTest]/[method:testOrCardinalityWithDifferentLengthFilters()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.BitMapExtractorFromSimpleBloomFilterTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.BitMapExtractorFromSimpleBloomFilterTest]/[method:testForEachBitMapPair()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.SetOperationsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.SetOperationsTest]/[method:testAndCardinality()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.SetOperationsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.SetOperationsTest]/[method:testOrCardinality()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.SetOperationsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.SetOperationsTest]/[method:testAndCardinalityWithDifferentLengthFilters()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.SetOperationsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.SetOperationsTest]/[method:testXorCardinality()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.SetOperationsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.SetOperationsTest]/[method:testCosineDistance()] (1 ms)</li><li>org.apache.commons.collections4.bloomfilter.DefaultBloomFilterTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.DefaultBloomFilterTest]/[method:testHasherBasedMergeWithDifferingSparseness()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.SparseBloomFilterTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.SparseBloomFilterTest]/[method:testBloomFilterBasedMergeEdgeCases()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.BitMapExtractorFromSparseBloomFilterTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.BitMapExtractorFromSparseBloomFilterTest]/[method:testForEachBitMapPair()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.BitMapExtractorFromWrappedBloomFilterTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.BitMapExtractorFromWrappedBloomFilterTest]/[method:testForEachBitMapPair()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.BitMapExtractorFromArrayCountingBloomFilterTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.BitMapExtractorFromArrayCountingBloomFilterTest]/[method:testForEachBitMapPair()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.SimpleBloomFilterTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.SimpleBloomFilterTest]/[method:testContains()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.SimpleBloomFilterTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.SimpleBloomFilterTest]/[method:testMerge()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.LayeredBloomFilterTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.LayeredBloomFilterTest]/[method:testFindBloomFilter()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.BitMapExtractorFromLayeredBloomFilterTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.BitMapExtractorFromLayeredBloomFilterTest]/[method:testForEachBitMapPair()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.LayeredBloomFilterTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.LayeredBloomFilterTest]/[method:testFindIndexExtractor()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.ArrayCountingBloomFilterTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.ArrayCountingBloomFilterTest]/[method:testCountingBloomFilterSpecificContains()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.LayeredBloomFilterTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.LayeredBloomFilterTest]/[method:testFindBitMapExtractor()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.ArrayCountingBloomFilterTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.ArrayCountingBloomFilterTest]/[method:testCountingSpecificMerge()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.LayeredBloomFilterTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.LayeredBloomFilterTest]/[method:testMultipleFilters()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.LayeredBloomFilterTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.LayeredBloomFilterTest]/[method:testContains()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.LayeredBloomFilterTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.LayeredBloomFilterTest]/[method:testMerge()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.BitMapExtractorFromIndexExtractorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.BitMapExtractorFromIndexExtractorTest]/[method:testForEachBitMapPairEarlyExit()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.BitMapExtractorFromSimpleBloomFilterTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.BitMapExtractorFromSimpleBloomFilterTest]/[method:testForEachBitMapPairEarlyExit()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.BitMapExtractorFromSparseBloomFilterTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.BitMapExtractorFromSparseBloomFilterTest]/[method:testForEachBitMapPairEarlyExit()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.BitMapExtractorFromWrappedBloomFilterTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.BitMapExtractorFromWrappedBloomFilterTest]/[method:testForEachBitMapPairEarlyExit()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.BitMapExtractorFromArrayCountingBloomFilterTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.BitMapExtractorFromArrayCountingBloomFilterTest]/[method:testForEachBitMapPairEarlyExit()] (0 ms)</li><li>org.apache.commons.collections4.bloomfilter.BitMapExtractorFromLayeredBloomFilterTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bloomfilter.BitMapExtractorFromLayeredBloomFilterTest]/[method:testForEachBitMapPairEarlyExit()] (1 ms)</li>
+</ul>
+
+<br/>
+
+Report generated by <a href='https://pitest.org'>PIT</a> 1.20.6
+
+</body>
+</html>

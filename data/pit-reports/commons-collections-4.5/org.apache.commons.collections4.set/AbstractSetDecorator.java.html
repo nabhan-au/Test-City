@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+<body>
+
+
+<h1>AbstractSetDecorator.java</h1>
+
+<table class="src">
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_1'/>
+1
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_1'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>/*</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_2'/>
+2
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_2'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Licensed to the Apache Software Foundation (ASF) under one or more</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_3'/>
+3
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_3'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * contributor license agreements.  See the NOTICE file distributed with</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_4'/>
+4
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_4'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * this work for additional information regarding copyright ownership.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_5'/>
+5
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_5'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * The ASF licenses this file to You under the Apache License, Version 2.0</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_6'/>
+6
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_6'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * (the &#34;License&#34;); you may not use this file except in compliance with</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_7'/>
+7
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_7'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * the License.  You may obtain a copy of the License at</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_8'/>
+8
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_8'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_9'/>
+9
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_9'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *      http://www.apache.org/licenses/LICENSE-2.0</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_10'/>
+10
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_10'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_11'/>
+11
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_11'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Unless required by applicable law or agreed to in writing, software</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_12'/>
+12
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_12'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * distributed under the License is distributed on an &#34;AS IS&#34; BASIS,</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_13'/>
+13
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_13'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_14'/>
+14
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_14'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * See the License for the specific language governing permissions and</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_15'/>
+15
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_15'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * limitations under the License.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_16'/>
+16
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_16'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_17'/>
+17
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_17'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>package org.apache.commons.collections4.set;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_18'/>
+18
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_18'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_19'/>
+19
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_19'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.util.Set;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_20'/>
+20
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_20'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_21'/>
+21
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_21'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import org.apache.commons.collections4.collection.AbstractCollectionDecorator;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_22'/>
+22
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_22'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_23'/>
+23
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_23'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>/**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_24'/>
+24
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_24'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Decorates another {@code Set} to provide additional behavior.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_25'/>
+25
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_25'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * &#60;p&#62;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_26'/>
+26
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_26'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Methods are forwarded directly to the decorated set.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_27'/>
+27
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_27'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * &#60;/p&#62;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_28'/>
+28
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_28'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_29'/>
+29
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_29'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * @param &#60;E&#62; the type of the elements in this set</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_30'/>
+30
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_30'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * @since 3.0</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_31'/>
+31
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_31'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_32'/>
+32
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_32'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>public abstract class AbstractSetDecorator&#60;E&#62; extends AbstractCollectionDecorator&#60;E&#62; implements</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_33'/>
+33
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_33'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        Set&#60;E&#62; {</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_34'/>
+34
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_34'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_35'/>
+35
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_35'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /** Serialization version */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_36'/>
+36
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_36'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    private static final long serialVersionUID = -4678668309576958546L;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_37'/>
+37
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_37'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_38'/>
+38
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_38'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_39'/>
+39
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_39'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Constructor only used in deserialization, do not use otherwise.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_40'/>
+40
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_40'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @since 3.1</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_41'/>
+41
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_41'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_42'/>
+42
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_42'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class=''>    protected AbstractSetDecorator() {</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_43'/>
+43
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_43'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_44'/>
+44
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_44'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_45'/>
+45
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_45'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_46'/>
+46
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_46'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Constructor that wraps (not copies).</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_47'/>
+47
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_47'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_48'/>
+48
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_48'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param set  the set to decorate, must not be null</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_49'/>
+49
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_49'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @throws NullPointerException if set is null</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_50'/>
+50
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_50'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_51'/>
+51
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_51'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    protected AbstractSetDecorator(final Set&#60;E&#62; set) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_52'/>
+52
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_52'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        super(set);</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_53'/>
+53
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_53'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_54'/>
+54
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_54'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_55'/>
+55
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_55'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_56'/>
+56
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_56'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Gets the set being decorated.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_57'/>
+57
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_57'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_58'/>
+58
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_58'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @return the decorated set</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_59'/>
+59
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_59'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_60'/>
+60
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_60'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_61'/>
+61
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_61'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    protected Set&#60;E&#62; decorated() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_62'/>
+62
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_62'>1</a>
+<span>
+1. decorated : replaced return value with Collections.emptySet for org/apache/commons/collections4/set/AbstractSetDecorator::decorated &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return (Set&#60;E&#62;) super.decorated();</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_63'/>
+63
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_63'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_64'/>
+64
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_64'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_65'/>
+65
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_65'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_66'/>
+66
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_66'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public boolean equals(final Object object) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_67'/>
+67
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_67'>3</a>
+<span>
+1. equals : negated conditional &rarr; KILLED<br/>
+2. equals : replaced boolean return with true for org/apache/commons/collections4/set/AbstractSetDecorator::equals &rarr; KILLED<br/>
+3. equals : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return object == this || decorated().equals(object);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_68'/>
+68
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_68'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_69'/>
+69
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_69'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_70'/>
+70
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_70'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_71'/>
+71
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_71'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public int hashCode() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_72'/>
+72
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_72'>1</a>
+<span>
+1. hashCode : replaced int return with 0 for org/apache/commons/collections4/set/AbstractSetDecorator::hashCode &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return decorated().hashCode();</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_73'/>
+73
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_73'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_74'/>
+74
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_74'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4a981dd5_75'/>
+75
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_75'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>}</span></pre></td></tr>
+
+
+
+<tr><td></td><td></td><td><h2>Mutations</h2></td></tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@4a981dd5_62'>62</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_62'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>decorated<br/><b>Killed by : </b>org.apache.commons.collections4.set.UnmodifiableSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSortedSetTest]/[method:testObjectHashCodeEqualsSelfHashCode()]</span></span> replaced return value with Collections.emptySet for org/apache/commons/collections4/set/AbstractSetDecorator::decorated &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@4a981dd5_67'>67</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_67'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>org.apache.commons.collections4.set.UnmodifiableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSetTest]/[method:testEqualsNull()]</span></span> negated conditional &rarr; KILLED</span>
+</div> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>org.apache.commons.collections4.set.UnmodifiableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSetTest]/[method:testEqualsNull()]</span></span> replaced boolean return with true for org/apache/commons/collections4/set/AbstractSetDecorator::equals &rarr; KILLED</span>
+</div> <p class='KILLED'><span class='pop'>3.<span><b>3</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>org.apache.commons.collections4.set.UnmodifiableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSetTest]/[method:testEqualsNull()]</span></span> negated conditional &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@4a981dd5_72'>72</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@4a981dd5_72'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>hashCode<br/><b>Killed by : </b>org.apache.commons.collections4.set.UnmodifiableSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSortedSetTest]/[method:testSetHashCode()]</span></span> replaced int return with 0 for org/apache/commons/collections4/set/AbstractSetDecorator::hashCode &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+
+</table>
+
+
+<h2>Active mutators</h2>
+<ul>
+<li class='mutator'>CONDITIONALS_BOUNDARY</li>
+<li class='mutator'>EMPTY_RETURNS</li>
+<li class='mutator'>FALSE_RETURNS</li>
+<li class='mutator'>INCREMENTS</li>
+<li class='mutator'>INVERT_NEGS</li>
+<li class='mutator'>MATH</li>
+<li class='mutator'>NEGATE_CONDITIONALS</li>
+<li class='mutator'>NULL_RETURNS</li>
+<li class='mutator'>PRIMITIVE_RETURNS</li>
+<li class='mutator'>TRUE_RETURNS</li>
+<li class='mutator'>VOID_METHOD_CALLS</li>
+
+</ul>
+
+<h2>Tests examined</h2>
+<ul>
+<li>org.apache.commons.collections4.set.ListOrderedSet2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSet2Test]/[method:testObjectHashCodeEqualsSelfHashCode()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSetTest]/[method:testObjectHashCodeEqualsSelfHashCode()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSetTest]/[method:testObjectHashCodeEqualsSelfHashCode()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSortedSetTest]/[method:testObjectHashCodeEqualsSelfHashCode()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableNavigableSetTest]/[method:testObjectHashCodeEqualsSelfHashCode()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSet2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSet2Test]/[method:testObjectHashCodeEqualsContract()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSortedSetTest]/[method:testObjectHashCodeEqualsContract()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSetTest]/[method:testObjectHashCodeEqualsContract()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSetTest]/[method:testObjectHashCodeEqualsContract()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableNavigableSetTest]/[method:testObjectHashCodeEqualsContract()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSortedSetTest]/[method:testSetHashCode()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSetTest]/[method:testSetHashCode()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSet2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSet2Test]/[method:testSetHashCode()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableNavigableSetTest]/[method:testSetHashCode()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSetTest]/[method:testSetHashCode()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSet2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSet2Test]/[method:testCollectionClear()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSetTest]/[method:testCollectionClear()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSetTest]/[method:testCollectionIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSet2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSet2Test]/[method:testCollectionIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSetTest]/[method:testCollectionIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSetTest]/[method:testCollectionAdd()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSet2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSet2Test]/[method:testCollectionAdd()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSetTest]/[method:testSetEquals()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSetTest]/[method:testUnsupportedAdd()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSetTest]/[method:testCollectionIterator()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSortedSetTest]/[method:testCollectionIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSetTest]/[method:testUnsupportedRemove()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSet2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSet2Test]/[method:testSetEquals()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSetTest]/[method:testCollectionToArray2()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSet2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSet2Test]/[method:testCollectionToArray2()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSetTest]/[method:testCollectionToArray2()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSetTest]/[method:testCollectionIterator()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSet2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSet2Test]/[method:testCollectionIterator()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSetTest]/[method:testCollectionContains()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSet2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSet2Test]/[method:testCollectionIteratorRemove()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSetTest]/[method:testSetEquals()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSetTest]/[method:testCollectionIteratorRemove()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSet2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSet2Test]/[method:testCollectionRemove()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSortedSetTest]/[method:testSetEquals()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSortedSetTest]/[method:testCollectionIterator()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSet2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSet2Test]/[method:testCollectionRemoveIf()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSetTest]/[method:testCollectionRemoveIf()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSetTest]/[method:testCollectionContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSortedSetTest]/[method:testUnsupportedAdd()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSet2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSet2Test]/[method:testCollectionContains()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSortedSetTest]/[method:testUnsupportedRemove()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSetTest]/[method:testCollectionContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSetTest]/[method:testCollectionContains()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSet2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSet2Test]/[method:testCollectionAddAll()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSet2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSet2Test]/[method:testCollectionContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSetTest]/[method:testCollectionRemove()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSortedSetTest]/[method:testCollectionToArray2()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSetTest]/[method:testCollectionAddAll()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSortedSetTest]/[method:testCollectionContains()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableNavigableSetTest]/[method:testCollectionIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSortedSetTest]/[method:testCollectionContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSetTest]/[method:testCollectionRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSet2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSet2Test]/[method:testCollectionRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSetTest]/[method:testCollectionRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSet2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSet2Test]/[method:testCollectionRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableNavigableSetTest]/[method:testUnsupportedRemove()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableNavigableSetTest]/[method:testSetEquals()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableNavigableSetTest]/[method:testUnsupportedAdd()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableNavigableSetTest]/[method:testCollectionIterator()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableNavigableSetTest]/[method:testCollectionContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableNavigableSetTest]/[method:testCollectionToArray2()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableNavigableSetTest]/[method:testCollectionContains()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeMapTest]/[method:testMapGet()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeMapTest]/[method:testMapToString()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeMapTest]/[method:testMapSize()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeMapTest]/[method:testMapIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeSortedMapTest]/[method:testMapIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapGet()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeMapTest]/[method:testMapContainsKey()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeSortedMapTest]/[method:testMapSize()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapClear()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeSortedMapTest]/[method:testMapToString()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeSortedMapTest]/[method:testMapGet()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedMapTest]/[method:testMapClear()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeMapTest]/[method:testMapContainsValue()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeSortedMapTest]/[method:testMapEquals()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeSortedMapTest]/[method:testMapContainsKey()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedMapTest]/[method:testMapGet()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeMapTest]/[method:testMapEquals()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapGet()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedSortedMapTest]/[method:testMapClear()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapClear()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedSortedMapTest]/[method:testMapGet()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeSortedMapTest]/[method:testMapContainsValue()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapSize()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableMapTest]/[method:testMapGet()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedMapTest]/[method:testMapToString()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedSortedMapTest]/[method:testMapIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedSortedMapTest]/[method:testMapSize()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedMapTest]/[method:testMapSize()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapSize()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedSortedMapTest]/[method:testMapToString()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapToString()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapToString()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedMapTest]/[method:testMapIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeMapTest]/[method:testMapGetOrDefault()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedMapTest]/[method:testMapEquals()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedMapTest]/[method:testMapContainsKey()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeSortedMapTest]/[method:testMapGetOrDefault()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapContainsValue()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapEquals()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableMapTest]/[method:testMapIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedMapTest]/[method:testMapGetOrDefault()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapGetOrDefault()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapEquals()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedMapTest]/[method:testMapContainsValue()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableSortedMapTest]/[method:testMapGet()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableMapTest]/[method:testMapSize()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapContainsKey()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapContainsKey()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableSortedMapTest]/[method:testMapIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedSortedMapTest]/[method:testMapGetOrDefault()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeMapTest]/[method:testMapPut()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableMapTest]/[method:testMapToString()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapPut()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableSortedMapTest]/[method:testMapSize()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedSortedMapTest]/[method:testMapEquals()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedSortedMapTest]/[method:testMapContainsValue()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedSortedMapTest]/[method:testMapContainsKey()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableSortedMapTest]/[method:testMapToString()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapPut()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapGetOrDefault()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedMapTest]/[method:testMapPut()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapContainsValue()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedSortedMapTest]/[method:testMapPut()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableSortedMapTest]/[method:testMapContainsKey()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedMapTest]/[method:testMapRemove()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableMapTest]/[method:testMapGetOrDefault()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableMapTest]/[method:testMapEquals()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapRemove()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableMapTest]/[method:testMapContainsKey()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapRemove()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableSortedMapTest]/[method:testMapGetOrDefault()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeSortedMapTest]/[method:testMapPut()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableMapTest]/[method:testMapContainsValue()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableSortedMapTest]/[method:testMapEquals()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableSortedMapTest]/[method:testMapContainsValue()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedSortedMapTest]/[method:testMapRemove()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeMapTest]/[method:testMapComputeIfAbsent()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedSortedMapTest]/[method:testMapPutIfAbsent()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedMapTest]/[method:testMapPutIfAbsent()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapPutIfAbsent()] (1 ms)</li><li>org.apache.commons.collections4.map.FixedSizeSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeSortedMapTest]/[method:testMapComputeIfAbsent()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapPutIfAbsent()] (1 ms)</li><li>org.apache.commons.collections4.map.FixedSizeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeMapTest]/[method:testMapPutIfAbsent()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeSortedMapTest]/[method:testMapPutIfAbsent()] (0 ms)</li><li>org.apache.commons.collections4.map.SingletonMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.SingletonMapTest]/[method:testMapGet()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapPutAll()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapPutAll()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedMapTest]/[method:testMapComputeIfAbsent()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedSortedMapTest]/[method:testMapComputeIfAbsent()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapComputeIfAbsent()] (1 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapComputeIfPresent()] (1 ms)</li><li>org.apache.commons.collections4.map.TransformedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedSortedMapTest]/[method:testMapComputeIfPresent()] (0 ms)</li><li>org.apache.commons.collections4.map.SingletonMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.SingletonMapTest]/[method:testMapGetOrDefault()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedMapTest]/[method:testMapComputeIfPresent()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapComputeIfPresent()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapComputeIfAbsent()] (1 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableOrderedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableOrderedMapTest]/[method:testMapGet()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest]/[method:testMapGet()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest]/[method:testMapToString()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest]/[method:testMapIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.map.SingletonMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.SingletonMapTest]/[method:testMapIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest]/[method:testMapSize()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableOrderedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableOrderedMapTest]/[method:testMapGetOrDefault()] (0 ms)</li><li>org.apache.commons.collections4.map.SingletonMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.SingletonMapTest]/[method:testMapSize()] (0 ms)</li><li>org.apache.commons.collections4.map.SingletonMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.SingletonMapTest]/[method:testMapEquals()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest]/[method:testMapGetOrDefault()] (0 ms)</li><li>org.apache.commons.collections4.map.SingletonMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.SingletonMapTest]/[method:testMapContainsKey()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableOrderedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableOrderedMapTest]/[method:testMapIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest]/[method:testMapContainsKey()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest]/[method:testMapEquals()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableOrderedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableOrderedMapTest]/[method:testMapSize()] (0 ms)</li><li>org.apache.commons.collections4.map.SingletonMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.SingletonMapTest]/[method:testMapToString()] (0 ms)</li><li>org.apache.commons.collections4.map.SingletonMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.SingletonMapTest]/[method:testMapContainsValue()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedMapTest]/[method:testMapPutAll()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest]/[method:testMapContainsValue()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableOrderedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableOrderedMapTest]/[method:testMapContainsKey()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest]/[method:testMapGet()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableOrderedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableOrderedMapTest]/[method:testMapContainsValue()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableOrderedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableOrderedMapTest]/[method:testMapEquals()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedSortedMapTest]/[method:testMapPutAll()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest]/[method:testMapIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableOrderedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableOrderedMapTest]/[method:testMapToString()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest]/[method:testMapSize()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest]/[method:testMapToString()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest]/[method:testMapGetOrDefault()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest]/[method:testMapContainsValue()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest]/[method:testMapContainsKey()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest]/[method:testMapEquals()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest]/[method:testMapGet()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest]/[method:testMapGetOrDefault()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest]/[method:testMapIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest]/[method:testMapSize()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest]/[method:testMapContainsValue()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest]/[method:testMapContainsKey()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest]/[method:testMapEquals()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest]/[method:testMapToString()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSortedSetTest]/[method:testObjectEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSetTest]/[method:testObjectEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSet2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSet2Test]/[method:testObjectEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSetTest]/[method:testEqualsNull()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSortedSetTest]/[method:testEqualsNull()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSetTest]/[method:testEqualsNull()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSetTest]/[method:testObjectEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableNavigableSetTest]/[method:testObjectEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSet2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSet2Test]/[method:testEqualsNull()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableNavigableSetTest]/[method:testEqualsNull()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeMapTest]/[method:testKeySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSortedSetTest]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeMapTest]/[method:testKeySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeSortedMapTest]/[method:testKeySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeSortedMapTest]/[method:testKeySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSetTest]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableMapTest]/[method:testKeySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableNavigableSetTest]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableMapTest]/[method:testKeySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSetTest]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableSortedMapTest]/[method:testKeySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSet2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSet2Test]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableSortedMapTest]/[method:testKeySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest]/[method:testKeySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest]/[method:testKeySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest]/[method:testValuesRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableOrderedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableOrderedMapTest]/[method:testKeySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableOrderedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableOrderedMapTest]/[method:testKeySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest]/[method:testValuesRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest]/[method:testKeySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest]/[method:testKeySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest]/[method:testValuesRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest]/[method:testValuesRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest]/[method:testKeySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest]/[method:testKeySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest]/[method:testValuesRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest]/[method:testValuesRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSortedSetTest]/[method:testComparator()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSetTest]/[method:testSimpleSerialization()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSetTest]/[method:testSimpleSerialization()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSortedSetTest]/[method:testSimpleSerialization()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSet2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSet2Test]/[method:testSimpleSerialization()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableNavigableSetTest]/[method:testComparator()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableNavigableSetTest]/[method:testSimpleSerialization()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSortedSetTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.SetUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.SetUtilsTest]/[method:testHashSet()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSetTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableNavigableSetTest]/[method:testCollectionSize()] (0 ms)</li><li>org.apache.commons.collections4.SetUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.SetUtilsTest]/[method:testUnmodifiableSet()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSetTest]/[method:testRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSetTest]/[method:testCollectionSize()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSortedSetTest]/[method:testCollectionSize()] (0 ms)</li><li>org.apache.commons.collections4.MapUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.MapUtilsTest]/[method:testTransformedMap()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableNavigableSetTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSetTest]/[method:testCollectionSize()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeSortedMapTest]/[method:testFirstKey()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSetTest]/[method:testListAddReplacing()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSet2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSet2Test]/[method:testListAddRemove()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSet2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSet2Test]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.MapUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.MapUtilsTest]/[method:testTransformedSortedMap()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSet2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSet2Test]/[method:testOrdering()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSetTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSet2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSet2Test]/[method:testCollectionSize()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSortedSetTest]/[method:testUnmodifiable()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableSortedMapTest]/[method:testFirstKey()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSetTest]/[method:testListAddRemove()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSetTest]/[method:testOrdering()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSetTest]/[method:testDuplicates()] (0 ms)</li><li>org.apache.commons.collections4.multiset.UnmodifiableMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.UnmodifiableMultiSetTest]/[method:testEntrySet()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableSortedMapTest]/[method:testLastKey()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSet2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSet2Test]/[method:testListAddIndexed()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeSortedMapTest]/[method:testLastKey()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSortedSetTest]/[method:testCollectionToArray()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeSortedMapTest]/[method:testKeySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testKeySetSize()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeSortedMapTest]/[method:testMapRemove()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeMapTest]/[method:testMapRemove()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeMapTest]/[method:testEntrySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeMapTest]/[method:testEntrySetContains1()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeSortedMapTest]/[method:testEntrySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeMapTest]/[method:testKeySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSetTest]/[method:testListAddIndexed()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableSetTest]/[method:testCollectionToArray()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeSortedMapTest]/[method:testEntrySetContains1()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeMapTest]/[method:testEntrySetContains3()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableMapTest]/[method:testKeySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSetTest]/[method:testCollectionToArray()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeSortedMapTest]/[method:testEntrySetContains3()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableNavigableSetTest]/[method:testCollectionToArray()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableMapTest]/[method:testMapRemove()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSet2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSet2Test]/[method:testCollectionToArray()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeMapTest]/[method:testEntrySetContains2()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testLegalAddRemove()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeSortedMapTest]/[method:testEntrySetContains2()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testPut()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeSortedMapTest]/[method:testForEach()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableSortedMapTest]/[method:testMapRemove()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeMapTest]/[method:testEntrySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeSortedMapTest]/[method:testEntrySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableSortedMapTest]/[method:testKeySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeMapTest]/[method:testForEach()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeSortedMapTest]/[method:testEntrySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeMapTest]/[method:testEntrySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableMapTest]/[method:testEntrySetContains1()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableMapTest]/[method:testEntrySetContains3()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableMapTest]/[method:testEntrySetContains2()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableMapTest]/[method:testEntrySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedMapTest]/[method:testEntrySetRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableSortedMapTest]/[method:testEntrySetContains1()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableSortedMapTest]/[method:testEntrySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testEntrySetRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableSortedMapTest]/[method:testEntrySetContains3()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testPut()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testUnmodifiableKeySet()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testEntrySetRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testEntrySetContains1()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testEntrySetContains3()] (0 ms)</li><li>org.apache.commons.collections4.bag.CollectionSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.CollectionSortedBagTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableSortedMapTest]/[method:testEntrySetContains2()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testEntrySetContains1()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedSortedMapTest]/[method:testEntrySetContains1()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableMapTest]/[method:testEntrySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testEntrySetContains2()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testEntrySetClearChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedSortedMapTest]/[method:testEntrySetRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedMapTest]/[method:testEntrySetContains3()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableMapTest]/[method:testForEach()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableMapTest]/[method:testEntrySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedMapTest]/[method:testEntrySetContains1()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testEntrySetContains3()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testEntrySetClearChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedSortedMapTest]/[method:testEntrySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testEntrySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testEntrySetRemove1()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableSortedMapTest]/[method:testEntrySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeSortedMapTest]/[method:testReplaceAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.CollectionBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.CollectionBagTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedMapTest]/[method:testForEach()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedSortedMapTest]/[method:testEntrySetClearChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedSortedMapTest]/[method:testEntrySetContains2()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testEntrySetRemove3()] (0 ms)</li><li>org.apache.commons.collections4.bag.HashBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.HashBagTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.bag.HashBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.HashBagTest]/[method:testBagRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableSortedMapTest]/[method:testForEach()] (0 ms)</li><li>org.apache.commons.collections4.bag.HashBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.HashBagTest]/[method:testBagContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testForEach()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testFailFastEntrySet()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testEntrySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedSortedMapTest]/[method:testEntrySetContains3()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableSortedMapTest]/[method:testEntrySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedMapTest]/[method:testEntrySetContains2()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedMapTest]/[method:testEntrySetClearChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.FixedSizeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.FixedSizeMapTest]/[method:testReplaceAll()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testEntrySetContains2()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testForEach()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedMapTest]/[method:testEntrySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedMapTest]/[method:testFailFastEntrySet()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testEntrySetRemove2()] (0 ms)</li><li>org.apache.commons.collections4.bag.SynchronizedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.SynchronizedBagTest]/[method:testBagContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testEntrySetRemove2()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedSortedMapTest]/[method:testEntrySetRemove1()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testEntrySetRemove3()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.UnmodifiableBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableBagTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedSortedMapTest]/[method:testForEach()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedMapTest]/[method:testEntrySetRemove3()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testEntrySetRemove1()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedMapTest]/[method:testEntrySetRemove2()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedMapTest]/[method:testEntrySetRemove1()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedSortedMapTest]/[method:testEntrySetRemove3()] (0 ms)</li><li>org.apache.commons.collections4.bag.SynchronizedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.SynchronizedBagTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedMapTest]/[method:testTransformedMap()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest]/[method:testValuesRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.set.UnmodifiableNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.UnmodifiableNavigableSetTest]/[method:testUnmodifiable()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testEntrySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.SynchronizedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.SynchronizedBagTest]/[method:testBagRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testEntrySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedBagTest]/[method:testBagContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedSortedMapTest]/[method:testTransformedMap()] (1 ms)</li><li>org.apache.commons.collections4.map.TransformedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedSortedMapTest]/[method:testEntrySetRemove2()] (0 ms)</li><li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest]/[method:testMapRemove()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedBagTest]/[method:testBagRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testEntrySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedMapTest]/[method:testEntrySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest]/[method:testKeySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedBagTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest]/[method:testEntrySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedSortedMapTest]/[method:testEntrySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedMapTest]/[method:testEntrySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testEntrySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testBagRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedSortedMapTest]/[method:testEntrySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest]/[method:testEntrySetContains1()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest]/[method:testEntrySetContains3()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testBagContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testReplaceAll()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest]/[method:testEntrySetContains2()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedMapTest]/[method:testReplaceAll()] (0 ms)</li><li>org.apache.commons.collections4.map.TransformedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.TransformedSortedMapTest]/[method:testReplaceAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest]/[method:testEntrySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableOrderedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableOrderedMapTest]/[method:testMapRemove()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest]/[method:testEntrySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest]/[method:testValuesRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest]/[method:testForEach()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testReplaceAll()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableOrderedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableOrderedMapTest]/[method:testEntrySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest]/[method:testKeySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableOrderedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableOrderedMapTest]/[method:testKeySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableOrderedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableOrderedMapTest]/[method:testEntrySetContains3()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableOrderedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableOrderedMapTest]/[method:testEntrySetContains1()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableBidiMapTest]/[method:testValuesIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest]/[method:testMapRemove()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest]/[method:testEntrySetContains1()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest]/[method:testEntrySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableOrderedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableOrderedMapTest]/[method:testEntrySetContains2()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest]/[method:testEntrySetContains3()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableOrderedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableOrderedMapTest]/[method:testForEach()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest]/[method:testBidiHeadMapContains()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableOrderedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableOrderedMapTest]/[method:testEntrySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.map.UnmodifiableOrderedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.UnmodifiableOrderedMapTest]/[method:testEntrySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest]/[method:testEntrySetContains2()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest]/[method:testEntrySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest]/[method:testBidiTailMapContains()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest]/[method:testForEach()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest]/[method:testEntrySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest]/[method:testBidiSubMapContains()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest]/[method:testValuesIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableSortedBidiMapTest]/[method:testBidiKeySetValuesOrder()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest]/[method:testValuesRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest]/[method:testMapRemove()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest]/[method:testKeySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest]/[method:testEntrySetContains1()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest]/[method:testEntrySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest]/[method:testEntrySetContains2()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest]/[method:testEntrySetContains3()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest]/[method:testValuesIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest]/[method:testBidiKeySetValuesOrder()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest]/[method:testForEach()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest]/[method:testEntrySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bidimap.UnmodifiableOrderedBidiMapTest]/[method:testEntrySetRetainAll()] (0 ms)</li>
+</ul>
+
+<br/>
+
+Report generated by <a href='https://pitest.org'>PIT</a> 1.20.6
+
+</body>
+</html>

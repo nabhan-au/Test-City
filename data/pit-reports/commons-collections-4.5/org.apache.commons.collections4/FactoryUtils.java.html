@@ -1,0 +1,2199 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+<body>
+
+
+<h1>FactoryUtils.java</h1>
+
+<table class="src">
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_1'/>
+1
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_1'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>/*</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_2'/>
+2
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_2'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Licensed to the Apache Software Foundation (ASF) under one or more</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_3'/>
+3
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_3'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * contributor license agreements.  See the NOTICE file distributed with</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_4'/>
+4
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_4'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * this work for additional information regarding copyright ownership.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_5'/>
+5
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_5'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * The ASF licenses this file to You under the Apache License, Version 2.0</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_6'/>
+6
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_6'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * (the &#34;License&#34;); you may not use this file except in compliance with</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_7'/>
+7
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_7'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * the License.  You may obtain a copy of the License at</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_8'/>
+8
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_8'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_9'/>
+9
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_9'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *      http://www.apache.org/licenses/LICENSE-2.0</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_10'/>
+10
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_10'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_11'/>
+11
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_11'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Unless required by applicable law or agreed to in writing, software</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_12'/>
+12
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_12'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * distributed under the License is distributed on an &#34;AS IS&#34; BASIS,</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_13'/>
+13
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_13'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_14'/>
+14
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_14'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * See the License for the specific language governing permissions and</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_15'/>
+15
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_15'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * limitations under the License.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_16'/>
+16
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_16'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_17'/>
+17
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_17'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>package org.apache.commons.collections4;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_18'/>
+18
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_18'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_19'/>
+19
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_19'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import org.apache.commons.collections4.functors.ConstantFactory;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_20'/>
+20
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_20'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import org.apache.commons.collections4.functors.ExceptionFactory;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_21'/>
+21
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_21'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import org.apache.commons.collections4.functors.InstantiateFactory;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_22'/>
+22
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_22'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import org.apache.commons.collections4.functors.PrototypeFactory;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_23'/>
+23
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_23'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_24'/>
+24
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_24'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>/**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_25'/>
+25
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_25'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * {@code FactoryUtils} provides reference implementations and utilities</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_26'/>
+26
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_26'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * for the Factory functor interface. The supplied factories are:</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_27'/>
+27
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_27'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * &#60;ul&#62;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_28'/>
+28
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_28'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * &#60;li&#62;Prototype - clones a specified object</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_29'/>
+29
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_29'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * &#60;li&#62;Instantiate - creates objects using reflection</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_30'/>
+30
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_30'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * &#60;li&#62;Constant - always returns the same object</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_31'/>
+31
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_31'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * &#60;li&#62;Null - always returns null</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_32'/>
+32
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_32'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * &#60;li&#62;Exception - always throws an exception</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_33'/>
+33
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_33'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * &#60;/ul&#62;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_34'/>
+34
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_34'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * &#60;p&#62;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_35'/>
+35
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_35'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Since v4.1 only factories which are considered to be safe are</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_36'/>
+36
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_36'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Serializable. Factories considered to be unsafe for serialization are:</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_37'/>
+37
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_37'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * &#60;/p&#62;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_38'/>
+38
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_38'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * &#60;ul&#62;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_39'/>
+39
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_39'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * &#60;li&#62;Prototype</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_40'/>
+40
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_40'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * &#60;li&#62;Instantiate</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_41'/>
+41
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_41'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * &#60;/ul&#62;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_42'/>
+42
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_42'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_43'/>
+43
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_43'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * @since 3.0</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_44'/>
+44
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_44'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_45'/>
+45
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_45'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>public class FactoryUtils {</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_46'/>
+46
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_46'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_47'/>
+47
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_47'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_48'/>
+48
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_48'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Creates a Factory that will return the same object each time the factory</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_49'/>
+49
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_49'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * is used. No check is made that the object is immutable. In general, only</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_50'/>
+50
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_50'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * immutable objects should use the constant factory. Mutable objects should</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_51'/>
+51
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_51'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * use the prototype factory.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_52'/>
+52
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_52'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_53'/>
+53
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_53'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @see org.apache.commons.collections4.functors.ConstantFactory</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_54'/>
+54
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_54'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param &#60;T&#62; the type that the factory creates</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_55'/>
+55
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_55'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param constantToReturn  the constant object to return each time in the factory</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_56'/>
+56
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_56'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @return the {@code constant} factory.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_57'/>
+57
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_57'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_58'/>
+58
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_58'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public static &#60;T&#62; Factory&#60;T&#62; constantFactory(final T constantToReturn) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_59'/>
+59
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_59'>1</a>
+<span>
+1. constantFactory : replaced return value with null for org/apache/commons/collections4/FactoryUtils::constantFactory &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return ConstantFactory.constantFactory(constantToReturn);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_60'/>
+60
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_60'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_61'/>
+61
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_61'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_62'/>
+62
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_62'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_63'/>
+63
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_63'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Gets a Factory that always throws an exception.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_64'/>
+64
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_64'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * This could be useful during testing as a placeholder.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_65'/>
+65
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_65'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_66'/>
+66
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_66'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @see org.apache.commons.collections4.functors.ExceptionFactory</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_67'/>
+67
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_67'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param &#60;T&#62; the type that the factory creates</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_68'/>
+68
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_68'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @return the factory</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_69'/>
+69
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_69'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_70'/>
+70
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_70'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public static &#60;T&#62; Factory&#60;T&#62; exceptionFactory() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_71'/>
+71
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_71'>1</a>
+<span>
+1. exceptionFactory : replaced return value with null for org/apache/commons/collections4/FactoryUtils::exceptionFactory &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return ExceptionFactory.&#60;T&#62;exceptionFactory();</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_72'/>
+72
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_72'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_73'/>
+73
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_73'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_74'/>
+74
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_74'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_75'/>
+75
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_75'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Creates a Factory that can create objects of a specific type using</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_76'/>
+76
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_76'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * a no-args constructor.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_77'/>
+77
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_77'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_78'/>
+78
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_78'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @see org.apache.commons.collections4.functors.InstantiateFactory</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_79'/>
+79
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_79'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param &#60;T&#62; the type that the factory creates</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_80'/>
+80
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_80'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param classToInstantiate  the Class to instantiate each time in the factory</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_81'/>
+81
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_81'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @return the {@code reflection} factory</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_82'/>
+82
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_82'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @throws NullPointerException if the classToInstantiate is null</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_83'/>
+83
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_83'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_84'/>
+84
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_84'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public static &#60;T&#62; Factory&#60;T&#62; instantiateFactory(final Class&#60;T&#62; classToInstantiate) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_85'/>
+85
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_85'>1</a>
+<span>
+1. instantiateFactory : replaced return value with null for org/apache/commons/collections4/FactoryUtils::instantiateFactory &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return InstantiateFactory.instantiateFactory(classToInstantiate, null, null);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_86'/>
+86
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_86'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_87'/>
+87
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_87'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_88'/>
+88
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_88'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_89'/>
+89
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_89'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Creates a Factory that can create objects of a specific type using</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_90'/>
+90
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_90'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * the arguments specified to this method.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_91'/>
+91
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_91'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_92'/>
+92
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_92'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @see org.apache.commons.collections4.functors.InstantiateFactory</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_93'/>
+93
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_93'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param &#60;T&#62; the type that the factory creates</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_94'/>
+94
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_94'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param classToInstantiate  the Class to instantiate each time in the factory</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_95'/>
+95
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_95'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param paramTypes  parameter types for the constructor, can be null</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_96'/>
+96
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_96'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param args  the arguments to pass to the constructor, can be null</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_97'/>
+97
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_97'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @return the {@code reflection} factory</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_98'/>
+98
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_98'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @throws NullPointerException if the classToInstantiate is null</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_99'/>
+99
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_99'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @throws IllegalArgumentException if the paramTypes and args don&#39;t match</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_100'/>
+100
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_100'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @throws IllegalArgumentException if the constructor doesn&#39;t exist</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_101'/>
+101
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_101'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_102'/>
+102
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_102'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public static &#60;T&#62; Factory&#60;T&#62; instantiateFactory(final Class&#60;T&#62; classToInstantiate, final Class&#60;?&#62;[] paramTypes,</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_103'/>
+103
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_103'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>                                                    final Object[] args) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_104'/>
+104
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_104'>1</a>
+<span>
+1. instantiateFactory : replaced return value with null for org/apache/commons/collections4/FactoryUtils::instantiateFactory &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return InstantiateFactory.instantiateFactory(classToInstantiate, paramTypes, args);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_105'/>
+105
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_105'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_106'/>
+106
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_106'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_107'/>
+107
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_107'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_108'/>
+108
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_108'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Gets a Factory that will return null each time the factory is used.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_109'/>
+109
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_109'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * This could be useful during testing as a placeholder.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_110'/>
+110
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_110'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_111'/>
+111
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_111'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @see org.apache.commons.collections4.functors.ConstantFactory</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_112'/>
+112
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_112'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param &#60;T&#62; the &#34;type&#34; of null object the factory should return.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_113'/>
+113
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_113'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @return the factory</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_114'/>
+114
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_114'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_115'/>
+115
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_115'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public static &#60;T&#62; Factory&#60;T&#62; nullFactory() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_116'/>
+116
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_116'>1</a>
+<span>
+1. nullFactory : replaced return value with null for org/apache/commons/collections4/FactoryUtils::nullFactory &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return ConstantFactory.&#60;T&#62;constantFactory(null);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_117'/>
+117
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_117'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_118'/>
+118
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_118'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_119'/>
+119
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_119'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_120'/>
+120
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_120'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Creates a Factory that will return a clone of the same prototype object</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_121'/>
+121
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_121'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * each time the factory is used. The prototype will be cloned using one of these</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_122'/>
+122
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_122'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * techniques (in order):</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_123'/>
+123
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_123'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_124'/>
+124
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_124'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * &#60;ul&#62;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_125'/>
+125
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_125'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * &#60;li&#62;public clone method&#60;/li&#62;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_126'/>
+126
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_126'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * &#60;li&#62;public copy constructor&#60;/li&#62;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_127'/>
+127
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_127'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * &#60;li&#62;serialization clone&#60;/li&#62;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_128'/>
+128
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_128'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * &#60;/ul&#62;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_129'/>
+129
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_129'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_130'/>
+130
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_130'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @see org.apache.commons.collections4.functors.PrototypeFactory</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_131'/>
+131
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_131'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param &#60;T&#62; the type that the factory creates</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_132'/>
+132
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_132'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param prototype  the object to clone each time in the factory</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_133'/>
+133
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_133'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @return the {@code prototype} factory, or a {@link ConstantFactory#NULL_INSTANCE} if</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_134'/>
+134
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_134'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * the {@code prototype} is {@code null}</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_135'/>
+135
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_135'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @throws IllegalArgumentException if the prototype cannot be cloned</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_136'/>
+136
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_136'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_137'/>
+137
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_137'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public static &#60;T&#62; Factory&#60;T&#62; prototypeFactory(final T prototype) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_138'/>
+138
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_138'>1</a>
+<span>
+1. prototypeFactory : replaced return value with null for org/apache/commons/collections4/FactoryUtils::prototypeFactory &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return PrototypeFactory.&#60;T&#62;prototypeFactory(prototype);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_139'/>
+139
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_139'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_140'/>
+140
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_140'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_141'/>
+141
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_141'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_142'/>
+142
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_142'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Don&#39;t allow instances.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_143'/>
+143
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_143'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_144'/>
+144
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_144'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class=''>    private FactoryUtils() {</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_145'/>
+145
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_145'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        // empty</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_146'/>
+146
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_146'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_147'/>
+147
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_147'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@755fdab1_148'/>
+148
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_148'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>}</span></pre></td></tr>
+
+
+
+<tr><td></td><td></td><td><h2>Mutations</h2></td></tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@755fdab1_59'>59</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_59'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>constantFactory<br/><b>Killed by : </b>org.apache.commons.collections4.FactoryUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.FactoryUtilsTest]/[method:testConstantFactoryConstant()]</span></span> replaced return value with null for org/apache/commons/collections4/FactoryUtils::constantFactory &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@755fdab1_71'>71</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_71'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>exceptionFactory<br/><b>Killed by : </b>org.apache.commons.collections4.FactoryUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.FactoryUtilsTest]/[method:testExceptionFactory()]</span></span> replaced return value with null for org/apache/commons/collections4/FactoryUtils::exceptionFactory &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@755fdab1_85'>85</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_85'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>instantiateFactory<br/><b>Killed by : </b>org.apache.commons.collections4.FactoryUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.FactoryUtilsTest]/[method:testInstantiateFactorySimple()]</span></span> replaced return value with null for org/apache/commons/collections4/FactoryUtils::instantiateFactory &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@755fdab1_104'>104</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_104'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>instantiateFactory<br/><b>Killed by : </b>org.apache.commons.collections4.FactoryUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.FactoryUtilsTest]/[method:testInstantiateFactoryComplex()]</span></span> replaced return value with null for org/apache/commons/collections4/FactoryUtils::instantiateFactory &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@755fdab1_116'>116</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_116'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>nullFactory<br/><b>Killed by : </b>org.apache.commons.collections4.FactoryUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.FactoryUtilsTest]/[method:testNullFactory()]</span></span> replaced return value with null for org/apache/commons/collections4/FactoryUtils::nullFactory &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@755fdab1_138'>138</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@755fdab1_138'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>prototypeFactory<br/><b>Killed by : </b>org.apache.commons.collections4.FactoryUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.FactoryUtilsTest]/[method:testPrototypeFactoryNull()]</span></span> replaced return value with null for org/apache/commons/collections4/FactoryUtils::prototypeFactory &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+
+</table>
+
+
+<h2>Active mutators</h2>
+<ul>
+<li class='mutator'>CONDITIONALS_BOUNDARY</li>
+<li class='mutator'>EMPTY_RETURNS</li>
+<li class='mutator'>FALSE_RETURNS</li>
+<li class='mutator'>INCREMENTS</li>
+<li class='mutator'>INVERT_NEGS</li>
+<li class='mutator'>MATH</li>
+<li class='mutator'>NEGATE_CONDITIONALS</li>
+<li class='mutator'>NULL_RETURNS</li>
+<li class='mutator'>PRIMITIVE_RETURNS</li>
+<li class='mutator'>TRUE_RETURNS</li>
+<li class='mutator'>VOID_METHOD_CALLS</li>
+
+</ul>
+
+<h2>Tests examined</h2>
+<ul>
+<li>org.apache.commons.collections4.FactoryUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.FactoryUtilsTest]/[method:testExceptionFactory()] (0 ms)</li><li>org.apache.commons.collections4.FactoryUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.FactoryUtilsTest]/[method:testInstantiateFactorySimple()] (0 ms)</li><li>org.apache.commons.collections4.IterableUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.IterableUtilsTest]/[method:testPartitionMultiplePredicates()] (0 ms)</li><li>org.apache.commons.collections4.IterableUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.IterableUtilsTest]/[method:testPartition()] (0 ms)</li><li>org.apache.commons.collections4.FactoryUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.FactoryUtilsTest]/[method:testNullFactory()] (0 ms)</li><li>org.apache.commons.collections4.TransformerUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.TransformerUtilsTest]/[method:testFactoryTransformer()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testObjectEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testEqualsNull()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testObjectHashCodeEqualsSelfHashCode()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testObjectEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testObjectHashCodeEqualsSelfHashCode()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testEqualsNull()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testEqualsNull()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testObjectEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testObjectHashCodeEqualsSelfHashCode()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testFactoryMethods()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testObjectHashCodeEqualsContract()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testMapGetWithFactory()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testObjectHashCodeEqualsContract()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testSimpleSerialization()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testCanonicalFullCollectionExists()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testObjectHashCodeEqualsContract()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testSimpleSerialization()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testCanonicalEmptyCollectionExists()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testMapGet()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testMapGet2()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testCanonicalFullCollectionExists()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testMapGet4()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testMapGet()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testCanonicalFullCollectionExists()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testSimpleSerialization()] (2 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testCanonicalEmptyCollectionExists()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testCanonicalEmptyCollectionExists()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testMakeMap()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testMakeMap()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testEmptyMapCompatibility()] (1 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testSampleMappings()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testMakeMap()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testEmptyMapCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testEmptyMapCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testMapGet3()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testFirstKey()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testLastKey()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testMapComputeIfPresentOnEmpty()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testMapComputeIfPresentOnEmpty()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testMapComputeIfPresentOnEmpty()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testKeySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testEntrySetContains1()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testKeySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testMapPutNullKey()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testValuesRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testMapPutNullValue()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testValuesRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testMapPutNullValue()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testKeySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testMapPutNullKey()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testValuesRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testValuesRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testEntrySetContains2()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testEntrySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testValuesRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testKeySetRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testMapPutNullKey()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testKeySetRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testMapPutNullValue()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testEntrySetContains3()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testValuesRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testKeySetRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testEntrySetContains1()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testKeySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testMapHashCode()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testKeySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testEntrySetContains3()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testEntrySetContains1()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testKeySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testKeySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testEntrySetContains3()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testEntrySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testFailFastKeySet()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testMapHashCode()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testEntrySetContains2()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testMapHashCode()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testFullMapCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testEntrySetContains2()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testForEach()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testEntrySetRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testFullMapCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testForEach()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testKeySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testEntrySetRemove1()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testForEach()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testEntrySetRemove3()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testEntrySetRemove1()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testEntrySetRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testKeySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testEntrySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testEntrySetRemove1()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testFullMapCompatibility()] (1 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testValuesRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testEntrySetRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testFailFastValues()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testValuesRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testEntrySetRemove2()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testValuesRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testEntrySetRemove2()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testKeySetClearChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testRemoveKeyValue()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testFailFastEntrySet()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testEntrySetRemove2()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testRemoveKeyValue()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testRemoveKeyValue()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testEntrySetRemove3()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testEntrySetClearChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testEntrySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testFailFastEntrySet()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testEntrySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testFailFastKeySet()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testEntrySetRemove3()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testEntrySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testEntrySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testKeySetClearChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testEntrySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testKeySetClearChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testEntrySetClearChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testFailFastValues()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testEntrySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testValuesClearChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testEntrySetClearChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testValuesClearChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testValuesClearChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testReplaceAll()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testMapGetOrDefault()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testValuesIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testReplaceAll()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testReplaceAll()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testMapGetOrDefault()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testValuesIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testValuesIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testReplaceKeyValue()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testReplaceKeyValue()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testReplaceKeyValue()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testReplaceKeyValueValue()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testReplaceKeyValueValue()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testMapComputeIfAbsent()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testReplaceKeyValueValue()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testMapComputeIfAbsent()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testMapComputeIfPresent()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testMapComputeIfPresent()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testMapIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testMapIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testMapSize()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testMapSize()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testMapClear()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testMapSize()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testMapToString()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testMapClear()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testMapToString()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testMapToString()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testMapIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testMapContainsKey()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testMapEquals()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testMapContainsValue()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testMapContainsKey()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testMapClear()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testMapEquals()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testMapContainsValue()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testMapPut()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testMapContainsValue()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testMapEquals()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testMapContainsKey()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testMapPut()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testMapRemove()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testMapRemove()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testMapRemove()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testMapPut()] (1 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testMapGetOrDefault()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testMapPutIfAbsent()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testMapPutAll()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testMapPutAll()] (0 ms)</li><li>org.apache.commons.collections4.map.LazyMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazyMapTest]/[method:testMapPutIfAbsent()] (1 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testMapPutAll()] (0 ms)</li><li>org.apache.commons.collections4.map.LazySortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.LazySortedMapTest]/[method:testMapPutIfAbsent()] (1 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testMapComputeIfAbsent()] (0 ms)</li><li>org.apache.commons.collections4.map.DefaultedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.DefaultedMapTest]/[method:testMapComputeIfPresent()] (0 ms)</li><li>org.apache.commons.collections4.FactoryUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.FactoryUtilsTest]/[method:testInstantiateFactoryComplex()] (0 ms)</li><li>org.apache.commons.collections4.FactoryUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.FactoryUtilsTest]/[method:testConstantFactoryConstant()] (0 ms)</li><li>org.apache.commons.collections4.FactoryUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.FactoryUtilsTest]/[method:testConstantFactoryNull()] (0 ms)</li><li>org.apache.commons.collections4.MapUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.MapUtilsTest]/[method:testLazyMapFactory()] (0 ms)</li><li>org.apache.commons.collections4.FactoryUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.FactoryUtilsTest]/[method:testPrototypeFactoryNull()] (0 ms)</li><li>org.apache.commons.collections4.FactoryUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.FactoryUtilsTest]/[method:testPrototypeFactoryPublicCloneMethod()] (0 ms)</li><li>org.apache.commons.collections4.FactoryUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.FactoryUtilsTest]/[method:testPrototypeFactoryPublicCopyConstructor()] (0 ms)</li><li>org.apache.commons.collections4.FactoryUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.FactoryUtilsTest]/[method:testPrototypeFactoryPublicSerialization()] (0 ms)</li><li>org.apache.commons.collections4.FactoryUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.FactoryUtilsTest]/[method:testPrototypeFactoryPublicSerializationError()] (18 ms)</li>
+</ul>
+
+<br/>
+
+Report generated by <a href='https://pitest.org'>PIT</a> 1.20.6
+
+</body>
+</html>

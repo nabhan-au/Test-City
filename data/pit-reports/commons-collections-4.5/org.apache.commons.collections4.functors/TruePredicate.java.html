@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+<body>
+
+
+<h1>TruePredicate.java</h1>
+
+<table class="src">
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_1'/>
+1
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_1'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>/*</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_2'/>
+2
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_2'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Licensed to the Apache Software Foundation (ASF) under one or more</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_3'/>
+3
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_3'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * contributor license agreements.  See the NOTICE file distributed with</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_4'/>
+4
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_4'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * this work for additional information regarding copyright ownership.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_5'/>
+5
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_5'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * The ASF licenses this file to You under the Apache License, Version 2.0</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_6'/>
+6
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_6'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * (the &#34;License&#34;); you may not use this file except in compliance with</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_7'/>
+7
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_7'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * the License.  You may obtain a copy of the License at</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_8'/>
+8
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_8'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_9'/>
+9
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_9'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *      http://www.apache.org/licenses/LICENSE-2.0</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_10'/>
+10
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_10'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_11'/>
+11
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_11'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Unless required by applicable law or agreed to in writing, software</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_12'/>
+12
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_12'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * distributed under the License is distributed on an &#34;AS IS&#34; BASIS,</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_13'/>
+13
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_13'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_14'/>
+14
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_14'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * See the License for the specific language governing permissions and</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_15'/>
+15
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_15'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * limitations under the License.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_16'/>
+16
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_16'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_17'/>
+17
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_17'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>package org.apache.commons.collections4.functors;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_18'/>
+18
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_18'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_19'/>
+19
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_19'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.io.Serializable;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_20'/>
+20
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_20'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_21'/>
+21
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_21'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import org.apache.commons.collections4.Predicate;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_22'/>
+22
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_22'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_23'/>
+23
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_23'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>/**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_24'/>
+24
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_24'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Predicate implementation that always returns true.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_25'/>
+25
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_25'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_26'/>
+26
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_26'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * @param &#60;T&#62; the type of the input to the predicate.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_27'/>
+27
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_27'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * @since 3.0</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_28'/>
+28
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_28'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_29'/>
+29
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_29'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>public final class TruePredicate&#60;T&#62; extends AbstractPredicate&#60;T&#62; implements Serializable {</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_30'/>
+30
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_30'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_31'/>
+31
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_31'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /** Serial version UID */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_32'/>
+32
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_32'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    private static final long serialVersionUID = 3374767158756189740L;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_33'/>
+33
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_33'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_34'/>
+34
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_34'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /** Singleton predicate instance */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_35'/>
+35
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_35'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @SuppressWarnings(&#34;rawtypes&#34;)</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_36'/>
+36
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_36'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    public static final Predicate INSTANCE = new TruePredicate&#60;&#62;();</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_37'/>
+37
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_37'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_38'/>
+38
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_38'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_39'/>
+39
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_39'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Factory returning the singleton instance.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_40'/>
+40
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_40'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_41'/>
+41
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_41'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param &#60;T&#62; the type that the predicate queries</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_42'/>
+42
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_42'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @return the singleton instance</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_43'/>
+43
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_43'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @since 3.1</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_44'/>
+44
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_44'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_45'/>
+45
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_45'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public static &#60;T&#62; Predicate&#60;T&#62; truePredicate() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_46'/>
+46
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_46'>1</a>
+<span>
+1. truePredicate : replaced return value with null for org/apache/commons/collections4/functors/TruePredicate::truePredicate &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return INSTANCE;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_47'/>
+47
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_47'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_48'/>
+48
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_48'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_49'/>
+49
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_49'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_50'/>
+50
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_50'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Restricted constructor.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_51'/>
+51
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_51'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_52'/>
+52
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_52'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    private TruePredicate() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_53'/>
+53
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_53'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_54'/>
+54
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_54'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_55'/>
+55
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_55'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_56'/>
+56
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_56'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Returns the singleton instance.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_57'/>
+57
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_57'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_58'/>
+58
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_58'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @return the singleton instance.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_59'/>
+59
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_59'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_60'/>
+60
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_60'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    private Object readResolve() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_61'/>
+61
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_61'>1</a>
+<span>
+1. readResolve : replaced return value with null for org/apache/commons/collections4/functors/TruePredicate::readResolve &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return INSTANCE;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_62'/>
+62
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_62'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_63'/>
+63
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_63'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_64'/>
+64
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_64'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_65'/>
+65
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_65'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Evaluates the predicate returning true always.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_66'/>
+66
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_66'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_67'/>
+67
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_67'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param object  the input object</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_68'/>
+68
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_68'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @return true always</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_69'/>
+69
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_69'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_70'/>
+70
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_70'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_71'/>
+71
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_71'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public boolean test(final T object) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_72'/>
+72
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_72'>1</a>
+<span>
+1. test : replaced boolean return with false for org/apache/commons/collections4/functors/TruePredicate::test &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return true;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_73'/>
+73
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_73'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_74'/>
+74
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_74'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2334b42a_75'/>
+75
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_75'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>}</span></pre></td></tr>
+
+
+
+<tr><td></td><td></td><td><h2>Mutations</h2></td></tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2334b42a_46'>46</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_46'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>truePredicate<br/><b>Killed by : </b>org.apache.commons.collections4.PredicateUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.PredicateUtilsTest]/[method:testPredicateSanityTests()]</span></span> replaced return value with null for org/apache/commons/collections4/functors/TruePredicate::truePredicate &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2334b42a_61'>61</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_61'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>readResolve<br/><b>Killed by : </b>org.apache.commons.collections4.PredicateUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.PredicateUtilsTest]/[method:testSingletonPatternInSerialization()]</span></span> replaced return value with null for org/apache/commons/collections4/functors/TruePredicate::readResolve &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2334b42a_72'>72</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2334b42a_72'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>test<br/><b>Killed by : </b>org.apache.commons.collections4.PredicateUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.PredicateUtilsTest]/[method:testTruePredicate()]</span></span> replaced boolean return with false for org/apache/commons/collections4/functors/TruePredicate::test &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+
+</table>
+
+
+<h2>Active mutators</h2>
+<ul>
+<li class='mutator'>CONDITIONALS_BOUNDARY</li>
+<li class='mutator'>EMPTY_RETURNS</li>
+<li class='mutator'>FALSE_RETURNS</li>
+<li class='mutator'>INCREMENTS</li>
+<li class='mutator'>INVERT_NEGS</li>
+<li class='mutator'>MATH</li>
+<li class='mutator'>NEGATE_CONDITIONALS</li>
+<li class='mutator'>NULL_RETURNS</li>
+<li class='mutator'>PRIMITIVE_RETURNS</li>
+<li class='mutator'>TRUE_RETURNS</li>
+<li class='mutator'>VOID_METHOD_CALLS</li>
+
+</ul>
+
+<h2>Tests examined</h2>
+<ul>
+<li>org.apache.commons.collections4.PredicateUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.PredicateUtilsTest]/[method:testSingletonPatternInSerialization()] (0 ms)</li><li>org.apache.commons.collections4.collection.PredicatedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.PredicatedCollectionTest]/[method:testSimpleSerialization()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testSimpleSerialization()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSetTest]/[method:testSimpleSerialization()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testSimpleSerialization()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testSimpleSerialization()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testSimpleSerialization()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testEmptyQueueSerialization()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testEmptyListSerialization()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testSimpleSerialization()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.collection.PredicatedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.PredicatedCollectionTest]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testSimpleSerialization()] (2 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testEmptyQueueCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testEmptyMapCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testFullQueueSerialization()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testFullListSerialization()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testEmptyListCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testSimpleSerialization()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testSimpleSerialization()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSetTest]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testFullListCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testFullQueueCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testSimpleSerialization()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testEmptyMultiSetCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testEmptyBagCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testFullMapCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testFullMapCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testEmptyBagCompatibility()] (1 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testFullBagCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testFullMultiSetCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testFullBagCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testEmptyMapCompatibility()] (19 ms)</li><li>org.apache.commons.collections4.PredicateUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.PredicateUtilsTest]/[method:testTruePredicate()] (0 ms)</li><li>org.apache.commons.collections4.functors.AllPredicateTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.functors.AllPredicateTest]/[method:testEmptyArrayToGetInstance()] (0 ms)</li><li>org.apache.commons.collections4.TransformerUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.TransformerUtilsTest]/[method:testPredicateTransformer()] (0 ms)</li><li>org.apache.commons.collections4.PredicateUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.PredicateUtilsTest]/[method:testNullIsExceptionPredicate()] (0 ms)</li><li>org.apache.commons.collections4.PredicateUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.PredicateUtilsTest]/[method:testNullIsFalsePredicate()] (0 ms)</li><li>org.apache.commons.collections4.PredicateUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.PredicateUtilsTest]/[method:testNotPredicate()] (0 ms)</li><li>org.apache.commons.collections4.PredicateUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.PredicateUtilsTest]/[method:testNullIsTruePredicate()] (0 ms)</li><li>org.apache.commons.collections4.functors.AllPredicateTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.functors.AllPredicateTest]/[method:testEmptyCollectionToGetInstance()] (0 ms)</li><li>org.apache.commons.collections4.PredicateUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.PredicateUtilsTest]/[method:testOrPredicate()] (0 ms)</li><li>org.apache.commons.collections4.ClosureUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.ClosureUtilsTest]/[method:testIfClosure()] (0 ms)</li><li>org.apache.commons.collections4.PredicateUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.PredicateUtilsTest]/[method:testAndPredicate()] (0 ms)</li><li>org.apache.commons.collections4.PredicateUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.PredicateUtilsTest]/[method:testEitherPredicate()] (0 ms)</li><li>org.apache.commons.collections4.iterators.FilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.FilterIteratorTest]/[method:testAddTo()] (0 ms)</li><li>org.apache.commons.collections4.iterators.FilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.FilterIteratorTest]/[method:testToCollectionAsDeque()] (0 ms)</li><li>org.apache.commons.collections4.iterators.FilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.FilterIteratorTest]/[method:testSetPredicate()] (0 ms)</li><li>org.apache.commons.collections4.PredicateUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.PredicateUtilsTest]/[method:testNeitherPredicate()] (0 ms)</li><li>org.apache.commons.collections4.iterators.FilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.FilterIteratorTest]/[method:testToList()] (0 ms)</li><li>org.apache.commons.collections4.PredicateUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.PredicateUtilsTest]/[method:testTransformedPredicate()] (0 ms)</li><li>org.apache.commons.collections4.iterators.FilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.FilterIteratorTest]/[method:testAddToCollection()] (0 ms)</li><li>org.apache.commons.collections4.iterators.FilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.FilterIteratorTest]/[method:testSetIterator()] (0 ms)</li><li>org.apache.commons.collections4.iterators.FilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.FilterIteratorTest]/[method:testToSet()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testListAddByIndexBoundsChecking()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testListSetByIndexBoundsChecking()] (0 ms)</li><li>org.apache.commons.collections4.iterators.FilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.FilterIteratorTest]/[method:testForEachRemainingDefaultCtor()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testListGetByIndexBoundsChecking2()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testListRemoveByIndexBoundsChecking2()] (0 ms)</li><li>org.apache.commons.collections4.iterators.FilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.FilterIteratorTest]/[method:testForEachRemainingAcceptAllCtor()] (0 ms)</li><li>org.apache.commons.collections4.collection.PredicatedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.PredicatedCollectionTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testListSetByIndexBoundsChecking2()] (0 ms)</li><li>org.apache.commons.collections4.collection.PredicatedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.PredicatedCollectionTest]/[method:testCollectionSize()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMakeMap()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSetTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testMultiSetEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testListAddByIndexBoundsChecking2()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testBagEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSetTest]/[method:testCollectionSize()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testCollectionSize()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.TransformerUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.TransformerUtilsTest]/[method:testIfTransformer()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMakeMap()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testCollectionSize()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testBagIteratorFailNoMore()] (0 ms)</li><li>org.apache.commons.collections4.collection.PredicatedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.PredicatedCollectionTest]/[method:testCollectionToArray()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testFirstKey()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testBagContains()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testLastKey()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSetTest]/[method:testSetHashCode()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testMultiSetIteratorFailNoMore()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testCollectionSize()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testBagAdd()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testMultiSetContains()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testMultiSetAdd()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testBagIteratorFail()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testCollectionSize()] (0 ms)</li><li>org.apache.commons.collections4.collection.PredicatedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.PredicatedCollectionTest]/[method:testCollectionClear()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagIteratorFailNoMore()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testSetHashCode()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testMultiSetIteratorFail()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testBagHashCode()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testBagIteratorFailDoubleRemove()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testBagEqualsHashBag()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testKeySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testBagRemove()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagAdd()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testBagToArray()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSetTest]/[method:testCollectionToArray()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testSetHashCode()] (0 ms)</li><li>org.apache.commons.collections4.collection.PredicatedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.PredicatedCollectionTest]/[method:testCollectionIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testMultiSetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagIteratorFail()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagContains()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testKeySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testMultiSetToArray()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testCollectionToArray()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testValuesRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testMultiSetIteratorFailDoubleRemove()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testListListIteratorNextRemovePrevious()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testKeySetRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testKeySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapHashCode()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testValuesRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testMultiSetIteratorRemoveProtectsInvariants()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapPutNullValue()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testMultiSetEqualsHashMultiSet()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testValuesRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testKeySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testBagEquals()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testBagIterator()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testBagSize()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testMultiSetToArrayPopulate()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testCollectionToArray()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapPutNullKey()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testMultiSetHashCode()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testMultiSetRemove()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testBagIteratorRemoveProtectsInvariants()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testBagRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testBagToArrayPopulate()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testMultiSetSize()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testValuesRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testCollectionToArray()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapPutNullValue()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testKeySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapPutNullKey()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testKeySetRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagEqualsHashBag()] (0 ms)</li><li>org.apache.commons.collections4.collection.PredicatedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.PredicatedCollectionTest]/[method:testCollectionAdd()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testCollectionToArray()] (0 ms)</li><li>org.apache.commons.collections4.PredicateUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.PredicateUtilsTest]/[method:testAllPredicate()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagRemove()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapHashCode()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagEquals()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagToArray()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testListListIteratorNextRemoveNext()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testMultiSetEquals()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testListListIteratorPreviousRemoveNext()] (0 ms)</li><li>org.apache.commons.collections4.PredicateUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.PredicateUtilsTest]/[method:testNonePredicate()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testMultiSetEntrySetUpdatedToZero()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagToArrayPopulate()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagHashCode()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testMultiSetIterator()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testKeySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testMultiSetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testListListIterator()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagIteratorFailDoubleRemove()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testListListIteratorPreviousRemovePrevious()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testRemoveKeyValue()] (0 ms)</li><li>org.apache.commons.collections4.collection.PredicatedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.PredicatedCollectionTest]/[method:testCollectionIterator()] (0 ms)</li><li>org.apache.commons.collections4.PredicateUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.PredicateUtilsTest]/[method:testAnyPredicate()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagIteratorRemoveProtectsInvariants()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testCollectionClear()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testValuesRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagSize()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testMultiSetContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testEntrySetRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testRemoveKeyValue()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testFailFastValues()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testEntrySetRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagIterator()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testValuesRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSetTest]/[method:testCollectionClear()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testFailFastKeySet()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testCollectionSize()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testEntrySetContains1()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSetTest]/[method:testCollectionIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testEntrySetContains3()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testKeySetClearChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testKeySetClearChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.collection.PredicatedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.PredicatedCollectionTest]/[method:testCollectionIteratorRemove()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testCollectionIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.collection.PredicatedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.PredicatedCollectionTest]/[method:testCollectionRemoveIf()] (0 ms)</li><li>org.apache.commons.collections4.PredicateUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.PredicateUtilsTest]/[method:testOnePredicate()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testEntrySetContains1()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testCollectionSize()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testValuesClearChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testValuesClearChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testEntrySetContains2()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testCollectionClear()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testEntrySetClearChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testEntrySetContains3()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testEntrySetClearChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testListGetByIndex()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testForEach()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSetTest]/[method:testCollectionAdd()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testEntrySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testEntrySetRemove1()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testFailFastEntrySet()] (0 ms)</li><li>org.apache.commons.collections4.collection.PredicatedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.PredicatedCollectionTest]/[method:testCollectionContains()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testEntrySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testEntrySetRemove3()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testCollectionClear()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testEntrySetContains2()] (0 ms)</li><li>org.apache.commons.collections4.collection.PredicatedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.PredicatedCollectionTest]/[method:testCollectionToArray2()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testForEach()] (0 ms)</li><li>org.apache.commons.collections4.collection.PredicatedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.PredicatedCollectionTest]/[method:testCollectionRemove()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testQueueRemove()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testValuesIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testCollectionAdd()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testListRemoveByIndex()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionSize()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testEntrySetRemove2()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testEntrySetRemove2()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testQueuePeek()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testQueueOffer()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testListHashCode()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testEntrySetRemove3()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testCollectionIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testQueuePoll()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testCollectionAdd()] (0 ms)</li><li>org.apache.commons.collections4.collection.PredicatedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.PredicatedCollectionTest]/[method:testCollectionContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testEntrySetRemove1()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testReplaceKeyValue()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testCollectionIterator()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testCollectionClear()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testQueueElement()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testListIndexOf()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testValuesIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.TransformerUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.TransformerUtilsTest]/[method:testSwitchTransformer()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testCollectionToArray2()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testEntrySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.collection.PredicatedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.PredicatedCollectionTest]/[method:testCollectionAddAll()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testCollectionClear()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSetTest]/[method:testCollectionIterator()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testListListIteratorByIndex()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testCollectionToArray()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testListSetByIndex()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testEntrySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSetTest]/[method:testSetEquals()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testListAddByIndex()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testListLastIndexOf()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testReplaceKeyValue()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testEntrySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.collection.PredicatedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.PredicatedCollectionTest]/[method:testCollectionRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testCollectionIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testEntrySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testListIteratorSet()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testCollectionRemoveIf()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testBagRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSetTest]/[method:testCollectionIteratorRemove()] (0 ms)</li><li>org.apache.commons.collections4.collection.PredicatedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.PredicatedCollectionTest]/[method:testCollectionRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testCollectionIteratorRemove()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testCollectionClear()] (0 ms)</li><li>org.apache.commons.collections4.CollectionUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.CollectionUtilsTest]/[method:testSubtract()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testCollectionIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testListIteratorAdd()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testCollectionIterator()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testCollectionContains()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testReplaceAll()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testCollectionRemove()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSetTest]/[method:testCollectionRemove()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testCollectionIteratorRemove()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testCollectionAdd()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSetTest]/[method:testCollectionContains()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testCollectionToArray()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSetTest]/[method:testCollectionRemoveIf()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testBagContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testReplaceKeyValueValue()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSetTest]/[method:testCollectionToArray2()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testCollectionIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testCollectionRemove()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testReplaceKeyValueValue()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSetTest]/[method:testCollectionContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSetTest]/[method:testCollectionAddAll()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testCollectionContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testCollectionAdd()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testReplaceAll()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testCollectionToArray2()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testCollectionAdd()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionToArray()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testCollectionRemoveIf()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testCollectionContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionClear()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testCollectionContains()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testCollectionAddAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testSetEquals()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSetTest]/[method:testCollectionRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testCollectionIteratorRemove()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testListEquals()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testCollectionIterator()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testCollectionRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testCollectionIterator()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testCollectionAddAll()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testCollectionRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testCollectionIterator()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSetTest]/[method:testCollectionRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testCollectionIteratorRemove()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testCollectionRemove()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testCollectionRemoveIf()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testCollectionRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testCollectionContains()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testCollectionToArray2()] (0 ms)</li><li>org.apache.commons.collections4.CollectionUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.CollectionUtilsTest]/[method:testIsProperSubCollection()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testCollectionRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testCollectionRemove()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testCollectionIteratorRemove()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testCollectionContains()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testCollectionIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testCollectionContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testCollectionRemoveIf()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testCollectionContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testCollectionAddAll()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testCollectionAddAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testCollectionRemoveIf()] (0 ms)</li><li>org.apache.commons.collections4.CollectionUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.CollectionUtilsTest]/[method:testDisjunctionAsSymmetricDifference()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testCollectionContains()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testCollectionToArray2()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testCollectionRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.CollectionUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.CollectionUtilsTest]/[method:testDisjunctionAsUnionMinusIntersection()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testCollectionRemove()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testCollectionContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testCollectionRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionAdd()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testCollectionAdd()] (1 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testCollectionRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testSetEquals()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testCollectionIterator()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testCollectionAddAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testCollectionToArray2()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testCollectionContains()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testCollectionIteratorRemove()] (1 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testCollectionRemoveIf()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionIterator()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testCollectionToArray2()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testCollectionRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testCollectionRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testCollectionAddAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionContains()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testCollectionContainsAll()] (1 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionIteratorRemove()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionRemoveIf()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testCollectionRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testCollectionRemove()] (3 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testCollectionRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testCollectionRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionRemove()] (1 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionToArray2()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionAddAll()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapGet()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapClear()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapGet()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapClear()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapSize()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapSize()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapToString()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapToString()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapContainsValue()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapEquals()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapGetOrDefault()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapEquals()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapContainsKey()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapContainsKey()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapPut()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapPut()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapGetOrDefault()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapContainsValue()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapRemove()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapRemove()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapPutIfAbsent()] (1 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapPutIfAbsent()] (1 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapPutAll()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapPutAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapComputeIfAbsent()] (1 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapComputeIfPresent()] (1 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testMapComputeIfPresent()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testMapComputeIfAbsent()] (1 ms)</li><li>org.apache.commons.collections4.collection.PredicatedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.PredicatedCollectionTest]/[method:testCollectionIteratorFailFast()] (0 ms)</li><li>org.apache.commons.collections4.collection.PredicatedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.PredicatedCollectionTest]/[method:testUnsupportedAdd()] (0 ms)</li><li>org.apache.commons.collections4.collection.PredicatedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.PredicatedCollectionTest]/[method:testUnsupportedRemove()] (0 ms)</li><li>org.apache.commons.collections4.PredicateUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.PredicateUtilsTest]/[method:testPredicateSanityTests()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testUnsupportedRemove()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testCollectionIteratorFailFast()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testUnsupportedRemove()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testUnsupportedRemove()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testUnsupportedAdd()] (0 ms)</li><li>org.apache.commons.collections4.PredicateUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.PredicateUtilsTest]/[method:testAllPredicateEx5()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testUnsupportedRemove()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionIteratorFailFast()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testListSubListFailFastOnAdd()] (0 ms)</li><li>org.apache.commons.collections4.QueueUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.QueueUtilsTest]/[method:testEmptyQueue()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testUnsupportedAdd()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testUnsupportedAdd()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testUnsupportedAdd()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testUnsupportedRemove()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testListSubListFailFastOnRemove()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSetTest]/[method:testUnsupportedRemove()] (0 ms)</li><li>org.apache.commons.collections4.BagUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.BagUtilsTest]/[method:testSynchronizedBag()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testUnsupportedAdd()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testUnsupportedRemove()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testCollectionIteratorFailFast()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testUnsupportedSet()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testCollectionIteratorFailFast()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testUnsupportedAdd()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testCollectionIteratorFailFast()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testCollectionIteratorFailFast()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testUnsupportedRemove()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testUnsupportedAdd()] (0 ms)</li><li>org.apache.commons.collections4.QueueUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.QueueUtilsTest]/[method:testUnmodifiableQueue()] (0 ms)</li><li>org.apache.commons.collections4.PredicateUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.PredicateUtilsTest]/[method:testNonePredicateEx5()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSetTest]/[method:testCollectionIteratorFailFast()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSetTest]/[method:testUnsupportedAdd()] (0 ms)</li><li>org.apache.commons.collections4.QueueUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.QueueUtilsTest]/[method:testSynchronizedQueue()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testCollectionIteratorFailFast()] (0 ms)</li><li>org.apache.commons.collections4.QueueUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.QueueUtilsTest]/[method:testTransformedQueue()] (0 ms)</li><li>org.apache.commons.collections4.iterators.FilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.FilterIteratorTest]/[method:testEqualsNull()] (0 ms)</li><li>org.apache.commons.collections4.BagUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.BagUtilsTest]/[method:testTransformedBag()] (0 ms)</li><li>org.apache.commons.collections4.BagUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.BagUtilsTest]/[method:testUnmodifiableBag()] (0 ms)</li><li>org.apache.commons.collections4.iterators.FilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.FilterIteratorTest]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testObjectEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.BagUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.BagUtilsTest]/[method:testUnmodifiableSortedBag()] (0 ms)</li><li>org.apache.commons.collections4.iterators.FilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.FilterIteratorTest]/[method:testObjectHashCodeEqualsSelfHashCode()] (0 ms)</li><li>org.apache.commons.collections4.QueueUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.QueueUtilsTest]/[method:testPredicatedQueue()] (0 ms)</li><li>org.apache.commons.collections4.iterators.FilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.FilterIteratorTest]/[method:testSimpleSerialization()] (0 ms)</li><li>org.apache.commons.collections4.collection.PredicatedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.PredicatedCollectionTest]/[method:testObjectEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.collection.PredicatedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.PredicatedCollectionTest]/[method:testObjectHashCodeEqualsSelfHashCode()] (0 ms)</li><li>org.apache.commons.collections4.collection.PredicatedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.PredicatedCollectionTest]/[method:testEqualsNull()] (0 ms)</li><li>org.apache.commons.collections4.BagUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.BagUtilsTest]/[method:testSynchronizedSortedBag()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedMapTest]/[method:testObjectEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSetTest]/[method:testEqualsNull()] (0 ms)</li><li>org.apache.commons.collections4.iterators.UniqueFilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.UniqueFilterIteratorTest]/[method:testEqualsNull()] (0 ms)</li><li>org.apache.commons.collections4.iterators.FilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.FilterIteratorTest]/[method:testCanonicalFullCollectionExists()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testObjectHashCodeEqualsSelfHashCode()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testObjectEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testObjectHashCodeEqualsContract()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testComparator()] (0 ms)</li><li>org.apache.commons.collections4.iterators.FilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.FilterIteratorTest]/[method:testCanonicalEmptyCollectionExists()] (0 ms)</li><li>org.apache.commons.collections4.iterators.FilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.FilterIteratorTest]/[method:testObjectEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.iterators.UniqueFilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.UniqueFilterIteratorTest]/[method:testSimpleSerialization()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testObjectHashCodeEqualsSelfHashCode()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testObjectEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSetTest]/[method:testObjectEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testObjectEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.collection.PredicatedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.PredicatedCollectionTest]/[method:testObjectHashCodeEqualsContract()] (0 ms)</li><li>org.apache.commons.collections4.iterators.UniqueFilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.UniqueFilterIteratorTest]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.map.PredicatedSortedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.PredicatedSortedMapTest]/[method:testObjectEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSetTest]/[method:testObjectHashCodeEqualsSelfHashCode()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSetTest]/[method:testGetSet()] (0 ms)</li><li>org.apache.commons.collections4.iterators.UniqueFilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.UniqueFilterIteratorTest]/[method:testObjectEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testEqualsNull()] (0 ms)</li><li>org.apache.commons.collections4.iterators.FilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.FilterIteratorTest]/[method:testObjectHashCodeEqualsContract()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testGetSet()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testEqualsNull()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testObjectHashCodeEqualsSelfHashCode()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testIllegalSet()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testGetSet()] (0 ms)</li><li>org.apache.commons.collections4.BagUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.BagUtilsTest]/[method:testPredicatedSortedBag()] (0 ms)</li><li>org.apache.commons.collections4.iterators.UniqueFilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.UniqueFilterIteratorTest]/[method:testCanonicalFullCollectionExists()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testListRemoveByIndexBoundsChecking()] (0 ms)</li><li>org.apache.commons.collections4.iterators.FilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.FilterIteratorTest]/[method:testRepeatedHasNext()] (0 ms)</li><li>org.apache.commons.collections4.iterators.UniqueFilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.UniqueFilterIteratorTest]/[method:testObjectHashCodeEqualsContract()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testObjectHashCodeEqualsSelfHashCode()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testEqualsNull()] (0 ms)</li><li>org.apache.commons.collections4.BagUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.BagUtilsTest]/[method:testPredicatedBag()] (0 ms)</li><li>org.apache.commons.collections4.iterators.UniqueFilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.UniqueFilterIteratorTest]/[method:testCanonicalEmptyCollectionExists()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testEqualsNull()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testComparator()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testListGetByIndexBoundsChecking()] (0 ms)</li><li>org.apache.commons.collections4.collection.PredicatedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.PredicatedCollectionTest]/[method:testIllegalAdd()] (0 ms)</li><li>org.apache.commons.collections4.iterators.UniqueFilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.UniqueFilterIteratorTest]/[method:testObjectHashCodeEqualsSelfHashCode()] (0 ms)</li><li>org.apache.commons.collections4.iterators.FilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.FilterIteratorTest]/[method:testRemoveNext()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSetTest]/[method:testObjectHashCodeEqualsContract()] (0 ms)</li><li>org.apache.commons.collections4.iterators.FilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.FilterIteratorTest]/[method:testRepeatedNext()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testIllegalAdd()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testObjectHashCodeEqualsContract()] (0 ms)</li><li>org.apache.commons.collections4.iterators.FilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.FilterIteratorTest]/[method:testConstructorPredicateFilterInts()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testGet()] (0 ms)</li><li>org.apache.commons.collections4.collection.PredicatedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.PredicatedCollectionTest]/[method:testCanonicalFullCollectionExists()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testObjectEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testRemove()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSetTest]/[method:testIllegalAdd()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testObjectEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testObjectEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.iterators.FilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.FilterIteratorTest]/[method:testRemove()] (0 ms)</li><li>org.apache.commons.collections4.collection.PredicatedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.PredicatedCollectionTest]/[method:testCanonicalEmptyCollectionExists()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testCanonicalEmptyCollectionExists()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testCanonicalFullCollectionExists()] (0 ms)</li><li>org.apache.commons.collections4.bag.CollectionBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.CollectionBagTest]/[method:testAdd_Predicate_ComparatorDefault()] (0 ms)</li><li>org.apache.commons.collections4.bag.CollectionBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.CollectionBagTest]/[method:testAdd_Predicate_ComparatorCustom()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testEqualsNull()] (0 ms)</li><li>org.apache.commons.collections4.iterators.UniqueFilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.UniqueFilterIteratorTest]/[method:testRemove()] (0 ms)</li><li>org.apache.commons.collections4.iterators.UniqueFilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.UniqueFilterIteratorTest]/[method:testIterator()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSetTest]/[method:testCanonicalFullCollectionExists()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testObjectHashCodeEqualsSelfHashCode()] (0 ms)</li><li>org.apache.commons.collections4.iterators.FilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.FilterIteratorTest]/[method:testForEachRemainingRejectAllCtor()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testObjectHashCodeEqualsContract()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testIllegalAdd()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testDecorate()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testLegalAddAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testEqualsNull()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testCanonicalEmptyCollectionExists()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testEqualsNull()] (0 ms)</li><li>org.apache.commons.collections4.collection.PredicatedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.PredicatedCollectionTest]/[method:testIllegalAddAll()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testCanonicalFullCollectionExists()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testObjectHashCodeEqualsSelfHashCode()] (0 ms)</li><li>org.apache.commons.collections4.iterators.FilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.FilterIteratorTest]/[method:testRemoveNextEmpty()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testCanonicalEmptyCollectionExists()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testObjectHashCodeEqualsSelfHashCode()] (0 ms)</li><li>org.apache.commons.collections4.iterators.FilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.FilterIteratorTest]/[method:testForEachRemaining()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSetTest]/[method:testCanonicalEmptyCollectionExists()] (0 ms)</li><li>org.apache.commons.collections4.iterators.UniqueFilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.UniqueFilterIteratorTest]/[method:testEmptyIterator()] (0 ms)</li><li>org.apache.commons.collections4.iterators.ExtendedIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.ExtendedIteratorTest]/[method:testFilter()] (0 ms)</li><li>org.apache.commons.collections4.iterators.FilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.FilterIteratorTest]/[method:testFullIterator()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testCanonicalEmptyCollectionExists()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testObjectHashCodeEqualsContract()] (0 ms)</li><li>org.apache.commons.collections4.queue.PredicatedQueueTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.queue.PredicatedQueueTest]/[method:testCanonicalFullCollectionExists()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testIllegalAdd()] (0 ms)</li><li>org.apache.commons.collections4.BagUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.BagUtilsTest]/[method:testTransformedSortedBag()] (1 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testCanonicalFullCollectionExists()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSetTest]/[method:testIllegalAddAll()] (0 ms)</li><li>org.apache.commons.collections4.iterators.FilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.FilterIteratorTest]/[method:testAddToEmpty()] (0 ms)</li><li>org.apache.commons.collections4.iterators.UniqueFilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.UniqueFilterIteratorTest]/[method:testFullIterator()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testIllegalAdd()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testIllegalAdd()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedSortedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedSortedSetTest]/[method:testIllegalAddAll()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testIllegalAddAll()] (0 ms)</li><li>org.apache.commons.collections4.iterators.UniqueFilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.UniqueFilterIteratorTest]/[method:testForEachRemaining()] (0 ms)</li><li>org.apache.commons.collections4.list.PredicatedListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.PredicatedListTest]/[method:testSubList()] (0 ms)</li><li>org.apache.commons.collections4.iterators.FilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.FilterIteratorTest]/[method:testAddToEmptyToEmpty()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCanonicalEmptyCollectionExists()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCanonicalFullCollectionExists()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testCanonicalFullCollectionExists()] (0 ms)</li><li>org.apache.commons.collections4.set.PredicatedNavigableSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.PredicatedNavigableSetTest]/[method:testIllegalAddAll()] (0 ms)</li><li>org.apache.commons.collections4.iterators.FilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.FilterIteratorTest]/[method:testEmptyIterator()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testCanonicalEmptyCollectionExists()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testCanonicalFullCollectionExists()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testIllegalDecorate()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testCanonicalEmptyCollectionExists()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testObjectHashCodeEqualsContract()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testObjectHashCodeEqualsContract()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testIllegalDecorate()] (0 ms)</li><li>org.apache.commons.collections4.CollectionUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.CollectionUtilsTest]/[method:testSubtractNullColl2()] (0 ms)</li><li>org.apache.commons.collections4.iterators.FilterIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.FilterIteratorTest]/[method:testReturnValues()] (0 ms)</li><li>org.apache.commons.collections4.CollectionUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.CollectionUtilsTest]/[method:testSubtractNullColl1()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testObjectHashCodeEqualsContract()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testSortOrder()] (0 ms)</li><li>org.apache.commons.collections4.iterators.LazyIteratorChainTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.LazyIteratorChainTest]/[method:testRemoveFromFilteredIterator()] (0 ms)</li><li>org.apache.commons.collections4.SetUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.SetUtilsTest]/[method:testDifference()] (0 ms)</li><li>org.apache.commons.collections4.iterators.IteratorChainTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.IteratorChainTest]/[method:testRemoveFromFilteredIterator()] (0 ms)</li><li>org.apache.commons.collections4.IterableUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.IterableUtilsTest]/[method:testCountMatches()] (0 ms)</li><li>org.apache.commons.collections4.SetUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.SetUtilsTest]/[method:testIntersection()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedBagTest]/[method:testLegalAddRemove()] (0 ms)</li><li>org.apache.commons.collections4.multiset.PredicatedMultiSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multiset.PredicatedMultiSetTest]/[method:testLegalAddRemove()] (0 ms)</li><li>org.apache.commons.collections4.IterableUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.IterableUtilsTest]/[method:testFrequencyOfNull()] (0 ms)</li><li>org.apache.commons.collections4.FluentIterableTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.FluentIterableTest]/[method:testUnique()] (0 ms)</li><li>org.apache.commons.collections4.FluentIterableTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.FluentIterableTest]/[method:testFilter()] (0 ms)</li><li>org.apache.commons.collections4.SetUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.SetUtilsTest]/[method:testUnion()] (0 ms)</li><li>org.apache.commons.collections4.SetUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.SetUtilsTest]/[method:testDisjunction()] (0 ms)</li><li>org.apache.commons.collections4.ClosureUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.ClosureUtilsTest]/[method:testSwitchClosure()] (0 ms)</li><li>org.apache.commons.collections4.CollectionUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.CollectionUtilsTest]/[method:countMatches()] (1 ms)</li><li>org.apache.commons.collections4.FluentIterableTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.FluentIterableTest]/[method:testEval()] (0 ms)</li><li>org.apache.commons.collections4.IterableUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.IterableUtilsTest]/[method:testFrequency()] (0 ms)</li><li>org.apache.commons.collections4.CollectionUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.CollectionUtilsTest]/[method:cardinalityOfNull()] (0 ms)</li><li>org.apache.commons.collections4.CollectionUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.CollectionUtilsTest]/[method:cardinality()] (0 ms)</li>
+</ul>
+
+<br/>
+
+Report generated by <a href='https://pitest.org'>PIT</a> 1.20.6
+
+</body>
+</html>

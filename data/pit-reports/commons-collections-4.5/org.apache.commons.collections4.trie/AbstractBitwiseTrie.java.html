@@ -1,0 +1,3661 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+<body>
+
+
+<h1>AbstractBitwiseTrie.java</h1>
+
+<table class="src">
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_1'/>
+1
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_1'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>/*</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_2'/>
+2
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_2'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Licensed to the Apache Software Foundation (ASF) under one or more</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_3'/>
+3
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_3'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * contributor license agreements.  See the NOTICE file distributed with</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_4'/>
+4
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_4'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * this work for additional information regarding copyright ownership.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_5'/>
+5
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_5'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * The ASF licenses this file to You under the Apache License, Version 2.0</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_6'/>
+6
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_6'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * (the &#34;License&#34;); you may not use this file except in compliance with</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_7'/>
+7
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_7'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * the License.  You may obtain a copy of the License at</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_8'/>
+8
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_8'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_9'/>
+9
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_9'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *      http://www.apache.org/licenses/LICENSE-2.0</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_10'/>
+10
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_10'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_11'/>
+11
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_11'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Unless required by applicable law or agreed to in writing, software</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_12'/>
+12
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_12'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * distributed under the License is distributed on an &#34;AS IS&#34; BASIS,</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_13'/>
+13
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_13'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_14'/>
+14
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_14'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * See the License for the specific language governing permissions and</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_15'/>
+15
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_15'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * limitations under the License.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_16'/>
+16
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_16'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_17'/>
+17
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_17'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>package org.apache.commons.collections4.trie;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_18'/>
+18
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_18'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_19'/>
+19
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_19'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.io.Serializable;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_20'/>
+20
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_20'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.util.AbstractMap;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_21'/>
+21
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_21'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.util.Map;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_22'/>
+22
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_22'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.util.Objects;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_23'/>
+23
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_23'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_24'/>
+24
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_24'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import org.apache.commons.collections4.Trie;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_25'/>
+25
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_25'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_26'/>
+26
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_26'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>/**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_27'/>
+27
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_27'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * This class provides some basic {@link Trie} functionality and</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_28'/>
+28
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_28'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * utility methods for actual bitwise {@link Trie} implementations.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_29'/>
+29
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_29'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_30'/>
+30
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_30'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * @param &#60;K&#62; the type of the keys in this map</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_31'/>
+31
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_31'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * @param &#60;V&#62; the type of the values in this map</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_32'/>
+32
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_32'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * @since 4.0</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_33'/>
+33
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_33'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_34'/>
+34
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_34'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>public abstract class AbstractBitwiseTrie&#60;K, V&#62; extends AbstractMap&#60;K, V&#62;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_35'/>
+35
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_35'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        implements Trie&#60;K, V&#62;, Serializable {</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_36'/>
+36
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_36'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_37'/>
+37
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_37'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_38'/>
+38
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_38'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * A basic implementation of {@link Entry}.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_39'/>
+39
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_39'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_40'/>
+40
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_40'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param &#60;K&#62; the type of the keys in this entry.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_41'/>
+41
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_41'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param &#60;V&#62; the type of the values in this entry.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_42'/>
+42
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_42'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_43'/>
+43
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_43'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    abstract static class BasicEntry&#60;K, V&#62; implements Map.Entry&#60;K, V&#62;, Serializable {</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_44'/>
+44
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_44'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_45'/>
+45
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_45'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        private static final long serialVersionUID = -944364551314110330L;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_46'/>
+46
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_46'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_47'/>
+47
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_47'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_48'/>
+48
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_48'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>         * The entry&#39;s key.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_49'/>
+49
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_49'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>         */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_50'/>
+50
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_50'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        protected K key;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_51'/>
+51
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_51'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_52'/>
+52
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_52'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_53'/>
+53
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_53'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>         * The entry&#39;s value.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_54'/>
+54
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_54'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>         */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_55'/>
+55
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_55'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        protected V value;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_56'/>
+56
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_56'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_57'/>
+57
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_57'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class=''>        BasicEntry(final K key) {</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_58'/>
+58
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_58'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class=''>            this.key = key;</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_59'/>
+59
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_59'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_60'/>
+60
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_60'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_61'/>
+61
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_61'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        BasicEntry(final K key, final V value) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_62'/>
+62
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_62'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            this.key = key;</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_63'/>
+63
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_63'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            this.value = value;</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_64'/>
+64
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_64'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_65'/>
+65
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_65'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_66'/>
+66
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_66'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_67'/>
+67
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_67'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        public boolean equals(final Object o) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_68'/>
+68
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_68'>1</a>
+<span>
+1. equals : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            if (o == this) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_69'/>
+69
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_69'>1</a>
+<span>
+1. equals : replaced boolean return with false for org/apache/commons/collections4/trie/AbstractBitwiseTrie$BasicEntry::equals &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>                return true;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_70'/>
+70
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_70'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>            }</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_71'/>
+71
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_71'>1</a>
+<span>
+1. equals : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            if (!(o instanceof Map.Entry)) {</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_72'/>
+72
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_72'>1</a>
+<span>
+1. equals : replaced boolean return with true for org/apache/commons/collections4/trie/AbstractBitwiseTrie$BasicEntry::equals &rarr; NO_COVERAGE<br/>
+
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class='survived'>                return false;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_73'/>
+73
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_73'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>            }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_74'/>
+74
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_74'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_75'/>
+75
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_75'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            final Map.Entry&#60;?, ?&#62; other = (Map.Entry&#60;?, ?&#62;) o;</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_76'/>
+76
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_76'>1</a>
+<span>
+1. equals : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            if (compare(key, other.getKey())</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_77'/>
+77
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_77'>1</a>
+<span>
+1. equals : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>                    &#38;&#38; compare(value, other.getValue())) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_78'/>
+78
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_78'>1</a>
+<span>
+1. equals : replaced boolean return with false for org/apache/commons/collections4/trie/AbstractBitwiseTrie$BasicEntry::equals &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>                return true;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_79'/>
+79
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_79'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>            }</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_80'/>
+80
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_80'>1</a>
+<span>
+1. equals : replaced boolean return with true for org/apache/commons/collections4/trie/AbstractBitwiseTrie$BasicEntry::equals &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            return false;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_81'/>
+81
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_81'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_82'/>
+82
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_82'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_83'/>
+83
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_83'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_84'/>
+84
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_84'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        public K getKey() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_85'/>
+85
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_85'>1</a>
+<span>
+1. getKey : replaced return value with null for org/apache/commons/collections4/trie/AbstractBitwiseTrie$BasicEntry::getKey &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            return key;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_86'/>
+86
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_86'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_87'/>
+87
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_87'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_88'/>
+88
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_88'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_89'/>
+89
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_89'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        public V getValue() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_90'/>
+90
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_90'>1</a>
+<span>
+1. getValue : replaced return value with null for org/apache/commons/collections4/trie/AbstractBitwiseTrie$BasicEntry::getValue &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            return value;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_91'/>
+91
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_91'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_92'/>
+92
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_92'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_93'/>
+93
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_93'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_94'/>
+94
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_94'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        public int hashCode() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_95'/>
+95
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_95'>2</a>
+<span>
+1. hashCode : replaced int return with 0 for org/apache/commons/collections4/trie/AbstractBitwiseTrie$BasicEntry::hashCode &rarr; KILLED<br/>
+2. hashCode : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            return (getKey() == null ? 0 : getKey().hashCode()) ^</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_96'/>
+96
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_96'>2</a>
+<span>
+1. hashCode : Replaced XOR with AND &rarr; KILLED<br/>
+2. hashCode : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>                   (getValue() == null ? 0 : getValue().hashCode());</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_97'/>
+97
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_97'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_98'/>
+98
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_98'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_99'/>
+99
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_99'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_100'/>
+100
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_100'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>         * Replaces the current key and value with the provided key &#38;amp; value.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_101'/>
+101
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_101'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>         *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_102'/>
+102
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_102'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>         * @param key The new key.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_103'/>
+103
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_103'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>         * @param value The new value.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_104'/>
+104
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_104'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>         * @return The previous value.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_105'/>
+105
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_105'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>         */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_106'/>
+106
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_106'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        public V setKeyValue(final K key, final V value) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_107'/>
+107
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_107'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            this.key = key;</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_108'/>
+108
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_108'>1</a>
+<span>
+1. setKeyValue : replaced return value with null for org/apache/commons/collections4/trie/AbstractBitwiseTrie$BasicEntry::setKeyValue &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            return setValue(value);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_109'/>
+109
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_109'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_110'/>
+110
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_110'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_111'/>
+111
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_111'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_112'/>
+112
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_112'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        public V setValue(final V value) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_113'/>
+113
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_113'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            final V previous = this.value;</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_114'/>
+114
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_114'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            this.value = value;</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_115'/>
+115
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_115'>1</a>
+<span>
+1. setValue : replaced return value with null for org/apache/commons/collections4/trie/AbstractBitwiseTrie$BasicEntry::setValue &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            return previous;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_116'/>
+116
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_116'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_117'/>
+117
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_117'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_118'/>
+118
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_118'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_119'/>
+119
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_119'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        public String toString() {</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_120'/>
+120
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_120'>1</a>
+<span>
+1. toString : replaced return value with &#34;&#34; for org/apache/commons/collections4/trie/AbstractBitwiseTrie$BasicEntry::toString &rarr; NO_COVERAGE<br/>
+
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class='survived'>            return key + &#34;=&#34; + value;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_121'/>
+121
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_121'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_122'/>
+122
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_122'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_123'/>
+123
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_123'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_124'/>
+124
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_124'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    private static final long serialVersionUID = 5826987063535505652L;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_125'/>
+125
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_125'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_126'/>
+126
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_126'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_127'/>
+127
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_127'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Delegates to {@link Objects#equals(Object, Object)}.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_128'/>
+128
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_128'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_129'/>
+129
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_129'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    static boolean compare(final Object a, final Object b) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_130'/>
+130
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_130'>2</a>
+<span>
+1. compare : replaced boolean return with true for org/apache/commons/collections4/trie/AbstractBitwiseTrie::compare &rarr; KILLED<br/>
+2. compare : replaced boolean return with false for org/apache/commons/collections4/trie/AbstractBitwiseTrie::compare &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return Objects.equals(a, b);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_131'/>
+131
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_131'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_132'/>
+132
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_132'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_133'/>
+133
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_133'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_134'/>
+134
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_134'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * The {@link KeyAnalyzer} that&#39;s being used to build the PATRICIA {@link Trie}.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_135'/>
+135
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_135'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_136'/>
+136
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_136'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    private final KeyAnalyzer&#60;? super K&#62; keyAnalyzer;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_137'/>
+137
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_137'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_138'/>
+138
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_138'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_139'/>
+139
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_139'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Constructs a new {@link Trie} using the given {@link KeyAnalyzer}.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_140'/>
+140
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_140'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_141'/>
+141
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_141'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param keyAnalyzer  the {@link KeyAnalyzer} to use</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_142'/>
+142
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_142'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_143'/>
+143
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_143'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    protected AbstractBitwiseTrie(final KeyAnalyzer&#60;? super K&#62; keyAnalyzer) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_144'/>
+144
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_144'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        this.keyAnalyzer = Objects.requireNonNull(keyAnalyzer, &#34;keyAnalyzer&#34;);</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_145'/>
+145
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_145'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_146'/>
+146
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_146'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_147'/>
+147
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_147'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_148'/>
+148
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_148'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Utility method for calling {@link KeyAnalyzer#bitIndex(Object, int, int, Object, int, int)}.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_149'/>
+149
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_149'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_150'/>
+150
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_150'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    final int bitIndex(final K key, final K foundKey) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_151'/>
+151
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_151'>1</a>
+<span>
+1. bitIndex : replaced int return with 0 for org/apache/commons/collections4/trie/AbstractBitwiseTrie::bitIndex &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return keyAnalyzer.bitIndex(key, 0, lengthInBits(key), foundKey, 0, lengthInBits(foundKey));</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_152'/>
+152
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_152'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_153'/>
+153
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_153'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_154'/>
+154
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_154'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_155'/>
+155
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_155'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Returns the number of bits per element in the key</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_156'/>
+156
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_156'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_157'/>
+157
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_157'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @see KeyAnalyzer#bitsPerElement()</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_158'/>
+158
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_158'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_159'/>
+159
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_159'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    final int bitsPerElement() {</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_160'/>
+160
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_160'>1</a>
+<span>
+1. bitsPerElement : replaced int return with 0 for org/apache/commons/collections4/trie/AbstractBitwiseTrie::bitsPerElement &rarr; NO_COVERAGE<br/>
+
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class='survived'>        return keyAnalyzer.bitsPerElement();</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_161'/>
+161
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_161'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_162'/>
+162
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_162'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_163'/>
+163
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_163'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_164'/>
+164
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_164'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * A utility method to cast keys. It actually doesn&#39;t cast anything. It&#39;s just fooling the compiler!</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_165'/>
+165
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_165'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_166'/>
+166
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_166'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @SuppressWarnings(&#34;unchecked&#34;)</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_167'/>
+167
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_167'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    final K castKey(final Object key) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_168'/>
+168
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_168'>1</a>
+<span>
+1. castKey : replaced return value with null for org/apache/commons/collections4/trie/AbstractBitwiseTrie::castKey &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return (K) key;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_169'/>
+169
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_169'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_170'/>
+170
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_170'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_171'/>
+171
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_171'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_172'/>
+172
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_172'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * A utility method for calling {@link KeyAnalyzer#compare(Object, Object)}</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_173'/>
+173
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_173'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_174'/>
+174
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_174'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    final boolean compareKeys(final K key, final K other) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_175'/>
+175
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_175'>1</a>
+<span>
+1. compareKeys : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        if (key == null) {</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_176'/>
+176
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_176'>2</a>
+<span>
+1. compareKeys : replaced boolean return with true for org/apache/commons/collections4/trie/AbstractBitwiseTrie::compareKeys &rarr; NO_COVERAGE<br/>
+2. compareKeys : negated conditional &rarr; NO_COVERAGE<br/>
+
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class='survived'>            return other == null;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_177'/>
+177
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_177'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_178'/>
+178
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_178'>1</a>
+<span>
+1. compareKeys : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        if (other == null) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_179'/>
+179
+</td>
+<td class='uncertain'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_179'>1</a>
+<span>
+1. compareKeys : replaced boolean return with true for org/apache/commons/collections4/trie/AbstractBitwiseTrie::compareKeys &rarr; TIMED_OUT<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='uncertain'>            return false;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_180'/>
+180
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_180'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_181'/>
+181
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_181'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_182'/>
+182
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_182'>2</a>
+<span>
+1. compareKeys : negated conditional &rarr; KILLED<br/>
+2. compareKeys : replaced boolean return with true for org/apache/commons/collections4/trie/AbstractBitwiseTrie::compareKeys &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return keyAnalyzer.compare(key, other) == 0;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_183'/>
+183
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_183'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_184'/>
+184
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_184'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_185'/>
+185
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_185'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_186'/>
+186
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_186'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Gets the {@link KeyAnalyzer} that constructed the {@link Trie}.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_187'/>
+187
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_187'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @return the {@link KeyAnalyzer} used by this {@link Trie}</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_188'/>
+188
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_188'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_189'/>
+189
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_189'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    protected KeyAnalyzer&#60;? super K&#62; getKeyAnalyzer() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_190'/>
+190
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_190'>1</a>
+<span>
+1. getKeyAnalyzer : replaced return value with null for org/apache/commons/collections4/trie/AbstractBitwiseTrie::getKeyAnalyzer &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return keyAnalyzer;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_191'/>
+191
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_191'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_192'/>
+192
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_192'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_193'/>
+193
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_193'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_194'/>
+194
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_194'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Returns whether or not the given bit on the key is set or false if the key is null.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_195'/>
+195
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_195'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_196'/>
+196
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_196'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @see KeyAnalyzer#isBitSet(Object, int, int)</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_197'/>
+197
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_197'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_198'/>
+198
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_198'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    final boolean isBitSet(final K key, final int bitIndex, final int lengthInBits) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_199'/>
+199
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_199'>1</a>
+<span>
+1. isBitSet : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        if (key == null) { // root&#39;s might be null!</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_200'/>
+200
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_200'>1</a>
+<span>
+1. isBitSet : replaced boolean return with true for org/apache/commons/collections4/trie/AbstractBitwiseTrie::isBitSet &rarr; NO_COVERAGE<br/>
+
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class='survived'>            return false;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_201'/>
+201
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_201'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_202'/>
+202
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_202'>2</a>
+<span>
+1. isBitSet : replaced boolean return with false for org/apache/commons/collections4/trie/AbstractBitwiseTrie::isBitSet &rarr; KILLED<br/>
+2. isBitSet : replaced boolean return with true for org/apache/commons/collections4/trie/AbstractBitwiseTrie::isBitSet &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return keyAnalyzer.isBitSet(key, bitIndex, lengthInBits);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_203'/>
+203
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_203'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_204'/>
+204
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_204'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_205'/>
+205
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_205'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_206'/>
+206
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_206'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Returns the length of the given key in bits</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_207'/>
+207
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_207'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_208'/>
+208
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_208'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @see KeyAnalyzer#lengthInBits(Object)</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_209'/>
+209
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_209'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_210'/>
+210
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_210'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    final int lengthInBits(final K key) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_211'/>
+211
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_211'>1</a>
+<span>
+1. lengthInBits : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        if (key == null) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_212'/>
+212
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_212'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            return 0;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_213'/>
+213
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_213'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_214'/>
+214
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_214'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_215'/>
+215
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_215'>1</a>
+<span>
+1. lengthInBits : replaced int return with 0 for org/apache/commons/collections4/trie/AbstractBitwiseTrie::lengthInBits &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return keyAnalyzer.lengthInBits(key);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_216'/>
+216
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_216'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_217'/>
+217
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_217'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_218'/>
+218
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_218'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_219'/>
+219
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_219'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public String toString() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_220'/>
+220
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_220'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        final StringBuilder buffer = new StringBuilder();</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_221'/>
+221
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_221'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        buffer.append(&#34;Trie[&#34;).append(size()).append(&#34;]={\n&#34;);</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_222'/>
+222
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_222'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        for (final Map.Entry&#60;K, V&#62; entry : entrySet()) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_223'/>
+223
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_223'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            buffer.append(&#34;  &#34;).append(entry).append(&#34;\n&#34;);</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_224'/>
+224
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_224'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_225'/>
+225
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_225'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        buffer.append(&#34;}\n&#34;);</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_226'/>
+226
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_226'>1</a>
+<span>
+1. toString : replaced return value with &#34;&#34; for org/apache/commons/collections4/trie/AbstractBitwiseTrie::toString &rarr; SURVIVED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='survived'>        return buffer.toString();</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_227'/>
+227
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_227'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@7a545b8c_228'/>
+228
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_228'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>}</span></pre></td></tr>
+
+
+
+<tr><td></td><td></td><td><h2>Mutations</h2></td></tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7a545b8c_68'>68</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_68'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testEntrySetContains3()]</span></span> negated conditional &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7a545b8c_69'>69</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_69'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testEntrySetContains1()]</span></span> replaced boolean return with false for org/apache/commons/collections4/trie/AbstractBitwiseTrie$BasicEntry::equals &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7a545b8c_71'>71</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_71'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testEntrySetContains2()]</span></span> negated conditional &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7a545b8c_72'>72</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_72'/> 
+
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>none</span></span> replaced boolean return with true for org/apache/commons/collections4/trie/AbstractBitwiseTrie$BasicEntry::equals &rarr; NO_COVERAGE</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7a545b8c_76'>76</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_76'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testEntrySetContains2()]</span></span> negated conditional &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7a545b8c_77'>77</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_77'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testEntrySetContains3()]</span></span> negated conditional &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7a545b8c_78'>78</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_78'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testEntrySetContains2()]</span></span> replaced boolean return with false for org/apache/commons/collections4/trie/AbstractBitwiseTrie$BasicEntry::equals &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7a545b8c_80'>80</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_80'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testEntrySetContains3()]</span></span> replaced boolean return with true for org/apache/commons/collections4/trie/AbstractBitwiseTrie$BasicEntry::equals &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7a545b8c_85'>85</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_85'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>getKey<br/><b>Killed by : </b>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testLastKey()]</span></span> replaced return value with null for org/apache/commons/collections4/trie/AbstractBitwiseTrie$BasicEntry::getKey &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7a545b8c_90'>90</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_90'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>getValue<br/><b>Killed by : </b>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testReplaceKeyValue()]</span></span> replaced return value with null for org/apache/commons/collections4/trie/AbstractBitwiseTrie$BasicEntry::getValue &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7a545b8c_95'>95</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_95'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>hashCode<br/><b>Killed by : </b>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testMapHashCode()]</span></span> replaced int return with 0 for org/apache/commons/collections4/trie/AbstractBitwiseTrie$BasicEntry::hashCode &rarr; KILLED</span>
+</div> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>hashCode<br/><b>Killed by : </b>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testMapHashCode()]</span></span> negated conditional &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7a545b8c_96'>96</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_96'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>hashCode<br/><b>Killed by : </b>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testMapHashCode()]</span></span> Replaced XOR with AND &rarr; KILLED</span>
+</div> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>hashCode<br/><b>Killed by : </b>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testMapHashCode()]</span></span> negated conditional &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7a545b8c_108'>108</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_108'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>setKeyValue<br/><b>Killed by : </b>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testReplaceKeyValue()]</span></span> replaced return value with null for org/apache/commons/collections4/trie/AbstractBitwiseTrie$BasicEntry::setKeyValue &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7a545b8c_115'>115</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_115'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>setValue<br/><b>Killed by : </b>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testReplaceKeyValue()]</span></span> replaced return value with null for org/apache/commons/collections4/trie/AbstractBitwiseTrie$BasicEntry::setValue &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7a545b8c_120'>120</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_120'/> 
+
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>toString<br/><b>Killed by : </b>none</span></span> replaced return value with &#34;&#34; for org/apache/commons/collections4/trie/AbstractBitwiseTrie$BasicEntry::toString &rarr; NO_COVERAGE</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7a545b8c_130'>130</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_130'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>compare<br/><b>Killed by : </b>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testEntrySetContains3()]</span></span> replaced boolean return with true for org/apache/commons/collections4/trie/AbstractBitwiseTrie::compare &rarr; KILLED</span>
+</div> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>compare<br/><b>Killed by : </b>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testEntrySetContains2()]</span></span> replaced boolean return with false for org/apache/commons/collections4/trie/AbstractBitwiseTrie::compare &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7a545b8c_151'>151</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_151'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>bitIndex<br/><b>Killed by : </b>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testFirstKey()]</span></span> replaced int return with 0 for org/apache/commons/collections4/trie/AbstractBitwiseTrie::bitIndex &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7a545b8c_160'>160</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_160'/> 
+
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>bitsPerElement<br/><b>Killed by : </b>none</span></span> replaced int return with 0 for org/apache/commons/collections4/trie/AbstractBitwiseTrie::bitsPerElement &rarr; NO_COVERAGE</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7a545b8c_168'>168</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_168'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>castKey<br/><b>Killed by : </b>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testEntrySetContains1()]</span></span> replaced return value with null for org/apache/commons/collections4/trie/AbstractBitwiseTrie::castKey &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7a545b8c_175'>175</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_175'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>compareKeys<br/><b>Killed by : </b>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testMapPutNullValue()]</span></span> negated conditional &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7a545b8c_176'>176</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_176'/> 
+
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>compareKeys<br/><b>Killed by : </b>none</span></span> replaced boolean return with true for org/apache/commons/collections4/trie/AbstractBitwiseTrie::compareKeys &rarr; NO_COVERAGE</span>
+</div> <p class='NO_COVERAGE'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>compareKeys<br/><b>Killed by : </b>none</span></span> negated conditional &rarr; NO_COVERAGE</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7a545b8c_178'>178</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_178'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>compareKeys<br/><b>Killed by : </b>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testEntrySetContains1()]</span></span> negated conditional &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7a545b8c_179'>179</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_179'/> 
+
+<p class='TIMED_OUT'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>compareKeys<br/><b>Killed by : </b>none</span></span> replaced boolean return with true for org/apache/commons/collections4/trie/AbstractBitwiseTrie::compareKeys &rarr; TIMED_OUT</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7a545b8c_182'>182</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_182'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>compareKeys<br/><b>Killed by : </b>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testDecorateFactory()]</span></span> negated conditional &rarr; KILLED</span>
+</div> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>compareKeys<br/><b>Killed by : </b>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testDecorateFactory()]</span></span> replaced boolean return with true for org/apache/commons/collections4/trie/AbstractBitwiseTrie::compareKeys &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7a545b8c_190'>190</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_190'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>getKeyAnalyzer<br/><b>Killed by : </b>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testPrefixMapSizes2()]</span></span> replaced return value with null for org/apache/commons/collections4/trie/AbstractBitwiseTrie::getKeyAnalyzer &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7a545b8c_199'>199</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_199'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>isBitSet<br/><b>Killed by : </b>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testFirstKey()]</span></span> negated conditional &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7a545b8c_200'>200</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_200'/> 
+
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>isBitSet<br/><b>Killed by : </b>none</span></span> replaced boolean return with true for org/apache/commons/collections4/trie/AbstractBitwiseTrie::isBitSet &rarr; NO_COVERAGE</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7a545b8c_202'>202</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_202'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>isBitSet<br/><b>Killed by : </b>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testFirstKey()]</span></span> replaced boolean return with false for org/apache/commons/collections4/trie/AbstractBitwiseTrie::isBitSet &rarr; KILLED</span>
+</div> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>isBitSet<br/><b>Killed by : </b>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testEntrySetContains1()]</span></span> replaced boolean return with true for org/apache/commons/collections4/trie/AbstractBitwiseTrie::isBitSet &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7a545b8c_211'>211</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_211'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>lengthInBits<br/><b>Killed by : </b>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testDecorateFactory()]</span></span> negated conditional &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7a545b8c_215'>215</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_215'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>lengthInBits<br/><b>Killed by : </b>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testDecorateFactory()]</span></span> replaced int return with 0 for org/apache/commons/collections4/trie/AbstractBitwiseTrie::lengthInBits &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@7a545b8c_226'>226</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@7a545b8c_226'/> 
+
+<p class='SURVIVED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>toString<br/><b>Killed by : </b>none</span></span> replaced return value with &#34;&#34; for org/apache/commons/collections4/trie/AbstractBitwiseTrie::toString &rarr; SURVIVED</span>
+<a title="Click to view covering tests" class="view-covered-by-tests" onClick="document.getElementById('MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.trie.AbstractBitwiseTrie,-method=toString,-methodDesc=()Ljava/lang/String;],-indexes=[57],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.EmptyObjectReturnValsMutator]').style.display=(document.getElementById('MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.trie.AbstractBitwiseTrie,-method=toString,-methodDesc=()Ljava/lang/String;],-indexes=[57],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.EmptyObjectReturnValsMutator]').style.display == 'block')?'none':'block';">Covering tests</a>
+<div class="covered-tests" id="MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.trie.AbstractBitwiseTrie,-method=toString,-methodDesc=()Ljava/lang/String;],-indexes=[57],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.EmptyObjectReturnValsMutator]" style="display:none;">Covered by tests:
+<ul>
+<li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testMapToString()]</li> <li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testMapToString()]</li> <li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testMapToString()]</li> 
+</ul>
+</div></div> 
+</td>
+</tr>
+
+</table>
+
+
+<h2>Active mutators</h2>
+<ul>
+<li class='mutator'>CONDITIONALS_BOUNDARY</li>
+<li class='mutator'>EMPTY_RETURNS</li>
+<li class='mutator'>FALSE_RETURNS</li>
+<li class='mutator'>INCREMENTS</li>
+<li class='mutator'>INVERT_NEGS</li>
+<li class='mutator'>MATH</li>
+<li class='mutator'>NEGATE_CONDITIONALS</li>
+<li class='mutator'>NULL_RETURNS</li>
+<li class='mutator'>PRIMITIVE_RETURNS</li>
+<li class='mutator'>TRUE_RETURNS</li>
+<li class='mutator'>VOID_METHOD_CALLS</li>
+
+</ul>
+
+<h2>Tests examined</h2>
+<ul>
+<li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testDecorateFactory()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testMakeMap()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testUnmodifiable()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testMakeMap()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testMakeMap()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testKeySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testKeySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testMapPutNullKey()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testMapPutAll()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testValuesRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testKeySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testMapPutNullKey()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testMapPutNullValue()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testFullMapCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testKeySetRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testKeySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testMapClear()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testMapPutNullValue()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testValuesRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testKeySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testValuesRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testValuesRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testEntrySetRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testKeySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testValuesRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testValuesRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testMapPutNullKey()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testFullMapCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testFirstKey()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testEntrySetClearChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testFullMapCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testKeySetClearChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testMapPutNullValue()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testValuesClearChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testFirstKey()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testFirstKey()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testLastKey()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testLastKey()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testKeySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testKeySetClearChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testEntrySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testEntrySetClearChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testValuesClearChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testEntrySetContains1()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testLastKey()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testMapRemove()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testEntrySetContains1()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testEntrySetContains3()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testReplaceKeyValue()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testEntrySetContains2()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testValuesRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testEntrySetContains2()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testEntrySetContains1()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testEntrySetContains3()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testValuesIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testForEach()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testMapHashCode()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testEntrySetRemove3()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testForEach()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testEntrySetContains3()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testMapHashCode()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testPreviousKey()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testKeySetRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testForEach()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testNextKey()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testMapHashCode()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testReplaceKeyValue()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testEntrySetContains2()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testReplaceKeyValueValue()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testKeySetRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testPrefixMapSizes2()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testRemoveKeyValue()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testEntrySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testEntrySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testEntrySetRemove1()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testEntrySetRemove3()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testReplaceAll()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testEntrySetRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testRemoveKeyValue()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testKeySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testFailFastKeySet()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testFailFastEntrySet()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testEntrySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testReplaceKeyValueValue()] (1 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testEntrySetRemove2()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testFailFastValues()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testEntrySetRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testKeySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testEntrySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testReplaceAll()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testEntrySetRemove1()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testValuesRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testPrefixMapSizes()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testEntrySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testValuesIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testEntrySetRemove2()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testEntrySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testValuesRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testEntrySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testEntrySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testPrefixMapRemoval()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testValuesIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testMapClear()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testMapClear()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testMapGet()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testPrefixMapClearUsingRemove()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testMapGet()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testMapGet()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testMapGetOrDefault()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testMapGetOrDefault()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testMapGetOrDefault()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testPrefixMapClear()] (2 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testMapSize()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testMapIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testMapContainsKey()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testMapToString()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testMapContainsValue()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testMapIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testMapSize()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testMapIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testMapSize()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testMapEquals()] (1 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testMapPut()] (1 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testMapEquals()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testMapContainsValue()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testMapEquals()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testMapContainsValue()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testMapContainsKey()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testMapToString()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testMapToString()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testMapPutAll()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testMapContainsKey()] (2 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testMapPutIfAbsent()] (1 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testMapPut()] (2 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testMapComputeIfAbsent()] (1 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testMapPutAll()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testMapRemove()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testMapComputeIfAbsent()] (2 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testMapRemove()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testMapPutIfAbsent()] (8 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testMapComputeIfPresent()] (1 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testMapComputeIfPresent()] (2 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testPrefixMap()] (1 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testMapComputeIfPresentOnEmpty()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrie2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrie2Test]/[method:testMapComputeIfPresentOnEmpty()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testMapComputeIfPresentOnEmpty()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testMapComputeIfAbsent()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testMapPutIfAbsent()] (0 ms)</li><li>org.apache.commons.collections4.trie.UnmodifiableTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.UnmodifiableTrieTest]/[method:testMapComputeIfPresent()] (0 ms)</li><li>org.apache.commons.collections4.trie.PatriciaTrieTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.trie.PatriciaTrieTest]/[method:testPrefixMapClearNothing()] (0 ms)</li>
+</ul>
+
+<br/>
+
+Report generated by <a href='https://pitest.org'>PIT</a> 1.20.6
+
+</body>
+</html>

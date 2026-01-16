@@ -1,0 +1,1993 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+<body>
+
+
+<h1>AbstractListDecorator.java</h1>
+
+<table class="src">
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_1'/>
+1
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_1'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>/*</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_2'/>
+2
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_2'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Licensed to the Apache Software Foundation (ASF) under one or more</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_3'/>
+3
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_3'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * contributor license agreements.  See the NOTICE file distributed with</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_4'/>
+4
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_4'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * this work for additional information regarding copyright ownership.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_5'/>
+5
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_5'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * The ASF licenses this file to You under the Apache License, Version 2.0</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_6'/>
+6
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_6'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * (the &#34;License&#34;); you may not use this file except in compliance with</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_7'/>
+7
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_7'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * the License.  You may obtain a copy of the License at</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_8'/>
+8
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_8'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_9'/>
+9
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_9'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *      http://www.apache.org/licenses/LICENSE-2.0</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_10'/>
+10
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_10'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_11'/>
+11
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_11'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Unless required by applicable law or agreed to in writing, software</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_12'/>
+12
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_12'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * distributed under the License is distributed on an &#34;AS IS&#34; BASIS,</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_13'/>
+13
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_13'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_14'/>
+14
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_14'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * See the License for the specific language governing permissions and</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_15'/>
+15
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_15'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * limitations under the License.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_16'/>
+16
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_16'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_17'/>
+17
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_17'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>package org.apache.commons.collections4.list;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_18'/>
+18
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_18'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_19'/>
+19
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_19'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.util.Collection;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_20'/>
+20
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_20'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.util.List;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_21'/>
+21
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_21'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.util.ListIterator;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_22'/>
+22
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_22'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_23'/>
+23
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_23'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import org.apache.commons.collections4.collection.AbstractCollectionDecorator;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_24'/>
+24
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_24'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_25'/>
+25
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_25'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>/**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_26'/>
+26
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_26'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Decorates another {@link List} to provide additional behavior.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_27'/>
+27
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_27'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * &#60;p&#62;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_28'/>
+28
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_28'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Methods are forwarded directly to the decorated list.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_29'/>
+29
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_29'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * &#60;/p&#62;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_30'/>
+30
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_30'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_31'/>
+31
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_31'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * @param &#60;E&#62; the type of the elements in the list.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_32'/>
+32
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_32'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * @since 3.0</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_33'/>
+33
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_33'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_34'/>
+34
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_34'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>public abstract class AbstractListDecorator&#60;E&#62; extends AbstractCollectionDecorator&#60;E&#62; implements List&#60;E&#62; {</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_35'/>
+35
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_35'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_36'/>
+36
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_36'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /** Serialization version--necessary in an abstract class? */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_37'/>
+37
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_37'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    private static final long serialVersionUID = 4500739654952315623L;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_38'/>
+38
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_38'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_39'/>
+39
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_39'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_40'/>
+40
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_40'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Constructor only used in deserialization, do not use otherwise.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_41'/>
+41
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_41'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @since 3.1</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_42'/>
+42
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_42'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_43'/>
+43
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_43'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class=''>    protected AbstractListDecorator() {</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_44'/>
+44
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_44'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_45'/>
+45
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_45'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_46'/>
+46
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_46'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_47'/>
+47
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_47'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Constructor that wraps (not copies).</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_48'/>
+48
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_48'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_49'/>
+49
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_49'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param list  the list to decorate, must not be null</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_50'/>
+50
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_50'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @throws NullPointerException if list is null</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_51'/>
+51
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_51'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_52'/>
+52
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_52'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    protected AbstractListDecorator(final List&#60;E&#62; list) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_53'/>
+53
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_53'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        super(list);</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_54'/>
+54
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_54'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_55'/>
+55
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_55'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_56'/>
+56
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_56'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_57'/>
+57
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_57'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public void add(final int index, final E object) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_58'/>
+58
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_58'>1</a>
+<span>
+1. add : removed call to java/util/List::add &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        decorated().add(index, object);</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_59'/>
+59
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_59'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_60'/>
+60
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_60'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_61'/>
+61
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_61'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_62'/>
+62
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_62'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public boolean addAll(final int index, final Collection&#60;? extends E&#62; coll) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_63'/>
+63
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_63'>2</a>
+<span>
+1. addAll : replaced boolean return with true for org/apache/commons/collections4/list/AbstractListDecorator::addAll &rarr; SURVIVED<br/>
+2. addAll : replaced boolean return with false for org/apache/commons/collections4/list/AbstractListDecorator::addAll &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='survived'>        return decorated().addAll(index, coll);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_64'/>
+64
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_64'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_65'/>
+65
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_65'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_66'/>
+66
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_66'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_67'/>
+67
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_67'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Gets the list being decorated.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_68'/>
+68
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_68'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_69'/>
+69
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_69'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @return the decorated list</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_70'/>
+70
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_70'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_71'/>
+71
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_71'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_72'/>
+72
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_72'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    protected List&#60;E&#62; decorated() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_73'/>
+73
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_73'>1</a>
+<span>
+1. decorated : replaced return value with Collections.emptyList for org/apache/commons/collections4/list/AbstractListDecorator::decorated &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return (List&#60;E&#62;) super.decorated();</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_74'/>
+74
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_74'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_75'/>
+75
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_75'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_76'/>
+76
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_76'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_77'/>
+77
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_77'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public boolean equals(final Object object) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_78'/>
+78
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_78'>3</a>
+<span>
+1. equals : replaced boolean return with true for org/apache/commons/collections4/list/AbstractListDecorator::equals &rarr; KILLED<br/>
+2. equals : negated conditional &rarr; KILLED<br/>
+3. equals : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return object == this || decorated().equals(object);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_79'/>
+79
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_79'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_80'/>
+80
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_80'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_81'/>
+81
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_81'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_82'/>
+82
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_82'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public E get(final int index) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_83'/>
+83
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_83'>1</a>
+<span>
+1. get : replaced return value with null for org/apache/commons/collections4/list/AbstractListDecorator::get &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return decorated().get(index);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_84'/>
+84
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_84'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_85'/>
+85
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_85'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_86'/>
+86
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_86'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_87'/>
+87
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_87'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public int hashCode() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_88'/>
+88
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_88'>1</a>
+<span>
+1. hashCode : replaced int return with 0 for org/apache/commons/collections4/list/AbstractListDecorator::hashCode &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return decorated().hashCode();</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_89'/>
+89
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_89'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_90'/>
+90
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_90'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_91'/>
+91
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_91'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_92'/>
+92
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_92'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public int indexOf(final Object object) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_93'/>
+93
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_93'>1</a>
+<span>
+1. indexOf : replaced int return with 0 for org/apache/commons/collections4/list/AbstractListDecorator::indexOf &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return decorated().indexOf(object);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_94'/>
+94
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_94'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_95'/>
+95
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_95'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_96'/>
+96
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_96'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_97'/>
+97
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_97'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public int lastIndexOf(final Object object) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_98'/>
+98
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_98'>1</a>
+<span>
+1. lastIndexOf : replaced int return with 0 for org/apache/commons/collections4/list/AbstractListDecorator::lastIndexOf &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return decorated().lastIndexOf(object);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_99'/>
+99
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_99'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_100'/>
+100
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_100'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_101'/>
+101
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_101'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_102'/>
+102
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_102'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public ListIterator&#60;E&#62; listIterator() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_103'/>
+103
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_103'>1</a>
+<span>
+1. listIterator : replaced return value with null for org/apache/commons/collections4/list/AbstractListDecorator::listIterator &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return decorated().listIterator();</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_104'/>
+104
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_104'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_105'/>
+105
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_105'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_106'/>
+106
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_106'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_107'/>
+107
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_107'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public ListIterator&#60;E&#62; listIterator(final int index) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_108'/>
+108
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_108'>1</a>
+<span>
+1. listIterator : replaced return value with null for org/apache/commons/collections4/list/AbstractListDecorator::listIterator &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return decorated().listIterator(index);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_109'/>
+109
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_109'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_110'/>
+110
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_110'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_111'/>
+111
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_111'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_112'/>
+112
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_112'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public E remove(final int index) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_113'/>
+113
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_113'>1</a>
+<span>
+1. remove : replaced return value with null for org/apache/commons/collections4/list/AbstractListDecorator::remove &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return decorated().remove(index);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_114'/>
+114
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_114'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_115'/>
+115
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_115'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_116'/>
+116
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_116'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_117'/>
+117
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_117'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public E set(final int index, final E object) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_118'/>
+118
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_118'>1</a>
+<span>
+1. set : replaced return value with null for org/apache/commons/collections4/list/AbstractListDecorator::set &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return decorated().set(index, object);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_119'/>
+119
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_119'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_120'/>
+120
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_120'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_121'/>
+121
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_121'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_122'/>
+122
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_122'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public List&#60;E&#62; subList(final int fromIndex, final int toIndex) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_123'/>
+123
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_123'>1</a>
+<span>
+1. subList : replaced return value with Collections.emptyList for org/apache/commons/collections4/list/AbstractListDecorator::subList &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return decorated().subList(fromIndex, toIndex);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_124'/>
+124
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_124'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_125'/>
+125
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_125'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@1df3435f_126'/>
+126
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_126'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>}</span></pre></td></tr>
+
+
+
+<tr><td></td><td></td><td><h2>Mutations</h2></td></tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@1df3435f_58'>58</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_58'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>add<br/><b>Killed by : </b>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testAdd()]</span></span> removed call to java/util/List::add &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@1df3435f_63'>63</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_63'/> 
+
+<p class='SURVIVED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>addAll<br/><b>Killed by : </b>none</span></span> replaced boolean return with true for org/apache/commons/collections4/list/AbstractListDecorator::addAll &rarr; SURVIVED</span>
+<a title="Click to view covering tests" class="view-covered-by-tests" onClick="document.getElementById('MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.list.AbstractListDecorator,-method=addAll,-methodDesc=(ILjava/util/Collection;)Z],-indexes=[8],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanTrueReturnValsMutator]').style.display=(document.getElementById('MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.list.AbstractListDecorator,-method=addAll,-methodDesc=(ILjava/util/Collection;)Z],-indexes=[8],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanTrueReturnValsMutator]').style.display == 'block')?'none':'block';">Covering tests</a>
+<div class="covered-tests" id="MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.list.AbstractListDecorator,-method=addAll,-methodDesc=(ILjava/util/Collection;)Z],-indexes=[8],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanTrueReturnValsMutator]" style="display:none;">Covered by tests:
+<ul>
+<li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testAddAll()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListGetByIndexBoundsChecking2()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testIntCollectionAddAll()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testFactory()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListRemoveByIndexBoundsChecking2()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollectionSize()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollectionToString()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListSetByIndexBoundsChecking2()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListIteratorSet()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListAddByIndexBoundsChecking2()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testFullListSerialization()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testSubListIsUnmodifiable()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testRetainAllWithInitialList()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollectionToArray()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListSetByIndex()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testFullListCompatibility()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testSerializeDeserializeThenCompare()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListListIteratorNextRemovePrevious()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListListIteratorPreviousRemoveNext()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListListIterator()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListListIteratorNextRemoveNext()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListListIteratorPreviousRemovePrevious()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListListIteratorByIndex()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollectionClear()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListGetByIndex()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListRemoveByIndex()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollectionIteratorRemove()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListAddByIndex()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListIteratorAdd()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListHashCode()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollectionIsEmpty()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListIndexOf()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListLastIndexOf()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollectionToArray2()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollectionIterator()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollectionRemoveIf()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollectionAddAll()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollectionContains()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollectionRemove()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollectionContainsAll()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListEquals()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollectionRemoveAll()]</li> <li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollectionRetainAll()]</li> 
+</ul>
+</div></div> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>addAll<br/><b>Killed by : </b>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollectionAddAll()]</span></span> replaced boolean return with false for org/apache/commons/collections4/list/AbstractListDecorator::addAll &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@1df3435f_73'>73</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_73'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>decorated<br/><b>Killed by : </b>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testListAllowsMutationOfUnderlyingCollection()]</span></span> replaced return value with Collections.emptyList for org/apache/commons/collections4/list/AbstractListDecorator::decorated &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@1df3435f_78'>78</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_78'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testEqualsNull()]</span></span> replaced boolean return with true for org/apache/commons/collections4/list/AbstractListDecorator::equals &rarr; KILLED</span>
+</div> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>org.apache.commons.collections4.list.LazyListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.LazyListTest]/[method:testEqualsNull()]</span></span> negated conditional &rarr; KILLED</span>
+</div> <p class='KILLED'><span class='pop'>3.<span><b>3</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testEqualsNull()]</span></span> negated conditional &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@1df3435f_83'>83</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_83'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>get<br/><b>Killed by : </b>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testGrowthSet1()]</span></span> replaced return value with null for org/apache/commons/collections4/list/AbstractListDecorator::get &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@1df3435f_88'>88</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_88'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>hashCode<br/><b>Killed by : </b>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testCollectionClear()]</span></span> replaced int return with 0 for org/apache/commons/collections4/list/AbstractListDecorator::hashCode &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@1df3435f_93'>93</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_93'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>indexOf<br/><b>Killed by : </b>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollections304()]</span></span> replaced int return with 0 for org/apache/commons/collections4/list/AbstractListDecorator::indexOf &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@1df3435f_98'>98</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_98'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>lastIndexOf<br/><b>Killed by : </b>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testListLastIndexOf()]</span></span> replaced int return with 0 for org/apache/commons/collections4/list/AbstractListDecorator::lastIndexOf &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@1df3435f_103'>103</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_103'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>listIterator<br/><b>Killed by : </b>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListIterator()]</span></span> replaced return value with null for org/apache/commons/collections4/list/AbstractListDecorator::listIterator &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@1df3435f_108'>108</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_108'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>listIterator<br/><b>Killed by : </b>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testListListIteratorByIndex()]</span></span> replaced return value with null for org/apache/commons/collections4/list/AbstractListDecorator::listIterator &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@1df3435f_113'>113</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_113'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>remove<br/><b>Killed by : </b>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testListRemoveByIndex()]</span></span> replaced return value with null for org/apache/commons/collections4/list/AbstractListDecorator::remove &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@1df3435f_118'>118</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_118'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>set<br/><b>Killed by : </b>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollections304()]</span></span> replaced return value with null for org/apache/commons/collections4/list/AbstractListDecorator::set &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@1df3435f_123'>123</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@1df3435f_123'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>subList<br/><b>Killed by : </b>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testSubListIsUnmodifiable()]</span></span> replaced return value with Collections.emptyList for org/apache/commons/collections4/list/AbstractListDecorator::subList &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+
+</table>
+
+
+<h2>Active mutators</h2>
+<ul>
+<li class='mutator'>CONDITIONALS_BOUNDARY</li>
+<li class='mutator'>EMPTY_RETURNS</li>
+<li class='mutator'>FALSE_RETURNS</li>
+<li class='mutator'>INCREMENTS</li>
+<li class='mutator'>INVERT_NEGS</li>
+<li class='mutator'>MATH</li>
+<li class='mutator'>NEGATE_CONDITIONALS</li>
+<li class='mutator'>NULL_RETURNS</li>
+<li class='mutator'>PRIMITIVE_RETURNS</li>
+<li class='mutator'>TRUE_RETURNS</li>
+<li class='mutator'>VOID_METHOD_CALLS</li>
+
+</ul>
+
+<h2>Tests examined</h2>
+<ul>
+<li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testSubListIsUnmodifiable()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollections307()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListSetByIndexBoundsChecking()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollections304()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testSetCollections444()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testUniqueListDoubleInsert()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testUniqueListReInsert()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testSetDownwardsInList()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollections701()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testSetUpwardsInList()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testSetInBiggerList()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListSetByIndexBoundsChecking2()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testSet()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListSetByIndex()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testListIndexOf()] (0 ms)</li><li>org.apache.commons.collections4.list.UnmodifiableListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.UnmodifiableListTest]/[method:testListIndexOf()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListIndexOf()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testAddAll()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListGetByIndexBoundsChecking2()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testIntCollectionAddAll()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testFactory()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListRemoveByIndexBoundsChecking2()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollectionSize()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListIteratorSet()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListAddByIndexBoundsChecking2()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testFullListSerialization()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testRetainAllWithInitialList()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollectionToArray()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testFullListCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListListIteratorNextRemovePrevious()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListListIteratorPreviousRemoveNext()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListListIterator()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListListIteratorNextRemoveNext()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListListIteratorPreviousRemovePrevious()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListListIteratorByIndex()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollectionClear()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListGetByIndex()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListRemoveByIndex()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollectionIteratorRemove()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListAddByIndex()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListIteratorAdd()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListHashCode()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollectionIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListLastIndexOf()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollectionToArray2()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollectionIterator()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollectionRemoveIf()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollectionAddAll()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollectionContains()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollectionRemove()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollectionContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListEquals()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollectionRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollectionRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.list.LazyListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.LazyListTest]/[method:testGetWithNull()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testListRemoveByIndex()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testCollectionAdd()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testListListIteratorByIndex()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testAdd()] (0 ms)</li><li>org.apache.commons.collections4.list.Collections701Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.Collections701Test]/[method:testSetUniqueList()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListAddByIndexBoundsChecking()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListIterator()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.list.LazyListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.LazyListTest]/[method:testObjectEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testObjectEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.list.UnmodifiableListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.UnmodifiableListTest]/[method:testObjectEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testEqualsNull()] (0 ms)</li><li>org.apache.commons.collections4.list.UnmodifiableListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.UnmodifiableListTest]/[method:testEqualsNull()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testObjectEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testObjectEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.list.LazyListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.LazyListTest]/[method:testEqualsNull()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testEqualsNull()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testEqualsNull()] (0 ms)</li><li>org.apache.commons.collections4.list.LazyListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.LazyListTest]/[method:testObjectHashCodeEqualsContract()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testObjectHashCodeEqualsContract()] (0 ms)</li><li>org.apache.commons.collections4.list.UnmodifiableListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.UnmodifiableListTest]/[method:testObjectHashCodeEqualsContract()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testObjectHashCodeEqualsContract()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testObjectHashCodeEqualsContract()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testEmptyListCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testEmptyListCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testEmptyListCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.list.UnmodifiableListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.UnmodifiableListTest]/[method:testEmptyListCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testFullListCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.list.UnmodifiableListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.UnmodifiableListTest]/[method:testFullListCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.list.UnmodifiableListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.UnmodifiableListTest]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testFullListCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testCollectionClear()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testListGetByIndex()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testListGetByIndex()] (0 ms)</li><li>org.apache.commons.collections4.list.UnmodifiableListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.UnmodifiableListTest]/[method:testListGetByIndex()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testCollectionIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testListIteratorSet()] (0 ms)</li><li>org.apache.commons.collections4.list.UnmodifiableListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.UnmodifiableListTest]/[method:testUnsupportedSet()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testListAddByIndex()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testListSetByIndex()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testCollectionIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testListHashCode()] (0 ms)</li><li>org.apache.commons.collections4.list.UnmodifiableListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.UnmodifiableListTest]/[method:testCollectionIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testListSetByIndex()] (0 ms)</li><li>org.apache.commons.collections4.list.UnmodifiableListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.UnmodifiableListTest]/[method:testListHashCode()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testListIteratorSet()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testCollectionAdd()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testListLastIndexOf()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testListHashCode()] (0 ms)</li><li>org.apache.commons.collections4.list.UnmodifiableListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.UnmodifiableListTest]/[method:testListLastIndexOf()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testListIteratorAdd()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testListLastIndexOf()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testListIndexOf()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testCollectionToArray2()] (0 ms)</li><li>org.apache.commons.collections4.list.UnmodifiableListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.UnmodifiableListTest]/[method:testUnsupportedRemove()] (0 ms)</li><li>org.apache.commons.collections4.list.UnmodifiableListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.UnmodifiableListTest]/[method:testCollectionToArray2()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testCollectionIterator()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testCollectionToArray2()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testCollectionIteratorRemove()] (0 ms)</li><li>org.apache.commons.collections4.list.UnmodifiableListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.UnmodifiableListTest]/[method:testCollectionIterator()] (0 ms)</li><li>org.apache.commons.collections4.list.UnmodifiableListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.UnmodifiableListTest]/[method:testUnsupportedAdd()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testUnsupportedAdd()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testCollectionRemove()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testCollectionIterator()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testCollectionRemoveIf()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testUnsupportedRemove()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testCollectionContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.list.UnmodifiableListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.UnmodifiableListTest]/[method:testCollectionContains()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testCollectionContains()] (0 ms)</li><li>org.apache.commons.collections4.list.UnmodifiableListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.UnmodifiableListTest]/[method:testCollectionContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testCollectionContains()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testCollectionAddAll()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testListEquals()] (0 ms)</li><li>org.apache.commons.collections4.list.UnmodifiableListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.UnmodifiableListTest]/[method:testListEquals()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testListEquals()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testCollectionContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testCollectionRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testCollectionRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.list.LazyListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.LazyListTest]/[method:testObjectHashCodeEqualsSelfHashCode()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testObjectHashCodeEqualsSelfHashCode()] (0 ms)</li><li>org.apache.commons.collections4.list.UnmodifiableListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.UnmodifiableListTest]/[method:testObjectHashCodeEqualsSelfHashCode()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testObjectHashCodeEqualsSelfHashCode()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testObjectHashCodeEqualsSelfHashCode()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testListAllowsMutationOfUnderlyingCollection()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListRemoveByIndexBoundsChecking()] (0 ms)</li><li>org.apache.commons.collections4.list.LazyListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.LazyListTest]/[method:testElementCreationWithFactory()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testListGetByIndexBoundsChecking()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testMaxSize()] (0 ms)</li><li>org.apache.commons.collections4.list.UnmodifiableListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.UnmodifiableListTest]/[method:testListGetByIndexBoundsChecking()] (0 ms)</li><li>org.apache.commons.collections4.list.LazyListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.LazyListTest]/[method:testElementCreationWithTransformer()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testListSetByIndexBoundsChecking()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testSubList()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testListGetByIndexBoundsChecking()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testListRemoveByIndexBoundsChecking()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testListGetByIndexBoundsChecking()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testListSetByIndexBoundsChecking()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testGrowthList()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testGrowthAdd()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testGrowthSet2()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testListAddByIndexBoundsChecking()] (0 ms)</li><li>org.apache.commons.collections4.list.LazyListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.LazyListTest]/[method:testCreateNullGapsWithFactory()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testGrowthSet1()] (0 ms)</li><li>org.apache.commons.collections4.ListUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.ListUtilsTest]/[method:testLazyFactoryList()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testSimpleSerialization()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testEmptyListSerialization()] (0 ms)</li><li>org.apache.commons.collections4.list.UnmodifiableListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.UnmodifiableListTest]/[method:testListGetByIndexBoundsChecking2()] (0 ms)</li><li>org.apache.commons.collections4.list.UnmodifiableListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.UnmodifiableListTest]/[method:testSimpleSerialization()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testGrowthAddAll()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testListGetByIndexBoundsChecking2()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testListRemoveByIndexBoundsChecking2()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testSimpleSerialization()] (0 ms)</li><li>org.apache.commons.collections4.collection.UnmodifiableBoundedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.UnmodifiableBoundedCollectionTest]/[method:testSimpleSerialization()] (0 ms)</li><li>org.apache.commons.collections4.list.SetUniqueListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.SetUniqueListTest]/[method:testEmptyListSerialization()] (0 ms)</li><li>org.apache.commons.collections4.list.UnmodifiableListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.UnmodifiableListTest]/[method:testEmptyListSerialization()] (0 ms)</li><li>org.apache.commons.collections4.list.LazyListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.LazyListTest]/[method:testCreateNullGapsWithTransformer()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testListGetByIndexBoundsChecking2()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testSimpleSerialization()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testEmptyListSerialization()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testEqualsNull()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testListSetByIndexBoundsChecking2()] (0 ms)</li><li>org.apache.commons.collections4.list.UnmodifiableListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.UnmodifiableListTest]/[method:testUnmodifiableIterator()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testListSetByIndexBoundsChecking2()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testListAddByIndexBoundsChecking2()] (0 ms)</li><li>org.apache.commons.collections4.ListUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.ListUtilsTest]/[method:testLazyTransformerList()] (0 ms)</li><li>org.apache.commons.collections4.list.UnmodifiableListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.UnmodifiableListTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.list.UnmodifiableListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.UnmodifiableListTest]/[method:testFullListSerialization()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testSimpleSerialization()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.list.UnmodifiableListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.UnmodifiableListTest]/[method:testCollectionSize()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testFullListSerialization()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testFullListSerialization()] (0 ms)</li><li>org.apache.commons.collections4.list.LazyListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.LazyListTest]/[method:testSubListWitheFactory()] (0 ms)</li><li>org.apache.commons.collections4.collection.UnmodifiableBoundedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.UnmodifiableBoundedCollectionTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testCollectionSize()] (0 ms)</li><li>org.apache.commons.collections4.list.LazyListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.LazyListTest]/[method:testSubListWithTransformer()] (0 ms)</li><li>org.apache.commons.collections4.collection.UnmodifiableBoundedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.UnmodifiableBoundedCollectionTest]/[method:testCollectionSize()] (0 ms)</li><li>org.apache.commons.collections4.iterators.FilterListIteratorTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.iterators.FilterListIteratorTest]/[method:testCollections360()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testCollectionSize()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testListListIteratorNextRemovePrevious()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSetTest]/[method:testListAddReplacing()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSet2Test.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSet2Test]/[method:testListAddRemove()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testObjectHashCodeEqualsSelfHashCode()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testCanonicalFullCollectionExists()] (0 ms)</li><li>org.apache.commons.collections4.collection.UnmodifiableBoundedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.UnmodifiableBoundedCollectionTest]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testCanonicalEmptyCollectionExists()] (0 ms)</li><li>org.apache.commons.collections4.list.UnmodifiableListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.UnmodifiableListTest]/[method:testUnmodifiable()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testListListIteratorPreviousRemoveNext()] (0 ms)</li><li>org.apache.commons.collections4.list.UnmodifiableListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.UnmodifiableListTest]/[method:testCollectionToArray()] (0 ms)</li><li>org.apache.commons.collections4.set.ListOrderedSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.ListOrderedSetTest]/[method:testListAddRemove()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testListListIteratorPreviousRemovePrevious()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testListListIterator()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testListListIteratorNextRemoveNext()] (0 ms)</li><li>org.apache.commons.collections4.collection.UnmodifiableBoundedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.UnmodifiableBoundedCollectionTest]/[method:testCollectionToArray()] (0 ms)</li><li>org.apache.commons.collections4.list.GrowthListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.GrowthListTest]/[method:testCollectionToArray()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testObjectEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testCollectionToArray()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testListListIterator()] (0 ms)</li><li>org.apache.commons.collections4.list.UnmodifiableListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.UnmodifiableListTest]/[method:testListListIterator()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testObjectHashCodeEqualsSelfHashCode()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testCollectionSize()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testObjectHashCodeEqualsContract()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testObjectEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.collection.UnmodifiableBoundedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.UnmodifiableBoundedCollectionTest]/[method:testCollectionIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testContains()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.map.ListOrderedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.ListOrderedMapTest]/[method:testPutAllWithIndexBug441()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testMapComputeIfPresentOnEmpty()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testRemoveUnderlying()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testRemoveComposited()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testObjectHashCodeEqualsContract()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testAddCompositedCollision()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testKeySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testFailedCollisionResolution()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testKeySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testMapPutNullKey()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testMapPutNullValue()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testSetHashCode()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testValuesRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.list.UnmodifiableListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.UnmodifiableListTest]/[method:testListListIteratorByIndex()] (0 ms)</li><li>org.apache.commons.collections4.collection.UnmodifiableBoundedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.UnmodifiableBoundedCollectionTest]/[method:testUnsupportedAdd()] (0 ms)</li><li>org.apache.commons.collections4.collection.UnmodifiableBoundedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.UnmodifiableBoundedCollectionTest]/[method:testCollectionToArray2()] (0 ms)</li><li>org.apache.commons.collections4.collection.UnmodifiableBoundedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.UnmodifiableBoundedCollectionTest]/[method:testCollectionIterator()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testValuesRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.list.FixedSizeListTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.list.FixedSizeListTest]/[method:testListListIteratorByIndex()] (0 ms)</li><li>org.apache.commons.collections4.collection.UnmodifiableBoundedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.UnmodifiableBoundedCollectionTest]/[method:testUnsupportedRemove()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testKeySetRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testEntrySetRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testRemoveKeyValue()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testValuesRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.collection.UnmodifiableBoundedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.UnmodifiableBoundedCollectionTest]/[method:testCollectionContains()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testEntrySetContains1()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testEntrySetContains3()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testCollectionToArray()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testEntrySetContains2()] (0 ms)</li><li>org.apache.commons.collections4.collection.UnmodifiableBoundedCollectionTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.collection.UnmodifiableBoundedCollectionTest]/[method:testCollectionContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testEntrySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testKeySetIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testForEach()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testKeySetClearChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testMapHashCode()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testFailFastKeySet()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testEntrySetClearChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testCollectionClear()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testReplaceKeyValue()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testFailFastEntrySet()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testEntrySetRemove1()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testValuesClearChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testEntrySetRemove3()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testEntrySetRemove2()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testFailFastValues()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testAddComposited()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testCollectionIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testEntrySetRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testReplaceKeyValueValue()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testCollectionAdd()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testEntrySetRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testSetEquals()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testValuesIteratorRemoveChangesMap()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testCollectionIterator()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testCollectionIteratorRemove()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testReplaceAll()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testCollectionContains()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testCollectionAddAll()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testCollectionRemove()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testCollectionRemoveIf()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testCollectionToArray2()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testCollectionContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testCollectionRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.set.CompositeSetTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.set.CompositeSetTest]/[method:testCollectionRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.map.ListOrderedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.ListOrderedMapTest]/[method:testPut_intObjectObject()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testMapClear()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testMapGet()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testMapSize()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testMapToString()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testMapIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testMapEquals()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testMapContainsKey()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testMapGetOrDefault()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testMapContainsValue()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testMapPut()] (1 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testMapRemove()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testMapPutAll()] (0 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testMapPutIfAbsent()] (2 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testMapComputeIfAbsent()] (1 ms)</li><li>org.apache.commons.collections4.map.CompositeMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.map.CompositeMapTest]/[method:testMapComputeIfPresent()] (1 ms)</li>
+</ul>
+
+<br/>
+
+Report generated by <a href='https://pitest.org'>PIT</a> 1.20.6
+
+</body>
+</html>

@@ -1,0 +1,4609 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+<body>
+
+
+<h1>AbstractListValuedMap.java</h1>
+
+<table class="src">
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_1'/>
+1
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_1'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>/*</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_2'/>
+2
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_2'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Licensed to the Apache Software Foundation (ASF) under one or more</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_3'/>
+3
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_3'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * contributor license agreements.  See the NOTICE file distributed with</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_4'/>
+4
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_4'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * this work for additional information regarding copyright ownership.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_5'/>
+5
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_5'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * The ASF licenses this file to You under the Apache License, Version 2.0</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_6'/>
+6
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_6'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * (the &#34;License&#34;); you may not use this file except in compliance with</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_7'/>
+7
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_7'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * the License.  You may obtain a copy of the License at</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_8'/>
+8
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_8'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_9'/>
+9
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_9'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *      http://www.apache.org/licenses/LICENSE-2.0</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_10'/>
+10
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_10'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_11'/>
+11
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_11'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Unless required by applicable law or agreed to in writing, software</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_12'/>
+12
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_12'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * distributed under the License is distributed on an &#34;AS IS&#34; BASIS,</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_13'/>
+13
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_13'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_14'/>
+14
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_14'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * See the License for the specific language governing permissions and</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_15'/>
+15
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_15'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * limitations under the License.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_16'/>
+16
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_16'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_17'/>
+17
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_17'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>package org.apache.commons.collections4.multimap;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_18'/>
+18
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_18'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_19'/>
+19
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_19'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.util.Collection;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_20'/>
+20
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_20'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.util.Collections;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_21'/>
+21
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_21'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.util.List;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_22'/>
+22
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_22'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.util.ListIterator;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_23'/>
+23
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_23'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.util.Map;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_24'/>
+24
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_24'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_25'/>
+25
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_25'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import org.apache.commons.collections4.ListUtils;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_26'/>
+26
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_26'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import org.apache.commons.collections4.ListValuedMap;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_27'/>
+27
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_27'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_28'/>
+28
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_28'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>/**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_29'/>
+29
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_29'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Abstract implementation of the {@link ListValuedMap} interface to simplify</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_30'/>
+30
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_30'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * the creation of subclass implementations.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_31'/>
+31
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_31'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * &#60;p&#62;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_32'/>
+32
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_32'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Subclasses specify a Map implementation to use as the internal storage and</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_33'/>
+33
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_33'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * the List implementation to use as values.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_34'/>
+34
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_34'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * &#60;/p&#62;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_35'/>
+35
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_35'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_36'/>
+36
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_36'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * @param &#60;K&#62; the type of the keys in this map</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_37'/>
+37
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_37'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * @param &#60;V&#62; the type of the values in this map</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_38'/>
+38
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_38'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * @since 4.1</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_39'/>
+39
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_39'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_40'/>
+40
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_40'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>public abstract class AbstractListValuedMap&#60;K, V&#62; extends AbstractMultiValuedMap&#60;K, V&#62;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_41'/>
+41
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_41'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        implements ListValuedMap&#60;K, V&#62; {</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_42'/>
+42
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_42'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_43'/>
+43
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_43'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /** Values ListIterator */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_44'/>
+44
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_44'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    private final class ValuesListIterator implements ListIterator&#60;V&#62; {</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_45'/>
+45
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_45'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_46'/>
+46
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_46'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        private final K key;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_47'/>
+47
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_47'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        private List&#60;V&#62; values;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_48'/>
+48
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_48'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        private ListIterator&#60;V&#62; iterator;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_49'/>
+49
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_49'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_50'/>
+50
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_50'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        ValuesListIterator(final K key) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_51'/>
+51
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_51'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            this.key = key;</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_52'/>
+52
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_52'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            this.values = ListUtils.emptyIfNull(getMap().get(key));</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_53'/>
+53
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_53'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            this.iterator = values.listIterator();</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_54'/>
+54
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_54'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_55'/>
+55
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_55'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_56'/>
+56
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_56'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        ValuesListIterator(final K key, final int index) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_57'/>
+57
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_57'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            this.key = key;</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_58'/>
+58
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_58'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            this.values = ListUtils.emptyIfNull(getMap().get(key));</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_59'/>
+59
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_59'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            this.iterator = values.listIterator(index);</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_60'/>
+60
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_60'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_61'/>
+61
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_61'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_62'/>
+62
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_62'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_63'/>
+63
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_63'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        public void add(final V value) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_64'/>
+64
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_64'>1</a>
+<span>
+1. add : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            if (getMap().get(key) == null) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_65'/>
+65
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_65'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>                final List&#60;V&#62; list = createCollection();</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_66'/>
+66
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_66'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>                getMap().put(key, list);</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_67'/>
+67
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_67'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>                values = list;</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_68'/>
+68
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_68'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>                iterator = list.listIterator();</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_69'/>
+69
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_69'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>            }</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_70'/>
+70
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_70'>1</a>
+<span>
+1. add : removed call to java/util/ListIterator::add &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            iterator.add(value);</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_71'/>
+71
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_71'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_72'/>
+72
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_72'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_73'/>
+73
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_73'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_74'/>
+74
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_74'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        public boolean hasNext() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_75'/>
+75
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_75'>2</a>
+<span>
+1. hasNext : replaced boolean return with false for org/apache/commons/collections4/multimap/AbstractListValuedMap$ValuesListIterator::hasNext &rarr; KILLED<br/>
+2. hasNext : replaced boolean return with true for org/apache/commons/collections4/multimap/AbstractListValuedMap$ValuesListIterator::hasNext &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            return iterator.hasNext();</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_76'/>
+76
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_76'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_77'/>
+77
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_77'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_78'/>
+78
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_78'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_79'/>
+79
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_79'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        public boolean hasPrevious() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_80'/>
+80
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_80'>2</a>
+<span>
+1. hasPrevious : replaced boolean return with true for org/apache/commons/collections4/multimap/AbstractListValuedMap$ValuesListIterator::hasPrevious &rarr; SURVIVED<br/>
+2. hasPrevious : replaced boolean return with false for org/apache/commons/collections4/multimap/AbstractListValuedMap$ValuesListIterator::hasPrevious &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='survived'>            return iterator.hasPrevious();</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_81'/>
+81
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_81'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_82'/>
+82
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_82'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_83'/>
+83
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_83'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_84'/>
+84
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_84'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        public V next() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_85'/>
+85
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_85'>1</a>
+<span>
+1. next : replaced return value with null for org/apache/commons/collections4/multimap/AbstractListValuedMap$ValuesListIterator::next &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            return iterator.next();</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_86'/>
+86
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_86'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_87'/>
+87
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_87'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_88'/>
+88
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_88'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_89'/>
+89
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_89'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        public int nextIndex() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_90'/>
+90
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_90'>1</a>
+<span>
+1. nextIndex : replaced int return with 0 for org/apache/commons/collections4/multimap/AbstractListValuedMap$ValuesListIterator::nextIndex &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            return iterator.nextIndex();</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_91'/>
+91
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_91'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_92'/>
+92
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_92'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_93'/>
+93
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_93'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_94'/>
+94
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_94'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        public V previous() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_95'/>
+95
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_95'>1</a>
+<span>
+1. previous : replaced return value with null for org/apache/commons/collections4/multimap/AbstractListValuedMap$ValuesListIterator::previous &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            return iterator.previous();</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_96'/>
+96
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_96'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_97'/>
+97
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_97'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_98'/>
+98
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_98'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_99'/>
+99
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_99'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        public int previousIndex() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_100'/>
+100
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_100'>1</a>
+<span>
+1. previousIndex : replaced int return with 0 for org/apache/commons/collections4/multimap/AbstractListValuedMap$ValuesListIterator::previousIndex &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            return iterator.previousIndex();</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_101'/>
+101
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_101'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_102'/>
+102
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_102'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_103'/>
+103
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_103'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_104'/>
+104
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_104'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        public void remove() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_105'/>
+105
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_105'>1</a>
+<span>
+1. remove : removed call to java/util/ListIterator::remove &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            iterator.remove();</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_106'/>
+106
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_106'>1</a>
+<span>
+1. remove : negated conditional &rarr; SURVIVED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='survived'>            if (values.isEmpty()) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_107'/>
+107
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_107'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>                getMap().remove(key);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_108'/>
+108
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_108'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>            }</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_109'/>
+109
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_109'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_110'/>
+110
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_110'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_111'/>
+111
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_111'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_112'/>
+112
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_112'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        public void set(final V value) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_113'/>
+113
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_113'>1</a>
+<span>
+1. set : removed call to java/util/ListIterator::set &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            iterator.set(value);</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_114'/>
+114
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_114'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_115'/>
+115
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_115'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_116'/>
+116
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_116'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_117'/>
+117
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_117'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_118'/>
+118
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_118'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_119'/>
+119
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_119'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Wrapped list to handle add and remove on the list returned by get(object)</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_120'/>
+120
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_120'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_121'/>
+121
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_121'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    private final class WrappedList extends WrappedCollection implements List&#60;V&#62; {</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_122'/>
+122
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_122'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_123'/>
+123
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_123'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        WrappedList(final K key) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_124'/>
+124
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_124'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            super(key);</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_125'/>
+125
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_125'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_126'/>
+126
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_126'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_127'/>
+127
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_127'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_128'/>
+128
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_128'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        public void add(final int index, final V value) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_129'/>
+129
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_129'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            List&#60;V&#62; list = getMapping();</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_130'/>
+130
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_130'>1</a>
+<span>
+1. add : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            if (list == null) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_131'/>
+131
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_131'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>                list = createCollection();</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_132'/>
+132
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_132'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>                getMap().put(key, list);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_133'/>
+133
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_133'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>            }</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_134'/>
+134
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_134'>1</a>
+<span>
+1. add : removed call to java/util/List::add &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            list.add(index, value);</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_135'/>
+135
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_135'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_136'/>
+136
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_136'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_137'/>
+137
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_137'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_138'/>
+138
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_138'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        public boolean addAll(final int index, final Collection&#60;? extends V&#62; c) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_139'/>
+139
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_139'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            List&#60;V&#62; list = getMapping();</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_140'/>
+140
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_140'>1</a>
+<span>
+1. addAll : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            if (list == null) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_141'/>
+141
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_141'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>                list = createCollection();</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_142'/>
+142
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_142'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>                final boolean changed = list.addAll(index, c);</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_143'/>
+143
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_143'>1</a>
+<span>
+1. addAll : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>                if (changed) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_144'/>
+144
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_144'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>                    getMap().put(key, list);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_145'/>
+145
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_145'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>                }</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_146'/>
+146
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_146'>2</a>
+<span>
+1. addAll : replaced boolean return with false for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::addAll &rarr; SURVIVED<br/>
+2. addAll : replaced boolean return with true for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::addAll &rarr; SURVIVED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='survived'>                return changed;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_147'/>
+147
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_147'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>            }</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_148'/>
+148
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_148'>2</a>
+<span>
+1. addAll : replaced boolean return with false for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::addAll &rarr; SURVIVED<br/>
+2. addAll : replaced boolean return with true for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::addAll &rarr; SURVIVED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='survived'>            return list.addAll(index, c);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_149'/>
+149
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_149'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_150'/>
+150
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_150'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_151'/>
+151
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_151'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_152'/>
+152
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_152'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        public boolean equals(final Object other) {</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_153'/>
+153
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_153'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class=''>            final List&#60;V&#62; list = getMapping();</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_154'/>
+154
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_154'>1</a>
+<span>
+1. equals : negated conditional &rarr; NO_COVERAGE<br/>
+
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class='survived'>            if (list == null) {</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_155'/>
+155
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_155'>2</a>
+<span>
+1. equals : replaced boolean return with true for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::equals &rarr; NO_COVERAGE<br/>
+2. equals : replaced boolean return with false for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::equals &rarr; NO_COVERAGE<br/>
+
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class='survived'>                return Collections.emptyList().equals(other);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_156'/>
+156
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_156'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>            }</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_157'/>
+157
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_157'>1</a>
+<span>
+1. equals : negated conditional &rarr; NO_COVERAGE<br/>
+
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class='survived'>            if (!(other instanceof List)) {</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_158'/>
+158
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_158'>1</a>
+<span>
+1. equals : replaced boolean return with true for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::equals &rarr; NO_COVERAGE<br/>
+
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class='survived'>                return false;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_159'/>
+159
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_159'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>            }</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_160'/>
+160
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_160'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class=''>            final List&#60;?&#62; otherList = (List&#60;?&#62;) other;</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_161'/>
+161
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_161'>2</a>
+<span>
+1. equals : replaced boolean return with false for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::equals &rarr; NO_COVERAGE<br/>
+2. equals : replaced boolean return with true for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::equals &rarr; NO_COVERAGE<br/>
+
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class='survived'>            return ListUtils.isEqualList(list, otherList);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_162'/>
+162
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_162'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_163'/>
+163
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_163'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_164'/>
+164
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_164'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_165'/>
+165
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_165'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        public V get(final int index) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_166'/>
+166
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_166'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            final List&#60;V&#62; list = ListUtils.emptyIfNull(getMapping());</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_167'/>
+167
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_167'>1</a>
+<span>
+1. get : replaced return value with null for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::get &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            return list.get(index);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_168'/>
+168
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_168'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_169'/>
+169
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_169'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_170'/>
+170
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_170'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_171'/>
+171
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_171'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        protected List&#60;V&#62; getMapping() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_172'/>
+172
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_172'>1</a>
+<span>
+1. getMapping : replaced return value with Collections.emptyList for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::getMapping &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            return getMap().get(key);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_173'/>
+173
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_173'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_174'/>
+174
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_174'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_175'/>
+175
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_175'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_176'/>
+176
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_176'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        public int hashCode() {</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_177'/>
+177
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_177'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class=''>            final List&#60;V&#62; list = getMapping();</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_178'/>
+178
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_178'>1</a>
+<span>
+1. hashCode : replaced int return with 0 for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::hashCode &rarr; NO_COVERAGE<br/>
+
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class='survived'>            return ListUtils.hashCodeForList(list);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_179'/>
+179
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_179'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_180'/>
+180
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_180'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_181'/>
+181
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_181'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_182'/>
+182
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_182'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        public int indexOf(final Object o) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_183'/>
+183
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_183'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            final List&#60;V&#62; list = ListUtils.emptyIfNull(getMapping());</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_184'/>
+184
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_184'>1</a>
+<span>
+1. indexOf : replaced int return with 0 for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::indexOf &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            return list.indexOf(o);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_185'/>
+185
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_185'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_186'/>
+186
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_186'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_187'/>
+187
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_187'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_188'/>
+188
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_188'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        public int lastIndexOf(final Object o) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_189'/>
+189
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_189'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            final List&#60;V&#62; list = ListUtils.emptyIfNull(getMapping());</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_190'/>
+190
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_190'>1</a>
+<span>
+1. lastIndexOf : replaced int return with 0 for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::lastIndexOf &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            return list.lastIndexOf(o);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_191'/>
+191
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_191'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_192'/>
+192
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_192'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_193'/>
+193
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_193'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_194'/>
+194
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_194'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        public ListIterator&#60;V&#62; listIterator() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_195'/>
+195
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_195'>1</a>
+<span>
+1. listIterator : replaced return value with null for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::listIterator &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            return new ValuesListIterator(key);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_196'/>
+196
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_196'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_197'/>
+197
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_197'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_198'/>
+198
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_198'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_199'/>
+199
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_199'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        public ListIterator&#60;V&#62; listIterator(final int index) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_200'/>
+200
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_200'>1</a>
+<span>
+1. listIterator : replaced return value with null for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::listIterator &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            return new ValuesListIterator(key, index);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_201'/>
+201
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_201'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_202'/>
+202
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_202'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_203'/>
+203
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_203'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_204'/>
+204
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_204'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        public V remove(final int index) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_205'/>
+205
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_205'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            final List&#60;V&#62; list = ListUtils.emptyIfNull(getMapping());</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_206'/>
+206
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_206'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            final V value = list.remove(index);</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_207'/>
+207
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_207'>1</a>
+<span>
+1. remove : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            if (list.isEmpty()) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_208'/>
+208
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_208'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>                AbstractListValuedMap.this.remove(key);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_209'/>
+209
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_209'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>            }</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_210'/>
+210
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_210'>1</a>
+<span>
+1. remove : replaced return value with null for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::remove &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            return value;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_211'/>
+211
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_211'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_212'/>
+212
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_212'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_213'/>
+213
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_213'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_214'/>
+214
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_214'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        public V set(final int index, final V value) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_215'/>
+215
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_215'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            final List&#60;V&#62; list = ListUtils.emptyIfNull(getMapping());</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_216'/>
+216
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_216'>1</a>
+<span>
+1. set : replaced return value with null for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::set &rarr; SURVIVED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='survived'>            return list.set(index, value);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_217'/>
+217
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_217'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_218'/>
+218
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_218'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_219'/>
+219
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_219'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_220'/>
+220
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_220'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        public List&#60;V&#62; subList(final int fromIndex, final int toIndex) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_221'/>
+221
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_221'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            final List&#60;V&#62; list = ListUtils.emptyIfNull(getMapping());</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_222'/>
+222
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_222'>1</a>
+<span>
+1. subList : replaced return value with Collections.emptyList for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::subList &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>            return list.subList(fromIndex, toIndex);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_223'/>
+223
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_223'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_224'/>
+224
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_224'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_225'/>
+225
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_225'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_226'/>
+226
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_226'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_227'/>
+227
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_227'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_228'/>
+228
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_228'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Constructor needed for subclass serialization.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_229'/>
+229
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_229'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_230'/>
+230
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_230'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    protected AbstractListValuedMap() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_231'/>
+231
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_231'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_232'/>
+232
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_232'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_233'/>
+233
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_233'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_234'/>
+234
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_234'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * A constructor that wraps, not copies</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_235'/>
+235
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_235'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_236'/>
+236
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_236'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param map  the map to wrap, must not be null</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_237'/>
+237
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_237'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @throws NullPointerException if the map is null</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_238'/>
+238
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_238'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_239'/>
+239
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_239'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    protected AbstractListValuedMap(final Map&#60;K, ? extends List&#60;V&#62;&#62; map) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_240'/>
+240
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_240'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        super(map);</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_241'/>
+241
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_241'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_242'/>
+242
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_242'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_243'/>
+243
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_243'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_244'/>
+244
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_244'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Creates a new value collection using the provided factory.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_245'/>
+245
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_245'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @return a new list</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_246'/>
+246
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_246'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_247'/>
+247
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_247'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_248'/>
+248
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_248'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    protected abstract List&#60;V&#62; createCollection();</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_249'/>
+249
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_249'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_250'/>
+250
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_250'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_251'/>
+251
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_251'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Gets the list of values associated with the specified key. This would</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_252'/>
+252
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_252'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * return an empty list in case the mapping is not present</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_253'/>
+253
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_253'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_254'/>
+254
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_254'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param key  the key to retrieve</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_255'/>
+255
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_255'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @return the {@code List} of values, will return an empty {@link List} for no mapping</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_256'/>
+256
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_256'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_257'/>
+257
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_257'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_258'/>
+258
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_258'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public List&#60;V&#62; get(final K key) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_259'/>
+259
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_259'>1</a>
+<span>
+1. get : replaced return value with Collections.emptyList for org/apache/commons/collections4/multimap/AbstractListValuedMap::get &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return wrappedCollection(key);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_260'/>
+260
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_260'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_261'/>
+261
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_261'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_262'/>
+262
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_262'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_263'/>
+263
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_263'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @SuppressWarnings(&#34;unchecked&#34;)</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_264'/>
+264
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_264'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    protected Map&#60;K, List&#60;V&#62;&#62; getMap() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_265'/>
+265
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_265'>1</a>
+<span>
+1. getMap : replaced return value with Collections.emptyMap for org/apache/commons/collections4/multimap/AbstractListValuedMap::getMap &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return (Map&#60;K, List&#60;V&#62;&#62;) super.getMap();</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_266'/>
+266
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_266'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_267'/>
+267
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_267'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_268'/>
+268
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_268'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_269'/>
+269
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_269'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Removes all values associated with the specified key.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_270'/>
+270
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_270'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * &#60;p&#62;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_271'/>
+271
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_271'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * A subsequent {@code get(Object)} would return an empty list.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_272'/>
+272
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_272'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * &#60;/p&#62;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_273'/>
+273
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_273'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_274'/>
+274
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_274'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param key  the key to remove values from</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_275'/>
+275
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_275'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @return the {@code List} of values removed, will return an empty,</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_276'/>
+276
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_276'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     *   unmodifiable list for no mapping found.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_277'/>
+277
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_277'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_278'/>
+278
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_278'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_279'/>
+279
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_279'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public List&#60;V&#62; remove(final Object key) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_280'/>
+280
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_280'>1</a>
+<span>
+1. remove : replaced return value with Collections.emptyList for org/apache/commons/collections4/multimap/AbstractListValuedMap::remove &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return ListUtils.emptyIfNull(getMap().remove(key));</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_281'/>
+281
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_281'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_282'/>
+282
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_282'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_283'/>
+283
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_283'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_284'/>
+284
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_284'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    List&#60;V&#62; wrappedCollection(final K key) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_285'/>
+285
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_285'>1</a>
+<span>
+1. wrappedCollection : replaced return value with Collections.emptyList for org/apache/commons/collections4/multimap/AbstractListValuedMap::wrappedCollection &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return new WrappedList(key);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_286'/>
+286
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_286'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_287'/>
+287
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_287'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@2e6807b6_288'/>
+288
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_288'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>}</span></pre></td></tr>
+
+
+
+<tr><td></td><td></td><td><h2>Mutations</h2></td></tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_64'>64</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_64'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>add<br/><b>Killed by : </b>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testListValuedMapAddViaListIterator()]</span></span> negated conditional &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_70'>70</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_70'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>add<br/><b>Killed by : </b>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testListValuedMapAddViaListIterator()]</span></span> removed call to java/util/ListIterator::add &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_75'>75</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_75'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>hasNext<br/><b>Killed by : </b>org.apache.commons.collections4.MultiMapUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.MultiMapUtilsTest]/[method:testGetValuesAsList()]</span></span> replaced boolean return with false for org/apache/commons/collections4/multimap/AbstractListValuedMap$ValuesListIterator::hasNext &rarr; KILLED</span>
+</div> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>hasNext<br/><b>Killed by : </b>org.apache.commons.collections4.MultiMapUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.MultiMapUtilsTest]/[method:testGetValuesAsList()]</span></span> replaced boolean return with true for org/apache/commons/collections4/multimap/AbstractListValuedMap$ValuesListIterator::hasNext &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_80'>80</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_80'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>hasPrevious<br/><b>Killed by : </b>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testValuesListIteratorMethods()]</span></span> replaced boolean return with false for org/apache/commons/collections4/multimap/AbstractListValuedMap$ValuesListIterator::hasPrevious &rarr; KILLED</span>
+</div> <p class='SURVIVED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>hasPrevious<br/><b>Killed by : </b>none</span></span> replaced boolean return with true for org/apache/commons/collections4/multimap/AbstractListValuedMap$ValuesListIterator::hasPrevious &rarr; SURVIVED</span>
+<a title="Click to view covering tests" class="view-covered-by-tests" onClick="document.getElementById('MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.multimap.AbstractListValuedMap$ValuesListIterator,-method=hasPrevious,-methodDesc=()Z],-indexes=[6],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanTrueReturnValsMutator]').style.display=(document.getElementById('MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.multimap.AbstractListValuedMap$ValuesListIterator,-method=hasPrevious,-methodDesc=()Z],-indexes=[6],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanTrueReturnValsMutator]').style.display == 'block')?'none':'block';">Covering tests</a>
+<div class="covered-tests" id="MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.multimap.AbstractListValuedMap$ValuesListIterator,-method=hasPrevious,-methodDesc=()Z],-indexes=[6],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanTrueReturnValsMutator]" style="display:none;">Covered by tests:
+<ul>
+<li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testValuesListIteratorMethods()]</li> <li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testValuesListIteratorMethods()]</li> 
+</ul>
+</div></div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_85'>85</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_85'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>next<br/><b>Killed by : </b>org.apache.commons.collections4.MultiMapUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.MultiMapUtilsTest]/[method:testGetValuesAsList()]</span></span> replaced return value with null for org/apache/commons/collections4/multimap/AbstractListValuedMap$ValuesListIterator::next &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_90'>90</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_90'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>nextIndex<br/><b>Killed by : </b>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testValuesListIteratorMethods()]</span></span> replaced int return with 0 for org/apache/commons/collections4/multimap/AbstractListValuedMap$ValuesListIterator::nextIndex &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_95'>95</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_95'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>previous<br/><b>Killed by : </b>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testValuesListIteratorMethods()]</span></span> replaced return value with null for org/apache/commons/collections4/multimap/AbstractListValuedMap$ValuesListIterator::previous &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_100'>100</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_100'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>previousIndex<br/><b>Killed by : </b>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testValuesListIteratorMethods()]</span></span> replaced int return with 0 for org/apache/commons/collections4/multimap/AbstractListValuedMap$ValuesListIterator::previousIndex &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_105'>105</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_105'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>remove<br/><b>Killed by : </b>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testListValuedMapRemoveViaListIterator()]</span></span> removed call to java/util/ListIterator::remove &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_106'>106</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_106'/> 
+
+<p class='SURVIVED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>remove<br/><b>Killed by : </b>none</span></span> negated conditional &rarr; SURVIVED</span>
+<a title="Click to view covering tests" class="view-covered-by-tests" onClick="document.getElementById('MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.multimap.AbstractListValuedMap$ValuesListIterator,-method=remove,-methodDesc=()V],-indexes=[11],-mutator=org.pitest.mutationtest.engine.gregor.mutators.NegateConditionalsMutator]').style.display=(document.getElementById('MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.multimap.AbstractListValuedMap$ValuesListIterator,-method=remove,-methodDesc=()V],-indexes=[11],-mutator=org.pitest.mutationtest.engine.gregor.mutators.NegateConditionalsMutator]').style.display == 'block')?'none':'block';">Covering tests</a>
+<div class="covered-tests" id="MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.multimap.AbstractListValuedMap$ValuesListIterator,-method=remove,-methodDesc=()V],-indexes=[11],-mutator=org.pitest.mutationtest.engine.gregor.mutators.NegateConditionalsMutator]" style="display:none;">Covered by tests:
+<ul>
+<li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testListValuedMapRemoveViaListIterator()]</li> <li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testListValuedMapRemoveViaListIterator()]</li> 
+</ul>
+</div></div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_113'>113</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_113'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>set<br/><b>Killed by : </b>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testValuesListIteratorMethods()]</span></span> removed call to java/util/ListIterator::set &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_130'>130</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_130'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>add<br/><b>Killed by : </b>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testWrappedListAdd()]</span></span> negated conditional &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_134'>134</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_134'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>add<br/><b>Killed by : </b>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testWrappedListAdd()]</span></span> removed call to java/util/List::add &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_140'>140</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_140'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>addAll<br/><b>Killed by : </b>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testValuesListIteratorMethods()]</span></span> negated conditional &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_143'>143</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_143'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>addAll<br/><b>Killed by : </b>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testValuesListIteratorMethods()]</span></span> negated conditional &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_146'>146</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_146'/> 
+
+<p class='SURVIVED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>addAll<br/><b>Killed by : </b>none</span></span> replaced boolean return with false for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::addAll &rarr; SURVIVED</span>
+<a title="Click to view covering tests" class="view-covered-by-tests" onClick="document.getElementById('MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.multimap.AbstractListValuedMap$WrappedList,-method=addAll,-methodDesc=(ILjava/util/Collection;)Z],-indexes=[41],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanFalseReturnValsMutator]').style.display=(document.getElementById('MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.multimap.AbstractListValuedMap$WrappedList,-method=addAll,-methodDesc=(ILjava/util/Collection;)Z],-indexes=[41],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanFalseReturnValsMutator]').style.display == 'block')?'none':'block';">Covering tests</a>
+<div class="covered-tests" id="MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.multimap.AbstractListValuedMap$WrappedList,-method=addAll,-methodDesc=(ILjava/util/Collection;)Z],-indexes=[41],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanFalseReturnValsMutator]" style="display:none;">Covered by tests:
+<ul>
+<li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testValuesListIteratorMethods()]</li> <li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testValuesListIteratorMethods()]</li> <li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testWrappedListAddAll()]</li> <li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testWrappedListAddAll()]</li> 
+</ul>
+</div></div> <p class='SURVIVED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>addAll<br/><b>Killed by : </b>none</span></span> replaced boolean return with true for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::addAll &rarr; SURVIVED</span>
+<a title="Click to view covering tests" class="view-covered-by-tests" onClick="document.getElementById('MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.multimap.AbstractListValuedMap$WrappedList,-method=addAll,-methodDesc=(ILjava/util/Collection;)Z],-indexes=[41],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanTrueReturnValsMutator]').style.display=(document.getElementById('MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.multimap.AbstractListValuedMap$WrappedList,-method=addAll,-methodDesc=(ILjava/util/Collection;)Z],-indexes=[41],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanTrueReturnValsMutator]').style.display == 'block')?'none':'block';">Covering tests</a>
+<div class="covered-tests" id="MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.multimap.AbstractListValuedMap$WrappedList,-method=addAll,-methodDesc=(ILjava/util/Collection;)Z],-indexes=[41],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanTrueReturnValsMutator]" style="display:none;">Covered by tests:
+<ul>
+<li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testValuesListIteratorMethods()]</li> <li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testValuesListIteratorMethods()]</li> <li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testWrappedListAddAll()]</li> <li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testWrappedListAddAll()]</li> 
+</ul>
+</div></div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_148'>148</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_148'/> 
+
+<p class='SURVIVED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>addAll<br/><b>Killed by : </b>none</span></span> replaced boolean return with false for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::addAll &rarr; SURVIVED</span>
+<a title="Click to view covering tests" class="view-covered-by-tests" onClick="document.getElementById('MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.multimap.AbstractListValuedMap$WrappedList,-method=addAll,-methodDesc=(ILjava/util/Collection;)Z],-indexes=[49],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanFalseReturnValsMutator]').style.display=(document.getElementById('MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.multimap.AbstractListValuedMap$WrappedList,-method=addAll,-methodDesc=(ILjava/util/Collection;)Z],-indexes=[49],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanFalseReturnValsMutator]').style.display == 'block')?'none':'block';">Covering tests</a>
+<div class="covered-tests" id="MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.multimap.AbstractListValuedMap$WrappedList,-method=addAll,-methodDesc=(ILjava/util/Collection;)Z],-indexes=[49],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanFalseReturnValsMutator]" style="display:none;">Covered by tests:
+<ul>
+<li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testWrappedListAddAll()]</li> <li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testWrappedListAddAll()]</li> 
+</ul>
+</div></div> <p class='SURVIVED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>addAll<br/><b>Killed by : </b>none</span></span> replaced boolean return with true for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::addAll &rarr; SURVIVED</span>
+<a title="Click to view covering tests" class="view-covered-by-tests" onClick="document.getElementById('MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.multimap.AbstractListValuedMap$WrappedList,-method=addAll,-methodDesc=(ILjava/util/Collection;)Z],-indexes=[49],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanTrueReturnValsMutator]').style.display=(document.getElementById('MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.multimap.AbstractListValuedMap$WrappedList,-method=addAll,-methodDesc=(ILjava/util/Collection;)Z],-indexes=[49],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanTrueReturnValsMutator]').style.display == 'block')?'none':'block';">Covering tests</a>
+<div class="covered-tests" id="MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.multimap.AbstractListValuedMap$WrappedList,-method=addAll,-methodDesc=(ILjava/util/Collection;)Z],-indexes=[49],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanTrueReturnValsMutator]" style="display:none;">Covered by tests:
+<ul>
+<li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testWrappedListAddAll()]</li> <li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testWrappedListAddAll()]</li> 
+</ul>
+</div></div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_154'>154</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_154'/> 
+
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>none</span></span> negated conditional &rarr; NO_COVERAGE</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_155'>155</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_155'/> 
+
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>none</span></span> replaced boolean return with true for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::equals &rarr; NO_COVERAGE</span>
+</div> <p class='NO_COVERAGE'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>none</span></span> replaced boolean return with false for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::equals &rarr; NO_COVERAGE</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_157'>157</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_157'/> 
+
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>none</span></span> negated conditional &rarr; NO_COVERAGE</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_158'>158</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_158'/> 
+
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>none</span></span> replaced boolean return with true for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::equals &rarr; NO_COVERAGE</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_161'>161</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_161'/> 
+
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>none</span></span> replaced boolean return with false for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::equals &rarr; NO_COVERAGE</span>
+</div> <p class='NO_COVERAGE'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>none</span></span> replaced boolean return with true for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::equals &rarr; NO_COVERAGE</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_167'>167</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_167'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>get<br/><b>Killed by : </b>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testWrappedListAddAll()]</span></span> replaced return value with null for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::get &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_172'>172</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_172'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>getMapping<br/><b>Killed by : </b>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testWrappedListAdd()]</span></span> replaced return value with Collections.emptyList for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::getMapping &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_178'>178</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_178'/> 
+
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>hashCode<br/><b>Killed by : </b>none</span></span> replaced int return with 0 for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::hashCode &rarr; NO_COVERAGE</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_184'>184</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_184'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>indexOf<br/><b>Killed by : </b>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testWrappedListAddAll()]</span></span> replaced int return with 0 for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::indexOf &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_190'>190</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_190'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>lastIndexOf<br/><b>Killed by : </b>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testWrappedListAddAll()]</span></span> replaced int return with 0 for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::lastIndexOf &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_195'>195</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_195'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>listIterator<br/><b>Killed by : </b>org.apache.commons.collections4.MultiMapUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.MultiMapUtilsTest]/[method:testGetValuesAsList()]</span></span> replaced return value with null for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::listIterator &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_200'>200</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_200'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>listIterator<br/><b>Killed by : </b>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testValuesListIteratorMethods()]</span></span> replaced return value with null for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::listIterator &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_207'>207</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_207'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>remove<br/><b>Killed by : </b>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testListValuedMapRemove()]</span></span> negated conditional &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_210'>210</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_210'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>remove<br/><b>Killed by : </b>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testListValuedMapRemove()]</span></span> replaced return value with null for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::remove &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_216'>216</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_216'/> 
+
+<p class='SURVIVED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>set<br/><b>Killed by : </b>none</span></span> replaced return value with null for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::set &rarr; SURVIVED</span>
+<a title="Click to view covering tests" class="view-covered-by-tests" onClick="document.getElementById('MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.multimap.AbstractListValuedMap$WrappedList,-method=set,-methodDesc=(ILjava/lang/Object;)Ljava/lang/Object;],-indexes=[13],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.NullReturnValsMutator]').style.display=(document.getElementById('MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.multimap.AbstractListValuedMap$WrappedList,-method=set,-methodDesc=(ILjava/lang/Object;)Ljava/lang/Object;],-indexes=[13],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.NullReturnValsMutator]').style.display == 'block')?'none':'block';">Covering tests</a>
+<div class="covered-tests" id="MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.multimap.AbstractListValuedMap$WrappedList,-method=set,-methodDesc=(ILjava/lang/Object;)Ljava/lang/Object;],-indexes=[13],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.NullReturnValsMutator]" style="display:none;">Covered by tests:
+<ul>
+<li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testWrappedListAdd()]</li> <li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testWrappedListAdd()]</li> 
+</ul>
+</div></div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_222'>222</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_222'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>subList<br/><b>Killed by : </b>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testWrappedListAddAll()]</span></span> replaced return value with Collections.emptyList for org/apache/commons/collections4/multimap/AbstractListValuedMap$WrappedList::subList &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_259'>259</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_259'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>get<br/><b>Killed by : </b>org.apache.commons.collections4.MultiMapUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.MultiMapUtilsTest]/[method:testGetValuesAsList()]</span></span> replaced return value with Collections.emptyList for org/apache/commons/collections4/multimap/AbstractListValuedMap::get &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_265'>265</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_265'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>getMap<br/><b>Killed by : </b>org.apache.commons.collections4.MultiMapUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.MultiMapUtilsTest]/[method:testIsEmptyWithNonEmptyMap()]</span></span> replaced return value with Collections.emptyMap for org/apache/commons/collections4/multimap/AbstractListValuedMap::getMap &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_280'>280</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_280'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>remove<br/><b>Killed by : </b>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testValueTransformedMap()]</span></span> replaced return value with Collections.emptyList for org/apache/commons/collections4/multimap/AbstractListValuedMap::remove &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@2e6807b6_285'>285</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@2e6807b6_285'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>wrappedCollection<br/><b>Killed by : </b>org.apache.commons.collections4.MultiMapUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.MultiMapUtilsTest]/[method:testGetValuesAsList()]</span></span> replaced return value with Collections.emptyList for org/apache/commons/collections4/multimap/AbstractListValuedMap::wrappedCollection &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+
+</table>
+
+
+<h2>Active mutators</h2>
+<ul>
+<li class='mutator'>CONDITIONALS_BOUNDARY</li>
+<li class='mutator'>EMPTY_RETURNS</li>
+<li class='mutator'>FALSE_RETURNS</li>
+<li class='mutator'>INCREMENTS</li>
+<li class='mutator'>INVERT_NEGS</li>
+<li class='mutator'>MATH</li>
+<li class='mutator'>NEGATE_CONDITIONALS</li>
+<li class='mutator'>NULL_RETURNS</li>
+<li class='mutator'>PRIMITIVE_RETURNS</li>
+<li class='mutator'>TRUE_RETURNS</li>
+<li class='mutator'>VOID_METHOD_CALLS</li>
+
+</ul>
+
+<h2>Tests examined</h2>
+<ul>
+<li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testValuesListIteratorMethods()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testValuesListIteratorMethods()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testListValuedMapRemoveViaListIterator()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testListValuedMapRemoveViaListIterator()] (0 ms)</li><li>org.apache.commons.collections4.MultiMapUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.MultiMapUtilsTest]/[method:testGetValuesAsList()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testWrappedListAdd()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testListValuedMapAdd()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testWrappedListAdd()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testListValuedMapAdd()] (0 ms)</li><li>org.apache.commons.collections4.MultiMapUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.MultiMapUtilsTest]/[method:testGetValuesAsSet()] (0 ms)</li><li>org.apache.commons.collections4.MultiMapUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.MultiMapUtilsTest]/[method:testGetCollection()] (1 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testArrayListValuedLinkedHashMap()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testArrayListValuedHashMap()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testTrimToSize()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testListValuedMapAddViaListIterator()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testListValuedMapAddViaListIterator()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testTrimToSize()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testListValuedMapRemove()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testListValuedMapRemove()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testNoMappingReturnsEmptyCol()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testNoMappingReturnsEmptyCol()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testGet()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testMultipleValues()] (0 ms)</li><li>org.apache.commons.collections4.MultiMapUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.MultiMapUtilsTest]/[method:testGetValuesAsBag()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testMultipleValues()] (0 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testFactory_Decorate()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testNoMappingReturnsEmptyCol()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testPutAll_KeyIterable()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testPutAll_KeyIterable()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testGet()] (1 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testNoMappingReturnsEmptyCol()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testWrappedListAddAll()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testWrappedListAddAll()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testSize_Key()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testGet()] (0 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testGet()] (0 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testMultipleValues()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testMultipleValues()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testSize_Key()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testRemoveException()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testClearException()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testRemoveMappingException()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testSize_Key()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testPutAll_Map2()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testPutAll_Map2()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testAddMappingThroughGet()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testAddMappingThroughGet()] (0 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testPutAll_KeyIterable()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testRemoveAllViaValuesIterator()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testRemoveAllViaValuesIterator()] (0 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testSize_Key()] (0 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testValueTransformedMap()] (0 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testKeyTransformedMap()] (0 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testAddMappingThroughGet()] (0 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testPutAll_Map2()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testRemoveAllViaEntriesIterator()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testPutAll_Map1()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testPutAll_Map1()] (0 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testFactory_decorateTransform()] (0 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testRemoveAllViaValuesIterator()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testRemoveAllViaEntriesIterator()] (2 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testRemoveAllViaEntriesIterator()] (0 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testPutAll_Map1()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testRemoveMappingThroughGetIterator()] (58 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testRemoveMappingThroughGetIterator()] (58 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testRemoveMappingThroughGetIterator()] (71 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testRemoveMappingThroughGet()] (72 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testRemoveMappingThroughGet()] (81 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testRemoveMappingThroughGet()] (81 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testToString()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testToString()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testSizeWithPutRemove()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testSizeWithPutRemove()] (0 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testToString()] (0 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testSizeWithPutRemove()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testMapIteratorRemove()] (0 ms)</li><li>org.apache.commons.collections4.multimap.LinkedHashSetValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.LinkedHashSetValuedLinkedHashMapTest]/[method:testHashSetValueHashMap_1()] (0 ms)</li><li>org.apache.commons.collections4.multimap.HashSetValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.HashSetValuedHashMapTest]/[method:testHashSetValueHashMap_1()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testMapIteratorRemove()] (1 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testMapIteratorRemove()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testRemoveViaValuesRemove()] (13 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testRemoveViaValuesRemove()] (32 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testRemoveViaValuesRemove()] (39 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testEqualsHashCodeContract()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testListValuedMapEqualsHashCodeContract()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testEqualsHashCodeContract()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testListValuedMapEqualsHashCodeContract()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testAsMapGet_Full()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testAsMapGet_Full()] (1 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testAsMapGet_Full()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testAsMapGet_Full()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testCopyConstructorWithMultiValuedMap()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testCopyConstructorWithMultiValuedMap()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testMultiValuedMapIterator()] (9 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testMultiValuedMapIterator()] (10 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testMultiValuedMapIterator()] (8 ms)</li><li>org.apache.commons.collections4.MultiMapUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.MultiMapUtilsTest]/[method:testTypeSafeEmptyMultiValuedMap()] (0 ms)</li><li>org.apache.commons.collections4.MultiMapUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.MultiMapUtilsTest]/[method:testIsEmptyWithEmptyMap()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testObjectHashCodeEqualsSelfHashCode()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testObjectHashCodeEqualsSelfHashCode()] (0 ms)</li><li>org.apache.commons.collections4.MultiMapUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.MultiMapUtilsTest]/[method:testIsEmptyWithNonEmptyMap()] (0 ms)</li><li>org.apache.commons.collections4.MultiMapUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.MultiMapUtilsTest]/[method:testEmptyUnmodifiableMultiValuedMap()] (0 ms)</li><li>org.apache.commons.collections4.MultiMapUtilsTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.MultiMapUtilsTest]/[method:testEmptyIfNull()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testObjectHashCodeEqualsSelfHashCode()] (0 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testObjectHashCodeEqualsSelfHashCode()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testObjectHashCodeEqualsContract()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testObjectHashCodeEqualsContract()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testMapEquals()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testEmptyMapCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testRemove_KeyItem()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testEmptyMapCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testMapEquals()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testRemove_KeyItem()] (0 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testObjectHashCodeEqualsContract()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testPutAllException()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testKeySetSize()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testSize()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testKeySetSize()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testDecorateFactory()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testSize()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testEmptyMapCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testUnmodifiable()] (0 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testEmptyMapCompatibility()] (1 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testObjectHashCodeEqualsContract()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testKeyContainsValue()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testKeyContainsValue()] (0 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testRemove_KeyItem()] (0 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testMapEquals()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testKeyContainsValue()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testContainsValue_Key()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testSize()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testContainsValue_Key()] (0 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testKeySetSize()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testKeysBagContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testContainsValue_Key()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testKeySetSize()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testKeysBagContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testKeyContainsValue()] (0 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testSize()] (0 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testContainsValue_Key()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testKeysBagContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testKeysMultiSet()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testKeysMultiSet()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testUnmodifiableAsMap()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testUnmodifiableMapIterator()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testKeysMultiSet()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testAsMapRemove()] (1 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testPreservesKeyInsertionOrder()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testUnmodifiableKeySet()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testMultiValuedMapIterator()] (0 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testKeysBagContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testAsMapRemove()] (1 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testValues()] (0 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testKeysMultiSet()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testValues()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testMapIteratorUnsupportedSet()] (0 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testAsMapRemove()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testMapIteratorUnsupportedSet()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testUnmodifiableValues()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testUnmodifiableKeys()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testMapIteratorUnsupportedSet()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testUnmodifiableEntries()] (0 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testValues()] (0 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testMapIteratorUnsupportedSet()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testValues()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testMapIterator()] (1 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testMapIterator()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testKeysBagIterator2()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testKeysBagIterator2()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testKeysBagIterator1()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testKeysBagIterator2()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testMapIterator()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testKeysBagIterator1()] (0 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testMapIterator()] (0 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testKeysBagIterator2()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testKeysBagIterator1()] (2 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testKeysBagIterator1()] (0 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testEntriesCollectionIterator()] (1 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testEntriesCollectionIterator()] (1 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testEntriesCollectionIterator()] (0 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testEntriesCollectionIterator()] (3 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedLinkedHashMapTest]/[method:testContainsValue()] (65 ms)</li><li>org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.ArrayListValuedHashMapTest]/[method:testContainsValue()] (67 ms)</li><li>org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.TransformedMultiValuedMapTest]/[method:testContainsValue()] (78 ms)</li><li>org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.multimap.UnmodifiableMultiValuedMapTest]/[method:testContainsValue()] (80 ms)</li>
+</ul>
+
+<br/>
+
+Report generated by <a href='https://pitest.org'>PIT</a> 1.20.6
+
+</body>
+</html>

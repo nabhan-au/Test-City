@@ -1,0 +1,2377 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+<body>
+
+
+<h1>TreeBag.java</h1>
+
+<table class="src">
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_1'/>
+1
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_1'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>/*</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_2'/>
+2
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_2'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Licensed to the Apache Software Foundation (ASF) under one or more</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_3'/>
+3
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_3'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * contributor license agreements.  See the NOTICE file distributed with</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_4'/>
+4
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_4'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * this work for additional information regarding copyright ownership.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_5'/>
+5
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_5'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * The ASF licenses this file to You under the Apache License, Version 2.0</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_6'/>
+6
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_6'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * (the &#34;License&#34;); you may not use this file except in compliance with</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_7'/>
+7
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_7'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * the License.  You may obtain a copy of the License at</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_8'/>
+8
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_8'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_9'/>
+9
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_9'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *      http://www.apache.org/licenses/LICENSE-2.0</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_10'/>
+10
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_10'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_11'/>
+11
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_11'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Unless required by applicable law or agreed to in writing, software</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_12'/>
+12
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_12'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * distributed under the License is distributed on an &#34;AS IS&#34; BASIS,</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_13'/>
+13
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_13'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_14'/>
+14
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_14'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * See the License for the specific language governing permissions and</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_15'/>
+15
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_15'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * limitations under the License.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_16'/>
+16
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_16'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_17'/>
+17
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_17'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>package org.apache.commons.collections4.bag;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_18'/>
+18
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_18'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_19'/>
+19
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_19'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.io.IOException;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_20'/>
+20
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_20'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.io.ObjectInputStream;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_21'/>
+21
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_21'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.io.ObjectOutputStream;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_22'/>
+22
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_22'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.io.Serializable;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_23'/>
+23
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_23'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.util.Collection;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_24'/>
+24
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_24'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.util.Comparator;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_25'/>
+25
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_25'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.util.Objects;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_26'/>
+26
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_26'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.util.SortedMap;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_27'/>
+27
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_27'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.util.TreeMap;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_28'/>
+28
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_28'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_29'/>
+29
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_29'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import org.apache.commons.collections4.SortedBag;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_30'/>
+30
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_30'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_31'/>
+31
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_31'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>/**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_32'/>
+32
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_32'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Implements {@link SortedBag}, using a {@link TreeMap} to provide the data storage.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_33'/>
+33
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_33'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * This is the standard implementation of a sorted bag.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_34'/>
+34
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_34'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * &#60;p&#62;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_35'/>
+35
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_35'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Order will be maintained among the bag members and can be viewed through the iterator.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_36'/>
+36
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_36'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * &#60;/p&#62;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_37'/>
+37
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_37'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * &#60;p&#62;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_38'/>
+38
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_38'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * A {@link org.apache.commons.collections4.Bag Bag} stores each object in the collection</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_39'/>
+39
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_39'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * together with a count of occurrences. Extra methods on the interface allow multiple</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_40'/>
+40
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_40'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * copies of an object to be added or removed at once. It is important to read the interface</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_41'/>
+41
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_41'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Javadoc carefully as several methods violate the {@link Collection} interface specification.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_42'/>
+42
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_42'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * &#60;/p&#62;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_43'/>
+43
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_43'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_44'/>
+44
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_44'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * @param &#60;E&#62; the type of elements in this bag</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_45'/>
+45
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_45'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * @since 3.0 (previously in main package v2.0)</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_46'/>
+46
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_46'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_47'/>
+47
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_47'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>public class TreeBag&#60;E&#62; extends AbstractMapBag&#60;E&#62; implements SortedBag&#60;E&#62;, Serializable {</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_48'/>
+48
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_48'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_49'/>
+49
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_49'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /** Serial version lock */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_50'/>
+50
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_50'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    private static final long serialVersionUID = -7740146511091606676L;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_51'/>
+51
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_51'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_52'/>
+52
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_52'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_53'/>
+53
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_53'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Constructs an empty {@link TreeBag}.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_54'/>
+54
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_54'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_55'/>
+55
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_55'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public TreeBag() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_56'/>
+56
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_56'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        super(new TreeMap&#60;&#62;());</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_57'/>
+57
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_57'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_58'/>
+58
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_58'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_59'/>
+59
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_59'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_60'/>
+60
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_60'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Constructs a {@link TreeBag} containing all the members of the</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_61'/>
+61
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_61'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * specified collection.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_62'/>
+62
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_62'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_63'/>
+63
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_63'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param coll the collection to copy into the bag</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_64'/>
+64
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_64'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_65'/>
+65
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_65'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public TreeBag(final Collection&#60;? extends E&#62; coll) {</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_66'/>
+66
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_66'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class=''>        this();</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_67'/>
+67
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_67'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class=''>        addAll(coll);</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_68'/>
+68
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_68'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_69'/>
+69
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_69'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_70'/>
+70
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_70'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_71'/>
+71
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_71'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Constructs an empty bag that maintains order on its unique representative</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_72'/>
+72
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_72'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * members according to the given {@link Comparator}.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_73'/>
+73
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_73'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_74'/>
+74
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_74'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param comparator the comparator to use</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_75'/>
+75
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_75'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_76'/>
+76
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_76'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public TreeBag(final Comparator&#60;? super E&#62; comparator) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_77'/>
+77
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_77'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        super(new TreeMap&#60;&#62;(comparator));</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_78'/>
+78
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_78'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_79'/>
+79
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_79'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_80'/>
+80
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_80'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_81'/>
+81
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_81'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Constructs a bag containing all the members of the given Iterable.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_82'/>
+82
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_82'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_83'/>
+83
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_83'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param iterable an iterable to copy into this bag.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_84'/>
+84
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_84'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @since 4.5.0-M3</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_85'/>
+85
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_85'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_86'/>
+86
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_86'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public TreeBag(final Iterable&#60;? extends E&#62; iterable) {</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_87'/>
+87
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_87'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class=''>        super(new TreeMap&#60;&#62;(), iterable);</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_88'/>
+88
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_88'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_89'/>
+89
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_89'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_90'/>
+90
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_90'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_91'/>
+91
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_91'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * {@inheritDoc}</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_92'/>
+92
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_92'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_93'/>
+93
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_93'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @throws IllegalArgumentException if the object to be added does not implement</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_94'/>
+94
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_94'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * {@link Comparable} and the {@link TreeBag} is using natural ordering</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_95'/>
+95
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_95'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @throws NullPointerException if the specified key is null and this bag uses</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_96'/>
+96
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_96'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * natural ordering, or its comparator does not permit null keys</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_97'/>
+97
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_97'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_98'/>
+98
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_98'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_99'/>
+99
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_99'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public boolean add(final E object) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_100'/>
+100
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_100'>2</a>
+<span>
+1. add : negated conditional &rarr; KILLED<br/>
+2. add : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        if (comparator() == null &#38;&#38; !(object instanceof Comparable)) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_101'/>
+101
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_101'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            Objects.requireNonNull(object, &#34;object&#34;);</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_102'/>
+102
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_102'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            throw new IllegalArgumentException(&#34;Objects of type &#34; + object.getClass() + &#34; cannot be added to &#34; +</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_103'/>
+103
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_103'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>                                               &#34;a naturally ordered TreeBag as it does not implement Comparable&#34;);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_104'/>
+104
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_104'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_105'/>
+105
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_105'>2</a>
+<span>
+1. add : replaced boolean return with true for org/apache/commons/collections4/bag/TreeBag::add &rarr; SURVIVED<br/>
+2. add : replaced boolean return with false for org/apache/commons/collections4/bag/TreeBag::add &rarr; SURVIVED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='survived'>        return super.add(object);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_106'/>
+106
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_106'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_107'/>
+107
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_107'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_108'/>
+108
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_108'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_109'/>
+109
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_109'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public Comparator&#60;? super E&#62; comparator() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_110'/>
+110
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_110'>1</a>
+<span>
+1. comparator : replaced return value with null for org/apache/commons/collections4/bag/TreeBag::comparator &rarr; SURVIVED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='survived'>        return getMap().comparator();</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_111'/>
+111
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_111'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_112'/>
+112
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_112'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_113'/>
+113
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_113'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_114'/>
+114
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_114'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public E first() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_115'/>
+115
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_115'>1</a>
+<span>
+1. first : replaced return value with null for org/apache/commons/collections4/bag/TreeBag::first &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return getMap().firstKey();</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_116'/>
+116
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_116'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_117'/>
+117
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_117'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_118'/>
+118
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_118'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_119'/>
+119
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_119'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    protected SortedMap&#60;E, AbstractMapBag.MutableInteger&#62; getMap() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_120'/>
+120
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_120'>1</a>
+<span>
+1. getMap : replaced return value with null for org/apache/commons/collections4/bag/TreeBag::getMap &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return (SortedMap&#60;E, AbstractMapBag.MutableInteger&#62;) super.getMap();</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_121'/>
+121
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_121'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_122'/>
+122
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_122'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_123'/>
+123
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_123'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_124'/>
+124
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_124'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    public E last() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_125'/>
+125
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_125'>1</a>
+<span>
+1. last : replaced return value with null for org/apache/commons/collections4/bag/TreeBag::last &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        return getMap().lastKey();</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_126'/>
+126
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_126'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_127'/>
+127
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_127'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_128'/>
+128
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_128'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_129'/>
+129
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_129'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Deserializes the bag in using a custom routine.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_130'/>
+130
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_130'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_131'/>
+131
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_131'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param in  the input stream</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_132'/>
+132
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_132'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @throws IOException if an error occurs while reading from the stream</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_133'/>
+133
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_133'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @throws ClassNotFoundException if an object read from the stream cannot be loaded</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_134'/>
+134
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_134'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_135'/>
+135
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_135'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_136'/>
+136
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_136'>1</a>
+<span>
+1. readObject : removed call to java/io/ObjectInputStream::defaultReadObject &rarr; SURVIVED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='survived'>        in.defaultReadObject();</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_137'/>
+137
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_137'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        @SuppressWarnings(&#34;unchecked&#34;)  // This will fail at runtime if the stream is incorrect</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_138'/>
+138
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_138'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        final Comparator&#60;? super E&#62; comp = (Comparator&#60;? super E&#62;) in.readObject();</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_139'/>
+139
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_139'>1</a>
+<span>
+1. readObject : removed call to org/apache/commons/collections4/bag/AbstractMapBag::doReadObject &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        super.doReadObject(new TreeMap&#60;&#62;(comp), in);</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_140'/>
+140
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_140'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_141'/>
+141
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_141'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_142'/>
+142
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_142'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    /**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_143'/>
+143
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_143'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * Serializes this object to an ObjectOutputStream.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_144'/>
+144
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_144'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     *</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_145'/>
+145
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_145'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @param out the target ObjectOutputStream.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_146'/>
+146
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_146'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     * @throws IOException thrown when an I/O errors occur writing to the target stream.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_147'/>
+147
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_147'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>     */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_148'/>
+148
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_148'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    private void writeObject(final ObjectOutputStream out) throws IOException {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_149'/>
+149
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_149'>1</a>
+<span>
+1. writeObject : removed call to java/io/ObjectOutputStream::defaultWriteObject &rarr; SURVIVED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='survived'>        out.defaultWriteObject();</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_150'/>
+150
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_150'>1</a>
+<span>
+1. writeObject : removed call to java/io/ObjectOutputStream::writeObject &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        out.writeObject(comparator());</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_151'/>
+151
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_151'>1</a>
+<span>
+1. writeObject : removed call to org/apache/commons/collections4/bag/AbstractMapBag::doWriteObject &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        super.doWriteObject(out);</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_152'/>
+152
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_152'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_153'/>
+153
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_153'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@efc1267_154'/>
+154
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_154'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>}</span></pre></td></tr>
+
+
+
+<tr><td></td><td></td><td><h2>Mutations</h2></td></tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@efc1267_100'>100</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_100'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>add<br/><b>Killed by : </b>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollections265()]</span></span> negated conditional &rarr; KILLED</span>
+</div> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>add<br/><b>Killed by : </b>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollections265()]</span></span> negated conditional &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@efc1267_105'>105</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_105'/> 
+
+<p class='SURVIVED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>add<br/><b>Killed by : </b>none</span></span> replaced boolean return with true for org/apache/commons/collections4/bag/TreeBag::add &rarr; SURVIVED</span>
+<a title="Click to view covering tests" class="view-covered-by-tests" onClick="document.getElementById('MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.bag.TreeBag,-method=add,-methodDesc=(Ljava/lang/Object;)Z],-indexes=[38],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanTrueReturnValsMutator]').style.display=(document.getElementById('MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.bag.TreeBag,-method=add,-methodDesc=(Ljava/lang/Object;)Z],-indexes=[38],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanTrueReturnValsMutator]').style.display == 'block')?'none':'block';">Covering tests</a>
+<div class="covered-tests" id="MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.bag.TreeBag,-method=add,-methodDesc=(Ljava/lang/Object;)Z],-indexes=[38],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanTrueReturnValsMutator]" style="display:none;">Covered by tests:
+<ul>
+<li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollections555()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagEqualsSelf()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagIteratorFailNoMore()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagAdd()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagContains()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testOrdering()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagIteratorFail()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagEquals()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagRemove()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagHashCode()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagRemoveAll()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagSize()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagToArray()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagIteratorFailDoubleRemove()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagToArrayPopulate()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagEqualsHashBag()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagIteratorRemoveProtectsInvariants()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagIterator()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionSize()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testSerializeDeserializeThenCompare()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testFullBagCompatibility()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionToArray()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagRetainAll()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionToString()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagContainsAll()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionClear()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionIsEmpty()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionAdd()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionIterator()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionContainsAll()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionIteratorRemove()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionRemoveIf()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionContains()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionRemove()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionAddAll()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionToArray2()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionRemoveAll()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionRetainAll()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagEqualsSelf()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testDecorateFactory()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testTransformedBag()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testUnmodifiable()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagContains()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagIteratorFailNoMore()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagEqualsSelf()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagAdd()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagIteratorFailNoMore()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagToArray()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagIteratorFail()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagHashCode()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testSortOrder()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagIteratorFailDoubleRemove()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagIteratorFail()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagContains()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagSize()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagRemove()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagEquals()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagToArrayPopulate()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagAdd()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagEqualsHashBag()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testTransformedBag_decorateTransform()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagIteratorRemoveProtectsInvariants()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagRemoveAll()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagEqualsHashBag()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagRemove()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagToArrayPopulate()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagHashCode()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagIterator()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagEquals()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagIteratorFailDoubleRemove()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagToArray()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionSize()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagIteratorRemoveProtectsInvariants()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagIterator()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagRemoveAll()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagSize()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testSerializeDeserializeThenCompare()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionSize()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testSerializeDeserializeThenCompare()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionToArray()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testFullBagCompatibility()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionSize()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testFullBagCompatibility()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testSerializeDeserializeThenCompare()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionToString()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionToArray()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionToString()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagRetainAll()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagContainsAll()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testFullBagCompatibility()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagRetainAll()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionClear()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionToArray()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagContainsAll()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionClear()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionToString()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionIsEmpty()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionAdd()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionIsEmpty()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionIsEmpty()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionAdd()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testUnsupportedAdd()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionIterator()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testUnsupportedRemove()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionContainsAll()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionContains()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionIterator()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionIterator()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionIteratorRemove()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionContains()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionIteratorRemove()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionRemoveIf()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionContains()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionRemoveIf()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionContainsAll()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionContainsAll()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionToArray2()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionRemove()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionRemove()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionToArray2()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionAddAll()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionAddAll()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionToArray2()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionRemoveAll()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionRemoveAll()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionRetainAll()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionRetainAll()]</li> 
+</ul>
+</div></div> <p class='SURVIVED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>add<br/><b>Killed by : </b>none</span></span> replaced boolean return with false for org/apache/commons/collections4/bag/TreeBag::add &rarr; SURVIVED</span>
+<a title="Click to view covering tests" class="view-covered-by-tests" onClick="document.getElementById('MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.bag.TreeBag,-method=add,-methodDesc=(Ljava/lang/Object;)Z],-indexes=[38],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanFalseReturnValsMutator]').style.display=(document.getElementById('MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.bag.TreeBag,-method=add,-methodDesc=(Ljava/lang/Object;)Z],-indexes=[38],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanFalseReturnValsMutator]').style.display == 'block')?'none':'block';">Covering tests</a>
+<div class="covered-tests" id="MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.bag.TreeBag,-method=add,-methodDesc=(Ljava/lang/Object;)Z],-indexes=[38],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanFalseReturnValsMutator]" style="display:none;">Covered by tests:
+<ul>
+<li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollections555()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagEqualsSelf()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagIteratorFailNoMore()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagAdd()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagContains()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testOrdering()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagIteratorFail()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagEquals()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagRemove()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagHashCode()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagRemoveAll()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagSize()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagToArray()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagIteratorFailDoubleRemove()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagToArrayPopulate()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagEqualsHashBag()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagIteratorRemoveProtectsInvariants()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagIterator()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionSize()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testSerializeDeserializeThenCompare()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testFullBagCompatibility()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionToArray()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagRetainAll()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionToString()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagContainsAll()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionClear()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionIsEmpty()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionAdd()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionIterator()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionContainsAll()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionIteratorRemove()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionRemoveIf()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionContains()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionRemove()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionAddAll()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionToArray2()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionRemoveAll()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionRetainAll()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagEqualsSelf()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testDecorateFactory()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testTransformedBag()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testUnmodifiable()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagContains()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagIteratorFailNoMore()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagEqualsSelf()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagAdd()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagIteratorFailNoMore()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagToArray()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagIteratorFail()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagHashCode()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testSortOrder()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagIteratorFailDoubleRemove()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagIteratorFail()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagContains()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagSize()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagRemove()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagEquals()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagToArrayPopulate()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagAdd()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagEqualsHashBag()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testTransformedBag_decorateTransform()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagIteratorRemoveProtectsInvariants()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagRemoveAll()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagEqualsHashBag()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagRemove()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagToArrayPopulate()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagHashCode()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagIterator()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagEquals()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagIteratorFailDoubleRemove()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagToArray()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionSize()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagIteratorRemoveProtectsInvariants()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagIterator()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagRemoveAll()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagSize()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testSerializeDeserializeThenCompare()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionSize()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testSerializeDeserializeThenCompare()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionToArray()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testFullBagCompatibility()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionSize()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testFullBagCompatibility()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testSerializeDeserializeThenCompare()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionToString()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionToArray()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionToString()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagRetainAll()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagContainsAll()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testFullBagCompatibility()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagRetainAll()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionClear()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionToArray()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagContainsAll()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionClear()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionToString()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionIsEmpty()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionAdd()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionIsEmpty()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionIsEmpty()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionAdd()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testUnsupportedAdd()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionIterator()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testUnsupportedRemove()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionContainsAll()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionContains()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionIterator()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionIterator()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionIteratorRemove()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionContains()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionIteratorRemove()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionRemoveIf()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionContains()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionRemoveIf()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionContainsAll()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionContainsAll()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionToArray2()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionRemove()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionRemove()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionToArray2()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionAddAll()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionAddAll()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionToArray2()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionRemoveAll()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionRemoveAll()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionRetainAll()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionRetainAll()]</li> 
+</ul>
+</div></div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@efc1267_110'>110</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_110'/> 
+
+<p class='SURVIVED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>comparator<br/><b>Killed by : </b>none</span></span> replaced return value with null for org/apache/commons/collections4/bag/TreeBag::comparator &rarr; SURVIVED</span>
+<a title="Click to view covering tests" class="view-covered-by-tests" onClick="document.getElementById('MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.bag.TreeBag,-method=comparator,-methodDesc=()Ljava/util/Comparator;],-indexes=[6],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.NullReturnValsMutator]').style.display=(document.getElementById('MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.bag.TreeBag,-method=comparator,-methodDesc=()Ljava/util/Comparator;],-indexes=[6],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.NullReturnValsMutator]').style.display == 'block')?'none':'block';">Covering tests</a>
+<div class="covered-tests" id="MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.bag.TreeBag,-method=comparator,-methodDesc=()Ljava/util/Comparator;],-indexes=[6],-mutator=org.pitest.mutationtest.engine.gregor.mutators.returns.NullReturnValsMutator]" style="display:none;">Covered by tests:
+<ul>
+<li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollections265()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollections555()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagEqualsSelf()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagIteratorFailNoMore()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testSimpleSerialization()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagAdd()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagContains()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testOrdering()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagIteratorFail()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagEquals()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagRemove()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagHashCode()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagRemoveAll()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagSize()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagToArray()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagIteratorFailDoubleRemove()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagToArrayPopulate()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagEqualsHashBag()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagIteratorRemoveProtectsInvariants()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagIterator()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionSize()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testSerializeDeserializeThenCompare()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testFullBagCompatibility()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionToArray()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagRetainAll()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionToString()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagContainsAll()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionClear()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionIsEmpty()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionAdd()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionIterator()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionContainsAll()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionIteratorRemove()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionRemoveIf()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionContains()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionRemove()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionAddAll()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionToArray2()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionRemoveAll()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionRetainAll()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagEqualsSelf()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testDecorateFactory()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testSimpleSerialization()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testTransformedBag()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testUnmodifiable()]</li> <li>org.apache.commons.collections4.bag.CollectionSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.CollectionSortedBagTest]/[method:testSimpleSerialization()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagContains()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagIteratorFailNoMore()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagEqualsSelf()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testSimpleSerialization()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagAdd()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagIteratorFailNoMore()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagToArray()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagIteratorFail()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testSimpleSerialization()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagHashCode()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testSortOrder()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagIteratorFailDoubleRemove()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagIteratorFail()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagContains()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagSize()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagRemove()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagEquals()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagToArrayPopulate()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagAdd()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagEqualsHashBag()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testTransformedBag_decorateTransform()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagIteratorRemoveProtectsInvariants()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagRemoveAll()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagEqualsHashBag()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagRemove()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagToArrayPopulate()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagHashCode()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagIterator()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagEquals()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagIteratorFailDoubleRemove()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagToArray()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionSize()]</li> <li>org.apache.commons.collections4.bag.CollectionSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.CollectionSortedBagTest]/[method:testSerializeDeserializeThenCompare()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagIteratorRemoveProtectsInvariants()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagIterator()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagRemoveAll()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagSize()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testSerializeDeserializeThenCompare()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionSize()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testSerializeDeserializeThenCompare()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionToArray()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testFullBagCompatibility()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionSize()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testFullBagCompatibility()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testSerializeDeserializeThenCompare()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionToString()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionToArray()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionToString()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagRetainAll()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagContainsAll()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testFullBagCompatibility()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagRetainAll()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionClear()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionToArray()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagContainsAll()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionClear()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionToString()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionIsEmpty()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionAdd()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionIsEmpty()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionIsEmpty()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionAdd()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testUnsupportedAdd()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionIterator()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testUnsupportedRemove()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionContainsAll()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionContains()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionIterator()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionIterator()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionIteratorRemove()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionContains()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionIteratorRemove()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionRemoveIf()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionContains()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionRemoveIf()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionContainsAll()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionContainsAll()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionToArray2()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionRemove()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionRemove()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionToArray2()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionAddAll()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionAddAll()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionToArray2()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionRemoveAll()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionRemoveAll()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionRetainAll()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionRetainAll()]</li> 
+</ul>
+</div></div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@efc1267_115'>115</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_115'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>first<br/><b>Killed by : </b>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testOrdering()]</span></span> replaced return value with null for org/apache/commons/collections4/bag/TreeBag::first &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@efc1267_120'>120</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_120'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>getMap<br/><b>Killed by : </b>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollections265()]</span></span> replaced return value with null for org/apache/commons/collections4/bag/TreeBag::getMap &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@efc1267_125'>125</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_125'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>last<br/><b>Killed by : </b>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testOrdering()]</span></span> replaced return value with null for org/apache/commons/collections4/bag/TreeBag::last &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@efc1267_136'>136</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_136'/> 
+
+<p class='SURVIVED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>readObject<br/><b>Killed by : </b>none</span></span> removed call to java/io/ObjectInputStream::defaultReadObject &rarr; SURVIVED</span>
+<a title="Click to view covering tests" class="view-covered-by-tests" onClick="document.getElementById('MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.bag.TreeBag,-method=readObject,-methodDesc=(Ljava/io/ObjectInputStream;)V],-indexes=[4],-mutator=org.pitest.mutationtest.engine.gregor.mutators.VoidMethodCallMutator]').style.display=(document.getElementById('MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.bag.TreeBag,-method=readObject,-methodDesc=(Ljava/io/ObjectInputStream;)V],-indexes=[4],-mutator=org.pitest.mutationtest.engine.gregor.mutators.VoidMethodCallMutator]').style.display == 'block')?'none':'block';">Covering tests</a>
+<div class="covered-tests" id="MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.bag.TreeBag,-method=readObject,-methodDesc=(Ljava/io/ObjectInputStream;)V],-indexes=[4],-mutator=org.pitest.mutationtest.engine.gregor.mutators.VoidMethodCallMutator]" style="display:none;">Covered by tests:
+<ul>
+<li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testSimpleSerialization()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testEmptyBagCompatibility()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testFullBagCompatibility()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testSerializeDeserializeThenCompare()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testSimpleSerialization()]</li> <li>org.apache.commons.collections4.bag.CollectionSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.CollectionSortedBagTest]/[method:testSimpleSerialization()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testSimpleSerialization()]</li> <li>org.apache.commons.collections4.bag.CollectionSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.CollectionSortedBagTest]/[method:testEmptyBagCompatibility()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testSimpleSerialization()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testEmptyBagCompatibility()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testEmptyBagCompatibility()]</li> <li>org.apache.commons.collections4.bag.CollectionSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.CollectionSortedBagTest]/[method:testSerializeDeserializeThenCompare()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testEmptyBagCompatibility()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testSerializeDeserializeThenCompare()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testSerializeDeserializeThenCompare()]</li> <li>org.apache.commons.collections4.bag.CollectionSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.CollectionSortedBagTest]/[method:testFullBagCompatibility()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testFullBagCompatibility()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testFullBagCompatibility()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testSerializeDeserializeThenCompare()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testFullBagCompatibility()]</li> 
+</ul>
+</div></div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@efc1267_139'>139</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_139'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>readObject<br/><b>Killed by : </b>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testEmptyBagCompatibility()]</span></span> removed call to org/apache/commons/collections4/bag/AbstractMapBag::doReadObject &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@efc1267_149'>149</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_149'/> 
+
+<p class='SURVIVED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>writeObject<br/><b>Killed by : </b>none</span></span> removed call to java/io/ObjectOutputStream::defaultWriteObject &rarr; SURVIVED</span>
+<a title="Click to view covering tests" class="view-covered-by-tests" onClick="document.getElementById('MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.bag.TreeBag,-method=writeObject,-methodDesc=(Ljava/io/ObjectOutputStream;)V],-indexes=[4],-mutator=org.pitest.mutationtest.engine.gregor.mutators.VoidMethodCallMutator]').style.display=(document.getElementById('MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.bag.TreeBag,-method=writeObject,-methodDesc=(Ljava/io/ObjectOutputStream;)V],-indexes=[4],-mutator=org.pitest.mutationtest.engine.gregor.mutators.VoidMethodCallMutator]').style.display == 'block')?'none':'block';">Covering tests</a>
+<div class="covered-tests" id="MutationIdentifier-[location=Location-[clazz=org.apache.commons.collections4.bag.TreeBag,-method=writeObject,-methodDesc=(Ljava/io/ObjectOutputStream;)V],-indexes=[4],-mutator=org.pitest.mutationtest.engine.gregor.mutators.VoidMethodCallMutator]" style="display:none;">Covered by tests:
+<ul>
+<li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testSimpleSerialization()]</li> <li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testSerializeDeserializeThenCompare()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testSimpleSerialization()]</li> <li>org.apache.commons.collections4.bag.CollectionSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.CollectionSortedBagTest]/[method:testSimpleSerialization()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testSimpleSerialization()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testSimpleSerialization()]</li> <li>org.apache.commons.collections4.bag.CollectionSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.CollectionSortedBagTest]/[method:testSerializeDeserializeThenCompare()]</li> <li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testSerializeDeserializeThenCompare()]</li> <li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testSerializeDeserializeThenCompare()]</li> <li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testSerializeDeserializeThenCompare()]</li> 
+</ul>
+</div></div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@efc1267_150'>150</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_150'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>writeObject<br/><b>Killed by : </b>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testSimpleSerialization()]</span></span> removed call to java/io/ObjectOutputStream::writeObject &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@efc1267_151'>151</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@efc1267_151'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>writeObject<br/><b>Killed by : </b>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testSimpleSerialization()]</span></span> removed call to org/apache/commons/collections4/bag/AbstractMapBag::doWriteObject &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+
+</table>
+
+
+<h2>Active mutators</h2>
+<ul>
+<li class='mutator'>CONDITIONALS_BOUNDARY</li>
+<li class='mutator'>EMPTY_RETURNS</li>
+<li class='mutator'>FALSE_RETURNS</li>
+<li class='mutator'>INCREMENTS</li>
+<li class='mutator'>INVERT_NEGS</li>
+<li class='mutator'>MATH</li>
+<li class='mutator'>NEGATE_CONDITIONALS</li>
+<li class='mutator'>NULL_RETURNS</li>
+<li class='mutator'>PRIMITIVE_RETURNS</li>
+<li class='mutator'>TRUE_RETURNS</li>
+<li class='mutator'>VOID_METHOD_CALLS</li>
+
+</ul>
+
+<h2>Tests examined</h2>
+<ul>
+<li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testSimpleSerialization()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testSimpleSerialization()] (0 ms)</li><li>org.apache.commons.collections4.bag.CollectionSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.CollectionSortedBagTest]/[method:testSimpleSerialization()] (0 ms)</li><li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testSimpleSerialization()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testSimpleSerialization()] (0 ms)</li><li>org.apache.commons.collections4.bag.CollectionSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.CollectionSortedBagTest]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testSerializeDeserializeThenCompare()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testEmptyBagCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testFullBagCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.bag.CollectionSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.CollectionSortedBagTest]/[method:testEmptyBagCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testEmptyBagCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testEmptyBagCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testEmptyBagCompatibility()] (1 ms)</li><li>org.apache.commons.collections4.bag.CollectionSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.CollectionSortedBagTest]/[method:testFullBagCompatibility()] (1 ms)</li><li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testFullBagCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testFullBagCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testFullBagCompatibility()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollections265()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollections555()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagIteratorFailNoMore()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagAdd()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagContains()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testOrdering()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagIteratorFail()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagEquals()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagRemove()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagHashCode()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagSize()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagToArray()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagIteratorFailDoubleRemove()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagToArrayPopulate()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagEqualsHashBag()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagIteratorRemoveProtectsInvariants()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagIterator()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionSize()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionToArray()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testBagContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionClear()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionAdd()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionIterator()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionIteratorRemove()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionRemoveIf()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionContains()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionRemove()] (1 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionAddAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionToArray2()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.TreeBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TreeBagTest]/[method:testCollectionRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testDecorateFactory()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testTransformedBag()] (0 ms)</li><li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testUnmodifiable()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagContains()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagIteratorFailNoMore()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagEqualsSelf()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagAdd()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagIteratorFailNoMore()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagToArray()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagIteratorFail()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagHashCode()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testSortOrder()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagIteratorFailDoubleRemove()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagIteratorFail()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagContains()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagSize()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagRemove()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagEquals()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagToArrayPopulate()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagAdd()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagEqualsHashBag()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testTransformedBag_decorateTransform()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagIteratorRemoveProtectsInvariants()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagEqualsHashBag()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagRemove()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagToArrayPopulate()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagHashCode()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagIterator()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagEquals()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagIteratorFailDoubleRemove()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagToArray()] (0 ms)</li><li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionSize()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagIteratorRemoveProtectsInvariants()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagIterator()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagSize()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionSize()] (0 ms)</li><li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionToArray()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionSize()] (0 ms)</li><li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionToArray()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testBagContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionClear()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionToArray()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testBagContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionClear()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionToString()] (0 ms)</li><li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionAdd()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionIsEmpty()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionAdd()] (0 ms)</li><li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testUnsupportedAdd()] (0 ms)</li><li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionIterator()] (0 ms)</li><li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testUnsupportedRemove()] (0 ms)</li><li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionContains()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionIterator()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionIterator()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionIteratorRemove()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionContains()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionIteratorRemove()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionRemoveIf()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionContains()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionRemoveIf()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionContainsAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.UnmodifiableSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.UnmodifiableSortedBagTest]/[method:testCollectionToArray2()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionRemove()] (1 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionRemove()] (1 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionToArray2()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionAddAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionAddAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionToArray2()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionRemoveAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.TransformedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.TransformedSortedBagTest]/[method:testCollectionRetainAll()] (0 ms)</li><li>org.apache.commons.collections4.bag.PredicatedSortedBagTest.[engine:junit-jupiter]/[class:org.apache.commons.collections4.bag.PredicatedSortedBagTest]/[method:testCollectionRetainAll()] (0 ms)</li>
+</ul>
+
+<br/>
+
+Report generated by <a href='https://pitest.org'>PIT</a> 1.20.6
+
+</body>
+</html>
