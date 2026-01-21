@@ -15,4 +15,25 @@ h1 {
 .node {
   position: absolute; }
 
+/* Hide scrollbar but keep scrolling */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE, Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;             /* Chrome, Safari */
+}
+
+.scrollbar-hide-y {
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  -ms-overflow-style: none;   /* IE / Edge (legacy) */
+  scrollbar-width: none;      /* Firefox (applies to both axes) */
+}
+
+.scrollbar-hide-y::-webkit-scrollbar {
+  width: 0px;                 /* Chrome / Safari */
+}
+
 /*# sourceMappingURL=style.css.map */

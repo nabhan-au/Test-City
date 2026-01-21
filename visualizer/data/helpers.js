@@ -82,10 +82,7 @@ function colorize(d3, tree,key,colors,params){
 
     var applyColorScale = (node) => {
         if (node[key] == 0) {
-            const r = 255;
-            const g = 190;
-            const b = 50;
-            const hex = `#${toHexByte(r)}${toHexByte(g)}${toHexByte(b)}`;
+            const hex = colorScale(minValue);
             node.color = hex;
         } else {
             node.color = colorScale(Math.max(minValue,Math.min(node[key],maxValue)));

@@ -77,7 +77,7 @@ export function legend(legendDiv, legendTitle, legendContent) {
             ? `
             <div class="mt-3">
                 <span class="text-s text-gray-700">Description:</span>
-                <div class="max-h-32 overflow-y-auto border border-gray-200 rounded-md mt-1 p-2 bg-gray-50 overflow-x-auto whitespace-nowrap">
+                <div class="max-h-32 border border-gray-200 rounded-md mt-1 p-2 bg-gray-50 whitespace-normal break-all">
                   ${d.description}
                 </div>
               </div>
@@ -89,7 +89,7 @@ export function legend(legendDiv, legendTitle, legendContent) {
               <div class="mt-3">
                 <span class="text-s text-gray-700">Tests:</span>
                 <div class="max-h-32 overflow-y-auto border border-gray-200 rounded-md mt-1 p-2 bg-gray-50">
-                  <ul class="list-disc list-inside text-xs text-gray-700 space-y-0.5 overflow-x-auto whitespace-nowrap">
+                  <ul class="list-disc list-inside text-xs text-gray-700 space-y-0.5 overflow-x-auto whitespace-nowrap pb-6">
                     ${d.tests.map(t => `<li>${t["@name"]}</li>`).join("")}
                   </ul>
                 </div>

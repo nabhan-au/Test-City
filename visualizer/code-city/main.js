@@ -45,19 +45,17 @@ var viewModeSelect = $('#view-mode');
 const chartBox = $('#code-city-chart');
 
 var nodeColorScale = [
-    '#ffd700', // golden yellow
-    '#ffdb33',
-    '#ffdf66',
-    '#ffe399',
-    '#ffe6b3',
-    '#ffeccc',
-    '#b3e5ff',
-    '#99dbff',
-    '#80d1ff',
-    '#66c7ff',
-    '#4dbdff',
-    '#3399ff',
-    '#1a75ff'  // deeper sky blue
+    '#ffb703', // strong yellow
+    '#ffd54f', // warm yellow
+    '#ffe082', // soft yellow
+    '#ffecb3', // pastel yellow
+    '#fff3cd', // very light yellow
+    '#c2f9ff',
+    '#91e9f8',
+    '#65bdf6',
+    '#62a9fa',
+    '#4582f3',
+    '#0015ff'  // deeper sky blue
 ]
 
 let gridValue;
